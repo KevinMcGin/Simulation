@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="src\kernel.cu" />
+    <CudaCompile Include="src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\UniverseImpl.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Law.h">
+      <Filter>controller\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationInput.h">
+      <Filter>controller\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationOutput.h">
+      <Filter>controller\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Universe.h">
+      <Filter>controller\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UniverseImplSimple.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NewtonFirstLaw.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NewtonGravity.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationInputSimple.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationOutputSimple.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleSimple.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle.h">
+      <Filter>model\interface</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimulationTest\packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="controller">
+      <UniqueIdentifier>{c37c7373-2015-435d-b264-8b81e8a85aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{bab77455-f679-4232-b109-6b95c51b53cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controller\concrete">
+      <UniqueIdentifier>{12b02ebd-5383-4df2-b9e4-30bfeb1b6a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controller\interface">
+      <UniqueIdentifier>{dac220a0-8963-4bc5-aabf-eba94f678b5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model\conrete">
+      <UniqueIdentifier>{2ed52220-6f86-43e0-a955-806706e11324}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model\interface">
+      <UniqueIdentifier>{4dbc5e0e-070f-48db-bedd-9a0b69ebec12}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="NewtonFirstLawTest.cpp">
+      <Filter>controller\concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="NewtonGravityTest.cpp">
+      <Filter>controller\concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="UniverseImplTest.cpp">
+      <Filter>controller\concrete</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="controller">
+      <UniqueIdentifier>{95ca6014-30f7-41d7-bf55-68cd0d53fc8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controller\concrete">
+      <UniqueIdentifier>{549d4c18-38e7-497d-9b24-c57d35a92eed}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
