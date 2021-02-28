@@ -81,6 +81,7 @@
     <CudaCompile Include="src\kernel.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SimulationInputRandomSimple.h" />
     <ClInclude Include="src\NewtonFirstLaw.h" />
     <ClInclude Include="src\NewtonGravity.h" />
     <ClInclude Include="src\SimulationInputSimple.h" />

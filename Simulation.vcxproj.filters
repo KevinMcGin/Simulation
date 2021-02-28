@@ -41,6 +41,9 @@
     <ClInclude Include="src\Particle.h">
       <Filter>model\interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\SimulationInputRandomSimple.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimulationTest\packages.config" />

@@ -1,6 +1,6 @@
 ﻿#include "Particle.h"
 #include "ParticleSimple.h"
-#include "SimulationInputSimple.h"
+#include "SimulationInputRandomSimple.h"
 #include "SimulationOutputSimple.h"
 #include "UniverseImplSimple.h"
 
@@ -8,8 +8,8 @@
 
 int main()
 {
-    SimulationInput* input = new SimulationInputSimple();
+    SimulationInput* input = new SimulationInputRandomSimple(100);
     SimulationOutput* ouput = new SimulationOutputSimple();
-    Universe* u = new UniverseImplSimple(input, ouput, 100L);
+    Universe* u = new UniverseImplSimple(input, ouput, 1000);
     u->run();
 }
