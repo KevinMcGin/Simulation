@@ -4,7 +4,7 @@
 
 class Distribution {
 public:
-	Distribution() { { srand(time(NULL)); } };
+	Distribution() { srand(time(NULL)); };
 
 	virtual double getValue() = 0;
 

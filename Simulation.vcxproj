@@ -84,8 +84,10 @@
   <ItemGroup>
     <ClInclude Include="src\Distribution.h" />
     <ClInclude Include="src\Distribution3D.h" />
-    <ClInclude Include="src\DistributionLine.h" />
+    <ClInclude Include="src\DistributionGlobe.h" />
+    <ClInclude Include="src\DistributionSimple.h" />
     <ClInclude Include="src\DistributionCircle.h" />
+    <ClInclude Include="src\DistributionSphere.h" />
     <ClInclude Include="src\ParticleDistributionSimple.h" />
     <ClInclude Include="src\SimulationInputRandomSimple.h" />
     <ClInclude Include="src\NewtonFirstLaw.h" />

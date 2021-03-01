@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "SimulationInput.h"
 #include "ParticleSimple.h"
-#include "DistributionLine.h"
+#include "DistributionSimple.h"
 #include "DistributionCircle.h"
 #include "ParticleDistributionSimple.h"
 
@@ -9,7 +9,7 @@ class SimulationInputRandomSimple : public SimulationInput {
 public:
 	SimulationInputRandomSimple(unsigned long particleCount) :
 		particleCount(particleCount) {
-		Distribution* massDistrubtion = new DistributionLine(1, 0.5);
+		Distribution* massDistrubtion = new DistributionSimple(1, 0.5);
 		Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 10);
 		Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 1);
 		Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);

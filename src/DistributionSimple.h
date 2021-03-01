@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include "Distribution.h"
 
-class DistributionLine: public Distribution {
+class DistributionSimple: public Distribution {
 public:
-	DistributionLine(double mean, double delta) : Distribution(),
+	DistributionSimple(double mean, double delta) : Distribution(),
 		mean(mean),
 		delta(delta) {};
 

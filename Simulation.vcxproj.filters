@@ -50,9 +50,6 @@
     <ClInclude Include="src\Distribution.h">
       <Filter>model\interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\DistributionLine.h">
-      <Filter>model\conrete</Filter>
-    </ClInclude>
     <ClInclude Include="src\ParticleDistributionSimple.h">
       <Filter>model\conrete</Filter>
     </ClInclude>
@@ -60,6 +57,15 @@
       <Filter>model\interface</Filter>
     </ClInclude>
     <ClInclude Include="src\DistributionCircle.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionSphere.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionSimple.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionGlobe.h">
       <Filter>model\conrete</Filter>
     </ClInclude>
   </ItemGroup>
