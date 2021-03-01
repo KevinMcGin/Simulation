@@ -10,6 +10,6 @@ int main()
 {
     SimulationInput* input = new SimulationInputRandomSimple(100);
     SimulationOutput* ouput = new SimulationOutputSimple();
-    Universe* u = new UniverseImplSimple(input, ouput, 1000);
+    Universe* u = new UniverseImplSimple(input, ouput, 1);
     u->run();
 }

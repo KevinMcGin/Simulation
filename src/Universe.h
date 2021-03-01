@@ -3,15 +3,15 @@
 #include "SimulationOutput.h"
 #include "Law.h"
 
-#include <list>
+#include <vector>
 
 class Universe {
 	public:
-		list<Particle*> particles;
+		vector<Particle*> particles;
 		virtual void run() = 0;
 
 	protected:
-		list<Law*> laws;
+		vector<Law*> laws;
 		SimulationOutput* output;
 		unsigned int deltaTime;
 		unsigned long endTime;

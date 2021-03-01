@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include "Particle.h"
 
-#include <list>
+#include <vector>
 
 class SimulationOutput {
 	public:
-		virtual void output(list<Particle*> particles) = 0;
+		virtual void output(vector<Particle*> particles) = 0;
 };

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Law.h"
 
-#include <list>
+#include <vector>
 #include <stdio.h>
 #include <iostream>
 
@@ -11,7 +11,7 @@ class NewtonGravity: public Law {
 	public:
 		NewtonGravity(double G = GRAVITATIONAL_CONSTANT) : G(G), Law() {}
 
-		virtual void run(list<Particle*> particles) {
+		virtual void run(vector<Particle*> particles) {
 			for (const auto& p1 : particles)
 				for (const auto& p2 : particles)
 					for (int i = 0; i < p1->velocity.size(); i++) {

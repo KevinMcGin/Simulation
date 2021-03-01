@@ -2,14 +2,14 @@
 #include "SimulationInput.h"
 #include "ParticleSimple.h"
 
-#include <list>
+#include <vector>
 
 class SimulationInputRandomSimple : public SimulationInput {
 public:
 	SimulationInputRandomSimple(unsigned long particleCount) :
 		particleCount(particleCount) { srand (time(NULL)); }
 
-	virtual list<Particle*> input() {
+	virtual vector<Particle*> input() {
 		double meanMass = 1;
 		double deltaMass = .5;
 		double meanPos = 0;
@@ -17,7 +17,7 @@ public:
 		double meanVel = 0;
 		double deltaVel = 1;
 
-		list<Particle*> particles;
+		vector<Particle*> particles;
 		for (unsigned long i = 0; i < particleCount; i++) {
 			//density is the same for all particles
 			double mass = random(meanMass, deltaMass);

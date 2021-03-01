@@ -4,7 +4,7 @@
 #include "NewtonGravity.h"
 #include "NewtonFirstLaw.h"
 
-#include <list>
+#include <vector>
 
 class UniverseImplSimple : public UniverseImpl {
 	public:
