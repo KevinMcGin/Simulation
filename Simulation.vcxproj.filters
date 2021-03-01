@@ -3,6 +3,9 @@
   <ItemGroup>
     <CudaCompile Include="src\kernel.cu" />
     <CudaCompile Include="src\main.cpp" />
+    <CudaCompile Include="src\ParticleDistribution.h">
+      <Filter>model\interface</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UniverseImpl.h">
@@ -43,6 +46,21 @@
     </ClInclude>
     <ClInclude Include="src\SimulationInputRandomSimple.h">
       <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Distribution.h">
+      <Filter>model\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionLine.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleDistributionSimple.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Distribution3D.h">
+      <Filter>model\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionCircle.h">
+      <Filter>model\conrete</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

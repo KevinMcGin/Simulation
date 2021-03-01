@@ -1,30 +1,26 @@
 ﻿#pragma once
 #include "SimulationInput.h"
 #include "ParticleSimple.h"
-
-#include <vector>
+#include "DistributionLine.h"
+#include "DistributionCircle.h"
+#include "ParticleDistributionSimple.h"
 
 class SimulationInputRandomSimple : public SimulationInput {
 public:
 	SimulationInputRandomSimple(unsigned long particleCount) :
-		particleCount(particleCount) { srand (time(NULL)); }
+		particleCount(particleCount) {
+		Distribution* massDistrubtion = new DistributionLine(1, 0.5);
+		Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 10);
+		Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 1);
+		Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
+		particleDistribution = new ParticleDistributionSimple(massDistrubtion, massDistrubtion, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
+	}
 
 	virtual vector<Particle*> input() {
-		double meanMass = 1;
-		double deltaMass = .5;
-		double meanPos = 0;
-		double deltaPos = 10;
-		double meanVel = 0;
-		double deltaVel = 1;
 
 		vector<Particle*> particles;
 		for (unsigned long i = 0; i < particleCount; i++) {
-			//density is the same for all particles
-			double mass = random(meanMass, deltaMass);
-			particles.push_back( new ParticleSimple(mass, mass, 
-				{ random(meanPos, deltaPos), random(meanPos, deltaPos), 0 },
-				{ random(meanVel, deltaVel), random(meanVel, deltaVel), 0 },
-				{ 0, 0, 0 }) );
+			particles.push_back(particleDistribution->getParticle());
 		}
 
 		return particles;
@@ -34,9 +30,5 @@ public:
 
 private:
 	const unsigned long particleCount;
-
-	double random(double mean, double delta) {
-		const double deltaRand = ((double)rand() / RAND_MAX)*2*delta - delta;
-		return mean + deltaRand;
-	}
+	ParticleDistributionSimple* particleDistribution;
 };
