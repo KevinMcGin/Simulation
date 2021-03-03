@@ -16,12 +16,12 @@ class UniverseImpl: public Universe{
 		}
 
 		virtual void run() {
-			output->output(particles);
+			output->output(particles, 0);
 			for (unsigned long i = 0; i < endTime; i += deltaTime) {
 				for (const auto& l : laws) {
 					l->run(particles);
 				}
-				output->output(particles);
+				output->output(particles, i+1);
 			}
 		};
 };

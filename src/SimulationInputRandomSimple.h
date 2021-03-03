@@ -7,20 +7,15 @@
 
 class SimulationInputRandomSimple : public SimulationInput {
 public:
-	SimulationInputRandomSimple(unsigned long particleCount) :
-		particleCount(particleCount) {
-		Distribution* massDistrubtion = new DistributionSimple(1, 0.5);
-		Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 10);
-		Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 1);
-		Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
-		particleDistribution = new ParticleDistributionSimple(massDistrubtion, massDistrubtion, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
-	}
+	SimulationInputRandomSimple(unsigned long particleCount, ParticleDistributionSimple particleDistribution) :
+		particleCount(particleCount),
+		particleDistribution(particleDistribution) {}
 
 	virtual vector<Particle*> input() {
 
 		vector<Particle*> particles;
 		for (unsigned long i = 0; i < particleCount; i++) {
-			particles.push_back(particleDistribution->getParticle());
+			particles.push_back(particleDistribution.getParticle());
 		}
 
 		return particles;
@@ -30,5 +25,5 @@ public:
 
 private:
 	const unsigned long particleCount;
-	ParticleDistributionSimple* particleDistribution;
+	ParticleDistributionSimple particleDistribution;
 };

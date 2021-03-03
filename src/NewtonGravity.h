@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <iostream>
 
-const double GRAVITATIONAL_CONSTANT = 0.5;
+const double GRAVITATIONAL_CONSTANT = 0.00005;
 
 class NewtonGravity: public Law {
 	public:

@@ -35,9 +35,6 @@
     <ClInclude Include="src\SimulationInputSimple.h">
       <Filter>controller\concrete</Filter>
     </ClInclude>
-    <ClInclude Include="src\SimulationOutputSimple.h">
-      <Filter>controller\concrete</Filter>
-    </ClInclude>
     <ClInclude Include="src\ParticleSimple.h">
       <Filter>model\conrete</Filter>
     </ClInclude>
@@ -67,6 +64,12 @@
     </ClInclude>
     <ClInclude Include="src\DistributionGlobe.h">
       <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationOutputPrint.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationOutputJSON.h">
+      <Filter>controller\concrete</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

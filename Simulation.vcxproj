@@ -82,6 +82,7 @@
     <CudaCompile Include="src\ParticleDistribution.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SimulationOutputJSON.h" />
     <ClInclude Include="src\Distribution.h" />
     <ClInclude Include="src\Distribution3D.h" />
     <ClInclude Include="src\DistributionGlobe.h" />
@@ -93,7 +94,7 @@
     <ClInclude Include="src\NewtonFirstLaw.h" />
     <ClInclude Include="src\NewtonGravity.h" />
     <ClInclude Include="src\SimulationInputSimple.h" />
-    <ClInclude Include="src\SimulationOutputSimple.h" />
+    <ClInclude Include="src\SimulationOutputPrint.h" />
     <ClInclude Include="src\UniverseImpl.h" />
     <ClInclude Include="src\UniverseImplSimple.h" />
     <ClInclude Include="src\Law.h" />

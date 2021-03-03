@@ -1,16 +1,25 @@
 ﻿#include "Particle.h"
 #include "ParticleSimple.h"
 #include "SimulationInputRandomSimple.h"
-#include "SimulationOutputSimple.h"
+#include "SimulationOutputJSON.h"
 #include "UniverseImplSimple.h"
 
 #include <stdio.h>
 
 int main()
 {
-    SimulationInput* input = new SimulationInputRandomSimple(100);
-    SimulationOutput* ouput = new SimulationOutputSimple();
-    Universe* universe = new UniverseImplSimple(input, ouput, 1);
+
+    Distribution* massDistrubtion = new DistributionSimple(0.1, 0.05);
+    Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 1);
+    Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
+    Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
+    ParticleDistributionSimple particleDistribution(massDistrubtion, massDistrubtion, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
+    SimulationInput* input = new SimulationInputRandomSimple(30, particleDistribution);
+
+    SimulationOutput* output = new SimulationOutputJSON();
+
+    Universe* universe = new UniverseImplSimple(input, output, 1000);
+
     universe->run();
 
     delete universe;
