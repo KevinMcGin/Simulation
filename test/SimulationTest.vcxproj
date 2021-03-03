@@ -36,6 +36,9 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DistributionCircleTest.cpp" />
+    <ClCompile Include="DistributionGlobTest.cpp" />
+    <ClCompile Include="DistributionSphere.cpp" />
     <ClCompile Include="NewtonFirstLawTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

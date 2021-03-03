@@ -11,6 +11,15 @@
     <ClCompile Include="UniverseImplTest.cpp">
       <Filter>controller\concrete</Filter>
     </ClCompile>
+    <ClCompile Include="DistributionCircleTest.cpp">
+      <Filter>model\concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="DistributionGlobTest.cpp">
+      <Filter>model\concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="DistributionSphere.cpp">
+      <Filter>model\concrete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -21,6 +30,12 @@
     </Filter>
     <Filter Include="controller\concrete">
       <UniqueIdentifier>{549d4c18-38e7-497d-9b24-c57d35a92eed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{c5b2bafb-7f65-4400-b415-bcb753469fc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model\concrete">
+      <UniqueIdentifier>{6e8fdc99-c2b0-45b9-a6b9-e2ded0c9f1e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

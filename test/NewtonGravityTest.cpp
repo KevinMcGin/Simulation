@@ -2,11 +2,11 @@
 #include "../src/NewtonGravity.h"
 #include "../src/ParticleSimple.h"
 
-#include <list>
+#include <vector>
 
 TEST(NewtonGravityTest, ParticlesAccelerate) {
-	Law* law = new NewtonGravity();
-	list<Particle*> particles = { new ParticleSimple(1,1,{0,0,0},{0,0,0},{0,0,0}),  new ParticleSimple(100,1,{10,0,0},{0,0,0},{0,0,0}) };
+	Law* law = new NewtonGravity(0.5);
+	vector<Particle*> particles = { new ParticleSimple(1,1,{0,0,0},{0,0,0},{0,0,0}),  new ParticleSimple(100,1,{10,0,0},{0,0,0},{0,0,0}) };
 	law->run(particles);
 	array<double, 3> velocity1 = particles.front()->velocity;
 	array<double, 3> velocity2 = particles.back()->velocity;
