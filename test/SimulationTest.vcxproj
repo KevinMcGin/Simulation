@@ -36,8 +36,9 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionDetectorSimpleTest.cpp" />
     <ClCompile Include="DistributionCircleTest.cpp" />
-    <ClCompile Include="DistributionGlobTest.cpp" />
+    <ClCompile Include="DistributionGlobeTest.cpp" />
     <ClCompile Include="DistributionSphere.cpp" />
     <ClCompile Include="NewtonFirstLawTest.cpp" />
     <ClCompile Include="pch.cpp">

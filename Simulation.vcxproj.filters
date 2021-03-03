@@ -71,6 +71,15 @@
     <ClInclude Include="src\SimulationOutputJSON.h">
       <Filter>controller\concrete</Filter>
     </ClInclude>
+    <ClInclude Include="src\CollisionResolver.h">
+      <Filter>controller\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionDetectorSimple.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionDetector.h">
+      <Filter>controller\interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimulationTest\packages.config" />

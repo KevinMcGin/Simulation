@@ -14,11 +14,14 @@
     <ClCompile Include="DistributionCircleTest.cpp">
       <Filter>model\concrete</Filter>
     </ClCompile>
-    <ClCompile Include="DistributionGlobTest.cpp">
-      <Filter>model\concrete</Filter>
-    </ClCompile>
     <ClCompile Include="DistributionSphere.cpp">
       <Filter>model\concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="DistributionGlobeTest.cpp">
+      <Filter>model\concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionDetectorSimpleTest.cpp">
+      <Filter>controller\concrete</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
