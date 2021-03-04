@@ -80,6 +80,9 @@
     <ClInclude Include="src\CollisionDetector.h">
       <Filter>controller\interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\Vector3D.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimulationTest\packages.config" />

@@ -50,6 +50,7 @@
     </ClCompile>
     <ClCompile Include="NewtonGravityTest.cpp" />
     <ClCompile Include="UniverseImplTest.cpp" />
+    <ClCompile Include="Vector3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

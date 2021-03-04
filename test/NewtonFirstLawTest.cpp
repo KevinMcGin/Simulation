@@ -8,8 +8,8 @@ TEST(NewtonFirstLawTest, ParticleMove) {
 	Law* law = new NewtonFirstLaw();
 	vector<Particle*> particles = { new ParticleSimple(1,1,{0,0,0},{1,-1,0},{0,0,0}) };
 	law->run(particles);
-	array<double, 3> positions = particles.front()->position;
-	EXPECT_EQ(1, positions[0]);
-	EXPECT_EQ(-1, positions[1]);
-	EXPECT_EQ(0, positions[2]);
+	Vector3D positions = particles.front()->position;
+	EXPECT_EQ(1, positions.x);
+	EXPECT_EQ(-1, positions.y);
+	EXPECT_EQ(0, positions.z);
 }

@@ -8,7 +8,6 @@
 
 int main()
 {
-
     Distribution* massDistrubtion = new DistributionSimple(0.1, 0.05);
     Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 1);
     Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);

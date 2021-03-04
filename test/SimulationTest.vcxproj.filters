@@ -26,6 +26,9 @@
     <ClCompile Include="ParticleDistributionSimpleTest.cpp">
       <Filter>model\concrete</Filter>
     </ClCompile>
+    <ClCompile Include="Vector3D.cpp">
+      <Filter>model\concrete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

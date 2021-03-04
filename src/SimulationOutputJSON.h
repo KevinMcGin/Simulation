@@ -27,11 +27,9 @@ public:
 			myfile << "{ ";
 			myfile << "\"r\": " << p->radius << "," << endl;
 			myfile << "\"pos\": [";
-			for (int i = 0; i < 3; i++) {
-				myfile << p->position[i];
-				if (i < 2)
-					myfile << ",";
-			}
+			myfile << p->position.x << ",";
+			myfile << p->position.y << ",";
+			myfile << p->position.z;
 			myfile << "]}" << endl;
 			if (++i < particleCount)
 				myfile << "," << endl;

@@ -82,6 +82,7 @@
     <CudaCompile Include="src\ParticleDistribution.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Vector3D.h" />
     <ClInclude Include="src\CollisionDetector.h" />
     <ClInclude Include="src\CollisionDetectorSimple.h" />
     <ClInclude Include="src\CollisionResolver.h" />

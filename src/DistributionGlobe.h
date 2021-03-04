@@ -5,16 +5,16 @@ using namespace std;
 
 class DistributionGlobe: public Distribution3D {
 public:
-	DistributionGlobe(array<double, 3> mean, array<double, 3> delta): Distribution3D(),
+	DistributionGlobe(Vector3D mean, Vector3D delta): Distribution3D(),
 		mean(mean),
 		delta(delta)
 	{};
 
-	virtual  array<double, 3> getValue() {
-		return { random(mean[0], delta[0]), random(mean[1], delta[1]), random(mean[2], delta[2]) };
+	virtual  Vector3D getValue() {
+		return { random(mean.x, delta.x), random(mean.y, delta.y), random(mean.z, delta.z) };
 	};
 
 private:
-	const array<double, 3> mean, delta;
+	const Vector3D mean, delta;
 
 };

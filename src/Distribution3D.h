@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <stdlib.h>   
 #include <time.h> 
-#include <array>
+#include "Vector3D.h"
 
 using namespace std;
 
@@ -9,7 +9,7 @@ class Distribution3D {
 public:
 	Distribution3D() { srand(time(NULL)); };
 
-	virtual  array<double, 3> getValue() = 0;
+	virtual  Vector3D getValue() = 0;
 protected:
 	//TODO: random model
 	double random(double mean, double delta) {

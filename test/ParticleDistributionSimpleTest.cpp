@@ -14,7 +14,7 @@ TEST(ParticleDistributionSimpleTest, ParticleMade) {
 	Particle* p = particleDistribution.getParticle();
 	EXPECT_TRUE(p->mass >= 0.05 && p->mass <= 0.15);
 	EXPECT_TRUE(p->radius >= 0.005 && p->radius <= 0.015);
-	EXPECT_TRUE(p->position[0] <= 1 && p->position[0] >= -1);
-	EXPECT_TRUE(p->position[1] <= 1 && p->position[1] >= -1);
-	EXPECT_TRUE(p->position[2] <= 1 && p->position[2] >= -1);
+	EXPECT_TRUE(p->position.x <= 1 && p->position.x >= -1);
+	EXPECT_TRUE(p->position.y <= 1 && p->position.y >= -1);
+	EXPECT_TRUE(p->position.z <= 1 && p->position.z >= -1);
 }

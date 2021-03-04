@@ -3,8 +3,8 @@
 
 TEST(DistributionSphereTest, ParticleInGlobe) {
 	DistributionSphere globe({ 0,0,0 }, 1);
-	array<double, 3> position = globe.getValue();
-	EXPECT_TRUE(position[0] <= 1 && position[0] >= -1);
-	EXPECT_TRUE(position[1] <= 1 && position[1] >= -1);
-	EXPECT_TRUE(position[1] <= 1 && position[1] >= -1);
+	Vector3D position = globe.getValue();
+	EXPECT_TRUE(position.x <= 1 && position.x >= -1);
+	EXPECT_TRUE(position.y <= 1 && position.y >= -1);
+	EXPECT_TRUE(position.z <= 1 && position.z >= -1);
 }
