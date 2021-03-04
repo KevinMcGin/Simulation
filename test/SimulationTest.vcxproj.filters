@@ -23,6 +23,9 @@
     <ClCompile Include="CollisionDetectorSimpleTest.cpp">
       <Filter>controller\concrete</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleDistributionSimpleTest.cpp">
+      <Filter>model\concrete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
