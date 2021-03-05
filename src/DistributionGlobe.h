@@ -10,9 +10,7 @@ public:
 		delta(delta)
 	{};
 
-	virtual  Vector3D getValue() {
-		return { random(mean.x, delta.x), random(mean.y, delta.y), random(mean.z, delta.z) };
-	};
+	virtual  Vector3D getValue();
 
 private:
 	const Vector3D mean, delta;

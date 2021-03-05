@@ -9,8 +9,5 @@ public:
 	virtual double getValue() = 0;
 
 protected:
-	double random(double mean, double delta) {
-		const double deltaRand = ((double)rand() / RAND_MAX) * 2 * delta - delta;
-		return mean + deltaRand;
-	}
+	double random(double mean, double delta);
 };

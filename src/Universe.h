@@ -7,9 +7,7 @@
 
 class Universe {
 	public:
-		~Universe() {
-			delete output;
-		}
+		~Universe();
 		vector<Particle*> particles;
 		virtual void run() = 0;
 

@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{91d0ffb6-4de6-491f-b5db-d85d31181755}</ProjectGuid>
+    <ProjectGuid>{db4cc5e5-dff0-4fda-9a00-a8884864f4d5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
@@ -37,20 +37,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionDetectorSimpleTest.cpp" />
+    <ClCompile Include="CollisionResolverCoalesceTest.cpp" />
     <ClCompile Include="DistributionCircleTest.cpp" />
     <ClCompile Include="DistributionGlobeTest.cpp" />
     <ClCompile Include="DistributionSphereTest.cpp" />
     <ClCompile Include="NewtonFirstLawTest.cpp" />
+    <ClCompile Include="NewtonGravityTest.cpp" />
     <ClCompile Include="ParticleDistributionSimpleTest.cpp" />
+    <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="NewtonGravityTest.cpp" />
     <ClCompile Include="UniverseImplTest.cpp" />
-    <ClCompile Include="Vector3D.cpp" />
+    <ClCompile Include="Vector3DTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simulation.vcxproj">
+      <Project>{b35602b1-4bfe-48dd-88e1-1ba15f1280f7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -58,7 +65,7 @@
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
+    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,10 +91,13 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>F:\workspace\Simulation\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>F:\workspace\Simulation\x64\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>F:\workspace\Simulation\x64\Debug\CollisionDetectorSimple;F:\workspace\Simulation\x64\Debug\CollisionResolverCoalesce;F:\workspace\Simulation\x64\Debug\Universe;F:\workspace\Simulation\x64\Debug\UniverseImpl;F:\workspace\Simulation\x64\Debug\UniverseImplSimple;F:\workspace\Simulation\x64\Debug\ParticleSimple;F:\workspace\Simulation\x64\Debug\ParticleDistribution;F:\workspace\Simulation\x64\Debug\ParticleDistributionSimple;F:\workspace\Simulation\x64\Debug\Distribution;F:\workspace\Simulation\x64\Debug\Distribution3D;F:\workspace\Simulation\x64\Debug\DistributionCircle;F:\workspace\Simulation\x64\Debug\DistributionGlobe;F:\workspace\Simulation\x64\Debug\DistributionSimple;F:\workspace\Simulation\x64\Debug\NewtonGravity;F:\workspace\Simulation\x64\Debug\NewtonFirstLaw;F:\workspace\Simulation\x64\Debug\SimulationOutputPrint;F:\workspace\Simulation\x64\Debug\SimulationOutputJSON;F:\workspace\Simulation\x64\Debug\SimulationInputSimple;F:\workspace\Simulation\x64\Debug\SimulationInputRandomSimple;F:\workspace\Simulation\x64\Debug\Vector3D;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -114,18 +124,21 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>F:\workspace\Simulation\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>F:\workspace\Simulation\x64\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>F:\workspace\Simulation\x64\Debug\CollisionDetectorSimple;F:\workspace\Simulation\x64\Debug\CollisionResolverCoalesce;F:\workspace\Simulation\x64\Debug\Universe;F:\workspace\Simulation\x64\Debug\UniverseImpl;F:\workspace\Simulation\x64\Debug\UniverseImplSimple;F:\workspace\Simulation\x64\Debug\ParticleSimple;F:\workspace\Simulation\x64\Debug\ParticleDistribution;F:\workspace\Simulation\x64\Debug\ParticleDistributionSimple;F:\workspace\Simulation\x64\Debug\Distribution;F:\workspace\Simulation\x64\Debug\Distribution3D;F:\workspace\Simulation\x64\Debug\DistributionCircle;F:\workspace\Simulation\x64\Debug\DistributionGlobe;F:\workspace\Simulation\x64\Debug\DistributionSimple;F:\workspace\Simulation\x64\Debug\NewtonGravity;F:\workspace\Simulation\x64\Debug\NewtonFirstLaw;F:\workspace\Simulation\x64\Debug\SimulationOutputPrint;F:\workspace\Simulation\x64\Debug\SimulationOutputJSON;F:\workspace\Simulation\x64\Debug\SimulationInputSimple;F:\workspace\Simulation\x64\Debug\SimulationInputRandomSimple;F:\workspace\Simulation\x64\Debug\Vector3D;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
   </Target>
 </Project>

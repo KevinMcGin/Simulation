@@ -4,5 +4,5 @@
 
 class CollisionResolver {
 public:
-	virtual bool resolve(Particle* p1, Particle* p2) = 0;
+	virtual void resolve(Particle* p1, Particle* p2) = 0;
 };

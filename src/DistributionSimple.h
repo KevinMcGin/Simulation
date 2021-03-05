@@ -8,9 +8,7 @@ public:
 		delta(delta) {};
 
 
-	virtual double getValue() {
-		return random(mean, delta);
-	}
+	virtual double getValue();
 
 private:
 	const double mean;

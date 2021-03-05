@@ -10,7 +10,7 @@ class ParticleSimple: public Particle {
 			Vector3D  velocity,
 			Vector3D  angularVelocity
 		) : Particle(mass, radius, position, velocity, angularVelocity) {}
-		virtual double getTemperature() { return temperature; }
+		virtual double getTemperature();
 
 	private:
 		double temperature = 273;

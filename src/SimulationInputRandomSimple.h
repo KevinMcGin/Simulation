@@ -7,19 +7,9 @@
 
 class SimulationInputRandomSimple : public SimulationInput {
 public:
-	SimulationInputRandomSimple(unsigned long particleCount, ParticleDistributionSimple particleDistribution) :
-		particleCount(particleCount),
-		particleDistribution(particleDistribution) {}
+	SimulationInputRandomSimple(unsigned long particleCount, ParticleDistributionSimple particleDistribution);
 
-	virtual vector<Particle*> input() {
-
-		vector<Particle*> particles;
-		for (unsigned long i = 0; i < particleCount; i++) {
-			particles.push_back(particleDistribution.getParticle());
-		}
-
-		return particles;
-	}
+	virtual vector<Particle*> input();
 
 
 

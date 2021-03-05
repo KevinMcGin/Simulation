@@ -83,6 +83,7 @@
     <ClInclude Include="src\Vector3D.h">
       <Filter>model\conrete</Filter>
     </ClInclude>
+    <ClInclude Include="src\CollisionResolverCoalesce.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimulationTest\packages.config" />
@@ -106,5 +107,27 @@
     <Filter Include="model\interface">
       <UniqueIdentifier>{4dbc5e0e-070f-48db-bedd-9a0b69ebec12}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\CollisionDetectorSimple.cpp" />
+    <ClCompile Include="src\CollisionResolverCoalesce.cpp" />
+    <ClCompile Include="src\Distribution.cpp" />
+    <ClCompile Include="src\Distribution3D.cpp" />
+    <ClCompile Include="src\DistributionCircle.cpp" />
+    <ClCompile Include="src\DistributionGlobe.cpp" />
+    <ClCompile Include="src\DistributionSimple.cpp" />
+    <ClCompile Include="src\NewtonFirstLaw.cpp" />
+    <ClCompile Include="src\NewtonGravity.cpp" />
+    <ClCompile Include="src\ParticleDistribution.cpp" />
+    <ClCompile Include="src\ParticleDistributionSimple.cpp" />
+    <ClCompile Include="src\ParticleSimple.cpp" />
+    <ClCompile Include="src\SimulationInputRandomSimple.cpp" />
+    <ClCompile Include="src\SimulationInputSimple.cpp" />
+    <ClCompile Include="src\SimulationOutputJSON.cpp" />
+    <ClCompile Include="src\SimulationOutputPrint.cpp" />
+    <ClCompile Include="src\Universe.cpp" />
+    <ClCompile Include="src\UniverseImpl.cpp" />
+    <ClCompile Include="src\UniverseImplSimple.cpp" />
+    <ClCompile Include="src\Vector3D.cpp" />
   </ItemGroup>
 </Project>

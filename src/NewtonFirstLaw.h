@@ -7,8 +7,5 @@
 
 class NewtonFirstLaw: public Law {
 	public:
-		virtual void run(vector<Particle*> particles) {
-			for (const auto& p : particles)
-				p->position = p->position + p->velocity;
-		}
+		virtual void run(vector<Particle*> particles);
 };
