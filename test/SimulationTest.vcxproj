@@ -39,7 +39,7 @@
     <ClCompile Include="CollisionDetectorSimpleTest.cpp" />
     <ClCompile Include="DistributionCircleTest.cpp" />
     <ClCompile Include="DistributionGlobeTest.cpp" />
-    <ClCompile Include="DistributionSphere.cpp" />
+    <ClCompile Include="DistributionSphereTest.cpp" />
     <ClCompile Include="NewtonFirstLawTest.cpp" />
     <ClCompile Include="ParticleDistributionSimpleTest.cpp" />
     <ClCompile Include="pch.cpp">

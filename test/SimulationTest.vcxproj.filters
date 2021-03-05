@@ -14,9 +14,6 @@
     <ClCompile Include="DistributionCircleTest.cpp">
       <Filter>model\concrete</Filter>
     </ClCompile>
-    <ClCompile Include="DistributionSphere.cpp">
-      <Filter>model\concrete</Filter>
-    </ClCompile>
     <ClCompile Include="DistributionGlobeTest.cpp">
       <Filter>model\concrete</Filter>
     </ClCompile>
@@ -26,9 +23,8 @@
     <ClCompile Include="ParticleDistributionSimpleTest.cpp">
       <Filter>model\concrete</Filter>
     </ClCompile>
-    <ClCompile Include="Vector3D.cpp">
-      <Filter>model\concrete</Filter>
-    </ClCompile>
+    <ClCompile Include="Vector3D.cpp" />
+    <ClCompile Include="DistributionSphereTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
