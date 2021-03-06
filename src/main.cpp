@@ -13,7 +13,7 @@ int main()
     Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
     Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
     ParticleDistributionSimple particleDistribution(massDistrubtion, massDistrubtion, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
-    SimulationInput* input = new SimulationInputRandomSimple(30, particleDistribution);
+    SimulationInput* input = new SimulationInputRandomSimple(50, particleDistribution);
 
     SimulationOutput* output = new SimulationOutputJSON();
 

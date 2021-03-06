@@ -1,6 +1,30 @@
 #include "Vector3D.h"
+#include <cmath>
 
 
+
+Vector3D::Vector3D(double x, double y, double z):
+	x(x),
+	y(y),
+	z(z)
+{
+
+}
+
+Vector3D::Vector3D()
+{
+
+}
+
+Vector3D Vector3D::unit()
+{
+	return Vector3D(x,y,z) / sqrt(this->magnitudeSquared());
+}
+
+double Vector3D::magnitudeSquared()
+{
+	return x * x + y * y + z * z;
+}
 
 Vector3D Vector3D::operator+(const Vector3D& vec) const
 {

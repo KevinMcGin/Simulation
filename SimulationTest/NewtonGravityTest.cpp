@@ -11,10 +11,10 @@ TEST(NewtonGravityTest, ParticlesAccelerate) {
 	Vector3D velocity1 = particles.front()->velocity;
 	Vector3D velocity2 = particles.back()->velocity;
 
-	EXPECT_EQ(0.5, velocity1.x);
-	EXPECT_EQ(0, velocity1.y);
-	EXPECT_EQ(0, velocity1.z);
-	EXPECT_EQ(-0.005, velocity2.x);
-	EXPECT_EQ(0, velocity2.y);
-	EXPECT_EQ(0, velocity2.z);
+	EXPECT_DOUBLE_EQ(-0.049997275222748515, velocity1.x);
+	EXPECT_DOUBLE_EQ(-4.9997275222748518, velocity1.y);
+	EXPECT_DOUBLE_EQ(-16.665758407582842, velocity1.z);
+	EXPECT_DOUBLE_EQ(-0.00049997275222748517, velocity2.x);
+	EXPECT_DOUBLE_EQ(-0.049997275222748515, velocity2.y);
+	EXPECT_DOUBLE_EQ(-0.16665758407582842, velocity2.z);
 }
