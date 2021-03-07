@@ -8,6 +8,7 @@ public:
 
 	Vector3D unit();
 	double magnitudeSquared();
+	double magnitude();
 
 	Vector3D operator+(const Vector3D& vec) const;
 	Vector3D operator-(const Vector3D& vec) const;

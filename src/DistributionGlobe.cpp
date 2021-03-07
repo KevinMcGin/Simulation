@@ -1,8 +1,13 @@
 #include "DistributionGlobe.h"
 
-
-
 Vector3D DistributionGlobe::getValue()
 {
-	return { random(mean.x, delta.x), random(mean.y, delta.y), random(mean.z, delta.z) };
+	double theta = randomFromMean(M_PI, M_PI);
+	double phi = randomFromMean(M_PI, M_PI);
+
+	//Is it ok to have these mean terms all unique in this equation?
+	return { mean.x + random(delta.x) * cos(theta)*sin(phi), 
+		mean.y + random(delta.y) * sin(theta)*sin(phi),
+		mean.z + random(delta.z) * cos(phi)
+	};
 }

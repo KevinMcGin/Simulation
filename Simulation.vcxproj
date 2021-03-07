@@ -90,6 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CollisionResolverCoalesce.h" />
+    <ClInclude Include="src\DistributionCircle.h" />
+    <ClInclude Include="src\DistributionGlobe.h" />
+    <ClInclude Include="src\DistributionSphere.h" />
     <ClInclude Include="src\Vector3D.h" />
     <ClInclude Include="src\CollisionDetector.h" />
     <ClInclude Include="src\CollisionDetectorSimple.h" />
@@ -97,10 +100,10 @@
     <ClInclude Include="src\SimulationOutputJSON.h" />
     <ClInclude Include="src\Distribution.h" />
     <ClInclude Include="src\Distribution3D.h" />
-    <ClInclude Include="src\DistributionGlobe.h" />
+    <ClInclude Include="src\DistributionCuboid.h" />
     <ClInclude Include="src\DistributionSimple.h" />
-    <ClInclude Include="src\DistributionCircle.h" />
-    <ClInclude Include="src\DistributionSphere.h" />
+    <ClInclude Include="src\DistributionSquare.h" />
+    <ClInclude Include="src\DistributionCube.h" />
     <ClInclude Include="src\ParticleDistributionSimple.h" />
     <ClInclude Include="src\SimulationInputRandomSimple.h" />
     <ClInclude Include="src\NewtonFirstLaw.h" />
@@ -125,7 +128,11 @@
     <ClCompile Include="src\Distribution.cpp" />
     <ClCompile Include="src\Distribution3D.cpp" />
     <ClCompile Include="src\DistributionCircle.cpp" />
+    <ClCompile Include="src\DistributionCube.cpp" />
     <ClCompile Include="src\DistributionGlobe.cpp" />
+    <ClCompile Include="src\DistributionSphere.cpp" />
+    <ClCompile Include="src\DistributionSquare.cpp" />
+    <ClCompile Include="src\DistributionCuboid.cpp" />
     <ClCompile Include="src\DistributionSimple.cpp" />
     <ClCompile Include="src\NewtonFirstLaw.cpp" />
     <ClCompile Include="src\NewtonGravity.cpp" />

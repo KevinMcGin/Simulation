@@ -7,6 +7,12 @@ TEST(Vector3DTest, vectorsMagnitudeSquared) {
 	EXPECT_DOUBLE_EQ(1, magnitudeSquared);
 }
 
+TEST(Vector3DTest, vectorsMagnitude) {
+	Vector3D v1({ -1 / sqrt(2),1 / sqrt(2),0 });
+	double magnitudeSquared = v1.magnitude();
+	EXPECT_DOUBLE_EQ(1, magnitudeSquared);
+}
+
 TEST(Vector3DTest, vectorsUnit) {
 	Vector3D v1({ 0,-1,1 });
 	Vector3D vUnit = v1.unit();

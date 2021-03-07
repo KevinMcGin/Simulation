@@ -2,9 +2,11 @@
 #include "../src/DistributionCircle.h"
 
 TEST(DistributionCircleTest, ParticleInGlobe) {
-	DistributionCircle globe({ 0,0,0 }, 1);
-	Vector3D position = globe.getValue();
-	EXPECT_TRUE(position.x <= 1 && position.y >= -1);
-	EXPECT_TRUE(position.y <= 1 && position.y >= -1);
+	Vector3D mean = { 1,-1,0 };
+	double delta = 2;
+	DistributionCircle circle(mean, delta);
+	Vector3D position = circle.getValue();
+	double magnitude = Vector3D(position.x - mean.x, position.y - mean.y, 0).magnitude();
+	EXPECT_TRUE(magnitude <= delta);
 	EXPECT_TRUE(position.z == 0);
 }

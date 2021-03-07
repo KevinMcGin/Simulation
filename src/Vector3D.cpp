@@ -18,12 +18,17 @@ Vector3D::Vector3D()
 
 Vector3D Vector3D::unit()
 {
-	return Vector3D(x,y,z) / sqrt(this->magnitudeSquared());
+	return Vector3D(x,y,z) / this->magnitude();
 }
 
 double Vector3D::magnitudeSquared()
 {
 	return x * x + y * y + z * z;
+}
+
+double Vector3D::magnitude()
+{
+	return sqrt(this->magnitudeSquared());
 }
 
 Vector3D Vector3D::operator+(const Vector3D& vec) const

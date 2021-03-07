@@ -13,11 +13,11 @@ int main()
     Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
     Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
     ParticleDistributionSimple particleDistribution(massDistrubtion, massDistrubtion, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
-    SimulationInput* input = new SimulationInputRandomSimple(50, particleDistribution);
+    SimulationInput* input = new SimulationInputRandomSimple(500, particleDistribution);
 
     SimulationOutput* output = new SimulationOutputJSON();
 
-    Universe* universe = new UniverseImplSimple(input, output, 1000);
+    Universe* universe = new UniverseImplSimple(input, output, 100);
 
     universe->run();
 

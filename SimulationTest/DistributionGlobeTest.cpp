@@ -2,9 +2,13 @@
 #include "../src/DistributionGlobe.h"
 
 TEST(DistributionGlobeTest, ParticleInGlobe) {
-	DistributionGlobe globe({ 0,0,0 }, { 1,3,1 });
+	//TODO transform test from testing a cuboid to a globe
+	Vector3D mean = { 1,-1,1, };
+	Vector3D delta = { 1,3,1 };
+	DistributionGlobe globe(mean, delta);
 	Vector3D position = globe.getValue();
-	EXPECT_TRUE(position.x <= 1 && position.x >= -1);
-	EXPECT_TRUE(position.y <= 3 && position.y >= -3);
-	EXPECT_TRUE(position.z <= 1 && position.z >= -1);
+	Vector3D vec = position-mean;
+	EXPECT_TRUE(vec.x <= 1 && vec.x >= -1);
+	EXPECT_TRUE(vec.y <= 3 && vec.y >= -3);
+	EXPECT_TRUE(vec.z <= 1 && vec.z >= -1);
 }

@@ -12,6 +12,7 @@ public:
 	virtual  Vector3D getValue() = 0;
 protected:
 	//TODO: random model
-	double random(double mean, double delta);
+	double randomFromMean(double mean, double delta);
+	double random(double delta);
 
 };
