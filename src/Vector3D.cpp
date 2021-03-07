@@ -53,6 +53,8 @@ Vector3D Vector3D::operator*(const double scale) const
 	};
 }
 
+
+
 Vector3D Vector3D::operator/(const double scale) const
 {
 	return {
@@ -60,4 +62,14 @@ Vector3D Vector3D::operator/(const double scale) const
 		y / scale,
 		z / scale
 	};
+}
+
+bool Vector3D::operator==(const Vector3D& vec) const
+{
+	return x == vec.x && y == vec.y && z == vec.z;
+}
+
+Vector3D operator*(const double scale, const Vector3D& vec)
+{
+	return vec * scale;
 }

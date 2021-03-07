@@ -10,15 +10,10 @@ public:
 	double magnitudeSquared();
 
 	Vector3D operator+(const Vector3D& vec) const;
-
 	Vector3D operator-(const Vector3D& vec) const;
-
 	Vector3D operator*(const double scale) const;
-
-	friend Vector3D operator* (const double scale, const Vector3D& vec)
-	{
-		return vec * scale;
-	}
-
 	Vector3D operator/(const double scale) const;
+	bool operator==(const Vector3D& vec) const;
+
+	friend Vector3D operator*(const double scale, const Vector3D& vec);
 };
