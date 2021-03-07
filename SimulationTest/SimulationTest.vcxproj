@@ -32,6 +32,12 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
+  </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -41,10 +47,10 @@
     <ClCompile Include="DistributionCircleTest.cpp" />
     <ClCompile Include="DistributionGlobeTest.cpp" />
     <ClCompile Include="DistributionSphereTest.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="NewtonFirstLawTest.cpp" />
     <ClCompile Include="NewtonGravityTest.cpp" />
     <ClCompile Include="ParticleDistributionSimpleTest.cpp" />
-    <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -96,9 +102,12 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>F:\workspace\Simulation\x64\Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>F:\workspace\Simulation\x64\Debug\CollisionDetectorSimple;F:\workspace\Simulation\x64\Debug\CollisionResolverCoalesce;F:\workspace\Simulation\x64\Debug\Universe;F:\workspace\Simulation\x64\Debug\UniverseImpl;F:\workspace\Simulation\x64\Debug\UniverseImplSimple;F:\workspace\Simulation\x64\Debug\ParticleSimple;F:\workspace\Simulation\x64\Debug\ParticleDistribution;F:\workspace\Simulation\x64\Debug\ParticleDistributionSimple;F:\workspace\Simulation\x64\Debug\Distribution;F:\workspace\Simulation\x64\Debug\Distribution3D;F:\workspace\Simulation\x64\Debug\DistributionCircle;F:\workspace\Simulation\x64\Debug\DistributionGlobe;F:\workspace\Simulation\x64\Debug\DistributionSimple;F:\workspace\Simulation\x64\Debug\NewtonGravity;F:\workspace\Simulation\x64\Debug\NewtonFirstLaw;F:\workspace\Simulation\x64\Debug\SimulationOutputPrint;F:\workspace\Simulation\x64\Debug\SimulationOutputJSON;F:\workspace\Simulation\x64\Debug\SimulationInputSimple;F:\workspace\Simulation\x64\Debug\SimulationInputRandomSimple;F:\workspace\Simulation\x64\Debug\Vector3D;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>F:\workspace\Simulation\x64\Debug\output.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\lib\x64\cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -131,9 +140,12 @@
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalLibraryDirectories>F:\workspace\Simulation\x64\Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>F:\workspace\Simulation\x64\Debug\CollisionDetectorSimple;F:\workspace\Simulation\x64\Debug\CollisionResolverCoalesce;F:\workspace\Simulation\x64\Debug\Universe;F:\workspace\Simulation\x64\Debug\UniverseImpl;F:\workspace\Simulation\x64\Debug\UniverseImplSimple;F:\workspace\Simulation\x64\Debug\ParticleSimple;F:\workspace\Simulation\x64\Debug\ParticleDistribution;F:\workspace\Simulation\x64\Debug\ParticleDistributionSimple;F:\workspace\Simulation\x64\Debug\Distribution;F:\workspace\Simulation\x64\Debug\Distribution3D;F:\workspace\Simulation\x64\Debug\DistributionCircle;F:\workspace\Simulation\x64\Debug\DistributionGlobe;F:\workspace\Simulation\x64\Debug\DistributionSimple;F:\workspace\Simulation\x64\Debug\NewtonGravity;F:\workspace\Simulation\x64\Debug\NewtonFirstLaw;F:\workspace\Simulation\x64\Debug\SimulationOutputPrint;F:\workspace\Simulation\x64\Debug\SimulationOutputJSON;F:\workspace\Simulation\x64\Debug\SimulationInputSimple;F:\workspace\Simulation\x64\Debug\SimulationInputRandomSimple;F:\workspace\Simulation\x64\Debug\Vector3D;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>F:\workspace\Simulation\x64\Debug\output.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\lib\x64\cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

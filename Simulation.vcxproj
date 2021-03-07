@@ -58,8 +58,7 @@
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>lib /NOLOGO /OUT:"F:\workspace\Simulation\x64\Debug\output.lib" "F:\workspace\Simulation\x64\Debug\*.obj"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -81,8 +80,7 @@
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>lib /NOLOGO /OUT:"F:\workspace\Simulation\x64\Debug\output.lib" "F:\workspace\Simulation\x64\Debug\*.obj"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
