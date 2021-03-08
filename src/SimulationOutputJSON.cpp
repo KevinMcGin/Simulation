@@ -16,6 +16,7 @@ SimulationOutputJSON::~SimulationOutputJSON()
 
 void SimulationOutputJSON::output(vector<Particle*> particles, unsigned long time)
 {
+	cout << time << endl;
 	if (time > 0)
 		myfile << "," << endl;
 	myfile << "\"" << time << "\"" << ": [" << endl;

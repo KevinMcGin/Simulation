@@ -11,7 +11,7 @@ class NewtonGravity: public Law {
 public:
 	NewtonGravity(double G = GRAVITATIONAL_CONSTANT);
 
-	virtual void run(vector<Particle*> particles);
+	virtual void run(vector<Particle*>& particles);
 
 protected:
 	const double G;

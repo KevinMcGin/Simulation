@@ -8,7 +8,7 @@ NewtonGravity::NewtonGravity(double G /*= GRAVITATIONAL_CONSTANT*/) : G(G), Law(
 
 }
 
-void NewtonGravity::run(vector<Particle*> particles)
+void NewtonGravity::run(vector<Particle*>& particles)
 {
 	for (const auto& p1 : particles)
 		for (const auto& p2 : particles) {
