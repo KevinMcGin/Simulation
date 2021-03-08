@@ -12,18 +12,17 @@ int main()
 {
 	double meanMass = 0.01;
 	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
-	Distribution* density = new DistributionValue(10000);
+	Distribution* density = new DistributionValue(1000);
 	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
 	Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 2);
 	Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
 	Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
 	ParticleDistributionSimple particleDistribution(densityDistribution, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
-	SimulationInput* input = new SimulationInputRandomSimple(300, particleDistribution);
+	SimulationInput* input = new SimulationInputRandomSimple(1000, particleDistribution);
 
 	SimulationOutput* output = new SimulationOutputJSON();
 
-	Universe* universe = new UniverseImplSimple(input, output, 300);
-
+	Universe* universe = new UniverseImplSimple(input, output, 1000);
 	universe->run();
 
 	delete universe;
