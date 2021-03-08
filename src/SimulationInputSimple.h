@@ -2,14 +2,9 @@
 #include "SimulationInput.h"
 #include "ParticleSimple.h"
 
-#include <list>
+#include <vector>
 
 class SimulationInputSimple: public SimulationInput {
 	public:
-		virtual list<Particle*> input() {
-			return { 
-				new ParticleSimple(1, 1, { 1, 0, 0}, {1, 0, 0}, {0, 0, 0 }),
-				new ParticleSimple(1, 1, { 0, 1, 0}, {0, 1, 0}, {0, 0, 0 }) 
-			};
-		}
+		virtual vector<Particle*> input();
 };

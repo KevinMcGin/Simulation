@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "Particle.h"
 
-#include <list>
+#include <vector>
 
 class SimulationOutput {
 	public:
-		virtual void output(list<Particle*> particles) = 0;
+		virtual ~SimulationOutput() {}
+		virtual void output(vector<Particle*> particles, unsigned long time) = 0;
 };

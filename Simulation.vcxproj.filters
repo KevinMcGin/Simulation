@@ -3,6 +3,9 @@
   <ItemGroup>
     <CudaCompile Include="src\kernel.cu" />
     <CudaCompile Include="src\main.cpp" />
+    <CudaCompile Include="src\ParticleDistribution.h">
+      <Filter>model\interface</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UniverseImpl.h">
@@ -32,15 +35,63 @@
     <ClInclude Include="src\SimulationInputSimple.h">
       <Filter>controller\concrete</Filter>
     </ClInclude>
-    <ClInclude Include="src\SimulationOutputSimple.h">
-      <Filter>controller\concrete</Filter>
-    </ClInclude>
     <ClInclude Include="src\ParticleSimple.h">
       <Filter>model\conrete</Filter>
     </ClInclude>
     <ClInclude Include="src\Particle.h">
       <Filter>model\interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\SimulationInputRandomSimple.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Distribution.h">
+      <Filter>model\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleDistributionSimple.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Distribution3D.h">
+      <Filter>model\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionSimple.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationOutputPrint.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationOutputJSON.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionResolver.h">
+      <Filter>controller\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionDetectorSimple.h">
+      <Filter>controller\concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionDetector.h">
+      <Filter>controller\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vector3D.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionResolverCoalesce.h" />
+    <ClInclude Include="src\DistributionSquare.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionCuboid.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionCube.h">
+      <Filter>model\conrete</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DistributionCircle.h" />
+    <ClInclude Include="src\DistributionGlobe.h" />
+    <ClInclude Include="src\DistributionSphere.h" />
+    <ClInclude Include="src\DistributionValue.h" />
+    <ClInclude Include="src\DistributionDensity.h" />
+    <ClInclude Include="src\DistributionMassDensity.h" />
+    <ClInclude Include="src\CollissionCoalesce.h" />
+    <ClInclude Include="src\Collission.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimulationTest\packages.config" />
@@ -64,5 +115,36 @@
     <Filter Include="model\interface">
       <UniqueIdentifier>{4dbc5e0e-070f-48db-bedd-9a0b69ebec12}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\CollisionDetectorSimple.cpp" />
+    <ClCompile Include="src\CollisionResolverCoalesce.cpp" />
+    <ClCompile Include="src\Distribution.cpp" />
+    <ClCompile Include="src\Distribution3D.cpp" />
+    <ClCompile Include="src\DistributionSimple.cpp" />
+    <ClCompile Include="src\NewtonFirstLaw.cpp" />
+    <ClCompile Include="src\NewtonGravity.cpp" />
+    <ClCompile Include="src\ParticleDistribution.cpp" />
+    <ClCompile Include="src\ParticleDistributionSimple.cpp" />
+    <ClCompile Include="src\ParticleSimple.cpp" />
+    <ClCompile Include="src\SimulationInputRandomSimple.cpp" />
+    <ClCompile Include="src\SimulationInputSimple.cpp" />
+    <ClCompile Include="src\SimulationOutputJSON.cpp" />
+    <ClCompile Include="src\SimulationOutputPrint.cpp" />
+    <ClCompile Include="src\Universe.cpp" />
+    <ClCompile Include="src\UniverseImpl.cpp" />
+    <ClCompile Include="src\UniverseImplSimple.cpp" />
+    <ClCompile Include="src\Vector3D.cpp" />
+    <ClCompile Include="src\DistributionSquare.cpp" />
+    <ClCompile Include="src\DistributionCuboid.cpp" />
+    <ClCompile Include="src\DistributionCube.cpp" />
+    <ClCompile Include="src\DistributionCircle.cpp" />
+    <ClCompile Include="src\DistributionGlobe.cpp" />
+    <ClCompile Include="src\DistributionSphere.cpp" />
+    <ClCompile Include="src\DistributionValue.cpp" />
+    <ClCompile Include="src\DistributionDensity.cpp" />
+    <ClCompile Include="src\DistributionMassDensity.cpp" />
+    <ClCompile Include="src\CollissionCoalesce.cpp" />
+    <ClCompile Include="src\Collission.cpp" />
   </ItemGroup>
 </Project>

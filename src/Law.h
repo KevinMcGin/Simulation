@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include "Particle.h"
 
-#include <list>
+#include <vector>
 
 class Law {
 	public:
-		virtual void run(list<Particle*> particles) = 0;
+		virtual void run(vector<Particle*>& particles) = 0;
 };

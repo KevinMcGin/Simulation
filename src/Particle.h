@@ -1,29 +1,28 @@
 ﻿#pragma once
-#include <array> 
-
+#include "Vector3D.h"
 
 using namespace std;
 
 class Particle {
-	public:
-		double			  mass;
-		double            radius;
-		array<double, 3>  position;
-		array<double, 3>  velocity;
-		array<double, 3>  angularVelocity;
+public:
+	double			  mass;
+	double            radius;
+	Vector3D  position;
+	Vector3D  velocity;
+	Vector3D  angularVelocity;
 
-		Particle(
-			double			  mass,
-			double            radius,
-			array<double, 3>  position,
-			array<double, 3>  velocity,
-			array<double, 3>  angularVelocity
-		) {
-			this->mass = mass;
-			this->radius = radius;
-			this->position = position;
-			this->velocity = velocity;
-			this->angularVelocity = angularVelocity;
-		}
-		virtual double getTemperature() = 0;
+	Particle(
+		double			  mass,
+		double            radius,
+		Vector3D  position,
+		Vector3D  velocity,
+		Vector3D  angularVelocity
+	) {
+		this->mass = mass;
+		this->radius = radius;
+		this->position = position;
+		this->velocity = velocity;
+		this->angularVelocity = angularVelocity;
+	}
+	virtual double getTemperature() = 0;
 }; 
