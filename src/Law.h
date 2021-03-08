@@ -5,5 +5,5 @@
 
 class Law {
 	public:
-		virtual void run(vector<Particle*> particles) = 0;
+		virtual void run(vector<Particle*>& particles) = 0;
 };

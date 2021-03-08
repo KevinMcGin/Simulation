@@ -10,21 +10,22 @@
 
 int main()
 {
-	Distribution* massDistrubtion = new DistributionSimple(0.001, 0.0009);
-	Distribution* density = new DistributionValue(1);
+	double meanMass = 0.01;
+	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
+	Distribution* density = new DistributionValue(10000);
 	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
-    Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 1);
-    Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
-    Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
-    ParticleDistributionSimple particleDistribution(densityDistribution, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
-    SimulationInput* input = new SimulationInputRandomSimple(500, particleDistribution);
+	Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 2);
+	Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
+	Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
+	ParticleDistributionSimple particleDistribution(densityDistribution, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
+	SimulationInput* input = new SimulationInputRandomSimple(300, particleDistribution);
 
-    SimulationOutput* output = new SimulationOutputJSON();
+	SimulationOutput* output = new SimulationOutputJSON();
 
-    Universe* universe = new UniverseImplSimple(input, output, 100);
+	Universe* universe = new UniverseImplSimple(input, output, 300);
 
-    universe->run();
+	universe->run();
 
-    delete universe;
-    return 0;
+	delete universe;
+	return 0;
 }
