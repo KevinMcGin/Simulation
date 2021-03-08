@@ -10,7 +10,7 @@
 
 int main()
 {
-	double meanMass = 0.01;
+	double meanMass = 0.01; 
 	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
 	Distribution* density = new DistributionValue(1000);
 	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
