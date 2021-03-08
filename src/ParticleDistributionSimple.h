@@ -4,7 +4,8 @@
 
 class ParticleDistributionSimple: public ParticleDistribution {
 public:
-	ParticleDistributionSimple(Distribution* massDistribution, Distribution* radiusDistribution, Distribution3D* positionDistrubtion, Distribution3D* velocityDistrubtion, Distribution3D* angularVelocityDistrubtion);
+	ParticleDistributionSimple(DistributionDensity* densityDistribution,
+		Distribution3D* positionDistribution, Distribution3D* velocityDistribution, Distribution3D* angularVelocityDistribution);
 
 	virtual Particle* getParticle();
 };

@@ -89,6 +89,9 @@
     <CudaCompile Include="src\ParticleDistribution.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DistributionDensity.h" />
+    <ClInclude Include="src\DistributionMassDensity.h" />
+    <ClInclude Include="src\DistributionValue.h" />
     <ClInclude Include="src\CollisionResolverCoalesce.h" />
     <ClInclude Include="src\DistributionCircle.h" />
     <ClInclude Include="src\DistributionGlobe.h" />
@@ -123,6 +126,9 @@
     <None Include="SimulationTest\packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DistributionDensity.cpp" />
+    <ClCompile Include="src\DistributionMassDensity.cpp" />
+    <ClCompile Include="src\DistributionValue.cpp" />
     <ClCompile Include="src\CollisionDetectorSimple.cpp" />
     <ClCompile Include="src\CollisionResolverCoalesce.cpp" />
     <ClCompile Include="src\Distribution.cpp" />

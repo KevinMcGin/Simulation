@@ -2,13 +2,16 @@
 
 
 
-ParticleDistributionSimple::ParticleDistributionSimple(Distribution* massDistribution, Distribution* radiusDistribution, Distribution3D* positionDistrubtion, Distribution3D* velocityDistrubtion, Distribution3D* angularVelocityDistrubtion) :
-	ParticleDistribution(massDistribution, radiusDistribution, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion)
+ParticleDistributionSimple::ParticleDistributionSimple(DistributionDensity* densityDistribution, Distribution3D* positionDistribution, Distribution3D* velocitysDistribution, Distribution3D* angularVelocityDistribution) :
+	ParticleDistribution(densityDistribution, positionDistribution, velocitysDistribution, angularVelocityDistribution)
 {
 
 }
 
 Particle* ParticleDistributionSimple::getParticle()
 {
-	return new ParticleSimple(massDistribution->getValue(), radiusDistribution->getValue(), positionDistrubtion->getValue(), velocityDistrubtion->getValue(), angularVelocityDistrubtion->getValue());
+	double mass, radius;
+	densityDistribution->getMassRadius(mass, radius);
+
+	return new ParticleSimple(mass, radius, positionDistribution->getValue(), velocityDistribution->getValue(), angularVelocityDistribution->getValue());
 }

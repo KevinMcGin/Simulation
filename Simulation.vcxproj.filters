@@ -87,6 +87,9 @@
     <ClInclude Include="src\DistributionCircle.h" />
     <ClInclude Include="src\DistributionGlobe.h" />
     <ClInclude Include="src\DistributionSphere.h" />
+    <ClInclude Include="src\DistributionValue.h" />
+    <ClInclude Include="src\DistributionDensity.h" />
+    <ClInclude Include="src\DistributionMassDensity.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimulationTest\packages.config" />
@@ -136,5 +139,8 @@
     <ClCompile Include="src\DistributionCircle.cpp" />
     <ClCompile Include="src\DistributionGlobe.cpp" />
     <ClCompile Include="src\DistributionSphere.cpp" />
+    <ClCompile Include="src\DistributionValue.cpp" />
+    <ClCompile Include="src\DistributionDensity.cpp" />
+    <ClCompile Include="src\DistributionMassDensity.cpp" />
   </ItemGroup>
 </Project>

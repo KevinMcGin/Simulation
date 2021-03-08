@@ -48,6 +48,7 @@
     <ClCompile Include="DistributionCubeTest.cpp" />
     <ClCompile Include="DistributionCuboidTest.cpp" />
     <ClCompile Include="DistributionGlobeTest.cpp" />
+    <ClCompile Include="DistributionMassDensityTest.cpp" />
     <ClCompile Include="DistributionSphereTest.cpp" />
     <ClCompile Include="DistributionSquareTest.cpp" />
     <ClCompile Include="main.cpp" />
