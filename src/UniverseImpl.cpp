@@ -15,7 +15,7 @@ void printPercentComplete(double& progress, int i, int endTime) {
 	double updatedProgress = 100 * 1000 * i / endTime;
 	if (updatedProgress != progress) {
 		progress = updatedProgress;
-		cout << "\r" << progress / 1000 << "%";
+		cout << "\r" << progress / 1000 << "%" << "     ";
 	}
 }
 

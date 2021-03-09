@@ -14,7 +14,7 @@ public:
 
 	virtual  Vector3D getValue();
 
-protected:
+private:
 	const Vector3D mean, delta;
 
 };

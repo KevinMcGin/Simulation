@@ -2,7 +2,7 @@
 
 
 
-DistributionCircle::DistributionCircle(Vector3D mean, double delta) : DistributionGlobe(mean, { delta, delta, 0 })
+DistributionCircle::DistributionCircle(Vector3D mean, double delta) : DistributionSphere(mean, delta)
 {
 
 }
@@ -10,9 +10,10 @@ DistributionCircle::DistributionCircle(Vector3D mean, double delta) : Distributi
 Vector3D DistributionCircle::getValue()
 {
 	double theta = randomFromMean(M_PI, M_PI);
+	double magnitude = random(delta);
 
-	return { mean.x + random(delta.x) * cos(theta),
-		mean.y + random(delta.y) * sin(theta),
+	return { mean.x + magnitude * cos(theta),
+		mean.y + magnitude * sin(theta),
 		mean.z
 	};
 }

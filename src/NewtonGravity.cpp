@@ -25,7 +25,7 @@ void NewtonGravity::run(vector<Particle*>& particles)
 double NewtonGravity::getAcceleration(double mass, double displacementSquared)
 {
 	//collision should handle causes where displacementSquared is << 1
-	//if (abs(displacementSquared) < 0.0005 ) return 0;
+	if (abs(displacementSquared) < 0.05 ) return 0;
 	if (displacementSquared == 0 ) return 0;
 	return (G * mass) / displacementSquared;
 }
