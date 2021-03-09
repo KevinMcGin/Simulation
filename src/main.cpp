@@ -19,11 +19,11 @@ int main()
 	Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
 	Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
 	ParticleDistributionSimple particleDistribution(densityDistribution, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
-	SimulationInput* input = new SimulationInputRandomSimple(200, particleDistribution);
+	SimulationInput* input = new SimulationInputRandomSimple(150, particleDistribution);
 
 	SimulationOutput* output = new SimulationOutputJSON();
 
-	Universe* universe = new UniverseImplSimple(input, output, 1000);
+	Universe* universe = new UniverseImplSimple(input, output, 10000);
 	universe->run();
 
 	delete universe;

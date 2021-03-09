@@ -5,5 +5,5 @@
 
 class CollisionResolver {
 public:
-	virtual void resolve(Particle* p1, Particle* p2, vector<Particle*>& particles) = 0;
+	virtual void resolve(Particle* p1, Particle* p2) = 0;
 };
