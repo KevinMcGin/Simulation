@@ -22,7 +22,7 @@ void printPercentComplete(double& progress, int i, int endTime) {
 void UniverseImpl::run()
 {
 	output->output(particles, 0);
-	double progress = 0;
+	double progress = -1;
 	printPercentComplete(progress, 0, endTime);
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		for (const auto& l : laws) {
