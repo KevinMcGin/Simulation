@@ -32,13 +32,13 @@ endif()
 
 # we use this to get code coverage
 # flags are only valid with the GNU compiler and on Linux
-if(CMAKE_CXX_COMPILER_ID MATCHES GNU AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-  target_compile_options(Simulation
-    PUBLIC
-      "--coverage"
-    )
-  target_link_options(Simulation
-    INTERFACE
-      "--coverage"
-    )
-endif()
+#if(CMAKE_CXX_COMPILER_ID MATCHES GNU AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+ # target_compile_options(Simulation
+  #  PUBLIC
+   #   "--coverage"
+    #)
+  #target_link_options(Simulation
+   # INTERFACE
+    #  "--coverage"
+    #)
+#endif()
