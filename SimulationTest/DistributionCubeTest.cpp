@@ -1,4 +1,4 @@
-#include "pch.h"
+#include #include <gtest/gtest.h>
 #include "DistributionCube.h"
 
 TEST(DistributionCubeTest, ParticleInGlobe) {

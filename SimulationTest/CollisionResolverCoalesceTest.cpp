@@ -1,4 +1,4 @@
-#include "pch.h"
+#include #include <gtest/gtest.h>
 #include "CollisionResolverCoalesce.h"
 #include "ParticleSimple.h"
 

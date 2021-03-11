@@ -1,4 +1,4 @@
-#include "pch.h"
+#include #include <gtest/gtest.h>
 #include "UniverseImpl.h"
 #include "NewtonFirstLaw.h"
 #include "NewtonGravity.h"
