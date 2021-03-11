@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../src/DistributionSquare.h"
+#include "DistributionSquare.h"
 
 TEST(DistributionSquareTest, ParticleInGlobe) {
 	DistributionSquare square({ 0,0,0 }, 1);

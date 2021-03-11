@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "../src/UniverseImpl.h"
-#include "../src/NewtonFirstLaw.h"
-#include "../src/NewtonGravity.h"
-#include "../src/SimulationInputSimple.h"
-#include "../src/SimulationOutputPrint.h"
+#include "UniverseImpl.h"
+#include "NewtonFirstLaw.h"
+#include "NewtonGravity.h"
+#include "SimulationInputSimple.h"
+#include "SimulationOutputPrint.h"
 
 TEST(UniverseImplTest, UniverseRuns) {
 	SimulationInput* input = new SimulationInputSimple();

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../src/DistributionSphere.h"
+#include "DistributionSphere.h"
 
 TEST(DistributionSphereTest, ParticleInGlobe) {
 	Vector3D mean = { 1,-1,0 };

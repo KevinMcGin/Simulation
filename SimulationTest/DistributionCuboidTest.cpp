@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../src/DistributionCuboid.h"
+#include "DistributionCuboid.h"
 
 TEST(DistributionCuboidTest, ParticleInCuboid) {
 	Vector3D mean = { 1,-1,1, };

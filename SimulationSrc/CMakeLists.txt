@@ -1,10 +1,17 @@
-﻿# CMakeList.txt : CMake project for Simulation, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
-option(USE_CUDA "Use CUDA" ON)
+﻿add_library(src)
 
-project ("Simulation")
+file(GLOB headers_src CONFIGURE_DEPENDS "*.h")
+file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
+file(GLOB cu_source CONFIGURE_DEPENDS "*.cu")
+
+target_sources(src PRIVATE ${cpp_source} PUBLIC ${headers_src})
+
+target_include_directories(src
+  PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}
+  )
+
+option(USE_CUDA "Use CUDA" ON)
 
 if(USE_CUDA)
     enable_language(CUDA)
@@ -21,4 +28,17 @@ if(USE_CUDA)
         set(CMAKE_CUDA_STANDARD_REQUIRED ON)
     endif()
     target_include_directories(Simulation PRIVATE "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.2/include")
+endif()
+
+# we use this to get code coverage
+# flags are only valid with the GNU compiler and on Linux
+if(CMAKE_CXX_COMPILER_ID MATCHES GNU AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+  target_compile_options(Simulation
+    PUBLIC
+      "--coverage"
+    )
+  target_link_options(Simulation
+    INTERFACE
+      "--coverage"
+    )
 endif()

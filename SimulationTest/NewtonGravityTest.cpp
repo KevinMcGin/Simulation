@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "../src/NewtonGravity.h"
-#include "../src/ParticleSimple.h"
+#include "NewtonGravity.h"
+#include "ParticleSimple.h"
 
 #include <vector>
 

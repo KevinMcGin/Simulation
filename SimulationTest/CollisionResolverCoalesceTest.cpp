@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "../src/CollisionResolverCoalesce.h"
-#include "../src/ParticleSimple.h"
+#include "CollisionResolverCoalesce.h"
+#include "ParticleSimple.h"
 
 #include <vector>
 

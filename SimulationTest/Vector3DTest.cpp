@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../src/Vector3D.h"
+#include "Vector3D.h"
 
 TEST(Vector3DTest, vectorsMagnitudeSquared) {
 	Vector3D v1({ -1/sqrt(2),1/sqrt(2),0 });
