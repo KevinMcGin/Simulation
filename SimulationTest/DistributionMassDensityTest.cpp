@@ -1,4 +1,4 @@
-#include #include <gtest/gtest.h>
+#include  <gtest/gtest.h>
 #include "DistributionMassDensity.h"
 #include "DistributionValue.h"
 #define _USE_MATH_DEFINES

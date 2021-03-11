@@ -1,4 +1,4 @@
-#include #include <gtest/gtest.h>
+#include  <gtest/gtest.h>
 #include "DistributionCuboid.h"
 
 TEST(DistributionCuboidTest, ParticleInCuboid) {

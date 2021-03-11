@@ -1,4 +1,4 @@
-#include #include <gtest/gtest.h>
+#include  <gtest/gtest.h>
 #include "DistributionCircle.h"
 
 TEST(DistributionCircleTest, ParticleInGlobe) {
