@@ -1,213 +1,213 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\CollisionDetectorSimple.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\CollisionDetectorSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\CollisionResolverCoalesce.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\CollisionResolverCoalesce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\Collission.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\Collission.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\CollissionCoalesce.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\CollissionCoalesce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\Distribution.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\Distribution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\Distribution3D.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\Distribution3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionCircle.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionCircle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionCube.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionCuboid.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionCuboid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionDensity.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionDensity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionGlobe.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionGlobe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionMassDensity.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionMassDensity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionSimple.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionSphere.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionSphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionSquare.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionSquare.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\DistributionValue.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\DistributionValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\main.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\NewtonFirstLaw.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\NewtonFirstLaw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\NewtonGravity.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\NewtonGravity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\ParticleDistribution.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\ParticleDistribution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\ParticleDistributionSimple.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\ParticleDistributionSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\ParticleSimple.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\ParticleSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\SimulationInputRandomSimple.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\SimulationInputRandomSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\SimulationInputSimple.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\SimulationInputSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\SimulationOutputJSON.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\SimulationOutputJSON.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\SimulationOutputPrint.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\SimulationOutputPrint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\Universe.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\Universe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\UniverseImpl.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\UniverseImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\UniverseImplSimple.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\UniverseImplSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\test\source\repos\Simulation\Vector3D.cpp">
+    <ClCompile Include="F:\workspace\Simulation\Simulation-CMake\Vector3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\CollisionDetector.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\CollisionDetector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\CollisionDetectorSimple.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\CollisionDetectorSimple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\CollisionResolver.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\CollisionResolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\CollisionResolverCoalesce.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\CollisionResolverCoalesce.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\Collission.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\Collission.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\CollissionCoalesce.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\CollissionCoalesce.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\Distribution.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\Distribution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\Distribution3D.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\Distribution3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionCircle.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionCircle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionCube.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionCuboid.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionCuboid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionDensity.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionDensity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionGlobe.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionGlobe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionMassDensity.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionMassDensity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionSimple.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionSimple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionSphere.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionSphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionSquare.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionSquare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\DistributionValue.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\DistributionValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\Law.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\Law.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\NewtonFirstLaw.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\NewtonFirstLaw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\NewtonGravity.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\NewtonGravity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\Particle.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\ParticleDistribution.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\ParticleDistribution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\ParticleDistributionSimple.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\ParticleDistributionSimple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\ParticleSimple.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\ParticleSimple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\SimulationInput.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\SimulationInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\SimulationInputRandomSimple.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\SimulationInputRandomSimple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\SimulationInputSimple.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\SimulationInputSimple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\SimulationOutput.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\SimulationOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\SimulationOutputJSON.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\SimulationOutputJSON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\SimulationOutputPrint.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\SimulationOutputPrint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\Universe.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\Universe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\UniverseImpl.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\UniverseImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\UniverseImplSimple.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\UniverseImplSimple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\test\source\repos\Simulation\Vector3D.h">
+    <ClInclude Include="F:\workspace\Simulation\Simulation-CMake\Vector3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\test\source\repos\Simulation\CMakeLists.txt" />
+    <CustomBuild Include="F:\workspace\Simulation\Simulation-CMake\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{A9E7A06F-E6A6-3CF4-B783-56176811039B}</UniqueIdentifier>
+      <UniqueIdentifier>{4B275140-FEB5-36AB-AD3A-E4723F4035F4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{1B011F8D-1AAE-3C86-94C1-3C31C3A6CF1C}</UniqueIdentifier>
+      <UniqueIdentifier>{CF38A160-EFDE-3FEE-B619-53D457B29608}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
