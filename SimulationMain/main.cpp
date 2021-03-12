@@ -11,7 +11,7 @@
 
 int main()
 {
-	double particleCount = 1200;
+	double particleCount = 12000;
 	unsigned int particleQuadrantCount = particleCount /5.0;
 	double meanMass = 0.03;
 	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
