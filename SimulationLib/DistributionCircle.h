@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "DistributionGlobe.h"
+#include "DistributionSphere.h"
 
 using namespace std;
 
-class DistributionCircle: public DistributionGlobe {
+class DistributionCircle: public DistributionSphere {
 public:
 	DistributionCircle(Vector3D mean, double delta);
 

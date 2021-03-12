@@ -1,5 +1,5 @@
-#include "pch.h"
-#include "../src/DistributionGlobe.h"
+#include  <gtest/gtest.h>
+#include "DistributionGlobe.h"
 
 TEST(DistributionGlobeTest, ParticleInGlobe) {
 	//TODO transform test from testing a cuboid to a globe

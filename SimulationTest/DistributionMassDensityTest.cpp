@@ -1,6 +1,6 @@
-#include "pch.h"
-#include "../src/DistributionMassDensity.h"
-#include "../src/DistributionValue.h"
+#include  <gtest/gtest.h>
+#include "DistributionMassDensity.h"
+#include "DistributionValue.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 
