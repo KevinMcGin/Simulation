@@ -14,7 +14,7 @@ TEST(UniverseImplTest, UniverseRuns) {
 	Universe* universe = new UniverseImpl({ law1, law2 }, input, output, 1, 10);
 	universe->run();
 	Vector3D positions = universe->particles.front()->position;
-	EXPECT_DOUBLE_EQ(10.485661428432644, positions.x);
-	EXPECT_DOUBLE_EQ(0.51433857156735407, positions.y);
+	EXPECT_DOUBLE_EQ(10.746798179090352, positions.x);
+	EXPECT_DOUBLE_EQ(0.25320182090965099, positions.y);
 	EXPECT_EQ(0, positions.z);
 }

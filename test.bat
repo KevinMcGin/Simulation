@@ -1,3 +1,3 @@
-REM cd build
-REM ctest -C Debug --output-on-failure --verbose
-.\build\bin\Debug\SimulationTest.exe
+cd build
+ctest -C Debug --output-on-failure
+REM .\build\bin\Debug\SimulationTest.exe
