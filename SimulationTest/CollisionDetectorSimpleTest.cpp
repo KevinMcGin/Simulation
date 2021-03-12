@@ -1,6 +1,6 @@
-#include "pch.h"
-#include "../src/CollisionDetectorSimple.h"
-#include "../src/ParticleSimple.h"
+#include  <gtest/gtest.h>
+#include "CollisionDetectorSimple.h"
+#include "ParticleSimple.h"
 
 #include <vector>
 

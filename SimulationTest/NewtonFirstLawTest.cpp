@@ -1,6 +1,6 @@
-﻿#include "pch.h"
-#include "../src/NewtonFirstLaw.h"
-#include "../src/ParticleSimple.h"
+﻿#include  <gtest/gtest.h>
+#include "NewtonFirstLaw.h"
+#include "ParticleSimple.h"
 
 #include <vector>
 

@@ -1,4 +1,4 @@
-﻿#include "Particle.h"
+#include "Particle.h"
 #include "ParticleSimple.h"
 #include "SimulationInputRandomSimple.h"
 #include "SimulationOutputJSON.h"

@@ -1,10 +1,10 @@
-#include "pch.h"
-#include "../src/ParticleDistributionSimple.h"
-#include "../src/DistributionGlobe.h"
-#include "../src/DistributionSimple.h"
-#include "../src/DistributionCircle.h"
-#include "../src/DistributionValue.h"
-#include "../src/DistributionMassDensity.h"
+#include  <gtest/gtest.h>
+#include "ParticleDistributionSimple.h"
+#include "DistributionGlobe.h"
+#include "DistributionSimple.h"
+#include "DistributionCircle.h"
+#include "DistributionValue.h"
+#include "DistributionMassDensity.h"
 
 
 TEST(ParticleDistributionSimpleTest, ParticleMade) {
