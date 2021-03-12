@@ -11,19 +11,19 @@ FetchContent_MakeAvailable(gtest)
 file(GLOB tests_src CONFIGURE_DEPENDS "*.cpp")
 
 add_executable(
-    unit_tests
+    SimulationTest
     ${tests_src}
     )
 
-target_link_libraries(unit_tests
+target_link_libraries(SimulationTest
   PRIVATE
-    src
+    SimulationLib
     gtest_main
   )
 
 # automatic discovery of unit tests
 include(GoogleTest)
-gtest_discover_tests(unit_tests
+gtest_discover_tests(SimulationTest
   PROPERTIES
     LABELS "unit"
   DISCOVERY_TIMEOUT  # how long to wait (in seconds) before crashing

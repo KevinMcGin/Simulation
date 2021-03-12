@@ -14,7 +14,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
   #message(FATAL_ERROR "Code coverage analysis requires gcov!")
 #endif()
 
-add_subdirectory(SimulationSrc)
+option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
+option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
+option(USE_CUDA "Use CUDA" ON)
+
+if(USE_CUDA)
+    enable_language(CUDA)
+endif()
+
+add_subdirectory(SimulationLib)
+add_subdirectory(SimulationMain)
 
 enable_testing()
 
