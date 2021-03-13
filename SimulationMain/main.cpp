@@ -11,11 +11,11 @@
 
 int main()
 {
-	double particleCount = 1000;
+	double particleCount = 300;
 	unsigned int particleQuadrantCount = particleCount / 4.0;
 	double meanMass = 0.01;
 	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
-	Distribution* density = new DistributionValue(30000);
+	Distribution* density = new DistributionValue(3000);
 	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
 	DistributionDensity* distributionDensityStar = new DistributionMassDensity(new DistributionValue(50), density);
 	double meanSpeed = 0.03;
@@ -52,7 +52,6 @@ int main()
 
 	Universe* universe = new UniverseImplSimple(input, output, 3000);
 	universe->run();
-
 	delete universe;
 	return 0;
 }

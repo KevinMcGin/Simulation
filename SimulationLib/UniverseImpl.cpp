@@ -21,6 +21,7 @@ void printPercentComplete(double& progress, int i, int endTime) {
 
 void UniverseImpl::run()
 {
+	cout << "Simulation running" << endl;
 	output->output(particles, 0);
 	double progress = -1;
 	printPercentComplete(progress, 0, endTime);
@@ -31,5 +32,6 @@ void UniverseImpl::run()
 		output->output(particles, i + 1);
 		printPercentComplete(progress, i, endTime);
 	}
+	cout << "Simulation complete" << endl;
 }
 
