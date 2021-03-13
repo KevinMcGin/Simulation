@@ -12,6 +12,6 @@ public:
 
 private:
     CollisionDetector* collisionDetector;
-    CollisionResolver* collisionResolver;
+    CollisionResolv* collisionResolver
 };
 
