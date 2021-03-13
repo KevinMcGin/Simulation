@@ -6,19 +6,22 @@
 #include "DistributionValue.h"
 #include "DistributionCircle.h"
 #include "DistributionMassDensity.h"
+#include "Timing.h"
 
 #include <stdio.h>
 
 int main()
 {
-	double particleCount = 300;
+	Timing::setTime();
+
+	double particleCount = 5000;
 	unsigned int particleQuadrantCount = particleCount / 4.0;
 	double meanMass = 0.01;
 	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
 	Distribution* density = new DistributionValue(3000);
 	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
 	DistributionDensity* distributionDensityStar = new DistributionMassDensity(new DistributionValue(50), density);
-	double meanSpeed = 0.03;
+	double meanSpeed = 0.06;
 	double deltaSpeed = meanSpeed * 0.2;
 	double meanDistance = 2.5;
 	double deltaDistance = 2.4;
