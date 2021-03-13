@@ -4,7 +4,7 @@
 
 
 CollissionCoalesce::CollissionCoalesce() :
-	Collission((CollisionDetector*)new CollisionDetectorSimple(), (CollisionResolver*)new CollisionResolverCoalesce())
+	Collission(new CollisionDetectorSimple(), new CollisionResolverCoalesce())
 {
 
 }

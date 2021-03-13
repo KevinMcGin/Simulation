@@ -4,5 +4,5 @@
 
 double DistributionSimple::getValue()
 {
-	return random(mean, delta);
+	return Distribution::random(mean, delta);
 }

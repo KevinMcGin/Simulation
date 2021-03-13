@@ -10,4 +10,9 @@ class UniverseImpl: public Universe{
 		UniverseImpl(vector<Law*> laws, SimulationInput* input, SimulationOutput* output, unsigned int deltaTime, unsigned long endTime);
 
 		virtual void run();
+
+private:
+	double progress;
+
+	void printPercentComplete(int lawsRan);
 };

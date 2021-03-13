@@ -10,6 +10,7 @@ public:
 	Vector3D  position;
 	Vector3D  velocity;
 	Vector3D  angularVelocity;
+	bool deleted;
 
 	Particle(
 		double			  mass,
@@ -23,6 +24,7 @@ public:
 		this->position = position;
 		this->velocity = velocity;
 		this->angularVelocity = angularVelocity;
+		this->deleted = false;
 	}
 	virtual double getTemperature() = 0;
 }; 
