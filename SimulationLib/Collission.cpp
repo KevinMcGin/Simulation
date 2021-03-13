@@ -15,7 +15,6 @@ Collission::Collission(CollisionDetector* collisionDetector, CollisionResolver* 
 void Collission::run(vector<Particle*>& particles)
 {
 	// get particles that collided
-	//TODO: change to vector of sets of iterators of vector of Particle*
 	vector<set<Particle*>*> particlesCollidedVector;
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
 		auto p1 = *it1;
@@ -50,22 +49,23 @@ void Collission::run(vector<Particle*>& particles)
 			}
 		}
 	}
-	//resolve particles safely
-	for (auto it1 = particlesCollidedVector.begin(); it1 != particlesCollidedVector.end(); it1++) {
-		auto particlesCollided1 = *it1;
+	//resolve particles
+	for (auto particlesCollided1: particlesCollidedVector) {
 		if(particlesCollided1->size() > 0) {
-			auto p1 = *particlesCollided1->begin();
+			auto p1 = *(particlesCollided1->begin());
 			particlesCollided1->erase(particlesCollided1->begin());
 			for(auto p2: *particlesCollided1) {
 				collisionResolver->resolve(p1, p2);
 			}
 		}
 	}
-	//erase null particles
-	for (auto it = particles.begin(); it != particles.end(); )
-		if((*it)->deleted)
+	//erase particles marked for deletion safely
+	for (auto it = particles.begin(); it != particles.end();) {
+		if((*it)->deleted) {
+			delete *it;
 			it = particles.erase(it);
+		}
 		else
 			++it;
-
+	}
 }
