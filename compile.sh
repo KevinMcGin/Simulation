@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
+if [ -h ] || [--hard]
+then
+    rm -rf build
+    mkdir build
+fi
 cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DUSE_CUDA=ON
 if [ $? -eq 1 ]
 then
