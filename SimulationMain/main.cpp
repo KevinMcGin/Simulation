@@ -16,14 +16,13 @@ int main()
 {
 	Timing::setTime();
 
-	unsigned long particleCount = 200;
-	unsigned long endTime = 10 * 60;
+	unsigned long particleCount = 5000;
+	unsigned long endTime = 2 * 60 * 60;
 	double meanMass = 0.01;	
 	double starMass = 50;
 	double meanSpeed = 0.04;
 	double deltaSpeed = meanSpeed * 0.2;
-	double meanDistance = 2.5;
-	double deltaDistance = 2.4;
+	double outerRadius = 15;
 	Vector3D meanPosition = {0,0,0};
 	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
 	Distribution* density = new DistributionValue(3000);
@@ -32,7 +31,7 @@ int main()
 	Distribution3D* positionDistrubtion5 = new DistributionCircle(meanPosition, 0);
 	Distribution3D* velocityDistrubtion5 = new DistributionCircle(meanPosition, 0);
 	Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
-	ParticleDistribution* particleDistributionDisk = new ParticleDistributionDisk(densityDistribution, starMass, meanPosition, 0, 0, false, 0, meanDistance, 1, angularVelocityDistrubtion);	
+	ParticleDistribution* particleDistributionDisk = new ParticleDistributionDisk(densityDistribution, starMass*2, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistrubtion);	
 	ParticleDistribution* particleDistributionStar = new ParticleDistributionSimple(distributionDensityStar, positionDistrubtion5, velocityDistrubtion5, angularVelocityDistrubtion);
 	SimulationInput* input = new SimulationInputRandomSimple({ particleCount, 1 },
 		{ particleDistributionDisk, particleDistributionStar });
