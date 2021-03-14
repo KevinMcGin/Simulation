@@ -23,10 +23,9 @@ endif()
 
 if (CUDA_FOUND)
     message("CUDA found")
-    SET(CUDA_INCLUDE_DIRS "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/include" ${CUDA_INCLUDE_DIRS})
     #include(FindCUDA)
-    INCLUDE_DIRECTORIES($ENV{CUDA_PATH}/include)
-    target_link_libraries(SimulationLib ${CUDA_LIBRARIES} ${CUDA_CUFFT_LIBRARIES} ${CUDA_CUBLAS_LIBRARIES} ${CUDA_cupti_LIBRARY} ${CUDA_curand_LIBRARY} ${CUDA_cusparse_LIBRARY} ${CUDA_npp_LIBRARY} ${CUDA_nppc_LIBRARY} ${CUDA_nppi_LIBRARY} ${CUDA_npps_LIBRARY} ${CUDA_nvcuvenc_LIBRARY} ${CUDA_nvcuvid_LIBRARY})
+    INCLUDE_DIRECTORIES(${CUDA_INCLUDE_DIRS})
+    target_link_libraries(SimulationLib ${CUDA_LIBRARIES})
 
 else()
     message("CUDA not found")
