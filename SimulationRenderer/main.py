@@ -63,7 +63,6 @@ def display_scene():
     
     color = [0.0, 1.0, 0.0, 1.0]
     for p in sim[str(frame)]:
-        print(p)
         glPushMatrix()
         glTranslatef(p['pos'][0], p['pos'][1], p['pos'][2])
         glColor3f(1, 0, 0)
