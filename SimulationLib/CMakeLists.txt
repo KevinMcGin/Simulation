@@ -20,8 +20,8 @@ if(NOT DEFINED CMAKE_CUDA_STANDARD)
     set(CMAKE_CUDA_STANDARD 11)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 endif()
-message(${CUDA_PATH}/include)
-include_directories(${CUDA_PATH}/include)
+message("$ENV{CUDA_PATH}/include")
+include_directories("$ENV{CUDA_PATH}/include")
 
 # we use this to get code coverage
 # flags are only valid with the GNU compiler and on Linux
