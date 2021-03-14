@@ -20,6 +20,7 @@ option(USE_CUDA "Use CUDA" ON)
 
 if(USE_CUDA)
     enable_language(CUDA)
+    add_definitions(-DUSE_CUDA)
 endif()
 
 add_subdirectory(SimulationLib)

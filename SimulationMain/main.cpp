@@ -16,6 +16,12 @@ int main()
 {
 	Timing::setTime();
 
+	#ifdef USE_CUDA
+    	std::cout << "CUDA: On" << std::endl;
+	#else
+    	std::cout << "CUDA: Off" << std::endl;
+	#endif
+
 	unsigned long particleCount = 5000;
 	unsigned long endTime = 2 * 60 * 60;
 	double meanMass = 0.01;	

@@ -1,17 +1,21 @@
 ﻿add_library(SimulationLib)
 
-file(GLOB headers_src CONFIGURE_DEPENDS "*.h")
+file(GLOB cpp_headers CONFIGURE_DEPENDS "*.h")
 file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
+file(GLOB cu_headers CONFIGURE_DEPENDS "*.cu")
 file(GLOB cu_source CONFIGURE_DEPENDS "*.cu")
 
-target_sources(SimulationLib PRIVATE ${cpp_source} PUBLIC ${headers_src})
+if(USE_CUDA)
+  target_sources(SimulationLib PRIVATE ${cpp_source} ${cu_source} PUBLIC ${cpp_headers} ${cu_headers})
+else()
+  target_sources(SimulationLib PRIVATE ${cpp_source} PUBLIC ${cpp_headers})
+endif()
 
 target_include_directories(SimulationLib
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
   )
 
-# TODO: Add tests and install targets if needed.
 if(USE_CUDA)
     if(NOT DEFINED CMAKE_CUDA_STANDARD)
         set(CMAKE_CUDA_STANDARD 11)
