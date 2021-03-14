@@ -46,7 +46,7 @@ function version_lt() {
 ## -------------------
 
 # Get the cuda version from the environment as $cuda.
-CUDA_VERSION_MAJOR_MINOR=${cuda}
+CUDA_VERSION_MAJOR_MINOR="11.2"
 
 # Split the version.
 # We (might/probably) don't know PATCH at this point - it depends which version gets installed.
