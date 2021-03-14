@@ -21,7 +21,7 @@ if(NOT DEFINED CMAKE_CUDA_STANDARD)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 endif()
 message("$ENV{CUDA_PATH}/include")
-target_link_libraries(SimulationLib "$ENV{CUDA_PATH}/include")
+#target_link_libraries(SimulationLib "$ENV{CUDA_PATH}/include")
 
 # we use this to get code coverage
 # flags are only valid with the GNU compiler and on Linux
