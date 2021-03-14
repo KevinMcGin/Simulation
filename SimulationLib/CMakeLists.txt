@@ -20,8 +20,10 @@ if(NOT DEFINED CMAKE_CUDA_STANDARD)
     set(CMAKE_CUDA_STANDARD 11)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 endif()
-message("$ENV{CUDA_PATH}/include")
-#target_link_libraries(SimulationLib "$ENV{CUDA_PATH}/include")
+message("CUDA HERE:")
+message("${CUDA_LIBRARIES}")
+target_link_libraries( your_projectSolution_name ${CUDA_LIBRARIES} ${CUDA_CUFFT_LIBRARIES} ${CUDA_CUBLAS_LIBRARIES} ${CUDA_cupti_LIBRARY} ${CUDA_curand_LIBRARY} ${CUDA_cusparse_LIBRARY} ${CUDA_npp_LIBRARY} ${CUDA_nppc_LIBRARY} ${CUDA_nppi_LIBRARY} ${CUDA_npps_LIBRARY} ${CUDA_nvcuvenc_LIBRARY} ${CUDA_nvcuvid_LIBRARY})
+
 
 # we use this to get code coverage
 # flags are only valid with the GNU compiler and on Linux
