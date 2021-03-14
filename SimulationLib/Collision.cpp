@@ -1,18 +1,18 @@
-#include "Collission.h"
+#include "Collision.h"
 #include <map>
 #include <algorithm>
 #include <iterator>
 #include <set>
 
 
-Collission::Collission(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver): Law(),
+Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver): Law(),
 	collisionDetector(collisionDetector),
 	collisionResolver(collisionResolver)
 {
 
 }
 
-void Collission::run(vector<Particle*>& particles)
+void Collision::run(vector<Particle*>& particles)
 {
 	// get particles that collided
 	vector<set<Particle*>*> particlesCollidedVector;

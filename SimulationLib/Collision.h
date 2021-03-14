@@ -2,11 +2,11 @@
 #include "Law.h"
 #include "CollisionDetector.h"
 #include "CollisionResolver.h"
-class Collission :
+class Collision :
     public Law
 {
 public:
-    Collission(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver);
+    Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver);
 
     void run(vector<Particle*>& particles) override;
 
