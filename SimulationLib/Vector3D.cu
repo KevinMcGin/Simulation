@@ -1,4 +1,4 @@
-#include "Vector3D.h"
+#include "Vector3D.cuh"
 #include <cmath>
 
 
@@ -26,7 +26,7 @@ double Vector3D::magnitudeSquared()
 	return x * x + y * y + z * z;
 }
 
-double Vector3D::magnitude()
+__device__ __host__ double Vector3D::magnitude()
 {
 	return sqrt(this->magnitudeSquared());
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "cuda_runtime.h"
 
 class Vector3D {
 public:
@@ -7,7 +8,7 @@ public:
 	double x,y,z;
 
 	Vector3D unit();
-	double magnitudeSquared();
+	__device__ __host__ double magnitudeSquared();
 	double magnitude();
 	double dotProduct(Vector3D vec);
 	Vector3D crossProduct(Vector3D vec);

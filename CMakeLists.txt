@@ -18,8 +18,8 @@ option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
 option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
 option(USE_CUDA "Use CUDA" ON)
 
+enable_language(CUDA)
 if(USE_CUDA)
-    enable_language(CUDA)
     add_definitions(-DUSE_CUDA)
 endif()
 

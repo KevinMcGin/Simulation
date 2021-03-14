@@ -1,5 +1,5 @@
 #include  "gtest/gtest.h"
-#include "Vector3D.h"
+#include "Vector3D.cuh"
 #include <cmath>
 
 TEST(Vector3DTest, vectorsMagnitudeSquared) {

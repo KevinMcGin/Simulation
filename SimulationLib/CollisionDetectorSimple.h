@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "CollisionDetector.h"
-#include "Vector3D.h"
+#include "Vector3D.cuh"
 #include <cmath>
 
 class CollisionDetectorSimple: public CollisionDetector {
