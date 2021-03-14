@@ -15,12 +15,12 @@ target_include_directories(SimulationLib
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
   )
+
+if(USE_CUDA)
   if(NOT DEFINED CMAKE_CUDA_STANDARD)
       set(CMAKE_CUDA_STANDARD 11)
       set(CMAKE_CUDA_STANDARD_REQUIRED ON)
   endif()
-
-if(USE_CUDA)
     target_include_directories(SimulationLib PRIVATE "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.2/include")
 endif()
 
