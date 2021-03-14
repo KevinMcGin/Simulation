@@ -46,7 +46,7 @@ function version_lt() {
 ## -------------------
 
 # Get the cuda version from the environment as $cuda.
-CUDA_VERSION_MAJOR_MINOR="11.2"
+CUDA_VERSION_MAJOR_MINOR=${cuda}
 
 # Split the version.
 # We (might/probably) don't know PATCH at this point - it depends which version gets installed.
@@ -146,3 +146,5 @@ export CUDA_PATH=${CUDA_PATH}
 export PATH="$CUDA_PATH/bin:$PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
 nvcc -V
+cd /usr/local/cuda-11.2
+ls
