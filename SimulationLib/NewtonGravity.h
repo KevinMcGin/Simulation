@@ -17,5 +17,5 @@ protected:
 	const double G;
 
 private:
-	double getAcceleration(double mass, double displacement);
+	Vector3D getRadiusComponent(Vector3D position1, Vector3D position2);
 };
