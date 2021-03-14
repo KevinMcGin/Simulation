@@ -1,15 +1,15 @@
 ﻿#pragma once
 #include "Law.h"
+#include "PhysicalConstants.h"
 
 #include <vector>
 #include <stdio.h>
 #include <iostream>
 
-const double GRAVITATIONAL_CONSTANT = 0.00005;
-
 class NewtonGravity: public Law {
 public:
-	NewtonGravity(double G = GRAVITATIONAL_CONSTANT);
+	NewtonGravity();
+	NewtonGravity(double G);
 
 	virtual void run(vector<Particle*>& particles);
 

@@ -3,7 +3,12 @@
 
 
 
-NewtonGravity::NewtonGravity(double G /*= GRAVITATIONAL_CONSTANT*/) : G(G), Law()
+NewtonGravity::NewtonGravity() : Law(), G(PhysicalConstants::GRAVITATIONAL_CONSTANT)
+{
+
+}
+
+NewtonGravity::NewtonGravity(double G) : Law(), G(G)
 {
 
 }

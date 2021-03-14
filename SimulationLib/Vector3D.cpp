@@ -31,6 +31,14 @@ double Vector3D::magnitude()
 	return sqrt(this->magnitudeSquared());
 }
 
+double Vector3D::dotProduct(Vector3D vec) {
+	return x * vec.x + y * vec.y + z * vec.z;
+}
+
+Vector3D Vector3D::crossProduct(Vector3D vec) {
+	return {y*vec.z - vec.y*z, -(x*vec.z - vec.x*z), x*vec.y - vec.x*y};
+}
+
 Vector3D Vector3D::operator+(const Vector3D& vec) const
 {
 	return {

@@ -9,6 +9,8 @@ public:
 	Vector3D unit();
 	double magnitudeSquared();
 	double magnitude();
+	double dotProduct(Vector3D vec);
+	Vector3D crossProduct(Vector3D vec);
 
 	Vector3D operator+(const Vector3D& vec) const;
 	Vector3D operator-(const Vector3D& vec) const;

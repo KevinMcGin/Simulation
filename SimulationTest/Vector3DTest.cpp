@@ -20,6 +20,34 @@ TEST(Vector3DTest, vectorsUnit) {
 	EXPECT_EQ(Vector3D(0, -1 / sqrt(2) , 1 / sqrt(2)), vUnit);
 }
 
+TEST(Vector3DTest, vectorsDot) {
+	Vector3D v1({ 3,1,2 });
+	Vector3D v2({ -0.5,0,2 });
+	double dotProduct = v1.dotProduct(v2);
+	EXPECT_DOUBLE_EQ(2.5, dotProduct);
+}
+
+TEST(Vector3DTest, vectorsDotPerpendicular) {
+	Vector3D v1({ 0,1,0 });
+	Vector3D v2({ -1,0,2 });
+	double dotProduct = v1.dotProduct(v2);
+	EXPECT_DOUBLE_EQ(0, dotProduct);
+}
+
+TEST(Vector3DTest, vectorsCross1) {
+	Vector3D v1({ 0,2,1 });
+	Vector3D v2({ 1,-1,3 });
+	Vector3D crossProduct = v1.crossProduct(v2);
+	EXPECT_EQ(Vector3D(7,1,-2), crossProduct);
+}
+
+TEST(Vector3DTest, vectorsCross2) {
+	Vector3D v1({ 0, 0, 1 });
+	Vector3D v2({ 1,0,0 });
+	Vector3D crossProduct = v1.crossProduct(v2);
+	EXPECT_EQ(Vector3D(0,1,0), crossProduct);
+}
+
 TEST(Vector3DTest, vectorsAdd) {
 	Vector3D v1({ 0,1,0 });
 	Vector3D v2({ -1,0,0 });
