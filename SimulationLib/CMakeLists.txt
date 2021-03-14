@@ -16,13 +16,11 @@ target_include_directories(SimulationLib
     ${CMAKE_CURRENT_LIST_DIR}
   )
 
-if(USE_CUDA)
-  if(NOT DEFINED CMAKE_CUDA_STANDARD)
-      set(CMAKE_CUDA_STANDARD 11)
-      set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-  endif()
-    target_include_directories(SimulationLib PRIVATE "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.2/include")
+if(NOT DEFINED CMAKE_CUDA_STANDARD)
+  set(CMAKE_CUDA_STANDARD 11)
+  set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 endif()
+target_include_directories(SimulationLib PRIVATE "${CUDA_PATH}/include")
 
 # we use this to get code coverage
 # flags are only valid with the GNU compiler and on Linux
