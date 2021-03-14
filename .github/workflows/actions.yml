@@ -18,7 +18,7 @@ jobs:
 
     - name: Install CUDA
       env:
-        cuda: ${{ matrix.cuda }}
+        cuda: "11.2"
       run: |
         source ./scripts/install_cuda_ubuntu.sh
         if [[ $? -eq 0 ]]; then
