@@ -25,7 +25,8 @@ if (CUDA_FOUND)
     message("CUDA found")
     #include(FindCUDA)
     INCLUDE_DIRECTORIES(${CUDA_INCLUDE_DIRS})
-    target_link_libraries(SimulationLib ${CUDA_LIBRARIES})
+    target_include_directories(SimulationLib PUBLIC ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+
 
 else()
     message("CUDA not found")
