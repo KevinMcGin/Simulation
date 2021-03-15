@@ -2,7 +2,7 @@
 #include "Distribution.h"
 #include "DistributionDensity.h"
 #include "Distribution3D.h"
-#include "Particle.h"
+#include "Particle.cuh"
 
 class ParticleDistribution {
 public:

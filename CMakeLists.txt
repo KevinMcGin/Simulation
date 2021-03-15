@@ -2,6 +2,8 @@
 
 project(Simulation LANGUAGES CUDA CXX)
 find_package(CUDA REQUIRED)
+set(CUDA_SEPARABLE_COMPILATION ON)
+set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-rdc=true")
 
 # place binaries and libraries according to GNU standards
 include(GNUInstallDirs)
@@ -23,7 +25,6 @@ if(NOT DEFINED CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 11)
     set(CMAKE_CXX_STANDARD_REQUIRED true)
 endif()
-
 enable_language(CUDA)
 if(USE_CUDA)
     add_definitions(-DUSE_CUDA)
@@ -33,5 +34,4 @@ add_subdirectory(SimulationLib)
 add_subdirectory(SimulationMain)
 
 enable_testing()
-
 add_subdirectory(SimulationTest)

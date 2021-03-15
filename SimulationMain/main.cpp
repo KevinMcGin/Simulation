@@ -1,4 +1,4 @@
-#include "Particle.h"
+#include "Particle.cuh"
 #include "ParticleSimple.h"
 #include "SimulationInputRandomSimple.h"
 #include "SimulationOutputJSON.h"
@@ -23,7 +23,7 @@ int main()
 	#endif
 
 	unsigned long particleCount = 5000;
-	unsigned long endTime = 2 * 60 * 60;
+	unsigned long endTime = 20 * 60 * 60;
 	double meanMass = 0.01;	
 	double starMass = 50;
 	double meanSpeed = 0.04;
