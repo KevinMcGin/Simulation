@@ -2,8 +2,7 @@
 ./compile.sh
 if [ $? -eq 1 ]
 then
-   echo -e "\ncompile failed"
-   exit
+   exit 1
 fi
 cd build
 ctest -C Debug --output-on-failure
