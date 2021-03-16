@@ -1,24 +1,38 @@
-﻿add_library(SimulationLib)
-
-file(GLOB headers_src CONFIGURE_DEPENDS "*.h")
+﻿file(GLOB cpp_headers CONFIGURE_DEPENDS "*.h")
 file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
+file(GLOB cu_headers CONFIGURE_DEPENDS "*.cu")
 file(GLOB cu_source CONFIGURE_DEPENDS "*.cu")
 
-target_sources(SimulationLib PRIVATE ${cpp_source} PUBLIC ${headers_src})
+# if(USE_CUDA)
+  # target_sources(SimulationLib PRIVATE PUBLIC )
+# else()
+  # target_sources(SimulationLib PRIVATE ${cpp_source} PUBLIC ${cpp_headers})
+# endif()
+
+add_library(SimulationLib STATIC  ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers})
+set_target_properties(SimulationLib PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
 target_include_directories(SimulationLib
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
   )
 
-# TODO: Add tests and install targets if needed.
-if(USE_CUDA)
-    if(NOT DEFINED CMAKE_CUDA_STANDARD)
-        set(CMAKE_CUDA_STANDARD 11)
-        set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-    endif()
-    target_include_directories(SimulationLib PRIVATE "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.2/include")
+if(NOT DEFINED CMAKE_CUDA_STANDARD)
+    set(CMAKE_CUDA_STANDARD 11)
+    set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 endif()
+
+if (CUDA_FOUND)
+    message("CUDA found")
+    #include(FindCUDA)
+    INCLUDE_DIRECTORIES(${CUDA_INCLUDE_DIRS})
+    target_include_directories(SimulationLib PUBLIC ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+
+
+else()
+    message("CUDA not found")
+endif()
+
 
 # we use this to get code coverage
 # flags are only valid with the GNU compiler and on Linux

@@ -1,11 +1,11 @@
 #include  <gtest/gtest.h>
-#include "Collission.h"
+#include "Collision.h"
 #include "CollisionDetectorSimple.h"
 #include "CollisionResolverCoalesce.h"
 #include "ParticleSimple.h"
 
 TEST(CollisionTest, ParticlesCollide) {
-	Collission law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
+	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
 	Particle* p1 = new ParticleSimple(1, 1, { 2,1,0 }, { 1,-1,0 }, { 0,0,0 });
 	Particle* p2 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 }, { 0,0,0 });
 	Particle* p3 = new ParticleSimple(1, 1, { 20,0,0 }, { 1,1,0 }, { 0,0,0 });
@@ -20,7 +20,7 @@ TEST(CollisionTest, ParticlesCollide) {
 }
 
 TEST(CollisionTest, MultipleParticlesAllCollide) {
-	Collission law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
+	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
 	Particle* p1 = new ParticleSimple(1, 1, { 2,1,0 }, { 1,-1,0 }, { 0,0,0 });
 	Particle* p2 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 }, { 0,0,0 });
 	Particle* p3 = new ParticleSimple(1, 1, { 200,0,0 }, { 1,1,0 }, { 0,0,0 });
@@ -36,7 +36,7 @@ TEST(CollisionTest, MultipleParticlesAllCollide) {
 }
 
 TEST(CollisionTest, MultipleParticlesPartialCollide) {
-	Collission law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
+	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
 	Particle* p1 = new ParticleSimple(1, 1, { 0,0,0 }, { 1,-1,0 }, { 0,0,0 });
 	Particle* p2 = new ParticleSimple(1, 1, { 0.5,0,0 }, { 1,1,0 }, { 0,0,0 });
 	Particle* p3 = new ParticleSimple(1, 1, { 200,0,0 }, { 1,1,0 }, { 0,0,0 });

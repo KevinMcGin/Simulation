@@ -11,7 +11,6 @@ TEST(ParticleDistributionSimpleTest, ParticleMade) {
 	Distribution* massDistrubtion = new DistributionSimple(0.1, 0.05);
 	Distribution* density = new DistributionValue(1);
 	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
-	Distribution* radiusDistrubtion = new DistributionSimple(0.01, 0.005);
 	Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 1);
 	Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
 	Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);

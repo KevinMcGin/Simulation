@@ -5,7 +5,7 @@
 class DistributionDensity
 {
 public:
-	DistributionDensity() { srand(time(NULL)); };
+	DistributionDensity() {};
 
 	virtual void getMassRadius(double &mass, double &radius) = 0;
 };

@@ -8,12 +8,13 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(gtest)
 
-file(GLOB tests_src CONFIGURE_DEPENDS "*.cpp")
+file(GLOB tests_src CONFIGURE_DEPENDS "*.cpp" "*.cu")
 
 add_executable(
     SimulationTest
     ${tests_src}
     )
+    set_target_properties(SimulationTest PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
 target_link_libraries(SimulationTest
   PRIVATE

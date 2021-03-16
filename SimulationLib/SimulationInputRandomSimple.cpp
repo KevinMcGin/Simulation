@@ -2,7 +2,7 @@
 
 
 
-SimulationInputRandomSimple::SimulationInputRandomSimple(vector<unsigned long> particleCounts, vector<ParticleDistributionSimple> particleDistributions) :
+SimulationInputRandomSimple::SimulationInputRandomSimple(vector<unsigned long> particleCounts, vector<ParticleDistribution*> particleDistributions) :
 	particleCounts(particleCounts),
 	particleDistributions(particleDistributions)
 {
@@ -12,10 +12,10 @@ SimulationInputRandomSimple::SimulationInputRandomSimple(vector<unsigned long> p
 std::vector<Particle*> SimulationInputRandomSimple::input()
 {
 	vector<Particle*> particles;
-	unsigned int distrbutionsCount = particleCounts.size();
+	unsigned long distrbutionsCount = static_cast<unsigned long>(particleCounts.size());
 	for (unsigned long j = 0; j < distrbutionsCount; j++) {
 		for (unsigned long i = 0; i < particleCounts[j]; i++) {
-			particles.push_back(particleDistributions[j].getParticle());
+			particles.push_back(particleDistributions[j]->getParticle());
 		}
 	}
 

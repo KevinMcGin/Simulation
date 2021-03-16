@@ -1,5 +1,5 @@
 ﻿#include  <gtest/gtest.h>
-#include "NewtonFirstLaw.h"
+#include "NewtonFirstLaw.cuh"
 #include "ParticleSimple.h"
 
 #include <vector>
