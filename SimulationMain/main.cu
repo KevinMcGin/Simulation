@@ -20,8 +20,8 @@ int main()
     	std::cout << "CUDA: Off" << std::endl;
 	#endif
 
-	unsigned long particleCount = 5000;
-	unsigned long endTime = 20 * 60 * 60;
+	unsigned long particleCount = 100;
+	unsigned long endTime = 1 * 60 * 60;
 	double meanMass = 0.01;	
 	double starMass = 50;
 	double meanSpeed = 0.04;
