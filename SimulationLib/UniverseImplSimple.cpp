@@ -1,6 +1,6 @@
 #include "UniverseImplSimple.h"
 #include "NewtonGravity.h"
-#include "NewtonFirstLaw.h"
+#include "NewtonFirstLaw.cuh"
 #include "CollisionCoalesce.h"
 
 

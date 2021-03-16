@@ -8,7 +8,7 @@ public:
 	double x,y,z;
 
 	Vector3D unit();
-	__device__ __host__ double magnitudeSquared();
+	double magnitudeSquared();
 	double magnitude();
 	double dotProduct(Vector3D vec);
 	Vector3D crossProduct(Vector3D vec);

@@ -4,6 +4,7 @@ on: [push]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  #TODO: does this do anything?
   BUILD_TYPE: Release
 
 jobs:

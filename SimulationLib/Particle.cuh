@@ -12,7 +12,7 @@ public:
 	Vector3D  angularVelocity;
 	bool deleted;
 
-	__host__ __device__ Particle(
+	__device__ __host__ Particle(
 		double			  mass,
 		double            radius,
 		Vector3D  position,
@@ -26,6 +26,6 @@ public:
 		this->angularVelocity = angularVelocity;
 		this->deleted = false;
 	}
-	__host__ __device__ void advance();
+	void advance();
 	virtual double getTemperature() = 0;
 }; 

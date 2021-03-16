@@ -1,5 +1,3 @@
-#include "Particle.cuh"
-#include "ParticleSimple.h"
 #include "SimulationInputRandomSimple.h"
 #include "SimulationOutputJSON.h"
 #include "UniverseImplSimple.h"
