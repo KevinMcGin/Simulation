@@ -33,5 +33,5 @@ endif()
 add_subdirectory(SimulationLib)
 add_subdirectory(SimulationMain)
 
-#enable_testing()
-#add_subdirectory(SimulationTest)
+enable_testing()
+add_subdirectory(SimulationTest)
