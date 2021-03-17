@@ -20,16 +20,15 @@ __device__ __host__ void runParticle(Particle* p1, Particle* p2, double G);
 __device__ __host__ Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G);
 
 __global__ 
-void newtonGravityKernel(CopyClass* copy, int particleMatchingsCount, double G)
+void newtonGravityKernel(CopyClass* copy, int n, double G)
 {
-	int idx = threadIdx.x + blockIdx.x*blockDim.x;
-	if(idx < particleMatchingsCount) { 
-		int y = (int)((-1+sqrt((float)8*idx+1))/2) + 1;
-		int x = idx - (y-1)*y/2;
-		printf("%d  -> (%d,%d)\n", idx, x, y);
-		printf("%d -> (%lf,%lf,%lf)\n", idx, copy->par[x]->velocity.x, copy->par[x]->velocity.y, copy->par[x]->velocity.z);
-		runParticle(copy->par[x],copy->par[y],G);
-		printf("%d -> (%lf,%lf,%lf)\n", idx, copy->par[x]->velocity.x, copy->par[x]->velocity.y, copy->par[x]->velocity.z);
+	int x = threadIdx.x + blockIdx.x*blockDim.x;
+	if(x < n) { 
+		//int y = (int)((-1+sqrt((float)8*idx+1))/2) + 1;
+		 //printf("%d  -> (%d,%d)\n", x, x, n);
+		// printf("%d -> (%lf,%lf,%lf)\n", idx, copy->par[x]->velocity.x, copy->par[x]->velocity.y, copy->par[x]->velocity.z);
+		runParticle(copy->par[x],copy->par[n],G);
+		// printf("%d -> (%lf,%lf,%lf)\n", idx, copy->par[x]->velocity.x, copy->par[x]->velocity.y, copy->par[x]->velocity.z);
 	} 
 }
 
@@ -42,7 +41,7 @@ void NewtonGravity::run(vector<Particle*>& particles)
 			fprintf(stderr, "\ncudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
 		}
 		int particleCount = particles.size();
-		int particleMatchingsCount = (particleCount-1)*particleCount/2;
+		//int particleMatchingsCount = (particleCount-1)*particleCount/2;
 
 		//Instantiate object on the CPU
 		CopyClass cpuClass;
@@ -60,7 +59,6 @@ void NewtonGravity::run(vector<Particle*>& particles)
 		d_par = new Particle*[particleCount];
 		for(int i = 0; i < particleCount; ++i) {
 			cudaMalloc(&d_par[i],sizeof(ParticleSimple));
-			printf("\tCopying data\n");
 			cudaMemcpy(d_par[i],cpuClass.par[i],sizeof(ParticleSimple),cudaMemcpyHostToDevice);
 		}
 
@@ -73,16 +71,18 @@ void NewtonGravity::run(vector<Particle*>& particles)
 		//copy *pointer value* of td_par to appropriate location in top level object
 		cudaMemcpy(&(gpuClass->par),&(td_par),sizeof(Particle **),cudaMemcpyHostToDevice);
 
-		newtonGravityKernel <<<1 + particleMatchingsCount/256, 256>>> (gpuClass, particleMatchingsCount, G);
-		cudaDeviceSynchronize();
-		cudaStatus = cudaGetLastError();
-		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "\nNewtonGravity: addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
+		for(int i = 0; i < particleCount; i++) {
+			newtonGravityKernel <<<1 + i/256, 256>>> (gpuClass, i, G);
+			cudaDeviceSynchronize();
+			cudaStatus = cudaGetLastError();
+			if (cudaStatus != cudaSuccess) {
+				fprintf(stderr, "\nNewtonGravity: addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
+			}
 		}
-		for(int i = 0; i < particleMatchingsCount; i++) {
+		for(int i = 0; i < particleCount; i++) {
 			cudaStatus = cudaMemcpy(cpuClass.par[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
 			if (cudaStatus != cudaSuccess) {
-				fprintf(stderr, "\n\nNewtonGravity: cudaMemcpy4 failed: %s\n", cudaGetErrorString(cudaStatus));
+				fprintf(stderr, "\n\nNewtonGravity: cudaMemcpyDeviceToHost failed: %s\n", cudaGetErrorString(cudaStatus));
 			}
 			particles[i]->velocity = cpuClass.par[i]->velocity;
 		}
