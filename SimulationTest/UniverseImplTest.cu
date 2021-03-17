@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "UniverseImpl.h"
+#include "UniverseImpl.cuh"
 #include "NewtonFirstLaw.cuh"
 #include "NewtonGravity.cuh"
 #include "SimulationInputSimple.h"

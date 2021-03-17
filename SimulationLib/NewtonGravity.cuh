@@ -15,8 +15,9 @@ public:
 
 protected:
 	const double G;
+};
 
-private:
-	__device__ __host__ Vector3D getRadiusComponent(Vector3D position1, Vector3D position2);
-	__device__ __host__ void runParticle(Particle* p1, Particle* p2);	
+class CopyClass {
+public:
+  Particle ** par;
 };

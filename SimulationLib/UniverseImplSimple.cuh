@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "UniverseImpl.h"
+#include "UniverseImpl.cuh"
 #include "SimulationInput.h"
 
 #include <vector>

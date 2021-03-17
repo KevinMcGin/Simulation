@@ -1,6 +1,6 @@
 #include "SimulationInputRandomSimple.h"
 #include "SimulationOutputJSON.h"
-#include "UniverseImplSimple.h"
+#include "UniverseImplSimple.cuh"
 #include "DistributionValue.h"
 #include "DistributionCircle.h"
 #include "DistributionMassDensity.h"
@@ -21,7 +21,8 @@ int main()
 	#endif
 
 	unsigned long particleCount = 100;
-	unsigned long endTime = 1 * 60 * 60;
+	unsigned int frameRate = 60;
+	unsigned int endTime = 1 * 10 * frameRate;
 	double meanMass = 0.01;	
 	double starMass = 50;
 	double meanSpeed = 0.04;
