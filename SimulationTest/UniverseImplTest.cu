@@ -1,7 +1,7 @@
 #include  <gtest/gtest.h>
 #include "UniverseImpl.h"
 #include "NewtonFirstLaw.cuh"
-#include "NewtonGravity.h"
+#include "NewtonGravity.cuh"
 #include "SimulationInputSimple.h"
 #include "SimulationOutputPrint.h"
 

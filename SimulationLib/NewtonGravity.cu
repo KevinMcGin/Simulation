@@ -1,4 +1,4 @@
-#include "NewtonGravity.h"
+#include "NewtonGravity.cuh"
 #include <cmath>
 
 

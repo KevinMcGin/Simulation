@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "NewtonGravity.h"
+#include "NewtonGravity.cuh"
 #include "ParticleSimple.h"
 
 #include <vector>
