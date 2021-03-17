@@ -6,9 +6,6 @@ static void advanceParticles(Vector3D* position, const Vector3D* velocity, int p
 {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < particleCount) { 
-		// position[idx].x = position[idx].x + velocity[idx].x;
-		// position[idx].y = position[idx].y + velocity[idx].y;
-		// position[idx].z = position[idx].z + velocity[idx].z;
 		position[idx] = position[idx] + velocity[idx];
 	} 
 }
