@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "cuda_runtime.h"
+#define _USE_MATH_DEFINES
+#include <iostream>
 
 class Vector3D {
 public:
@@ -18,6 +20,7 @@ public:
 	__device__ __host__ Vector3D operator*(const double scale) const;
 	__device__ __host__ Vector3D operator/(const double scale) const;
 	bool operator==(const Vector3D& vec) const;
+	friend std::ostream& operator<<(std::ostream& out, const Vector3D& vec); 
 
 	__device__ __host__ friend Vector3D operator*(const double scale, const Vector3D& vec);
 };

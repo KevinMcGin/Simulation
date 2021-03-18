@@ -82,6 +82,13 @@ bool Vector3D::operator==(const Vector3D& vec) const
 {
 	return x == vec.x && y == vec.y && z == vec.z;
 }
+
+std::ostream& operator<< (std::ostream& out, const Vector3D& vec)
+{
+    out << "{x: " << vec.x << ", y: " << vec.y << ", z: " << vec.z << "}";
+    return out;
+}
+
 __device__ __host__
 Vector3D operator*(const double scale, const Vector3D& vec)
 {
