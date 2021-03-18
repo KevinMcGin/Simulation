@@ -1,6 +1,6 @@
 ﻿file(GLOB cpp_headers CONFIGURE_DEPENDS "*.h")
 file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
-file(GLOB cu_headers CONFIGURE_DEPENDS "*.cu")
+file(GLOB cu_headers CONFIGURE_DEPENDS "*.cuh")
 file(GLOB cu_source CONFIGURE_DEPENDS "*.cu")
 
 # if(USE_CUDA)
@@ -9,8 +9,9 @@ file(GLOB cu_source CONFIGURE_DEPENDS "*.cu")
   # target_sources(SimulationLib PRIVATE ${cpp_source} PUBLIC ${cpp_headers})
 # endif()
 
-add_library(SimulationLib STATIC  ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers})
+add_library(SimulationLib STATIC ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers})
 set_target_properties(SimulationLib PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+set_target_properties(SimulationLib PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
 
 target_include_directories(SimulationLib
   PUBLIC
@@ -27,7 +28,6 @@ if (CUDA_FOUND)
     #include(FindCUDA)
     INCLUDE_DIRECTORIES(${CUDA_INCLUDE_DIRS})
     target_include_directories(SimulationLib PUBLIC ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
-
 
 else()
     message("CUDA not found")
