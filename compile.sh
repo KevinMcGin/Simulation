@@ -1,12 +1,15 @@
 #!/usr/bin/env sh
-# if [ -h ] || [--hard]
-# then
-#     rm -rf build
-#     mkdir build
-# fi
-# rm -rf build/SimulationMain
-# rm -rf build/SimulationTest
-# mkdir build
+
+if [[ $* == *-h* ]] || [[ $* == *--help* ]]
+then
+   echo "Usage: $0 [-d --delete <delete build folder before build>]" 1>&2; exit 1;
+fi
+if [[ $* == *-d* ]] || [[ $* == *--delete* ]]
+then
+    rm -rf build
+    mkdir build
+fi
+
 cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DUSE_CUDA=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
 if [ $? -eq 1 ]
 then
