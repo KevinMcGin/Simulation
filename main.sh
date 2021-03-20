@@ -13,7 +13,9 @@ then
    fi
 fi
 
-./build/bin/Debug/SimulationMain.exe --particleCount=300
+./build/bin/Debug/SimulationMain.exe \
+   --particle-count=30 --frame-rate=60 --seconds=10 --mean-mass=0.01 --star-mass=500 \
+   --mean-speed=0.04 --delta-speed=0.2 --radius=15
 if [ $? -eq 1 ]
 then
    echo -e "\nmain failed"

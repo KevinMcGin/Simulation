@@ -32,16 +32,43 @@ int main(int argc, char *argv[])
 	double outerRadius = 15;
 
 	static struct cag_option options[] = {	   
-		{'c',
-		  "c",
-		  "particleCount",
-		  "VALUE",
-		  "Particle count value"},
-	   
-		{/*.identifier = */'h',
-		  /*.access_letters = */"h",
-		  /*.access_name = */"help",
-		  /*.description = */"Shows the command help"}
+		{/*.identifier =*/ 'p',
+		  /*.access_letters =*/ "p",
+		  /*.access_name =*/ "particle-count",
+		  /*.description =*/ "Particle count value"},
+		{/*.identifier =*/ 'f',
+		  /*.access_letters =*/ "f",
+		  /*.access_name =*/ "frame-rate",
+		  /*.description =*/ "Frame rate of render"},
+		{/*.identifier =*/ 's',
+		  /*.access_letters =*/ "s",
+		  /*.access_name =*/ "seconds",
+		  /*.description =*/ "Seconds of render"},	
+		{/*.identifier =*/ 'm',
+		  /*.access_letters =*/ "m",
+		  /*.access_name =*/ "mean-mass",
+		  /*.description =*/ "Mean mass of particles"},	
+		{/*.identifier =*/ 'c',
+		  /*.access_letters =*/ "c",
+		  /*.access_name =*/ "star-mass",
+		  /*.description =*/ "Mass of the central body"},
+		{/*.identifier =*/ 'v',
+		  /*.access_letters =*/ "v",
+		  /*.access_name =*/ "mean-speed",
+		  /*.description =*/ "Mean speed of particles"},
+		{/*.identifier =*/ 'd',
+		  /*.access_letters =*/ "d",
+		  /*.access_name =*/ "delta-speed",
+		  /*.description =*/ "Fractional variance +- of speed"},
+		{/*.identifier =*/ 'r',
+		  /*.access_letters =*/ "r",
+		  /*.access_name =*/ "radius",
+		  /*.description =*/ "Outer radius of the disk"},	  		 	   
+		{/*.identifier =*/ 'h',
+		  /*.access_letters =*/ "h",
+		  /*.access_name =*/ "help",
+   		  /*.value_name =*/ "VALUE",
+		  /*.description =*/ "Shows the command help"}
 	};
 
 	char identifier;
@@ -50,18 +77,42 @@ int main(int argc, char *argv[])
 	while (cag_option_fetch(&context)) {
 		identifier = cag_option_get(&context);
 		switch (identifier) {
-			case 'c':
-			{
+			case 'p':{
 				const char* value = cag_option_get_value(&context);
 				particleCount = atol(value);
-				break;
-			}
-			case 'h':
-			{
+				break;}
+			case 'f':{
+				const char* value = cag_option_get_value(&context);
+				frameRate = atoi(value);
+				break;}
+			case 's':{
+				const char* value = cag_option_get_value(&context);
+				seconds = atof(value);
+				break;}
+			case 'm':{
+				const char* value = cag_option_get_value(&context);
+				meanMass = atof(value);
+				break;}
+			case 'c':{
+				const char* value = cag_option_get_value(&context);
+				starMass = atof(value);
+				break;}
+			case 'v':{
+				const char* value = cag_option_get_value(&context);
+				meanSpeed = atof(value);
+				break;}
+			case 'd':{
+				const char* value = cag_option_get_value(&context);
+				deltaSpeedFraction = atof(value);
+				break;}
+			case 'r':{
+				const char* value = cag_option_get_value(&context);
+				outerRadius = atof(value);
+				break;}
+			case 'h':{
 				printf("Usage: ./SimulationMain.exe [OPTION]...\n");
 				cag_option_print(options, CAG_ARRAY_SIZE(options), stdout);
-				return EXIT_SUCCESS;
-			}
+				return EXIT_SUCCESS;}
 		}
 	}
 
