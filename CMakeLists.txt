@@ -1,8 +1,9 @@
 ﻿cmake_minimum_required (VERSION 3.13)
 
-project(Simulation LANGUAGES CUDA CXX)
+project(Simulation LANGUAGES CUDA CXX C)
 set(CUDA_SEPARABLE_COMPILATION ON)
 find_package(CUDA REQUIRED)
+# add_definitions(/W2)
 #set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-rdc=true")
 # set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -lcudavert -lcudart=static")
 
@@ -31,6 +32,7 @@ enable_language(CUDA)
 if(USE_CUDA)
     add_definitions(-DUSE_CUDA)
 endif()
+
 
 add_subdirectory(SimulationLib)
 add_subdirectory(SimulationMain)

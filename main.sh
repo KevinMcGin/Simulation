@@ -13,7 +13,7 @@ then
    fi
 fi
 
-./build/bin/Debug/SimulationMain.exe
+./build/bin/Debug/SimulationMain.exe --particleCount=300
 if [ $? -eq 1 ]
 then
    echo -e "\nmain failed"

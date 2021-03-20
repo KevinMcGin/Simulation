@@ -8,21 +8,13 @@
 #include "ParticleDistributionDisk.h"
 #include "Timing.h"
 
-#include <ctype.h>
+#include <cargs.h>
+#include <stdbool.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <tchar.h>
 
-//Windows only
-// #include "XGetopt.h"
-//Unix only
-//#include <unistd.h>
-
-
-int main(int argc, TCHAR *argv[])
+int main(int argc, char *argv[])
 {
 	Timing::setTime();
-	TCHAR* x = argv[1];
 
 	#ifdef USE_CUDA
     	std::cout << "CUDA: On" << std::endl;
@@ -39,6 +31,39 @@ int main(int argc, TCHAR *argv[])
 	double deltaSpeedFraction = 0.2;
 	double outerRadius = 15;
 
+	static struct cag_option options[] = {	   
+		{'c',
+		  "c",
+		  "particleCount",
+		  "VALUE",
+		  "Particle count value"},
+	   
+		{/*.identifier = */'h',
+		  /*.access_letters = */"h",
+		  /*.access_name = */"help",
+		  /*.description = */"Shows the command help"}
+	};
+
+	char identifier;
+	cag_option_context context;
+	cag_option_prepare(&context, options, CAG_ARRAY_SIZE(options), argc, argv);
+	while (cag_option_fetch(&context)) {
+		identifier = cag_option_get(&context);
+		switch (identifier) {
+			case 'c':
+			{
+				const char* value = cag_option_get_value(&context);
+				particleCount = atol(value);
+				break;
+			}
+			case 'h':
+			{
+				printf("Usage: ./SimulationMain.exe [OPTION]...\n");
+				cag_option_print(options, CAG_ARRAY_SIZE(options), stdout);
+				return EXIT_SUCCESS;
+			}
+		}
+	}
 
 	//Specifying the expected options
     //The two options l and b expect numbers as argument
