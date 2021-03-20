@@ -11,6 +11,7 @@ then
       exit 1
    fi
 fi
+export SIMULATION_USE_GPU=false
 cd build
 ctest -C Debug --output-on-failure .. 2>ctest.error
 if grep "No tests were found" ctest.error  ; then exit 1 ; fi

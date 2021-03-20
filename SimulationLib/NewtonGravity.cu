@@ -15,8 +15,8 @@ NewtonGravity::NewtonGravity(double G) : Law(), G(G)
 
 }
 
-
-__device__ __host__ void runParticle(Particle* p1, Particle* p2, double G);	
+void runOnParticles(Particle* p1, Particle* p2, double G);
+__device__ __host__ void runOnParticle(Particle* p1, Particle* p2, Vector3D radiusComponent);	
 __device__ __host__ Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G);
 
 __global__ 
@@ -27,7 +27,7 @@ void newtonGravityKernel(CopyClass* copy, int n, double G)
 		//int y = (int)((-1+sqrt((float)8*idx+1))/2) + 1;
 		 //printf("%d  -> (%d,%d)\n", x, x, n);
 		// printf("%d -> (%lf,%lf,%lf)\n", idx, copy->par[x]->velocity.x, copy->par[x]->velocity.y, copy->par[x]->velocity.z);
-		runParticle(copy->par[x],copy->par[n],G);
+		// runParticle(copy->par[x],copy->par[n],G);
 		// printf("%d -> (%lf,%lf,%lf)\n", idx, copy->par[x]->velocity.x, copy->par[x]->velocity.y, copy->par[x]->velocity.z);
 	} 
 }
@@ -38,7 +38,7 @@ void NewtonGravity::run(vector<Particle*>& particles)
 		auto p1 = *it1;
 		for (auto it2 = it1+1; it2 < particles.end(); it2++) {
 			auto p2 = *it2;
-			runParticle(p1,p2,G);
+			runOnParticles(p1,p2,G);
 		}
 	}
 }
@@ -97,26 +97,24 @@ void NewtonGravity::runParallel(vector<Particle*>& particles) {
 	}
 }
 
-__device__ __host__ 
-void runParticle(Particle* p1, Particle* p2, double G) {	
-	// printf("getting radius component");
+void runOnParticles(Particle* p1, Particle* p2, double G) {	
 	Vector3D radiusComponent = getRadiusComponent(p1->position, p2->position, G);
-	// printf("got radius component");
+	runOnParticle(p1, p2, -1*radiusComponent);
+	runOnParticle(p2, p1, radiusComponent);
+}
+
+//Vector3D radiusComponent = getRadiusComponent(p1->position, p2->position, G);
+__device__ __host__ 
+void runOnParticle(Particle* p1, Particle* p2, Vector3D radiusComponent) {	
 	Vector3D acceleration1 = p2->mass * radiusComponent;
 	p1->velocity = p1->velocity + acceleration1;
-	Vector3D acceleration2 = p1->mass * radiusComponent * -1;
-	p2->velocity = p2->velocity + acceleration2;
-	// printf("updated velocities");
 }
 
 __device__ __host__ 
 Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G)
 {
-	// printf("in getRadiusComponent");
-	Vector3D displacement = position2 - position1;
+	Vector3D displacement = position1 - position2;
 	double displacementSquared = displacement.magnitudeSquared();
-	// printf("if statement in getRadiusComponent");
 	if (displacementSquared == 0 ) return {0,0,0};
-	// printf("finished getRadiusComponent");
 	return (G / displacementSquared) * displacement.unit();
 }
