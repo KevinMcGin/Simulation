@@ -11,14 +11,14 @@ then
 fi
 
 cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
-if [ $? -eq 1 ]
+if [ $? -ne 0 ]
 then
    echo -e "\ncompile failed"
    exit 1
 fi
 cmake --build build
-if [ $? -eq 1 ]
+if [ $? -ne 0 ]
 then
-   echo -e "\ncompile failed"
+   echo -e "\nbuild failed"
    exit 1
 fi

@@ -6,7 +6,7 @@ fi
 if [[ $* != *-nc* ]] && [[ $* != *--no-compile* ]]
 then
    ./compile.sh
-   if [ $? -eq 1 ]
+   if [ $? -ne 0 ]
    then
       exit 1
    fi

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 cd SimulationRenderer
 py main.py
-if [ $? -eq 1 ]
+if [ $? -ne 0 ]
 then
     echo -e "\render failed"
     exit 1
