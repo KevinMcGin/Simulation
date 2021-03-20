@@ -17,3 +17,4 @@ if grep "No tests were found" ctest.error  ; then exit 1 ; fi
 
 # Todo: is this output better?
 # ./build/bin/Debug/SimulationTest.exe
+# ctest -R NewtonGravityTest.ParticlesAccelerate 

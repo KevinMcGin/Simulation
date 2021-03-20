@@ -16,6 +16,13 @@ int main(int argc, char *argv[])
 {
 	Timing::setTime();
 
+	//const char* = "true";
+	if(const char* env_p = std::getenv("SIMULATION_USE_GPU"))
+		if(strcmp(env_p, "true") == 0)
+        	std::cout << "Your SIMULATION_USE_GPU is true: " << env_p << '\n';
+		else
+       		std::cout << "Your SIMULATION_USE_GPU is not true: " << env_p << '\n';
+
 	#ifdef USE_CUDA
     	std::cout << "CUDA: On" << std::endl;
 	#else
@@ -116,55 +123,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	//Specifying the expected options
-    //The two options l and b expect numbers as argument
-    // static struct option long_options[] = {
-    //     {"particleCount",      no_argument,       	0,  'c' },
-    //     {"frameRate", 	       no_argument,       	0,  'f' },
-    //     {"seconds",            required_argument, 	0,  's' },
-    //     {"meanMass",           required_argument, 	0,  'm' },
-    //     {"starMass",           required_argument, 	0,  't' },
-    //     {"deltaSpeedFraction", required_argument,   0,  'd' },
-    //     {"outerRadius",        required_argument, 	0,  'r' },
-    //     {0,             	   0,                 	0,  0   }
-    // };
-
-	// int c;
-	// while ((c = getopt(argc, argv, _T("c:f:s:m:t:v:d:r:"))) != EOF)
-	// {
-	// 	switch (c)
-	// 	{
-	// 		case _T('c'):
-	// 			particleCount = atoi(optarg);
-	// 			break;				
-	// 		case _T('f'):
-	// 			frameRate = atoi(optarg);
-	// 			break;
-	// 		case _T('s'): 
-	// 			seconds = atoi(optarg);
-	// 			break;
-	// 		case _T('m'):
-	// 			meanMass = atoi(optarg);
-	// 			break;				
-	// 		case _T('t'):
-	// 			starMass = atoi(optarg);
-	// 			break;				
-	// 		case _T('v'):
-	// 			meanSpeed = atoi(optarg);
-	// 			break;
-	// 		case _T('d'):
-	// 			deltaSpeedFraction = atoi(optarg);
-	// 			break;
-	// 		case _T('r'):
-	// 			outerRadius = atoi(optarg);
-	// 			break;				
-	// 		case _T('?'):
-	// 			break;
-	// 		default:
-	// 			break;
-	// 	}
-	// }
-
 	double deltaSpeed = meanSpeed * deltaSpeedFraction;
 	unsigned int endTime = seconds * frameRate;
 
@@ -180,13 +138,6 @@ int main(int argc, char *argv[])
 	ParticleDistribution* particleDistributionStar = new ParticleDistributionSimple(distributionDensityStar, positionDistrubtion5, velocityDistrubtion5, angularVelocityDistrubtion);
 	SimulationInput* input = new SimulationInputRandomSimple({ particleCount, 1 },
 		{ particleDistributionDisk, particleDistributionStar });
-
-	/*SimulationInput* input = new SimulationInputRandomSimple({ 1, 1 },
-		{ 
-			ParticleDistributionSimple(new DistributionMassDensity(new DistributionValue(400),new DistributionValue(10000)), new DistributionCircle({ 0,0,0 }, 0), new DistributionCircle({ 0,0,0 }, 0), new DistributionCircle({ 0,0,0 }, 0)),
-			ParticleDistributionSimple(new DistributionMassDensity(new DistributionValue(0.01),new DistributionValue(10)), new DistributionCircle({ 1.5,0,0 }, 0), new DistributionCircle({ 0,0.1,0 }, 0), new DistributionCircle({ 0,0,0 }, 0))
-		}
-	);*/
 
 	SimulationOutput* output = new SimulationOutputJSON();
 

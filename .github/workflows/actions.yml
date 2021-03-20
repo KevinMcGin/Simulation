@@ -53,6 +53,8 @@ jobs:
       run: cmake --build . --config Debug
 
     - name: Test
+      env:
+        SIMULATION_USE_GPU: "false"
       working-directory: ${{github.workspace}}/build
       shell: bash
       # Execute tests defined by the CMake configuration.  
