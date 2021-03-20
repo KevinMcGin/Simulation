@@ -22,16 +22,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
 option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
-option(USE_CUDA "Use CUDA" ON)
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 11)
     set(CMAKE_CXX_STANDARD_REQUIRED true)
 endif()
 enable_language(CUDA)
-if(USE_CUDA)
-    add_definitions(-DUSE_CUDA)
-endif()
 
 
 add_subdirectory(SimulationLib)

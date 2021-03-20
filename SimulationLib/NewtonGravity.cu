@@ -34,67 +34,67 @@ void newtonGravityKernel(CopyClass* copy, int n, double G)
 
 void NewtonGravity::run(vector<Particle*>& particles)
 {
-	#if USE_CUDA
-		cudaError_t cudaStatus;
-		cudaStatus = cudaSetDevice(0);
+	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
+		auto p1 = *it1;
+		for (auto it2 = it1+1; it2 < particles.end(); it2++) {
+			auto p2 = *it2;
+			runParticle(p1,p2,G);
+		}
+	}
+}
+
+void NewtonGravity::runParallel(vector<Particle*>& particles) {
+	cudaError_t cudaStatus;
+	cudaStatus = cudaSetDevice(0);
+	if (cudaStatus != cudaSuccess) {
+		fprintf(stderr, "\ncudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
+	}
+	int particleCount = particles.size();
+	//int particleMatchingsCount = (particleCount-1)*particleCount/2;
+
+	//Instantiate object on the CPU
+	CopyClass cpuClass;
+	cpuClass.par = new Particle*[particleCount];
+	for(int i = 0; i < particleCount; ++i)
+		cpuClass.par[i] = particles[i];
+
+	//Allocate storage for object onto GPU and copy host object to device
+	CopyClass * gpuClass;
+	cudaMalloc(&gpuClass,sizeof(CopyClass));
+	cudaMemcpy(gpuClass,&cpuClass,sizeof(CopyClass),cudaMemcpyHostToDevice);
+
+	//Copy dynamically allocated child objects to GPU
+	Particle ** d_par;
+	d_par = new Particle*[particleCount];
+	for(int i = 0; i < particleCount; ++i) {
+		cudaMalloc(&d_par[i],sizeof(ParticleSimple));
+		cudaMemcpy(d_par[i],cpuClass.par[i],sizeof(ParticleSimple),cudaMemcpyHostToDevice);
+	}
+
+	//Copy the d_par array itself to the device
+
+	Particle ** td_par;
+	cudaMalloc(&td_par, particleCount * sizeof(Particle *));
+	cudaMemcpy(td_par, d_par, particleCount * sizeof(Particle *), cudaMemcpyHostToDevice);
+
+	//copy *pointer value* of td_par to appropriate location in top level object
+	cudaMemcpy(&(gpuClass->par),&(td_par),sizeof(Particle **),cudaMemcpyHostToDevice);
+
+	for(int i = 0; i < particleCount; i++) {
+		newtonGravityKernel <<<1 + i/256, 256>>> (gpuClass, i, G);
+		cudaDeviceSynchronize();
+		cudaStatus = cudaGetLastError();
 		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "\ncudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
+			fprintf(stderr, "\nNewtonGravity: addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
 		}
-		int particleCount = particles.size();
-		//int particleMatchingsCount = (particleCount-1)*particleCount/2;
-
-		//Instantiate object on the CPU
-		CopyClass cpuClass;
-		cpuClass.par = new Particle*[particleCount];
-		for(int i = 0; i < particleCount; ++i)
-		  cpuClass.par[i] = particles[i];
-
-		//Allocate storage for object onto GPU and copy host object to device
-		CopyClass * gpuClass;
-		cudaMalloc(&gpuClass,sizeof(CopyClass));
-		cudaMemcpy(gpuClass,&cpuClass,sizeof(CopyClass),cudaMemcpyHostToDevice);
-
-		//Copy dynamically allocated child objects to GPU
-		Particle ** d_par;
-		d_par = new Particle*[particleCount];
-		for(int i = 0; i < particleCount; ++i) {
-			cudaMalloc(&d_par[i],sizeof(ParticleSimple));
-			cudaMemcpy(d_par[i],cpuClass.par[i],sizeof(ParticleSimple),cudaMemcpyHostToDevice);
+	}
+	for(int i = 0; i < particleCount; i++) {
+		cudaStatus = cudaMemcpy(cpuClass.par[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
+		if (cudaStatus != cudaSuccess) {
+			fprintf(stderr, "\n\nNewtonGravity: cudaMemcpyDeviceToHost failed: %s\n", cudaGetErrorString(cudaStatus));
 		}
-
-		//Copy the d_par array itself to the device
-
-		Particle ** td_par;
-		cudaMalloc(&td_par, particleCount * sizeof(Particle *));
-		cudaMemcpy(td_par, d_par, particleCount * sizeof(Particle *), cudaMemcpyHostToDevice);
-
-		//copy *pointer value* of td_par to appropriate location in top level object
-		cudaMemcpy(&(gpuClass->par),&(td_par),sizeof(Particle **),cudaMemcpyHostToDevice);
-
-		for(int i = 0; i < particleCount; i++) {
-			newtonGravityKernel <<<1 + i/256, 256>>> (gpuClass, i, G);
-			cudaDeviceSynchronize();
-			cudaStatus = cudaGetLastError();
-			if (cudaStatus != cudaSuccess) {
-				fprintf(stderr, "\nNewtonGravity: addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
-			}
-		}
-		for(int i = 0; i < particleCount; i++) {
-			cudaStatus = cudaMemcpy(cpuClass.par[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
-			if (cudaStatus != cudaSuccess) {
-				fprintf(stderr, "\n\nNewtonGravity: cudaMemcpyDeviceToHost failed: %s\n", cudaGetErrorString(cudaStatus));
-			}
-			particles[i]->velocity = cpuClass.par[i]->velocity;
-		}
-	#else
-		for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
-			auto p1 = *it1;
-			for (auto it2 = it1+1; it2 < particles.end(); it2++) {
-				auto p2 = *it2;
-				runParticle(p1,p2,G);
-			}
-		}
-	#endif
+		particles[i]->velocity = cpuClass.par[i]->velocity;
+	}
 }
 
 __device__ __host__ 

@@ -16,19 +16,6 @@ int main(int argc, char *argv[])
 {
 	Timing::setTime();
 
-	//const char* = "true";
-	if(const char* env_p = std::getenv("SIMULATION_USE_GPU"))
-		if(strcmp(env_p, "true") == 0)
-        	std::cout << "Your SIMULATION_USE_GPU is true: " << env_p << '\n';
-		else
-       		std::cout << "Your SIMULATION_USE_GPU is not true: " << env_p << '\n';
-
-	#ifdef USE_CUDA
-    	std::cout << "CUDA: On" << std::endl;
-	#else
-    	std::cout << "CUDA: Off" << std::endl;
-	#endif
-
 	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
 	double seconds = 10;

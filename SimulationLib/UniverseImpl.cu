@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-UniverseImpl::UniverseImpl(vector<Law*> laws, SimulationInput* input, SimulationOutput* output, unsigned int deltaTime, unsigned long endTime)
+UniverseImpl::UniverseImpl(vector<Law*> laws, SimulationInput* input, SimulationOutput* output, unsigned int deltaTime, unsigned long endTime) : Universe()
 {
 	particles = input->input();
 	this->laws = laws;
@@ -23,7 +23,10 @@ void UniverseImpl::run()
 	printPercentComplete(0);
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		for (const auto& l : laws) {
-			l->run(particles);
+			if(USE_GPU == TRUE)
+				l->runParallel(particles);
+			else
+				l->run(particles);
 			printPercentComplete(++lawsRan);
 		}
 		output->output(particles, i + 1);

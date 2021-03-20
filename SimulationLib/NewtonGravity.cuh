@@ -12,6 +12,7 @@ public:
 	NewtonGravity(double G);
 
 	virtual void run(vector<Particle*>& particles);
+	virtual void runParallel(vector<Particle*>& particles);
 
 protected:
 	const double G;

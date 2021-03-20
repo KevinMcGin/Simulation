@@ -3,12 +3,6 @@ file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
 file(GLOB cu_headers CONFIGURE_DEPENDS "*.cuh")
 file(GLOB cu_source CONFIGURE_DEPENDS "*.cu")
 
-# if(USE_CUDA)
-  # target_sources(SimulationLib PRIVATE PUBLIC )
-# else()
-  # target_sources(SimulationLib PRIVATE ${cpp_source} PUBLIC ${cpp_headers})
-# endif()
-
 add_library(SimulationLib STATIC ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers})
 set_target_properties(SimulationLib PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 set_target_properties(SimulationLib PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)

@@ -10,7 +10,7 @@ then
     mkdir build
 fi
 
-cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DUSE_CUDA=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
+cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
 if [ $? -eq 1 ]
 then
    echo -e "\ncompile failed"
