@@ -1,4 +1,5 @@
 #include "Universe.h"
+#include <cstring>
 
 const char* SIMULATION_USE_GPU = "SIMULATION_USE_GPU";
 Usage Universe::USE_GPU = UNDEFINED;
