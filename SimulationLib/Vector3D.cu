@@ -1,5 +1,6 @@
 #include "Vector3D.cuh"
 #include <cmath>
+#include <iomanip>
 
 
 
@@ -85,7 +86,7 @@ bool Vector3D::operator==(const Vector3D& vec) const
 
 std::ostream& operator<< (std::ostream& out, const Vector3D& vec)
 {
-    out << "{x: " << vec.x << ", y: " << vec.y << ", z: " << vec.z << "}";
+    out << std::setprecision(17) << "{x: " << vec.x << ", y: " << vec.y << ", z: " << vec.z << "}";
     return out;
 }
 

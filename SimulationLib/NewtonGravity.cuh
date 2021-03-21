@@ -18,7 +18,7 @@ protected:
 	const double G;
 };
 
-class CopyClass {
+class UniverseGPU {
 public:
-  Particle ** par;
+  Particle** particles;
 };

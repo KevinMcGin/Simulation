@@ -20,15 +20,46 @@ __device__ __host__ void runOnParticle(Particle* p1, Particle* p2, Vector3D radi
 __device__ __host__ Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G);
 
 __global__ 
-void newtonGravityKernel(CopyClass* copy, int n, double G)
+void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponent, int n, double G)
 {
-	int x = threadIdx.x + blockIdx.x*blockDim.x;
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	if(idx < n) { 
+		int y = (int)((-1+sqrt((float)8*idx+1))/2) + 1;
+		int x = idx - (y-1)*y/2;
+		// printf("%f  -> (%d,%d). Getting radius Component, X: (%f,%f,%f)\n", idx, x, y, particles[x]->position.x, particles[x]->position.y, particles[x]->position.z);
+		//printf("%d  -> (%d,%d). Getting radius Component, Y: (%f,%f,%f)\n", idx, x, y, particles[y]->position.x, particles[y]->position.y, particles[y]->position.z);
+		devicePRadiusComponent[idx] = getRadiusComponent(particles[x]->position, particles[y]->position, G);
+		// printf("%f  -> (%d,%d). Got radius Component: (%f,%f,%f)\n", idx, x, y, devicePRadiusComponent[idx].x, devicePRadiusComponent[idx].y, devicePRadiusComponent[idx].z);
+	} 
+}
+
+__global__ 
+void newtonGravityKernelLower(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n)
+{
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	int x = idx + x0;
 	if(x < n) { 
-		//int y = (int)((-1+sqrt((float)8*idx+1))/2) + 1;
-		 //printf("%d  -> (%d,%d)\n", x, x, n);
-		// printf("%d -> (%lf,%lf,%lf)\n", idx, copy->par[x]->velocity.x, copy->par[x]->velocity.y, copy->par[x]->velocity.z);
-		// runParticle(copy->par[x],copy->par[n],G);
-		// printf("%d -> (%lf,%lf,%lf)\n", idx, copy->par[x]->velocity.x, copy->par[x]->velocity.y, copy->par[x]->velocity.z);
+		// printf("%f  -> (%d,%d). using radius Component, X: (%f,%f,%f)\n", x, x, y, universe->particles[x]->position.x, universe->particles[x]->position.y, universe->particles[x]->position.z);
+		int radiusComponentIndex = x + (y-1)*y/2;
+		//printf("%d  -> (%d,%d) -> %d. using radius Component, Y: (%f,%f,%f)\n", x, x, y, radiusComponentIndex, 
+		//-1*devicePRadiusComponent[radiusComponentIndex].x, -1*devicePRadiusComponent[radiusComponentIndex].y, -1*devicePRadiusComponent[radiusComponentIndex].z);
+		// printf("%f  -> (%d,%d). using radius Component: (%f,%f,%f)\n", x-x0, x, y, devicePRadiusComponent[radiusComponentIndex].x, devicePRadiusComponent[radiusComponentIndex].y, devicePRadiusComponent[radiusComponentIndex].z);
+		runOnParticle(particles[x], particles[y], -1*devicePRadiusComponent[radiusComponentIndex]);
+	} 
+}
+
+__global__ 
+void newtonGravityKernelUpper(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n)
+{
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	int x = idx + x0;
+	if(x < n) { 
+		// printf("%f  -> (%d,%d). using radius Component, X: (%f,%f,%f)\n", x, x, y, universe->particles[x]->position.x, universe->particles[x]->position.y, universe->particles[x]->position.z);
+		int radiusComponentIndex = y + (x-1)*x/2;
+		//printf("%d  -> (%d,%d) -> %d. using radius Component, Y: (%f,%f,%f)\n", x, x, y, radiusComponentIndex, 
+//			devicePRadiusComponent[radiusComponentIndex].x, devicePRadiusComponent[radiusComponentIndex].y, devicePRadiusComponent[radiusComponentIndex].z);
+		// printf("%f  -> (%d,%d). using radius Component: (%f,%f,%f)\n", x-x0, x, y, devicePRadiusComponent[radiusComponentIndex].x, devicePRadiusComponent[radiusComponentIndex].y, devicePRadiusComponent[radiusComponentIndex].z);
+		runOnParticle(particles[x], particles[y], devicePRadiusComponent[radiusComponentIndex]);
 	} 
 }
 
@@ -53,48 +84,76 @@ void NewtonGravity::runParallel(vector<Particle*>& particles) {
 	//int particleMatchingsCount = (particleCount-1)*particleCount/2;
 
 	//Instantiate object on the CPU
-	CopyClass cpuClass;
-	cpuClass.par = new Particle*[particleCount];
+	UniverseGPU cpuClass;
+	cpuClass.particles = new Particle*[particleCount];
 	for(int i = 0; i < particleCount; ++i)
-		cpuClass.par[i] = particles[i];
-
-	//Allocate storage for object onto GPU and copy host object to device
-	CopyClass * gpuClass;
-	cudaMalloc(&gpuClass,sizeof(CopyClass));
-	cudaMemcpy(gpuClass,&cpuClass,sizeof(CopyClass),cudaMemcpyHostToDevice);
+		cpuClass.particles[i] = particles[i];
 
 	//Copy dynamically allocated child objects to GPU
 	Particle ** d_par;
 	d_par = new Particle*[particleCount];
 	for(int i = 0; i < particleCount; ++i) {
-		cudaMalloc(&d_par[i],sizeof(ParticleSimple));
-		cudaMemcpy(d_par[i],cpuClass.par[i],sizeof(ParticleSimple),cudaMemcpyHostToDevice);
+		cudaStatus = cudaMalloc(&d_par[i],sizeof(ParticleSimple));
+		if (cudaStatus != cudaSuccess) {
+			fprintf(stderr, "nNewtonGravity: cudaMalloc failed!");
+		}
+		cudaStatus = cudaMemcpy(d_par[i],cpuClass.particles[i],sizeof(ParticleSimple),cudaMemcpyHostToDevice);
+		if (cudaStatus != cudaSuccess) {
+			fprintf(stderr, "nNewtonGravity: cudaMemcpy failed!");
+		}
 	}
 
 	//Copy the d_par array itself to the device
 
 	Particle ** td_par;
-	cudaMalloc(&td_par, particleCount * sizeof(Particle *));
-	cudaMemcpy(td_par, d_par, particleCount * sizeof(Particle *), cudaMemcpyHostToDevice);
-
-	//copy *pointer value* of td_par to appropriate location in top level object
-	cudaMemcpy(&(gpuClass->par),&(td_par),sizeof(Particle **),cudaMemcpyHostToDevice);
+	cudaStatus = cudaMalloc(&td_par, particleCount * sizeof(Particle *));
+	if (cudaStatus != cudaSuccess) {
+		fprintf(stderr, "nNewtonGravity: cudaMalloc failed!");
+	}
+	cudaStatus = cudaMemcpy(td_par, d_par, particleCount * sizeof(Particle *), cudaMemcpyHostToDevice);
+	if (cudaStatus != cudaSuccess) {
+		fprintf(stderr, "nNewtonGravity: cudaMemcpy failed!");
+	}
+	//Radius component
+	int betweenParticlesCount = (particleCount-1)*particleCount/2;
+	Vector3D* devicePRadiusComponent = NULL;
+	cudaMalloc(&devicePRadiusComponent, betweenParticlesCount*sizeof(Vector3D));
+	if (cudaStatus != cudaSuccess) {
+		fprintf(stderr, "nNewtonGravity: cudaMalloc failed!");
+	}
+	radiusComponentKernel <<<1 + betweenParticlesCount/256, 256>>> (td_par, devicePRadiusComponent, betweenParticlesCount, G);
+	cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		fprintf(stderr, "\nNewtonGravity: radiusComponentKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
+	}
+	cudaDeviceSynchronize();
+	//std::cout << "synced device" << std::endl;
 
 	for(int i = 0; i < particleCount; i++) {
-		newtonGravityKernel <<<1 + i/256, 256>>> (gpuClass, i, G);
-		cudaDeviceSynchronize();
+		newtonGravityKernelLower <<<1 + i/256, 256>>> (td_par, devicePRadiusComponent, 0, i, i);
 		cudaStatus = cudaGetLastError();
 		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "\nNewtonGravity: addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
+			fprintf(stderr, "\nNewtonGravity: newtonGravityKernelLower launch failed: %s\n", cudaGetErrorString(cudaStatus));
 		}
+		newtonGravityKernelUpper <<<1 + (particleCount-1-i)/256, 256>>> (td_par, devicePRadiusComponent, i+1, i, particleCount);
+		cudaStatus = cudaGetLastError();
+		if (cudaStatus != cudaSuccess) {
+			fprintf(stderr, "\nNewtonGravity: newtonGravityKernelUpper launch failed: %s\n", cudaGetErrorString(cudaStatus));
+		}
+		cudaDeviceSynchronize();
+		//std::cout << "synced device" << std::endl;
+		cudaStatus = cudaGetLastError();
 	}
 	for(int i = 0; i < particleCount; i++) {
-		cudaStatus = cudaMemcpy(cpuClass.par[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
+		cudaStatus = cudaMemcpy(cpuClass.particles[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
+		cudaFree(d_par[i]);
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "\n\nNewtonGravity: cudaMemcpyDeviceToHost failed: %s\n", cudaGetErrorString(cudaStatus));
 		}
-		particles[i]->velocity = cpuClass.par[i]->velocity;
+		particles[i]->velocity = cpuClass.particles[i]->velocity;
 	}
+	delete cpuClass.particles;
+	delete d_par;
 }
 
 void runOnParticles(Particle* p1, Particle* p2, double G) {	
@@ -114,6 +173,7 @@ __device__ __host__
 Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G)
 {
 	Vector3D displacement = position1 - position2;
+	//TODO: only calculate magnitudeSquared once
 	double displacementSquared = displacement.magnitudeSquared();
 	if (displacementSquared == 0 ) return {0,0,0};
 	return (G / displacementSquared) * displacement.unit();
