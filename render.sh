@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-cd SimulationRenderer
+cd SimulationRendererPython
 py main.py
 if [ $? -ne 0 ]
 then

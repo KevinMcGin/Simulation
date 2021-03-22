@@ -16,8 +16,8 @@ fi
 export SIMULATION_USE_GPU=true
 
 ./build/bin/Debug/SimulationMain.exe \
-   --particle-count=30 --frame-rate=60 --seconds=10 --mean-mass=0.01 --star-mass=500 \
-   --mean-speed=0.04 --delta-speed=0.2 --radius=15
+   --particle-count=1000 --seconds=300 --mean-mass=0.01 --star-mass=50 \
+   --mean-speed=0.04 --delta-speed=0.2 --radius=15 --frame-rate=60 
 if [ $? -ne 0 ]
 then
    echo -e "\nmain failed"

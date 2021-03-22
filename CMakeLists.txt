@@ -3,9 +3,6 @@
 project(Simulation LANGUAGES CUDA CXX C)
 set(CUDA_SEPARABLE_COMPILATION ON)
 find_package(CUDA REQUIRED)
-# add_definitions(/W2)
-#set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-rdc=true")
-# set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -lcudavert -lcudart=static")
 
 # place binaries and libraries according to GNU standards
 include(GNUInstallDirs)
