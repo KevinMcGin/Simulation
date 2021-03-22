@@ -12,10 +12,13 @@ public:
 	NewtonGravity(double G);
 
 	virtual void run(vector<Particle*>& particles);
+	virtual void runParallel(vector<Particle*>& particles);
 
 protected:
 	const double G;
+};
 
-private:
-	Vector3D getRadiusComponent(Vector3D position1, Vector3D position2);
+class UniverseGPU {
+public:
+  Particle** particles;
 };

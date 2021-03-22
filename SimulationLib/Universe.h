@@ -5,15 +5,19 @@
 
 #include <vector>
 
-class Universe {
-	public:
-		~Universe();
-		vector<Particle*> particles;
-		virtual void run() = 0;
+enum Usage { UNDEFINED, TRUE, FALSE };
 
-	protected:
-		vector<Law*> laws;
-		SimulationOutput* output;
-		unsigned int deltaTime;
-		unsigned long endTime;
+class Universe {
+public:
+	Universe();
+	~Universe();
+	vector<Particle*> particles;
+	virtual void run() = 0;
+
+protected:
+	vector<Law*> laws;
+	SimulationOutput* output;
+	unsigned int deltaTime;
+	unsigned long endTime;
+	static Usage USE_GPU;
 };

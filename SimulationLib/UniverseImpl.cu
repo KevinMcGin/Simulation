@@ -1,9 +1,10 @@
-#include "UniverseImpl.h"
+#include "UniverseImpl.cuh"
 #include<cmath>
 #include "Timing.h"
+#include <iostream>
 
 
-UniverseImpl::UniverseImpl(vector<Law*> laws, SimulationInput* input, SimulationOutput* output, unsigned int deltaTime, unsigned long endTime)
+UniverseImpl::UniverseImpl(vector<Law*> laws, SimulationInput* input, SimulationOutput* output, unsigned int deltaTime, unsigned long endTime) : Universe()
 {
 	particles = input->input();
 	this->laws = laws;
@@ -22,7 +23,10 @@ void UniverseImpl::run()
 	printPercentComplete(0);
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		for (const auto& l : laws) {
-			l->run(particles);
+			if(USE_GPU == TRUE)
+				l->runParallel(particles);
+			else
+				l->run(particles);
 			printPercentComplete(++lawsRan);
 		}
 		output->output(particles, i + 1);
@@ -35,5 +39,6 @@ void UniverseImpl::printPercentComplete(int lawsRan) {
 	double timePassed = (lawsRan/(double)laws.size()) / endTime;
 	progress =  ((int)(100 *timePassed*accurary)/(double)accurary);
 	cout << "\r" << progress << "% " << Timing::getTime() << "            " << std::flush;
+	//cout << progress << "% " << Timing::getTime() << std::endl;
 }
 

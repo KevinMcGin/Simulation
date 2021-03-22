@@ -69,3 +69,9 @@ void Collision::run(vector<Particle*>& particles)
 			++it;
 	}
 }
+
+
+void Collision::runParallel(vector<Particle*>& particles) {
+	//TODO: implement parallel version
+	run(particles);
+}

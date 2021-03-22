@@ -1,7 +1,7 @@
 #include  <gtest/gtest.h>
-#include "UniverseImpl.h"
+#include "UniverseImpl.cuh"
 #include "NewtonFirstLaw.cuh"
-#include "NewtonGravity.h"
+#include "NewtonGravity.cuh"
 #include "SimulationInputSimple.h"
 #include "SimulationOutputPrint.h"
 
@@ -13,8 +13,8 @@ TEST(UniverseImplTest, UniverseRuns) {
 	//TODO: change delta time to non 1 value with required implementation and change in expects
 	Universe* universe = new UniverseImpl({ law1, law2 }, input, output, 1, 10);
 	universe->run();
-	Vector3D positions = universe->particles.front()->position;
-	EXPECT_DOUBLE_EQ(10.746798179090352, positions.x);
-	EXPECT_DOUBLE_EQ(0.25320182090965099, positions.y);
-	EXPECT_EQ(0, positions.z);
+	Vector3D position1 = universe->particles.front()->position;
+	Vector3D position2 = universe->particles.back()->position;
+	EXPECT_EQ(Vector3D(10.746798179090352, 0.25320182090965099, 0), position1);
+	EXPECT_EQ(Vector3D(0.25320182090965099, 10.746798179090352, 0), position2);
 }

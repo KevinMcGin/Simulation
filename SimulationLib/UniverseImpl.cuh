@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "Universe.h"
 #include "SimulationInput.h"
-#include "NewtonGravity.h"
 
 #include <vector>
 

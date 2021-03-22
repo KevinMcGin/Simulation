@@ -1,6 +1,6 @@
 #include  "gtest/gtest.h"
 #include "Vector3D.cuh"
-#include <cmath>
+#include <sstream>
 
 TEST(Vector3DTest, vectorsMagnitudeSquared) {
 	Vector3D v1({ -1/sqrt(2),1/sqrt(2),0 });
@@ -68,9 +68,16 @@ TEST(Vector3DTest, vectorsMultiply) {
 	EXPECT_EQ(Vector3D(0, 3, -3), v2);
 }
 
-
 TEST(Vector3DTest, vectorsDivide) {
 	Vector3D v1({ 0,1,-1 });
 	Vector3D v2 = v1 / 2.0;
 	EXPECT_EQ(Vector3D(0, 0.5, -0.5), v2);
+}
+
+TEST(Vector3DTest, vectorsPrint) {
+	Vector3D v1( 0,1,-1 );
+	std::ostringstream vectorStream;
+    vectorStream << v1;
+    std::string vectorString = vectorStream.str();
+	EXPECT_EQ("{x: 0, y: 1, z: -1}", vectorString);
 }
