@@ -10,10 +10,10 @@ Universe::Universe() {
 		if(!envVar) envVar = "true";
         if(strcmp(envVar, "true") == 0) {
             Universe::USE_GPU = TRUE;
-            std::cout << "Your SIMULATION_USE_GPU is true: " << envVar << '\n';
+            std::cout << std::endl << "Using GPU" << std::endl;
         }
         else {
-            std::cout << "Your SIMULATION_USE_GPU is not true: " << envVar << '\n';
+            std::cout << std::endl << "Using CPU" << std::endl;
             Universe::USE_GPU = FALSE;
         }
     }

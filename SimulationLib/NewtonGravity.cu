@@ -98,11 +98,11 @@ void NewtonGravity::runParallel(vector<Particle*>& particles) {
 	for(int i = 0; i < particleCount; ++i) {
 		cudaStatus = cudaMalloc(&d_par[i],sizeof(ParticleSimple));
 		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "nNewtonGravity: cudaMalloc failed!");
+			fprintf(stderr, "\nNewtonGravity: cudaMalloc failed!\n");
 		}
 		cudaStatus = cudaMemcpy(d_par[i],cpuClass.particles[i],sizeof(ParticleSimple),cudaMemcpyHostToDevice);
 		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "nNewtonGravity: cudaMemcpy failed!");
+			fprintf(stderr, "\nNewtonGravity: cudaMemcpy failed!\n");
 		}
 	}
 
@@ -111,18 +111,18 @@ void NewtonGravity::runParallel(vector<Particle*>& particles) {
 	Particle ** td_par;
 	cudaStatus = cudaMalloc(&td_par, particleCount * sizeof(Particle *));
 	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "nNewtonGravity: cudaMalloc failed!");
+		fprintf(stderr, "\nNewtonGravity: cudaMalloc failed!\n");
 	}
 	cudaStatus = cudaMemcpy(td_par, d_par, particleCount * sizeof(Particle *), cudaMemcpyHostToDevice);
 	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "nNewtonGravity: cudaMemcpy failed!");
+		fprintf(stderr, "\nNewtonGravity: cudaMemcpy failed!\n");
 	}
 	//Radius component
 	int betweenParticlesCount = (particleCount-1)*particleCount/2;
 	Vector3D* devicePRadiusComponent = NULL;
 	cudaStatus = cudaMalloc(&devicePRadiusComponent, betweenParticlesCount*sizeof(Vector3D));
 	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "nNewtonGravity: cudaMalloc failed!");
+		fprintf(stderr, "\nNewtonGravity: cudaMalloc failed!\n");
 	}
 	radiusComponentKernel <<<1 + betweenParticlesCount/256, 256>>> (td_par, devicePRadiusComponent, betweenParticlesCount, G);
 	cudaDeviceSynchronize();
