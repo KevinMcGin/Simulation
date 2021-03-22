@@ -56,6 +56,10 @@ void NewtonFirstLaw::runParallel(vector<Particle*>& particles) {
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "NewtonFirstLaw: cudaMemcpy failed!");
 	}
+
 	for(int i = 0; i < n; i++)
 		particles[i]->position = pPosition[i];
+	
+	cudaFree(devicePPosition);
+	cudaFree(devicePVelocity);
 }
