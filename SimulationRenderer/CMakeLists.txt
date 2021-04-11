@@ -8,6 +8,7 @@ find_package(OpenGL REQUIRED)
 set(GLUT_INCLUDE_DIR "F:/Program Files/freeglut/include/GL")
 set(OPENGL_LIBRARY_DIR  "F:/Program Files/freeglut/lib/x64")
 find_package(GLUT REQUIRED)
+
 include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIR} "F:/Program Files/freeglut/bin/x64")
 
-target_link_libraries(SimulationRenderer ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} )
+target_link_libraries(SimulationRenderer ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})

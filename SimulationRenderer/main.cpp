@@ -3,6 +3,8 @@
 #endif
 #include <glut.h>  // GLUT, includes glu.h and gl.h
 
+#include "InputJSON.h"
+
 // from OpenGL.GLUT import *
 // from OpenGL.GLU import *
 // from OpenGL.GL import *
@@ -21,6 +23,11 @@ void display_scene();
 char* name = "Navigation paradigm";
 
 int main(int argc, char **argv) {
+
+    InputJSON input("F:/workspace/Simulation/bin/test.json");
+    input.input();
+
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 800);
