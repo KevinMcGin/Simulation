@@ -2,7 +2,7 @@
 
 if [[ $* == *-h* ]] || [[ $* == *--help* ]]
 then
-   echo "Usage: $0 [-nc --no-compile <compile before running>] [-r --render <render after running>]" 1>&2; exit 1;
+   echo "Usage: $0 [-nc --no-compile <don't compile before running>] [-r --render <render after running>]" 1>&2; exit 1;
 fi
 if [[ $* != *-nc* ]] && [[ $* != *--no-compile* ]]
 then
