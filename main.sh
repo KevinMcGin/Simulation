@@ -25,7 +25,7 @@ then
 fi
 if [[ $* == *-r* ]] || [[ $* == *--render* ]]
 then
-   ./render.sh
+   ./render.sh -nc
    if [ $? -ne 0 ]
    then
       exit 1

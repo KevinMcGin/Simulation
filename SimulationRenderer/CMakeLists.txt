@@ -1,7 +1,9 @@
 ﻿file(GLOB cpp_headers CONFIGURE_DEPENDS "*.h")
 file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
 
-add_executable (SimulationRenderer ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers})
+add_executable (SimulationRenderer ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers}
+    "lib/json/json.h" "lib/json/json-forwards.h" "lib/json/jsoncpp.cpp"
+)
 
 find_package(OpenGL REQUIRED)
 # TODO: configure these directories

@@ -22,11 +22,10 @@ void display_scene();
 
 char* name = "Navigation paradigm";
 
+
+InputJSON input("F:/workspace/Simulation/bin/simulation_output.json");
+
 int main(int argc, char **argv) {
-
-    InputJSON input("F:/workspace/Simulation/bin/test.json");
-    input.input();
-
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -38,12 +37,12 @@ int main(int argc, char **argv) {
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
-    GLfloat lightZeroPosition[] = {10.0, 4.0, 10.0, 1.0};
-    GLfloat lightZeroColor[] = {0.8, 1.0, 0.8, 1.0};
+    GLfloat lightZeroPosition[] = {10.0f, 4.0f, 10.0f, 1.0f};
+    GLfloat lightZeroColor[] = {0.8f, 1.0f, 0.8f, 1.0f};
     glLightfv(GL_LIGHT0, GL_POSITION, lightZeroPosition);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor);
-    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05);
+    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1f);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05f);
     glEnable(GL_LIGHT0);
     glutDisplayFunc(display_scene);
     glutIdleFunc(display_scene);
@@ -67,23 +66,24 @@ void display_scene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // # Textured thing 
     // auto tex = read_texture("brick.jpg");
-    auto qobj = gluNewQuadric();
-    gluQuadricTexture(qobj, GL_TRUE);
-    glEnable(GL_TEXTURE_2D);
-    // glBindTexture(GL_TEXTURE_2D, tex);
-    gluSphere(qobj, 1, 50, 50);
-    gluDeleteQuadric(qobj);
-    glDisable(GL_TEXTURE_2D);
+    // auto qobj = gluNewQuadric();
+    // gluQuadricTexture(qobj, GL_TRUE);
+    // glEnable(GL_TEXTURE_2D);
+    // // glBindTexture(GL_TEXTURE_2D, tex);
+    // gluSphere(qobj, 1, 50, 50);
+    // gluDeleteQuadric(qobj);
+    // glDisable(GL_TEXTURE_2D);
     
     GLfloat color[] = {0.0, 1.0, 0.0, 1.0};
-    //for p in sim[str(frame)]:
-    //     glPushMatrix();
-    //     glTranslatef(p['pos'][0], p['pos'][1], p['pos'][2]);
-    //     glColor3f(1, 0, 0);
-    //     glScalef(1.0, 1.0, 1.0);
-    //     glutSolidSphere(p['r'], 5, 5);
-    //     glPopMatrix();
-    // frame += 1;
+    auto particles = input.input();
+    for(auto p : particles) {
+        glPushMatrix();
+        glTranslatef(p["pos"][0].asFloat(), p["pos"][1].asFloat(), p["pos"][2].asFloat());
+        glColor3f(1, 0, 0);
+        glScalef(1.0, 1.0, 1.0);
+        glutSolidSphere(p["r"].asFloat(), 5, 5);
+        glPopMatrix();
+    }
 
     glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
     glutSwapBuffers();

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "json.h"
+#include "lib/json/json.h"
 
 // #include "Particle.cuh"
 using namespace std;
@@ -12,7 +12,7 @@ class InputJSON {
 public:
     InputJSON(string fileName);
 	~InputJSON();
-	void input();
+	Json::Value input();
 
 private:
 	Json::Value root;
