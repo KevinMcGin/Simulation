@@ -20,6 +20,6 @@ cp F:/"Program Files"/freeglut/bin/x64/freeglut.dll .
 ./SimulationRenderer.exe
 if [ $? -ne 0 ]
 then
-    echo -e "\render failed"
+    echo -e "\nrender failed"
     exit 1
 fi

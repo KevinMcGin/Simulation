@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 				outerRadius = atof(value);
 				break;}
 			case 'h':{
-				printf("Usage: ./SimulationMain.exe [OPTION]...\n");
+				printf("Usage: ./SimulationEngine.exe [OPTION]...\n");
 				cag_option_print(options, CAG_ARRAY_SIZE(options), stdout);
 				return EXIT_SUCCESS;}
 		}
