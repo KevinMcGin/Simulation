@@ -15,7 +15,7 @@ fi
 
 if [[ -f "engine.config" ]]
 then
-   echo "Using engine.config"
+   echo "Configuration: engine.config"
    source ./engine.config
 fi
 
@@ -37,7 +37,3 @@ then
       exit 1
    fi
 fi
-
-
-echo "end"
-echo $?
