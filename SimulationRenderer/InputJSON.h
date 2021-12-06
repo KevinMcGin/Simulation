@@ -3,7 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "lib/json/json.h"
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
+
+using namespace rapidjson;
 
 // #include "Particle.cuh"
 using namespace std;
@@ -12,10 +16,10 @@ class InputJSON {
 public:
     InputJSON(string fileName);
 	~InputJSON();
-	Json::Value input();
+	Value* input();
 
 private:
-	Json::Value root;
+	Document doc;
 	// vector<Particle*> particles;
 	unsigned long time;
 };

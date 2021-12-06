@@ -1,5 +1,5 @@
 #ifdef _WIN32
-    #include <windows.h>  // For MS Windows
+#include <windows.h>  // For MS Windows
 #endif
 #include <glut.h>  // GLUT, includes glu.h and gl.h
 
@@ -20,7 +20,7 @@ void display_scene();
 // GLuint read_texture(char* filename);
         
 
-char* name = "Navigation paradigm";
+char* name = "Simulation Renderer";
 
 
 InputJSON input("F:/workspace/Simulation/bin/simulation_output.json");
@@ -76,12 +76,12 @@ void display_scene() {
     
     GLfloat color[] = {0.0, 1.0, 0.0, 1.0};
     auto particles = input.input();
-    for(auto p : particles) {
+    for(const auto& p : particles->GetArray()) {
         glPushMatrix();
-        glTranslatef(p["pos"][0].asFloat(), p["pos"][1].asFloat(), p["pos"][2].asFloat());
+        glTranslatef(p["pos"][0].GetFloat(), p["pos"][1].GetFloat(), p["pos"][2].GetFloat());
         glColor3f(1, 0, 0);
         glScalef(1.0, 1.0, 1.0);
-        glutSolidSphere(p["r"].asFloat(), 5, 5);
+        glutSolidSphere(p["r"].GetFloat(), 5, 5);
         glPopMatrix();
     }
 
