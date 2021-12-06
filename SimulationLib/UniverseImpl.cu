@@ -17,6 +17,7 @@ void UniverseImpl::run()
 {
 	cout << "Simulation running" << endl;
 	cout << particles.size() << " particles" << endl;
+	cout << "Frames: " << endTime << endl;
 	output->output(particles, 0);
 	this->progress = -1;
 	int lawsRan = 0;
