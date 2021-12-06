@@ -21,7 +21,7 @@ jobs:
       env:
         cuda: "11.2"
       run: |
-        source ./scripts/install_cuda_ubuntu.sh
+        source ./scripts/installation/install_cuda_ubuntu.sh
         if [[ $? -eq 0 ]]; then
           # Set paths for subsequent steps, using ${CUDA_PATH}
           echo "Adding CUDA to CUDA_PATH, PATH and LD_LIBRARY_PATH"

@@ -13,14 +13,20 @@ then
    fi
 fi
 
-export SIMULATION_USE_GPU=true
+if [[ -f "engine.config" ]]
+then
+   echo "Using engine.config"
+   source ./engine.config
+fi
 
-./build/bin/Debug/SimulationMain.exe \
-   --particle-count=100 --seconds=30 --mean-mass=0.01 --star-mass=50 \
-   --mean-speed=0.04 --delta-speed=0.2 --radius=15 --frame-rate=60 
+export SIMULATION_USE_GPU=${USE_GPU:-false}
+
+./build/bin/Debug/SimulationEngine.exe \
+   --particle-count=${PARTICLE_COUNT:-200} --seconds=${SECONDS:-30} --mean-mass=${MEAN_MASS:-0.01} --star-mass=${STAR_MASS:-50} \
+   --mean-speed=${MEAN_SPEED:-0.04} --delta-speed=${DELTA_SPEED:-0.2} --radius=${RADIUS:-15} --frame-rate=${FRAME_RATE:-60} 
 if [ $? -ne 0 ]
 then
-   echo -e "\nmain failed"
+   echo -e "\nengine failed"
    exit 1
 fi
 if [[ $* == *-r* ]] || [[ $* == *--render* ]]

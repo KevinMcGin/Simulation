@@ -26,43 +26,43 @@ int main(int argc, char *argv[])
 	double outerRadius = 15;
 
 	static struct cag_option options[] = {	   
-		{/*.identifier =*/ 'p',
-		  /*.access_letters =*/ "p",
-		  /*.access_name =*/ "particle-count",
-		  /*.description =*/ "Particle count value"},
-		{/*.identifier =*/ 'f',
-		  /*.access_letters =*/ "f",
-		  /*.access_name =*/ "frame-rate",
-		  /*.description =*/ "Frame rate of render"},
-		{/*.identifier =*/ 's',
-		  /*.access_letters =*/ "s",
-		  /*.access_name =*/ "seconds",
-		  /*.description =*/ "Seconds of render"},	
-		{/*.identifier =*/ 'm',
-		  /*.access_letters =*/ "m",
-		  /*.access_name =*/ "mean-mass",
-		  /*.description =*/ "Mean mass of particles"},	
-		{/*.identifier =*/ 'c',
-		  /*.access_letters =*/ "c",
-		  /*.access_name =*/ "star-mass",
-		  /*.description =*/ "Mass of the central body"},
-		{/*.identifier =*/ 'v',
-		  /*.access_letters =*/ "v",
-		  /*.access_name =*/ "mean-speed",
-		  /*.description =*/ "Mean speed of particles"},
-		{/*.identifier =*/ 'd',
-		  /*.access_letters =*/ "d",
-		  /*.access_name =*/ "delta-speed",
-		  /*.description =*/ "Fractional variance +- of speed"},
-		{/*.identifier =*/ 'r',
-		  /*.access_letters =*/ "r",
-		  /*.access_name =*/ "radius",
-		  /*.description =*/ "Outer radius of the disk"},	  		 	   
-		{/*.identifier =*/ 'h',
-		  /*.access_letters =*/ "h",
-		  /*.access_name =*/ "help",
-   		  /*.value_name =*/ "VALUE",
-		  /*.description =*/ "Shows the command help"}
+		{'p',
+		 "p",
+		 "particle-count",
+		 "Particle count value"},
+		{'f',
+		 "f",
+		 "frame-rate",
+		 "Frame rate of render"},
+		{'s',
+		 "s",
+		 "seconds",
+		 "Seconds of render"},	
+		{'m',
+		 "m",
+		 "mean-mass",
+		 "Mean mass of particles"},	
+		{'c',
+		 "c",
+		  "star-mass",
+		 "Mass of the central body"},
+		{'v',
+		 "v",
+		 "mean-speed",
+		 "Mean speed of particles"},
+		{'d',
+		 "d",
+		 "delta-speed",
+		 "Fractional variance +- of speed"},
+		{'r',
+		 "r",
+		 "radius",
+		 "Outer radius of the disk"},	  		 	   
+		{'h',
+		 "h",
+		 "help",
+   		 "VALUE",
+		 "Shows the command help"}
 	};
 
 	char identifier;
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 				outerRadius = atof(value);
 				break;}
 			case 'h':{
-				printf("Usage: ./SimulationMain.exe [OPTION]...\n");
+				printf("Usage: ./SimulationEngine.exe [OPTION]...\n");
 				cag_option_print(options, CAG_ARRAY_SIZE(options), stdout);
 				return EXIT_SUCCESS;}
 		}
@@ -123,8 +123,10 @@ int main(int argc, char *argv[])
 	Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
 	ParticleDistribution* particleDistributionDisk = new ParticleDistributionDisk(densityDistribution, starMass*2, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistrubtion);	
 	ParticleDistribution* particleDistributionStar = new ParticleDistributionSimple(distributionDensityStar, positionDistrubtion5, velocityDistrubtion5, angularVelocityDistrubtion);
-	SimulationInput* input = new SimulationInputRandomSimple({ particleCount, 1 },
-		{ particleDistributionDisk, particleDistributionStar });
+	SimulationInput* input = new SimulationInputRandomSimple(
+		{ particleCount - 1, 1 },
+		{ particleDistributionDisk, particleDistributionStar }
+	);
 
 	SimulationOutput* output = new SimulationOutputJSON();
 
