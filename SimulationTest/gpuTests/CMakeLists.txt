@@ -8,15 +8,15 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(gtest)
 
-file(GLOB tests_src CONFIGURE_DEPENDS "*.cpp" "*.cu")
+file(GLOB tests_src CONFIGURE_DEPENDS "*.cpp" "*.cu" )
 
 add_executable(
-    SimulationTest
+    SimulationTestGpu
     ${tests_src}
     )
-    set_target_properties(SimulationTest PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+    set_target_properties(SimulationTestGpu PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
-target_link_libraries(SimulationTest
+target_link_libraries(SimulationTestGpu
   PRIVATE
     SimulationLib
     gtest_main
@@ -24,7 +24,7 @@ target_link_libraries(SimulationTest
 
 # automatic discovery of unit tests
 include(GoogleTest)
-gtest_discover_tests(SimulationTest
+gtest_discover_tests(SimulationTestGpu
   PROPERTIES
     LABELS "unit"
   DISCOVERY_TIMEOUT  # how long to wait (in seconds) before crashing
