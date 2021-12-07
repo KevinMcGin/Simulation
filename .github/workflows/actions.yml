@@ -30,6 +30,10 @@ jobs:
           echo "LD_LIBRARY_PATH=${CUDA_PATH}/lib:${LD_LIBRARY_PATH}" >> $GITHUB_ENV
         fi
       shell: bash
+    - name: Install OpenGL
+      run: |
+        source ./scripts/installation/install_open_gl_ubuntu.sh
+      shell: bash
 
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory

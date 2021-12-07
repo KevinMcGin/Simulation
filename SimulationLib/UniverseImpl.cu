@@ -32,7 +32,7 @@ void UniverseImpl::run()
 		}
 		output->output(particles, i + 1);
 	}
-	cout << "Simulation complete" << endl;
+	cout << endl << "Simulation complete" << endl;
 }
 
 void UniverseImpl::printPercentComplete(int lawsRan) {

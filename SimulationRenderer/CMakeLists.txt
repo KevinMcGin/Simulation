@@ -28,17 +28,17 @@ add_executable (SimulationRenderer ${cpp_source} ${cu_source} ${cpp_headers} ${c
 
 add_dependencies(SimulationRenderer rapidjson)
 
+# TODO: configure these dependencies dynamically from https://www.transmissionzero.co.uk/software/freeglut-devel
+set(GLUT_INCLUDE_DIR "lib/freeglut/include/GL")
+set(OPENGL_LIBRARY_DIR  "lib/freeglut/lib/x64")
 find_package(OpenGL REQUIRED)
-# TODO: configure these directories
-set(GLUT_INCLUDE_DIR "F:/Program Files/freeglut/include/GL")
-set(OPENGL_LIBRARY_DIR  "F:/Program Files/freeglut/lib/x64")
 find_package(GLUT REQUIRED)
 
 include_directories( 
     ${OPENGL_INCLUDE_DIRS}  
     ${GLUT_INCLUDE_DIR} 
     "${CMAKE_SOURCE_DIR}/build/SimulationRenderer/vendor/rapidjson/src/rapidjson/include" 
-    "F:/Program Files/freeglut/bin/x64"
+    "lib/freeglut/bin/x64"
 )
 
 target_link_libraries(SimulationRenderer ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
