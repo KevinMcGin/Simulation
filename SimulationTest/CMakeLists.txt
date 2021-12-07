@@ -8,7 +8,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(gtest)
 
-file(GLOB tests_src CONFIGURE_DEPENDS "*.cpp" "*.cu")
+file(GLOB tests_src CONFIGURE_DEPENDS "cpuTests/*.cpp" "cpuTests/*.cu" "gpuTests/*.cpp" "gpuTests/*.cu")
 
 add_executable(
     SimulationTest
