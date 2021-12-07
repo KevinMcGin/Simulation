@@ -32,9 +32,7 @@ jobs:
       shell: bash
     - name: Install OpenGL
       run: |
-        echo "Installing OpenGL"
-        sudo apt-get install libgl1-mesa-dev
-        sudo apt-get install freeglut3-dev
+        source ./scripts/installation/install_open_gl_ubuntu.sh
       shell: bash
 
     - name: Create Build Environment
