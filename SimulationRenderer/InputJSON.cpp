@@ -26,15 +26,17 @@ InputJSON::InputJSON(string fileName):
 	
 }
 
-InputJSON::~InputJSON()
-{
-}
+InputJSON::~InputJSON() { }
 
-Value* InputJSON::input()
-{
-	char s[11]; 
-	sprintf(s,"%ld", time);
-	Value* particles = &doc[s];
-	time++;
-	return particles;
+Value* InputJSON::input() {
+	char timeString[11]; 
+	sprintf(timeString,"%ld", time++);
+	if(doc.HasMember(timeString)) {
+		return &doc[timeString];
+	} else  {
+		char timeString2[11]; 
+		time = time - 2;
+		sprintf(timeString2,"%ld", time);
+		return &doc[timeString2];
+	}
 }
