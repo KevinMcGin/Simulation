@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 if [[ $* == *-h* ]] || [[ $* == *--help* ]]
 then
-   echo "Usage: $0 [-nc --no-compile <compile bfore running>]" 1>&2; exit 1;
+   echo "Usage: $0 [-nc --no-compile <compile bfore running>] [--cpu <only CPU tests>]" 1>&2; exit 1;
 fi
 if [[ $* != *-nc* ]] && [[ $* != *--no-compile* ]]
 then
