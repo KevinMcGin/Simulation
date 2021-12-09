@@ -23,9 +23,12 @@ void display_scene();
 char* name = "Simulation Renderer";
 
 
-InputJSON input("F:/workspace/Simulation/bin/simulation_output.json");
+InputJSON* input;
 
 int main(int argc, char **argv) {
+    cout << "Renderer running" << endl;
+
+    input = new InputJSON("F:/workspace/Simulation/bin/simulation_output.json");
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -75,7 +78,7 @@ void display_scene() {
     // glDisable(GL_TEXTURE_2D);
     
     GLfloat color[] = {0.0, 1.0, 0.0, 1.0};
-    auto particles = input.input();
+    auto particles = input->input();
     for(const auto& p : particles->GetArray()) {
         glPushMatrix();
         glTranslatef(p["pos"][0].GetFloat(), p["pos"][1].GetFloat(), p["pos"][2].GetFloat());
