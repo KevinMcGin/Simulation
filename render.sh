@@ -14,10 +14,12 @@ then
    fi
 fi
 
-cd build/bin/Debug
 # TODO: configure this directory
+cd build/bin/Debug
 cp F:/"Program Files"/freeglut/bin/x64/freeglut.dll .
-./SimulationRenderer.exe
+cd ../../..
+
+./build/bin/Debug/SimulationRenderer.exe
 if [ $? -ne 0 ]
 then
     echo -e "\nrender failed"
