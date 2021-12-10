@@ -14,10 +14,8 @@ then
    fi
 fi
 
-# TODO: configure this directory
-cd build/bin/Debug
-cp F:/"Program Files"/freeglut/bin/x64/freeglut.dll .
-cd ../../..
+# TODO: link these instead of copying the file
+cp SimulationRenderer/lib/freeglut/bin/x64/freeglut.dll ./build/bin/Debug
 
 ./build/bin/Debug/SimulationRenderer.exe
 if [ $? -ne 0 ]
