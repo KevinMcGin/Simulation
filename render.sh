@@ -1,12 +1,20 @@
 #!/usr/bin/env sh
+no_compile='false'
 
-if [[ $* == *-h* ]] || [[ $* == *--help* ]]
-then
-   echo "Usage: $0 [-nc --no-compile <don't compile before running>" 1>&2; exit 1;
-fi
+print_usage() {
+  printf "Usage: $0 [-n <don't compile before running>"
+}
 
-if [[ $* != *-nc* ]] && [[ $* != *--no-compile* ]]
-then
+while getopts 'f:n' flag; do
+  case "${flag}" in
+    n) no_compile='true' ;;
+    *) print_usage
+       exit 1 ;;
+  esac
+done
+
+if [[ $no_compile == 'false' ]]
+then 
    ./compile.sh
    if [ $? -ne 0 ]
    then
@@ -14,7 +22,7 @@ then
    fi
 fi
 
-# TODO: link these instead of copying the file
+# TODO: link these instead of copying the file (move to compile?)
 cp SimulationRenderer/lib/freeglut/bin/x64/freeglut.dll ./build/bin/Debug
 
 ./build/bin/Debug/SimulationRenderer
