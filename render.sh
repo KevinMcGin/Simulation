@@ -17,7 +17,7 @@ fi
 # TODO: link these instead of copying the file
 cp SimulationRenderer/lib/freeglut/bin/x64/freeglut.dll ./build/bin/Debug
 
-./build/bin/Debug/SimulationRenderer.exe
+./build/bin/Debug/SimulationRenderer
 if [ $? -ne 0 ]
 then
     echo -e "\nrender failed"
