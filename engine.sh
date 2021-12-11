@@ -22,7 +22,7 @@ while getopts 'f:nr' flag; do
   esac
 done
 
-if [[ $no_compile == 'false' ]]
+if [ $no_compile == 'false' ]
 then 
    ./compile.sh
    if [ $? -ne 0 ]
@@ -43,7 +43,7 @@ then
    echo -e "\nengine failed"
    exit 1
 fi
-if [[ $render == 'true' ]]
+if [ $render == 'true' ]
 then
    ./render.sh -n
    if [ $? -ne 0 ]
