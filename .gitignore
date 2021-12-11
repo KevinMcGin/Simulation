@@ -1,5 +1,5 @@
 simulation_output/*.json
 build/*
-*.config
+config/**/*.config
 
 .vscode/
