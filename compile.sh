@@ -18,11 +18,7 @@ while getopts 'd' flag; do
   esac
 done
 
-if [[ $* == *-h* ]] || [[ $* == *--help* ]]
-then
-   echo "Usage: $0 [-d --delete <delete build folder before build>]" 1>&2; exit 1;
-fi
-if [[ $delete_build = 'true' ]]
+if [ $delete_build = 'true' ]
 then
    do_delete_build
 fi
