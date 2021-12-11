@@ -1,0 +1,2 @@
+USE_GPU=false
+BUILD_PATH=build/bin

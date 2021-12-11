@@ -22,10 +22,8 @@ then
    fi
 fi
 
-# TODO: link these instead of copying the file (move to compile?)
-cp SimulationRenderer/lib/freeglut/bin/x64/freeglut.dll ./build/bin/Debug
-
-./build/bin/Debug/SimulationRenderer
+source ./config/project.config
+./${BUILD_PATH:-'build/bin'}/SimulationRenderer
 if [ $? -ne 0 ]
 then
     echo -e "\nrender failed"

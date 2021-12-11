@@ -4,8 +4,9 @@ no_compile='false'
 render='false'
 
 get_config() {
-   echo "Configuration: engine.config"
-   source ./$1
+   config="config/engine/$1"
+   echo "Configuration: $config"
+   source ./$config
 }
 
 print_usage() {
@@ -32,10 +33,11 @@ then
 fi
 
 get_config $file
+source ./config/project.config
 
 export SIMULATION_USE_GPU=${USE_GPU:-false}
 
-./build/bin/Debug/SimulationEngine \
+./${BUILD_PATH:-'build/bin'}/SimulationEngine \
    --particle-count=${PARTICLE_COUNT:-200} --seconds=${SECONDS:-30} --mean-mass=${MEAN_MASS:-0.01} --star-mass=${STAR_MASS:-50} \
    --mean-speed=${MEAN_SPEED:-0.04} --delta-speed=${DELTA_SPEED:-0.2} --radius=${RADIUS:-15} --frame-rate=${FRAME_RATE:-60} 
 if [ $? -ne 0 ]
