@@ -15,7 +15,7 @@ while getopts 'cn' flag; do
   esac
 done
 
-if [[ $no_compile == 'false' ]]
+if [ $no_compile == 'false' ]
 then 
    ./compile.sh
    if [ $? -ne 0 ]
@@ -24,7 +24,7 @@ then
    fi
 fi
 
-if [[ $cpu_only = 'true' ]]
+if [ $cpu_only = 'true' ]
 then
    export SIMULATION_USE_GPU=false
    test_dir="--test-dir SimulationTest/cpuTests"
