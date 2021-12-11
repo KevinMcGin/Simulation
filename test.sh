@@ -24,16 +24,16 @@ then
    fi
 fi
 
+cd build
 if [ $cpu_only = 'true' ]
 then
    export SIMULATION_USE_GPU=false
-   test_dir="--test-dir SimulationTest/cpuTests"
+   cd SimulationTest/cpuTests
 else
    export SIMULATION_USE_GPU=true
 fi
 
-cd build
-ctest -C Debug $test_dir --output-on-failure .. 2>ctest.error
+ctest -C Debug --output-on-failure .. 2>ctest.error
 if grep "No tests were found" ctest.error  ; then exit 1 ; fi
 
 # Todo: is this output better?
