@@ -1,17 +1,30 @@
 #!/usr/bin/env sh
-if [[ $* == *-h* ]] || [[ $* == *--help* ]]
-then
-   echo "Usage: $0 [-nc --no-compile <compile bfore running>]" 1>&2; exit 1;
-fi
-if [[ $* != *-nc* ]] && [[ $* != *--no-compile* ]]
-then
+no_compile='false'
+cpu_only='false'
+
+print_usage() {
+  printf "Usage: $0 [-n <don't compile before running> [-c <only CPU tests>]"
+}
+
+while getopts 'cn' flag; do
+  case "${flag}" in
+    c) cpu_only='true' ;;
+    n) no_compile='true' ;;
+    *) print_usage
+       exit 1 ;;
+  esac
+done
+
+if [[ $no_compile == 'false' ]]
+then 
    ./compile.sh
    if [ $? -ne 0 ]
    then
       exit 1
    fi
 fi
-if [[ $* == *--cpu* ]]
+
+if [[ $cpu_only = 'true' ]]
 then
    export SIMULATION_USE_GPU=false
    test_dir="--test-dir SimulationTest/cpuTests"

@@ -1,13 +1,30 @@
 #!/usr/bin/env sh
+delete_build='false'
+
+print_usage() {
+  printf "Usage: $0 [-d <delete build folder before build>]"
+}
+
+do_delete_build() {
+    rm -rf build
+    mkdir build
+}
+
+while getopts 'd' flag; do
+  case "${flag}" in
+    d) delete_build='true' ;;
+    *) print_usage
+       exit 1 ;;
+  esac
+done
 
 if [[ $* == *-h* ]] || [[ $* == *--help* ]]
 then
    echo "Usage: $0 [-d --delete <delete build folder before build>]" 1>&2; exit 1;
 fi
-if [[ $* == *-d* ]] || [[ $* == *--delete* ]]
+if [[ $delete_build = 'true' ]]
 then
-    rm -rf build
-    mkdir build
+   do_delete_build
 fi
 
 cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
