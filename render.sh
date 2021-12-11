@@ -13,7 +13,7 @@ while getopts 'f:n' flag; do
   esac
 done
 
-if [[ $no_compile == 'false' ]]
+if [ $no_compile = 'false' ]
 then 
    ./compile.sh
    if [ $? -ne 0 ]
