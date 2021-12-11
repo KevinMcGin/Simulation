@@ -1,7 +1,15 @@
 ﻿[![Build Status](https://github.com/KevinMcGin/Simulation/actions/workflows/actions.yml/badge.svg)](https://github.com/KevinMcGin/Simulation/actions/workflows/actions.yml)
 
 # Simulation
-Simulate and render the motion of particles.
+Simulates the motion of particles on the GPU with Nvidia's CUDA, or just on the CPU if a GPU is not available.
+
+Renders these simulations with OpenGL.
+
+## Project Goals
+- Simulate real world phenomenon.
+- Predict future motion of asteroids, planets, and stars.
+- Reverse engineer past motion of asteroids, planets, and stars.
+- Display the above simulations in dynamic views.
 
 ## Dependencies
 - CMake
@@ -29,6 +37,11 @@ Simulate and render the motion of particles.
 ## Build
 ```./compile.sh```
 
+## Configuration
+Configuration files are under ```/config```.
+
+Git ignored configuration files are generate from ```*.example``` files after building.
+
 ## Test
 ### All Tests
 ```./test.sh```
@@ -38,23 +51,6 @@ Simulate and render the motion of particles.
 
 ## Run Engine
 ```./engine.sh```
-
-### Engine Configuration
-Config example file at project root 
-
-File name: ```engine.config```
-
-```
-USE_GPU=true
-PARTICLE_COUNT=200
-SECONDS=300
-MEAN_MASS=0.01
-STAR_MASS=50
-MEAN_SPEED=0.04
-DELTA_SPEED=0.2
-RADIUS=15
-FRAME_RATE=60 
-```
 
 ## Run Renderer
 ```./render.sh```
