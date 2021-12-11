@@ -28,7 +28,7 @@ InputJSON* input;
 int main(int argc, char **argv) {
     cout << "Renderer running" << endl;
 
-    input = new InputJSON("bin/simulation_output.json");
+    input = new InputJSON("simulation_output/simulation_output.json");
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

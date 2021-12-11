@@ -4,7 +4,7 @@
 
 SimulationOutputJSON::SimulationOutputJSON() : SimulationOutput()
 {
-	myfile.open("bin/simulation_output.json");
+	myfile.open("simulation_output/simulation_output.json");
 	myfile << "{" << endl;
 }
 

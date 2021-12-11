@@ -20,9 +20,9 @@ InputJSON::InputJSON(string fileName):
     }
 
     IStreamWrapper isw { ifs };
-
-	doc = {};
+	std::cout << "parsing" << std::endl;
     doc.ParseStream( isw );
+	std::cout << "parsed" << std::endl;
 	
 }
 
