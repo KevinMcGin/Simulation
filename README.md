@@ -17,7 +17,11 @@ Simulate and render the motion of particles.
 
 ```./scripts/installation/install_cuda_ubuntu.sh```
 
-```sudo ln -s /usr/local/cuda-$cuda /usr/local/cuda```
+```export CUDA_HOME=/usr/local/cuda-$cuda```
+
+```export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$cuda/lib64:$cuda/extras/CUPTI/lib64```
+
+```export PATH=$PATH:$CUDA_HOME/bin```
 
 ### OpenGL
 ```./scripts/installation/install_open_gl_ubuntu.sh```
