@@ -10,12 +10,12 @@ static void advanceParticles(Vector3D* position, const Vector3D* velocity, int p
 	} 
 }
 
-void NewtonFirstLaw::run(vector<Particle*>& particles) {
+void NewtonFirstLaw::cpuRun(vector<Particle*>& particles) {
 	for (const auto& p : particles)
 		p->advance();
 }
 
-void NewtonFirstLaw::runParallel(vector<Particle*>& particles) {
+void NewtonFirstLaw::gpuRun(vector<Particle*>& particles) {
 	cudaError_t cudaStatus;
 	cudaStatus = cudaSetDevice(0);
 	if (cudaStatus != cudaSuccess) {

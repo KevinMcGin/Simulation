@@ -12,7 +12,7 @@ Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* co
 
 }
 
-void Collision::run(vector<Particle*>& particles)
+void Collision::cpuRun(vector<Particle*>& particles)
 {
 	// get particles that collided
 	vector<set<Particle*>*> particlesCollidedVector;
@@ -71,7 +71,7 @@ void Collision::run(vector<Particle*>& particles)
 }
 
 
-void Collision::runParallel(vector<Particle*>& particles) {
+void Collision::gpuRun(vector<Particle*>& particles) {
 	//TODO: implement parallel version
-	run(particles);
+	cpuRun(particles);
 }

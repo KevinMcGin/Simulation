@@ -6,8 +6,7 @@
 class Law {
 public:
 	Law();
-	virtual void run(vector<Particle*>& particles) = 0;
-	virtual void runParallel(vector<Particle*>& particles) = 0;
-	//virtual void parallelRun(UniverseGPU* universeGPU) = 0;
+	virtual void cpuRun(vector<Particle*>& particles) = 0;
+	virtual void gpuRun(vector<Particle*>& particles) = 0;
 
 };

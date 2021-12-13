@@ -3,7 +3,3 @@
 Law::Law() {
 	
 }
-
-// Law::run(vector<Particle*>& particles) {
-
-// }

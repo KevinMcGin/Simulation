@@ -66,7 +66,7 @@ void newtonGravityKernelUpper(Particle** particles, Vector3D* devicePRadiusCompo
 	} 
 }
 
-void NewtonGravity::run(vector<Particle*>& particles)
+void NewtonGravity::cpuRun(vector<Particle*>& particles)
 {
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
 		auto p1 = *it1;
@@ -77,7 +77,7 @@ void NewtonGravity::run(vector<Particle*>& particles)
 	}
 }
 
-void NewtonGravity::runParallel(vector<Particle*>& particles) {
+void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 	cudaError_t cudaStatus;
 	cudaStatus = cudaSetDevice(0);
 	if (cudaStatus != cudaSuccess) {

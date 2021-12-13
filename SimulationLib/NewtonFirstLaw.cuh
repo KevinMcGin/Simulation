@@ -7,7 +7,7 @@
 
 class NewtonFirstLaw: public Law {
 public:
-	virtual void run(vector<Particle*>& particles);
-	virtual void runParallel(vector<Particle*>& particles);
+	virtual void cpuRun(vector<Particle*>& particles);
+	virtual void gpuRun(vector<Particle*>& particles);
 		
 };

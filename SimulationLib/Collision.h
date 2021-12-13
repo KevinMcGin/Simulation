@@ -8,8 +8,8 @@ class Collision :
 public:
     Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver);
 
-    void run(vector<Particle*>& particles) override;
-	void runParallel(vector<Particle*>& particles) override;
+    void cpuRun(vector<Particle*>& particles) override;
+	void gpuRun(vector<Particle*>& particles) override;
 
 private:
     CollisionDetector* collisionDetector;

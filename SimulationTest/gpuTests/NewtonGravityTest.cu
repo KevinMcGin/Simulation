@@ -11,7 +11,7 @@ TEST(NewtonGravityTest, ParticlesAccelerateGPU) {
 		new ParticleSimple(100,1,{10,0,-0.03},{0,0,0},{0,0,0}),
 		new ParticleSimple(1,1,{-10,0,-0.03},{0,0,0},{0,0,0})
 	 };
-	law->runParallel(particles);
+	law->gpuRun(particles);
 	Vector3D velocity1 = particles.front()->velocity;
 	Vector3D velocity2 = particles[1]->velocity;
 	Vector3D velocity3 = particles.back()->velocity;
