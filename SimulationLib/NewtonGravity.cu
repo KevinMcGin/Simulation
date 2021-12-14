@@ -22,32 +22,22 @@ __device__ __host__ Vector3D getRadiusComponent(Vector3D position1, Vector3D pos
 __global__ 
 void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponent, int n, double G)
 {
-	//printf("inside radiusComponentKernel start");
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
 		unsigned long y = (long long)((-1+sqrt((double)8*idx+1))/2) + 1;
 		unsigned long x = idx - (y-1)*y/2;
-		//printf("%lu  -> (%lu,%lu). Getting radius Component, X: (%f,%f,%f)\n", idx, x, y, particles[x]->position.x, particles[x]->position.y, particles[x]->position.z);
-		// printf("%d  -> (%d,%d). Getting radius Component, Y: (%f,%f,%f)\n", idx, x, y, particles[y]->position.x, particles[y]->position.y, particles[y]->position.z);
 		devicePRadiusComponent[idx] = getRadiusComponent(particles[x]->position, particles[y]->position, G);
-		// printf("%d  -> (%d,%d). Got radius Component: (%f,%f,%f)\n", idx, x, y, devicePRadiusComponent[idx].x, devicePRadiusComponent[idx].y, devicePRadiusComponent[idx].z);
 	} 
 }
 
 __global__ 
 void newtonGravityKernelLower(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n)
 {
-	// printf("inside kernel lower start");
 	unsigned long idx = threadIdx.x + blockIdx.x*blockDim.x;
 	unsigned long x = idx + x0;
 	if(x < n) { 
-		// printf("inside kernel lower");
-		// printf("%f  -> (%d,%d). using radius Component, X: (%f,%f,%f)\n", x, x, y, particles[x]->position.x, particles[x]->position.y, particles[x]->position.z);
 		int radiusComponentIndex = x + (y-1)*y/2;
-		// printf("%d  -> (%d,%d) -> %d. using radius Component, Y: (%f,%f,%f)\n", x, x, y, radiusComponentIndex, 
-		// -1*devicePRadiusComponent[radiusComponentIndex].x, -1*devicePRadiusComponent[radiusComponentIndex].y, -1*devicePRadiusComponent[radiusComponentIndex].z);
-		// printf("%f  -> (%d,%d). using radius Component: (%f,%f,%f)\n", x-x0, x, y, devicePRadiusComponent[radiusComponentIndex].x, devicePRadiusComponent[radiusComponentIndex].y, devicePRadiusComponent[radiusComponentIndex].z);
-		runOnParticle(particles[x], particles[y], -1*devicePRadiusComponent[radiusComponentIndex]);
+		runOnParticle(particles[x], particles[y], -devicePRadiusComponent[radiusComponentIndex]);
 	} 
 }
 
@@ -57,11 +47,7 @@ void newtonGravityKernelUpper(Particle** particles, Vector3D* devicePRadiusCompo
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	int x = idx + x0;
 	if(x < n) { 
-		// printf("%f  -> (%d,%d). using radius Component, X: (%f,%f,%f)\n", x, x, y, universe->particles[x]->position.x, universe->particles[x]->position.y, universe->particles[x]->position.z);
 		int radiusComponentIndex = y + (x-1)*x/2;
-		//printf("%d  -> (%d,%d) -> %d. using radius Component, Y: (%f,%f,%f)\n", x, x, y, radiusComponentIndex, 
-//			devicePRadiusComponent[radiusComponentIndex].x, devicePRadiusComponent[radiusComponentIndex].y, devicePRadiusComponent[radiusComponentIndex].z);
-		// printf("%f  -> (%d,%d). using radius Component: (%f,%f,%f)\n", x-x0, x, y, devicePRadiusComponent[radiusComponentIndex].x, devicePRadiusComponent[radiusComponentIndex].y, devicePRadiusComponent[radiusComponentIndex].z);
 		runOnParticle(particles[x], particles[y], devicePRadiusComponent[radiusComponentIndex]);
 	} 
 }
@@ -84,7 +70,6 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 		fprintf(stderr, "\ncudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
 	}
 	int particleCount = particles.size();
-	//int particleMatchingsCount = (particleCount-1)*particleCount/2;
 
 	//Instantiate object on the CPU
 	UniverseGPU cpuClass;
@@ -107,7 +92,6 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 	}
 
 	//Copy the d_par array itself to the device
-
 	Particle ** td_par;
 	cudaStatus = cudaMalloc(&td_par, particleCount * sizeof(Particle *));
 	if (cudaStatus != cudaSuccess) {
@@ -131,7 +115,6 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 		fprintf(stderr, "\nNewtonGravity: radiusComponentKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
 		throw "radiusComponentKernel failed";
 	}
-	//std::cout << "synced device" << std::endl;
 
 	for(int i = 0; i < particleCount; i++) {
 		newtonGravityKernelLower <<<1 + i/256, 256>>> (td_par, devicePRadiusComponent, 0, i, i);
@@ -142,7 +125,6 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 			fprintf(stderr, "\nNewtonGravity: newtonGravityKernels launch failed: %s\n", cudaGetErrorString(cudaStatus));
 			throw "newtonGravityKernels failed";
 		}
-		//std::cout << "synced device" << std::endl;
 		cudaStatus = cudaGetLastError();
 	}
 	for(int i = 0; i < particleCount; i++) {
@@ -166,7 +148,6 @@ void runOnParticles(Particle* p1, Particle* p2, double G) {
 	runOnParticle(p2, p1, radiusComponent);
 }
 
-//Vector3D radiusComponent = getRadiusComponent(p1->position, p2->position, G);
 __device__ __host__ 
 void runOnParticle(Particle* p1, Particle* p2, Vector3D radiusComponent) {	
 	Vector3D acceleration1 = p2->mass * radiusComponent;
