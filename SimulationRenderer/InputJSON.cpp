@@ -1,4 +1,5 @@
 #include "InputJSON.h"
+#include "OperatingSystemConstants.h"
 
 #include <iostream>
 #include <fstream>
@@ -15,7 +16,7 @@ InputJSON::InputJSON(string fileName):
 	time(0)
 {
 	FILE* fp;
-	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+	#if defined(WINDOWS)
 		char* mode = "rb";
 		fopen_s(&fp, fileName.c_str(), mode);
 	#else
@@ -40,13 +41,21 @@ InputJSON::~InputJSON() { }
 
 Value* InputJSON::input() {
 	char timeString[11]; 
-	sprintf_s(timeString,"%ld", time++);
+	#if defined(WINDOWS)
+		sprintf_s(timeString,"%ld", time++);
+	#else
+		sprintf(timeString,"%ld", time++);
+	#endif
 	if(doc.HasMember(timeString)) {
 		return &doc[timeString];
 	} else  {
 		char timeString2[11]; 
 		time = time - 2;
-		sprintf_s(timeString2,"%ld", time);
+		#if defined(WINDOWS)
+			sprintf_s(timeString2,"%ld", time);
+		#else
+			sprintf(timeString2,"%ld", time);
+		#endif
 		return &doc[timeString2];
 	}
 }
