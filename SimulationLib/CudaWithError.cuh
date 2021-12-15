@@ -12,7 +12,7 @@ public:
     void malloc(void** devPtr, size_t size);
     void memcpy(void* dst, const void* src, size_t count, cudaMemcpyKind kind);
     void deviceSynchronize();
-    void cudaFree(void* devPtr);
+    void free(void* devPtr);
 private: 
     string className;
     void throwErrorMaybe(cudaError_t cudaStatus, string error);
