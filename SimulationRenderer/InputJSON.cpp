@@ -20,7 +20,7 @@ InputJSON::InputJSON(string fileName):
 		fopen_s(&fp, fileName.c_str(), mode);
 	#else
 		char* mode = "r";
-		fopen64(&fp, fileName.c_str(), mode);
+		fp = fopen64(, fileName.c_str(), mode);
 	#endif
  
 	char readBuffer[65536];
