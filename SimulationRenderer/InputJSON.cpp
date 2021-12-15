@@ -17,10 +17,11 @@ InputJSON::InputJSON(string fileName):
 	FILE* fp;
 	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 		char* mode = "rb";
+		fopen_s(&fp, fileName.c_str(), mode);
 	#else
 		char* mode = "r";
+		fopen64(&fp, fileName.c_str(), mode);
 	#endif
-	fopen_s(&fp, fileName.c_str(), mode);
  
 	char readBuffer[65536];
 	FileReadStream is(fp, readBuffer, sizeof(readBuffer));

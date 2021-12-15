@@ -1,6 +1,9 @@
 #include "NewtonFirstLaw.cuh"
 #include "Particle.cuh"
 
+NewtonFirstLaw::NewtonFirstLaw() : Law("NewtonFirstLaw") { }
+
+
 __global__ 
 static void advanceParticles(Vector3D* position, const Vector3D* velocity, int particleCount)
 {
@@ -16,11 +19,8 @@ void NewtonFirstLaw::cpuRun(vector<Particle*>& particles) {
 }
 
 void NewtonFirstLaw::gpuRun(vector<Particle*>& particles) {
-	cudaError_t cudaStatus;
-	cudaStatus = cudaSetDevice(0);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "\nNewtonFirstLaw: cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
-	}
+    cudaError_t cudaStatus;
+	cudaWithError->setDevice(0);
 	int n = particles.size();
 	Vector3D* pPosition = new Vector3D[n];
 	Vector3D* pVelocity = new Vector3D[n];
@@ -30,11 +30,11 @@ void NewtonFirstLaw::gpuRun(vector<Particle*>& particles) {
 	}
 	Vector3D* devicePPosition = NULL;
 	Vector3D* devicePVelocity = NULL;
-	cudaMalloc(&devicePPosition, n*sizeof(Vector3D));
+	cudaStatus= cudaMalloc(&devicePPosition, n*sizeof(Vector3D));
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "\nNewtonFirstLaw: cudaMalloc failed!\n");
 	}
-	cudaMalloc(&devicePVelocity, n*sizeof(Vector3D));
+	cudaStatus= cudaMalloc(&devicePVelocity, n*sizeof(Vector3D));
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "\nNewtonFirstLaw: cudaMalloc failed!\n");
 	}

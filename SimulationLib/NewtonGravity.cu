@@ -5,23 +5,16 @@
 
 
 
-NewtonGravity::NewtonGravity() : Law(), G(PhysicalConstants::GRAVITATIONAL_CONSTANT)
-{
+NewtonGravity::NewtonGravity() : Law("NewtonGravity"), G(PhysicalConstants::GRAVITATIONAL_CONSTANT) { }
 
-}
-
-NewtonGravity::NewtonGravity(double G) : Law(), G(G)
-{
-
-}
+NewtonGravity::NewtonGravity(double G) : Law("NewtonGravity"), G(G) { }
 
 void runOnParticles(Particle* p1, Particle* p2, double G);
 __device__ __host__ void runOnParticle(Particle* p1, Particle* p2, Vector3D radiusComponent);	
 __device__ __host__ Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G);
 
 __global__ 
-void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponent, int n, double G)
-{
+void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponent, int n, double G) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
 		unsigned long y = (long long)((-1+sqrt((double)8*idx+1))/2) + 1;
@@ -31,8 +24,7 @@ void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponen
 }
 
 __global__ 
-void newtonGravityKernelLower(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n)
-{
+void newtonGravityKernelLower(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n) {
 	unsigned long idx = threadIdx.x + blockIdx.x*blockDim.x;
 	unsigned long x = idx + x0;
 	if(x < n) { 
@@ -42,8 +34,7 @@ void newtonGravityKernelLower(Particle** particles, Vector3D* devicePRadiusCompo
 }
 
 __global__ 
-void newtonGravityKernelUpper(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n)
-{
+void newtonGravityKernelUpper(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	int x = idx + x0;
 	if(x < n) { 
@@ -52,8 +43,7 @@ void newtonGravityKernelUpper(Particle** particles, Vector3D* devicePRadiusCompo
 	} 
 }
 
-void NewtonGravity::cpuRun(vector<Particle*>& particles)
-{
+void NewtonGravity::cpuRun(vector<Particle*>& particles) {
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
 		auto p1 = *it1;
 		for (auto it2 = it1+1; it2 < particles.end(); it2++) {
@@ -85,7 +75,7 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "\nNewtonGravity: cudaMalloc failed!\n");
 		}
-		cudaStatus = cudaMemcpy(d_par[i],cpuClass.particles[i],sizeof(ParticleSimple),cudaMemcpyHostToDevice);
+		cudaStatus = cudaMemcpy(d_par[i], cpuClass.particles[i], sizeof(ParticleSimple), cudaMemcpyHostToDevice);
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "\nNewtonGravity: cudaMemcpy failed!\n");
 		}
@@ -158,8 +148,11 @@ __device__ __host__
 Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G)
 {
 	Vector3D displacement = position1 - position2;
-	//TODO: only calculate magnitudeSquared once
 	double displacementSquared = displacement.magnitudeSquared();
-	if (displacementSquared == 0 ) return {0,0,0};
-	return (G / displacementSquared) * displacement.unit();
+	if (displacementSquared == 0 ) {
+		return {0,0,0};
+	} else {
+		Vector3D unit = displacement / sqrt(displacementSquared);
+		return (G / displacementSquared) * unit;
+	}
 }

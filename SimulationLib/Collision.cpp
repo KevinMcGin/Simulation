@@ -5,11 +5,10 @@
 #include <set>
 
 
-Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver): Law(),
+Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver): Law("Collision"),
 	collisionDetector(collisionDetector),
-	collisionResolver(collisionResolver)
-{
-
+	collisionResolver(collisionResolver) {
+		
 }
 
 void Collision::cpuRun(vector<Particle*>& particles)

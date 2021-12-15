@@ -16,7 +16,7 @@ __device__ __host__ Vector3D::Vector3D() {
 }
 __device__ __host__
  Vector3D Vector3D::unit() {
-	return Vector3D(x,y,z) / this->magnitude();
+	return Vector3D(x,y,z) / magnitude();
 }
 __device__ __host__
  double Vector3D::magnitudeSquared() {
@@ -24,7 +24,7 @@ __device__ __host__
 }
 __device__ __host__
  double Vector3D::magnitude() {
-	return sqrt(this->magnitudeSquared());
+	return sqrt(magnitudeSquared());
 }
 __device__ __host__
 double Vector3D::dotProduct(Vector3D vec) {
@@ -60,7 +60,6 @@ __device__ __host__
 	};
 }
 
-
 __device__ __host__
  Vector3D Vector3D::operator/(const double scale) const {
 	return {
@@ -86,9 +85,5 @@ Vector3D operator*(const double scale, const Vector3D& vec) {
 
 __device__ __host__
 Vector3D Vector3D::operator-() const {
-	return {
-		-x,
-		-y,
-		-z
-	};
+	return -1 * Vector3D(x,y,z);
  }
