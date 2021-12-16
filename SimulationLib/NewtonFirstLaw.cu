@@ -1,6 +1,9 @@
 #include "NewtonFirstLaw.cuh"
 #include "Particle.cuh"
 
+NewtonFirstLaw::NewtonFirstLaw() : Law("NewtonFirstLaw") { }
+
+
 __global__ 
 static void advanceParticles(Vector3D* position, const Vector3D* velocity, int particleCount)
 {
@@ -10,17 +13,13 @@ static void advanceParticles(Vector3D* position, const Vector3D* velocity, int p
 	} 
 }
 
-void NewtonFirstLaw::run(vector<Particle*>& particles) {
+void NewtonFirstLaw::cpuRun(vector<Particle*>& particles) {
 	for (const auto& p : particles)
 		p->advance();
 }
 
-void NewtonFirstLaw::runParallel(vector<Particle*>& particles) {
-	cudaError_t cudaStatus;
-	cudaStatus = cudaSetDevice(0);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "\nNewtonFirstLaw: cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
-	}
+void NewtonFirstLaw::gpuRun(vector<Particle*>& particles) {
+	cudaWithError->setDevice(0);
 	int n = particles.size();
 	Vector3D* pPosition = new Vector3D[n];
 	Vector3D* pVelocity = new Vector3D[n];
@@ -30,36 +29,17 @@ void NewtonFirstLaw::runParallel(vector<Particle*>& particles) {
 	}
 	Vector3D* devicePPosition = NULL;
 	Vector3D* devicePVelocity = NULL;
-	cudaMalloc(&devicePPosition, n*sizeof(Vector3D));
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "\nNewtonFirstLaw: cudaMalloc failed!\n");
-	}
-	cudaMalloc(&devicePVelocity, n*sizeof(Vector3D));
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "\nNewtonFirstLaw: cudaMalloc failed!\n");
-	}
-	cudaStatus = cudaMemcpy(devicePPosition, pPosition, n*sizeof(Vector3D), cudaMemcpyHostToDevice);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "\nNewtonFirstLaw: cudaMemcpy failed!\n");
-	}
-	cudaStatus = cudaMemcpy(devicePVelocity, pVelocity, n*sizeof(Vector3D), cudaMemcpyHostToDevice);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "\nNewtonFirstLaw: cudaMemcpy failed!\n");
-	}
+	cudaWithError->malloc((void**)&devicePPosition, n*sizeof(Vector3D));
+	cudaWithError->malloc((void**)&devicePVelocity, n*sizeof(Vector3D));
+	cudaWithError->memcpy(devicePPosition, pPosition, n*sizeof(Vector3D), cudaMemcpyHostToDevice);
+	cudaWithError->memcpy(devicePVelocity, pVelocity, n*sizeof(Vector3D), cudaMemcpyHostToDevice);
 	advanceParticles <<<1 + n/256, 256>>> (devicePPosition, devicePVelocity, n);
-	cudaDeviceSynchronize();
-	cudaStatus = cudaGetLastError();
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "\nNewtonFirstLaw: addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
-	}
-	cudaStatus = cudaMemcpy(pPosition, devicePPosition, n*sizeof(Vector3D), cudaMemcpyDeviceToHost);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "\nNewtonFirstLaw: cudaMemcpy failed!\n");
-	}
+	cudaWithError->deviceSynchronize();
+	cudaWithError->memcpy(pPosition, devicePPosition, n*sizeof(Vector3D), cudaMemcpyDeviceToHost);
 
 	for(int i = 0; i < n; i++)
 		particles[i]->position = pPosition[i];
 	
-	cudaFree(devicePPosition);
-	cudaFree(devicePVelocity);
+	cudaWithError->free(devicePPosition);
+	cudaWithError->free(devicePVelocity);
 }

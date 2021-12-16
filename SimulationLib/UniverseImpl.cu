@@ -25,9 +25,9 @@ void UniverseImpl::run()
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		for (const auto& l : laws) {
 			if(USE_GPU == TRUE)
-				l->runParallel(particles);
+				l->gpuRun(particles);
 			else
-				l->run(particles);
+				l->cpuRun(particles);
 			printPercentComplete(++lawsRan);
 		}
 		output->output(particles, i + 1);

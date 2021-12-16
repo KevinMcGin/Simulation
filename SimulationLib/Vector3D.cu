@@ -7,29 +7,24 @@
 __device__ __host__ Vector3D::Vector3D(double x, double y, double z):
 	x(x),
 	y(y),
-	z(z)
-{
+	z(z) {
 
 }
 
-__device__ __host__ Vector3D::Vector3D()
-{
+__device__ __host__ Vector3D::Vector3D() {
 
 }
 __device__ __host__
- Vector3D Vector3D::unit()
-{
-	return Vector3D(x,y,z) / this->magnitude();
+ Vector3D Vector3D::unit() {
+	return Vector3D(x,y,z) / magnitude();
 }
 __device__ __host__
- double Vector3D::magnitudeSquared()
-{
+ double Vector3D::magnitudeSquared() {
 	return x * x + y * y + z * z;
 }
 __device__ __host__
- double Vector3D::magnitude()
-{
-	return sqrt(this->magnitudeSquared());
+ double Vector3D::magnitude() {
+	return sqrt(magnitudeSquared());
 }
 __device__ __host__
 double Vector3D::dotProduct(Vector3D vec) {
@@ -41,8 +36,7 @@ Vector3D Vector3D::crossProduct(Vector3D vec) {
 }
 
 __device__ __host__ 
-Vector3D Vector3D::operator+(const Vector3D& vec) const
-{
+Vector3D Vector3D::operator+(const Vector3D& vec) const {
 	return {
 		x + vec.x,
 		y + vec.y,
@@ -50,8 +44,7 @@ Vector3D Vector3D::operator+(const Vector3D& vec) const
 	};
 }
 __device__ __host__
- Vector3D Vector3D::operator-(const Vector3D& vec) const
-{
+ Vector3D Vector3D::operator-(const Vector3D& vec) const {
 	return {
 		x - vec.x,
 		y - vec.y,
@@ -59,8 +52,7 @@ __device__ __host__
 	};
 }
 __device__ __host__
- Vector3D Vector3D::operator*(const double scale) const
-{
+ Vector3D Vector3D::operator*(const double scale) const {
 	return {
 		x * scale,
 		y * scale,
@@ -68,10 +60,8 @@ __device__ __host__
 	};
 }
 
-
 __device__ __host__
- Vector3D Vector3D::operator/(const double scale) const
-{
+ Vector3D Vector3D::operator/(const double scale) const {
 	return {
 		x / scale,
 		y / scale,
@@ -79,19 +69,21 @@ __device__ __host__
 	};
 }
 
-bool Vector3D::operator==(const Vector3D& vec) const
-{
+bool Vector3D::operator==(const Vector3D& vec) const {
 	return x == vec.x && y == vec.y && z == vec.z;
 }
 
-std::ostream& operator<< (std::ostream& out, const Vector3D& vec)
-{
+std::ostream& operator<< (std::ostream& out, const Vector3D& vec) {
     out << std::setprecision(17) << "{x: " << vec.x << ", y: " << vec.y << ", z: " << vec.z << "}";
     return out;
 }
 
 __device__ __host__
-Vector3D operator*(const double scale, const Vector3D& vec)
-{
+Vector3D operator*(const double scale, const Vector3D& vec) {
 	return vec * scale;
 }
+
+__device__ __host__
+Vector3D Vector3D::operator-() const {
+	return -1 * Vector3D(x,y,z);
+ }

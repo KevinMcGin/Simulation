@@ -11,14 +11,9 @@ public:
 	NewtonGravity();
 	NewtonGravity(double G);
 
-	virtual void run(vector<Particle*>& particles);
-	virtual void runParallel(vector<Particle*>& particles);
+	virtual void cpuRun(vector<Particle*>& particles);
+	virtual void gpuRun(vector<Particle*>& particles);
 
 protected:
 	const double G;
-};
-
-class UniverseGPU {
-public:
-  Particle** particles;
 };

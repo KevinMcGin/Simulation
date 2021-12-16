@@ -1,9 +1,5 @@
 #include "Law.h"
 
-Law::Law() {
-	
+Law::Law(string className) {
+	cudaWithError = new CudaWithError(className);
 }
-
-// Law::run(vector<Particle*>& particles) {
-
-// }

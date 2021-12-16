@@ -19,6 +19,7 @@ public:
 	__device__ __host__ Vector3D operator-(const Vector3D& vec) const;
 	__device__ __host__ Vector3D operator*(const double scale) const;
 	__device__ __host__ Vector3D operator/(const double scale) const;
+	__device__ __host__ Vector3D operator-() const;
 	bool operator==(const Vector3D& vec) const;
 	friend std::ostream& operator<<(std::ostream& out, const Vector3D& vec); 
 
