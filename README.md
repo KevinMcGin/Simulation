@@ -41,9 +41,9 @@ https://user-images.githubusercontent.com/23276119/146377747-62b6992a-f834-4974-
 ``./compile.sh``
 
 ## Configuration
-Configuration files are under ``/config``.
+Configuration files are in the ``config`` folder.
 
-Git ignored configuration files are generate from ``*.example`` files after building.
+Git ignored configuration files are generate from ``*.config.example`` files after building.
 
 ### Project
 The project config file allows the configuration of the ``BUILD_PATH`` and whether to ``USE_GPU`` in the simulation engine.
