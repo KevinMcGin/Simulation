@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 	double meanSpeed = 0.04;
 	double deltaSpeedFraction = 0.2;
 	double outerRadius = 15;
+	double meanDensity = 1000;
 
 	static struct cag_option options[] = {	   
 		{'p',
@@ -42,6 +43,10 @@ int main(int argc, char *argv[])
 		 "m",
 		 "mean-mass",
 		 "Mean mass of particles"},	
+		 {'u',
+		  "u",
+		  "mean-density",
+		  "Mean density of particles"},	
 		{'c',
 		 "c",
 		  "star-mass",
@@ -87,6 +92,10 @@ int main(int argc, char *argv[])
 				const char* value = cag_option_get_value(&context);
 				meanMass = atof(value);
 				break;}
+			case 'u':{
+				const char* value = cag_option_get_value(&context);
+				meanDensity = atof(value);
+				break;}
 			case 'c':{
 				const char* value = cag_option_get_value(&context);
 				starMass = atof(value);
@@ -115,7 +124,7 @@ int main(int argc, char *argv[])
 
 	Vector3D meanPosition = {0,0,0};
 	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
-	Distribution* density = new DistributionValue(3000);
+	Distribution* density = new DistributionValue(meanDensity);
 	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
 	DistributionDensity* distributionDensityStar = new DistributionMassDensity(new DistributionValue(starMass), density);
 	Distribution3D* positionDistrubtion5 = new DistributionCircle(meanPosition, 0);

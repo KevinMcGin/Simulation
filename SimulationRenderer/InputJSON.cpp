@@ -31,9 +31,9 @@ InputJSON::InputJSON(string fileName):
     //     std::cerr << "Could not open file for reading!\n";
     // }
 
-	std::cout << "parsing" << std::endl;
+	std::cout << "Parsing simulation: " << fileName << std::endl;
     doc.ParseStream( is );
-	std::cout << "parsed" << std::endl;
+	std::cout << "Parsing done" << std::endl;
 	
 }
 
