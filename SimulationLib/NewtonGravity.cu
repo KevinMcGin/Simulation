@@ -58,17 +58,16 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 	int particleCount = particles.size();
 
 	//Instantiate object on the CPU
-	UniverseGPU cpuClass;
-	cpuClass.particles = new Particle*[particleCount];
+	auto particlesArray = new Particle*[particleCount];
 	for(int i = 0; i < particleCount; ++i)
-		cpuClass.particles[i] = particles[i];
+		particlesArray[i] = particles[i];
 
 	//Copy dynamically allocated child objects to GPU
 	Particle ** d_par;
 	d_par = new Particle*[particleCount];
 	for(int i = 0; i < particleCount; ++i) {
 		cudaWithError->malloc((void**)&d_par[i],sizeof(ParticleSimple));
-		cudaWithError->memcpy(d_par[i], cpuClass.particles[i], sizeof(ParticleSimple), cudaMemcpyHostToDevice);
+		cudaWithError->memcpy(d_par[i], particlesArray[i], sizeof(ParticleSimple), cudaMemcpyHostToDevice);
 	}
 
 	//Copy the d_par array itself to the device
@@ -89,14 +88,14 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 		cudaWithError->deviceSynchronize();
 	}
 	for(int i = 0; i < particleCount; i++) {
-		cudaWithError->memcpy(cpuClass.particles[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
+		cudaWithError->memcpy(particlesArray[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
 		cudaWithError->free(d_par[i]);
-		particles[i]->velocity = cpuClass.particles[i]->velocity;
+		particles[i]->velocity = particlesArray[i]->velocity;
 	}
 	
 	cudaWithError->free(devicePRadiusComponent);
 	cudaWithError->free(td_par);
-	delete cpuClass.particles;
+	delete particlesArray;
 	delete d_par;
 }
 

@@ -17,8 +17,3 @@ public:
 protected:
 	const double G;
 };
-
-class UniverseGPU {
-public:
-  Particle** particles;
-};
