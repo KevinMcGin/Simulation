@@ -6,7 +6,7 @@ Simulates the motion of particles on the GPU with Nvidia's CUDA, or just on the 
 Renders these simulations with OpenGL.
 
 ## Render Example
-https://user-images.githubusercontent.com/23276119/146376301-3b1c7de0-5c32-4637-b3ac-46d099cc11b9.mp4
+https://user-images.githubusercontent.com/23276119/146377747-62b6992a-f834-4974-bd93-1703e3e06ea8.mp4
 
 ## Project Goals
 - Simulate real world phenomenon.
