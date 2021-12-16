@@ -1,4 +1,4 @@
-﻿[![Build Status](https://github.com/KevinMcGin/Simulation/actions/workflows/actions.yml/badge.svg)](https://github.com/KevinMcGin/Simulation/actions/workflows/actions.yml)
+﻿[![Ubuntu CPU Build & Test](https://github.com/KevinMcGin/Simulation/actions/workflows/actions.yml/badge.svg)](https://github.com/KevinMcGin/Simulation/actions/workflows/actions.yml)
 
 # Simulation
 Simulates the motion of particles on the GPU with Nvidia's CUDA, or just on the CPU if a GPU is not available.
