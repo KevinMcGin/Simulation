@@ -28,7 +28,7 @@ InputJSON* input;
 int main(int argc, char **argv) {
     cout << "Renderer running" << endl;
 
-    input = new InputJSON("simulation_output/simulation_output_long.json");
+    input = new InputJSON("simulation_output/simulation_output.json");
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -82,7 +82,7 @@ void display_scene() {
         GLfloat color[] = {1.0, 1.0, 0.0, 1.0};
         float radius = p["r"].GetFloat();
         if(p["r"].GetFloat() >= 0.1) {
-            radius = 0.01f;
+            // radius = 0.01f;
             color[0] = 1.0;
             color[1] = 0.0;
             color[2] = 0.0;
@@ -91,7 +91,7 @@ void display_scene() {
         glPushMatrix();
         glTranslatef(p["pos"][0].GetFloat(), p["pos"][1].GetFloat(), p["pos"][2].GetFloat());
         glColor3f(1, 1, 1);
-        GLfloat scale = 3.0;
+        GLfloat scale = 1.0;
         glScalef(scale,scale, scale);
         glutSolidSphere(radius, 10, 10);
         glPopMatrix();
