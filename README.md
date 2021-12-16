@@ -53,7 +53,7 @@ The project config file allows the configuration of the ``BUILD_PATH`` and wheth
 ``./test.sh``
 
 ### CPU Tests Only
-``./test.sh --c``
+``./test.sh -c``
 
 ## Run Engine
 ``./engine.sh``
