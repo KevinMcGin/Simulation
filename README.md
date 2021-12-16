@@ -5,6 +5,10 @@ Simulates the motion of particles on the GPU with Nvidia's CUDA, or just on the 
 
 Renders these simulations with OpenGL.
 
+## Render Example
+
+https://user-images.githubusercontent.com/23276119/146375696-af4c8407-b3fa-49a5-a5af-88efd50c05fd.mp4
+
 ## Project Goals
 - Simulate real world phenomenon.
 - Predict future motion of asteroids, planets, and stars.
