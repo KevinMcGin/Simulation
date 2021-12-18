@@ -22,7 +22,7 @@ __global__
 void getCollidedParticles(Particle** particles, bool* collisionMarks, int n, int collisionDetectorIndex) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
-		//printf("getCollidedParticles\n");
+		//TODO find soluation to this, creating new class with a pointer is slow on GPU threads
 		//Cuda doesn't recognise virtual functions of classes initialised on the CPU, so we have to initialise them here
 		// CollisionDetector* collisionDetector;
 		// if(collisionDetectorIndex == CollisionDetectorSimple::INDEX) {
@@ -36,12 +36,9 @@ void getCollidedParticles(Particle** particles, bool* collisionMarks, int n, int
 		MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
 		auto p1 = particles[x];
 		auto p2 = particles[y];
-		//printf("Got particles\n");
 		if (collisionDetector.isCollision(p1, p2)) {
-			//printf("Collision. %d: %d, %d\n", idx, x, y);
 			collisionMarks[idx] = true;
 		} else {
-			//printf("No collision\n");
 			collisionMarks[idx] = false;			
 		}
 		// delete collisionDetector;
@@ -66,7 +63,6 @@ __device__ MergeStatus mergeCollisionsRows(bool* collisionMarks, int idx, int ro
 		if(collisionMarks[collisionMarksIndex]) {
 			int correspondingCollisionMarksIndex = MatrixMaths::getLowerTriangularIndx(i, idx);
 			if(firstRun || !collisionMarks[correspondingCollisionMarksIndex]) {
-				//printf("ROWS for %d. %d: %d, %d\n", idx, collisionMarksIndex, row, i);
 				collisionMarks[correspondingCollisionMarksIndex] = true;
 				collisionsToResolve = true;
 				mergeStatus = mergeCollisionsRows(collisionMarks, idx, i, n);
@@ -85,12 +81,10 @@ __device__ MergeStatus mergeCollisionsColumns(bool* collisionMarks, int idx, int
 		int collisionMarksIndex = MatrixMaths::getLowerTriangularIndx(row, i);
 		if(collisionMarks[collisionMarksIndex]) {
 			if(i > idx) {
-				//printf("LOWER_COLLISION_FOUND for %d. %d: %d, %d\n", idx, collisionMarksIndex, row, i);
 				return LOWER_COLLISION_FOUND;
 			} else if(i < idx) {
 				int correspondingCollisionMarksIndex = MatrixMaths::getLowerTriangularIndx(i, idx);
 				if(!collisionMarks[correspondingCollisionMarksIndex]) {
-					//printf("COLS for %d, %d. %d, %d: %d, %d\n", idx, row, collisionMarksIndex, correspondingCollisionMarksIndex, row, i);
 					collisionMarks[correspondingCollisionMarksIndex] = true;
 					collisionsToResolve = true;
 					MergeStatus mergeStatus = mergeCollisionsRows(collisionMarks, idx, i, n);
@@ -108,7 +102,7 @@ __global__
 void resolveCollidedParticles(Particle** particles, bool* collisionMarks, int n, int collisionResolverIndex) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
-		//printf("resolveCollidedParticles\n");
+		//TODO find soluation to this, creating new class with a pointer is slow on GPU threads
 		//Cuda doesn't recognise virtual functions of classes initialised on the CPU, so we have to initialise them here
 		// CollisionResolver* collisionResolver;
 		// if(collisionResolverIndex == CollisionResolverCoalesce::INDEX) {
@@ -118,19 +112,12 @@ void resolveCollidedParticles(Particle** particles, bool* collisionMarks, int n,
 		// 	assert(false);
 		// }
 		CollisionResolverCoalesce collisionResolver = CollisionResolverCoalesce();
-		auto mergeStatus = mergeCollisionsRows(collisionMarks, idx, idx, n, true);
-		switch(mergeStatus) {
-			case LOWER_COLLISION_FOUND  ://printf("%d: LOWER_COLLISION_FOUND\n", idx);   break;
-			case COLLISION_FOUND: //printf("%d: COLLISION_FOUND\n", idx); break;
-			case NO_COLLISION_FOUND : //printf("%d: NO_COLLISION_FOUND\n", idx);  break;
-		}
-		bool collisionsToResolve = mergeStatus == COLLISION_FOUND;
+		auto collisionsToResolve = mergeCollisionsRows(collisionMarks, idx, idx, n, true) == COLLISION_FOUND; 
 		if(collisionsToResolve) {
 			auto p1 = particles[idx];
 			for(int i = 0; i < idx; i++) {
 				int collisionMarksIndex = i + (idx-1)*idx/2;
 				if (collisionMarks[collisionMarksIndex]) {
-					//printf("Resolving collision: %d, %d\n", idx, i);
 					auto p2 = particles[i];
 					collisionResolver.resolve(p1, p2);
 				}
@@ -254,6 +241,5 @@ void Collision::gpuRun(vector<Particle*>& particles) {
 	cudaWithError->free(collisionMarks);
 	delete particlesArray;
 	delete d_par;
-	
-	// cout << "Got to the end" << endl;
+
 }
