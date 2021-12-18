@@ -1,5 +1,6 @@
 simulation_output/*.json
-build/*
+builds/*
+!builds/.gitkeep
 config/**/*.config
 
 .vscode/
