@@ -186,27 +186,7 @@ void Collision::cpuRun(vector<Particle*>& particles)
 }
 
 
-void Collision::gpuRun(vector<Particle*>& particles) {
-	cudaWithError->setDevice(0);
-	int particleCount = (int)particles.size();
-
-	//Instantiate object on the CPU
-	auto particlesArray = new Particle*[particleCount];
-	for(int i = 0; i < particleCount; ++i)
-		particlesArray[i] = particles[i];
-
-	//Copy dynamically allocated child objects to GPU
-	Particle ** d_par;
-	d_par = new Particle*[particleCount];
-	for(int i = 0; i < particleCount; ++i) {
-		cudaWithError->malloc((void**)&d_par[i],sizeof(ParticleSimple));
-		cudaWithError->memcpy(d_par[i], particlesArray[i], sizeof(ParticleSimple), cudaMemcpyHostToDevice);
-	}
-
-	//Copy the d_par array itself to the device
-	Particle** td_par;
-	cudaWithError->malloc((void**)&td_par, particleCount * sizeof(Particle *));
-	cudaWithError->memcpy(td_par, d_par, particleCount * sizeof(Particle *), cudaMemcpyHostToDevice);
+void Collision::gpuRun(Particle** td_par, int particleCount) {
 
 	// get particles that collided
 	int betweenParticlesCount = (particleCount-1)*particleCount/2;
@@ -219,27 +199,5 @@ void Collision::gpuRun(vector<Particle*>& particles) {
 	resolveCollidedParticles <<<1 + particleCount/256, 256>>> (td_par, collisionMarks, particleCount, collisionResolver->getIndex());
 	cudaWithError->deviceSynchronize("resolveCollidedParticles");
 
-	//copy particles back to cpu
-	for(int i = 0; i < particleCount; i++) {
-		cudaWithError->memcpy(particlesArray[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
-		cudaWithError->free(d_par[i]);
-		particles[i] = particlesArray[i];
-	}
-
-	//TODO: do this on gpu
-	//erase particles marked for deletion safely
-	for (auto it = particles.begin(); it != particles.end();) {
-		if((*it)->deleted) {
-			delete *it;
-			it = particles.erase(it);
-		}
-		else
-			++it;
-	}
-
-	cudaWithError->free(td_par);
 	cudaWithError->free(collisionMarks);
-	delete particlesArray;
-	delete d_par;
-
 }

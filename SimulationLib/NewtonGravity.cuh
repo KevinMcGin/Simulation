@@ -12,7 +12,7 @@ public:
 	NewtonGravity(double G);
 
 	virtual void cpuRun(vector<Particle*>& particles);
-	virtual void gpuRun(vector<Particle*>& particles);
+	virtual void gpuRun(Particle** td_par, int particleCount);
 
 protected:
 	const double G;

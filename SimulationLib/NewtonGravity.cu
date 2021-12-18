@@ -50,30 +50,9 @@ void NewtonGravity::cpuRun(vector<Particle*>& particles) {
 			runOnParticles(p1,p2,G);
 		}
 	}
-}
+} 
 
-void NewtonGravity::gpuRun(vector<Particle*>& particles) {
-	cudaWithError->setDevice(0);
-	int particleCount = (int)particles.size();
-
-	//Instantiate object on the CPU
-	auto particlesArray = new Particle*[particleCount];
-	for(int i = 0; i < particleCount; ++i)
-		particlesArray[i] = particles[i];
-
-	//Copy dynamically allocated child objects to GPU
-	Particle ** d_par;
-	d_par = new Particle*[particleCount];
-	for(int i = 0; i < particleCount; ++i) {
-		cudaWithError->malloc((void**)&d_par[i],sizeof(ParticleSimple));
-		cudaWithError->memcpy(d_par[i], particlesArray[i], sizeof(ParticleSimple), cudaMemcpyHostToDevice);
-	}
-
-	//Copy the d_par array itself to the device
-	Particle ** td_par;
-	cudaWithError->malloc((void**)&td_par, particleCount * sizeof(Particle *));
-	cudaWithError->memcpy(td_par, d_par, particleCount * sizeof(Particle *), cudaMemcpyHostToDevice);
-
+void NewtonGravity::gpuRun(Particle** td_par, int particleCount) {
 	//Radius component
 	int betweenParticlesCount = (particleCount-1)*particleCount/2;
 	Vector3D* devicePRadiusComponent = NULL;
@@ -84,19 +63,12 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 	for(int i = 0; i < particleCount; i++) {
 		newtonGravityKernelLower <<<1 + i/256, 256>>> (td_par, devicePRadiusComponent, 0, i, i);
 		newtonGravityKernelUpper <<<1 + (particleCount-1-i)/256, 256>>> (td_par, devicePRadiusComponent, i+1, i, particleCount);
-		//TODO can we move this out of the loop?
+		//TODO can we move this out of the loop? 
+		//Or do the calculations in parallel fully, and then apply them with this deviceSynchronize every loop
 		cudaWithError->deviceSynchronize();
-	}
-	for(int i = 0; i < particleCount; i++) {
-		cudaWithError->memcpy(particlesArray[i],d_par[i],sizeof(ParticleSimple),cudaMemcpyDeviceToHost);
-		cudaWithError->free(d_par[i]);
-		particles[i]->velocity = particlesArray[i]->velocity;
 	}
 	
 	cudaWithError->free(devicePRadiusComponent);
-	cudaWithError->free(td_par);
-	delete particlesArray;
-	delete d_par;
 }
 
 void runOnParticles(Particle* p1, Particle* p2, double G) {	
