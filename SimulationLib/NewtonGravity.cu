@@ -1,9 +1,8 @@
 #include "NewtonGravity.cuh"
 #include "ParticleSimple.h"
+#include "MatrixMaths.cuh"
 
 #include <cmath>
-
-
 
 NewtonGravity::NewtonGravity() : Law("NewtonGravity"), G(PhysicalConstants::GRAVITATIONAL_CONSTANT) { }
 
@@ -17,18 +16,18 @@ __global__
 void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponent, int n, double G) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
-		unsigned long y = (long long)((-1+sqrt((double)8*idx+1))/2) + 1;
-		unsigned long x = idx - (y-1)*y/2;
+		int x, y;
+		MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
 		devicePRadiusComponent[idx] = getRadiusComponent(particles[x]->position, particles[y]->position, G);
 	} 
 }
 
 __global__ 
 void newtonGravityKernelLower(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n) {
-	unsigned long idx = threadIdx.x + blockIdx.x*blockDim.x;
-	unsigned long x = idx + x0;
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	int x = idx + x0;
 	if(x < n) { 
-		int radiusComponentIndex = x + (y-1)*y/2;
+		int radiusComponentIndex = MatrixMaths::getLowerTriangularIndx(x, y);
 		runOnParticle(particles[x], particles[y], -devicePRadiusComponent[radiusComponentIndex]);
 	} 
 }
@@ -38,7 +37,7 @@ void newtonGravityKernelUpper(Particle** particles, Vector3D* devicePRadiusCompo
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	int x = idx + x0;
 	if(x < n) { 
-		int radiusComponentIndex = y + (x-1)*x/2;
+		int radiusComponentIndex = MatrixMaths::getUpperTriangularIndx(x, y);
 		runOnParticle(particles[x], particles[y], devicePRadiusComponent[radiusComponentIndex]);
 	} 
 }
@@ -55,7 +54,7 @@ void NewtonGravity::cpuRun(vector<Particle*>& particles) {
 
 void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 	cudaWithError->setDevice(0);
-	int particleCount = particles.size();
+	int particleCount = (int)particles.size();
 
 	//Instantiate object on the CPU
 	auto particlesArray = new Particle*[particleCount];

@@ -2,8 +2,9 @@
 #include "ParticleSimple.h"
 #include "CollisionDetectorSimple.cuh"
 #include "CollisionResolverCoalesce.cuh"
-#include <assert.h>
+#include "MatrixMaths.cuh"
 
+#include <assert.h>
 #include <map>
 #include <algorithm>
 #include <iterator>
@@ -34,8 +35,8 @@ void getCollidedParticles(Particle** particles, bool* collisionMarks, int n, int
 		// 	assert(false);
 		// }
 		CollisionDetectorSimple collisionDetector = CollisionDetectorSimple();
-		unsigned long y = (long long)((-1+sqrt((double)8*idx+1))/2) + 1;
-		unsigned long x = idx - (y-1)*y/2;
+		int x, y;
+		MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
 		auto p1 = particles[x];
 		auto p2 = particles[y];
 		//printf("Got particles\n");
@@ -64,9 +65,9 @@ __device__ MergeStatus mergeCollisionsRows(bool* collisionMarks, int idx, int ro
 		case NO_COLLISION_FOUND: break;
 	}
 	for(int i = 0; i < row; i++) {
-		int collisionMarksIndex = i + (row-1)*row/2;
+		int collisionMarksIndex = MatrixMaths::getLowerTriangularIndx(i, row);
 		if(collisionMarks[collisionMarksIndex]) {
-			int correspondingCollisionMarksIndex = i + (idx-1)*idx/2;
+			int correspondingCollisionMarksIndex = MatrixMaths::getLowerTriangularIndx(i, idx);
 			if(firstRun || !collisionMarks[correspondingCollisionMarksIndex]) {
 				//printf("ROWS for %d. %d: %d, %d\n", idx, collisionMarksIndex, row, i);
 				collisionMarks[correspondingCollisionMarksIndex] = true;
@@ -84,13 +85,13 @@ __device__ MergeStatus mergeCollisionsRows(bool* collisionMarks, int idx, int ro
 __device__ MergeStatus mergeCollisionsColumns(bool* collisionMarks, int idx, int row, int n) {
 	bool collisionsToResolve = false;
 	for(int i = row + 1; i < n; i++) {
-		int collisionMarksIndex = row + (i-1)*i/2;
+		int collisionMarksIndex = MatrixMaths::getLowerTriangularIndx(row, i);
 		if(collisionMarks[collisionMarksIndex]) {
 			if(i > idx) {
 				//printf("LOWER_COLLISION_FOUND for %d. %d: %d, %d\n", idx, collisionMarksIndex, row, i);
 				return LOWER_COLLISION_FOUND;
 			} else if(i < idx) {
-				int correspondingCollisionMarksIndex = i + (idx-1)*idx/2;
+				int correspondingCollisionMarksIndex = MatrixMaths::getLowerTriangularIndx(i, idx);
 				if(!collisionMarks[correspondingCollisionMarksIndex]) {
 					//printf("COLS for %d, %d. %d, %d: %d, %d\n", idx, row, collisionMarksIndex, correspondingCollisionMarksIndex, row, i);
 					collisionMarks[correspondingCollisionMarksIndex] = true;
@@ -251,7 +252,6 @@ void Collision::gpuRun(vector<Particle*>& particles) {
 		else
 			++it;
 	}
-
 
 	cudaWithError->free(td_par);
 	cudaWithError->free(collisionMarks);
