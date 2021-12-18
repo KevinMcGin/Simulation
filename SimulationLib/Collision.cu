@@ -12,14 +12,11 @@
 #include <cmath>
 #include <typeinfo>
 
-
 Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver): Law("Collision"),
 	collisionDetector(collisionDetector),
 	collisionResolver(collisionResolver) {
 		
 }
-
-
 
 __global__ 
 void getCollidedParticles(Particle** particles, bool* collisionMarks, int n, int collisionDetectorIndex) {
