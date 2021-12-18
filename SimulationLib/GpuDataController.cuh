@@ -1,6 +1,6 @@
 #pragma once
 #include "Particle.cuh"
-#include "cudaWithError.cuh"
+#include "CudaWithError.cuh"
 
 #include <vector>
 

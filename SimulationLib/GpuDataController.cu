@@ -1,5 +1,4 @@
 #include "GpuDataController.cuh"
-#include "CudaWithError.cuh"
 #include "ParticleSimple.h"
 
 GpuDataController::GpuDataController() {
