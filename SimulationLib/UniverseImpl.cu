@@ -22,7 +22,9 @@ void UniverseImpl::run() {
 	this->progress = -1;
 	int lawsRan = 0;
 	bool particleDeleted = false;
-	gpuDataController.putParticlesOnDevice(particles, true);
+	if(USE_GPU == TRUE) {
+		gpuDataController.putParticlesOnDevice(particles, true);
+	}
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		if(USE_GPU == TRUE) {
 			if(particleDeleted) {
