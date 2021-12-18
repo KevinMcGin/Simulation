@@ -21,10 +21,15 @@ void UniverseImpl::run() {
 	output->output(particles, 0);
 	this->progress = -1;
 	int lawsRan = 0;
+	bool particleDeleted = false;
+	gpuDataController.putParticlesOnDevice(particles, true);
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		if(USE_GPU == TRUE) {
-			gpuDataController.putParticlesOnDevice(particles);
+			if(particleDeleted) {
+				gpuDataController.putParticlesOnDevice(particles);
+			}
 		}
+		particleDeleted = false;
 		for (const auto& l : laws) {
 			if(USE_GPU == TRUE) {
 				l->gpuRun(gpuDataController.get_td_par(), gpuDataController.getParticleCount());
@@ -41,6 +46,7 @@ void UniverseImpl::run() {
 				if((*it)->deleted) {
 					delete *it;
 					it = particles.erase(it);
+					particleDeleted = true;
 				}
 				else
 					++it;
