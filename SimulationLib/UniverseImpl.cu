@@ -10,7 +10,9 @@ UniverseImpl::UniverseImpl(vector<Law*> laws, SimulationInput* input, Simulation
 	this->output = output;
 	this->deltaTime = deltaTime;
 	this->endTime = endTime;
-	gpuDataController = GpuDataController();
+	if(USE_GPU == TRUE) {
+		gpuDataController = GpuDataController();
+	}
 }
 
 void UniverseImpl::run() {
