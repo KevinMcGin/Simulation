@@ -1,8 +1,6 @@
-#include "CollisionDetectorSimple.h"
+#include "CollisionDetectorSimple.cuh"
 
-
-
-
+__device__ __host__
 bool CollisionDetectorSimple::isCollision(Particle* p1, Particle* p2)
 {
 	Vector3D difference = {

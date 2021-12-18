@@ -11,7 +11,7 @@ public:
     void setDevice(int device);
     void malloc(void** devPtr, size_t size);
     void memcpy(void* dst, const void* src, size_t count, cudaMemcpyKind kind);
-    void deviceSynchronize();
+    void deviceSynchronize(string message = "");
     void free(void* devPtr);
 private: 
     string className;

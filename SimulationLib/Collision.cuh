@@ -1,7 +1,7 @@
 #pragma once
 #include "Law.h"
-#include "CollisionDetector.h"
-#include "CollisionResolver.h"
+#include "CollisionDetector.cuh"
+#include "CollisionResolver.cuh"
 class Collision :
     public Law
 {

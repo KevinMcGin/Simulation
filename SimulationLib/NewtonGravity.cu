@@ -85,6 +85,7 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 	for(int i = 0; i < particleCount; i++) {
 		newtonGravityKernelLower <<<1 + i/256, 256>>> (td_par, devicePRadiusComponent, 0, i, i);
 		newtonGravityKernelUpper <<<1 + (particleCount-1-i)/256, 256>>> (td_par, devicePRadiusComponent, i+1, i, particleCount);
+		//TODO can we move this out of the loop?
 		cudaWithError->deviceSynchronize();
 	}
 	for(int i = 0; i < particleCount; i++) {
@@ -101,7 +102,7 @@ void NewtonGravity::gpuRun(vector<Particle*>& particles) {
 
 void runOnParticles(Particle* p1, Particle* p2, double G) {	
 	Vector3D radiusComponent = getRadiusComponent(p1->position, p2->position, G);
-	runOnParticle(p1, p2, -1*radiusComponent);
+	runOnParticle(p1, p2, -radiusComponent);
 	runOnParticle(p2, p1, radiusComponent);
 }
 

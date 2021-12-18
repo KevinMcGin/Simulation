@@ -1,6 +1,6 @@
-#include "CollisionCoalesce.h"
-#include "CollisionDetectorSimple.h"
-#include "CollisionResolverCoalesce.h"
+#include "CollisionCoalesce.cuh"
+#include "CollisionDetectorSimple.cuh"
+#include "CollisionResolverCoalesce.cuh"
 
 
 CollisionCoalesce::CollisionCoalesce() :

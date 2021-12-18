@@ -4,7 +4,7 @@
 
 #include <vector>
 
-TEST(NewtonGravityTest, ParticlesAccelerateGPU) {
+TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
 	Law* law = new NewtonGravity(0.05);
 	vector<Particle*> particles = { 
 		new ParticleSimple(1,1,{0,0.1,0},{0,0,0},{0,0,0}),  
