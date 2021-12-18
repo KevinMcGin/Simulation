@@ -36,7 +36,7 @@ void GpuDataController::putParticlesOnDevice(vector<Particle*> particles, bool f
 
 void GpuDataController::getParticlesFromDevice(vector<Particle*>& particles) {
 	for(int i = 0; i < particleCount; i++) {
-		cudaWithError->memcpy(particles[i] ,d_par[i], sizeof(ParticleSimple), cudaMemcpyDeviceToHost);
+		cudaWithError->memcpy(particles[i], d_par[i], sizeof(ParticleSimple), cudaMemcpyDeviceToHost);
 	}
 }
 
