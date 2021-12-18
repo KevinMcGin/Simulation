@@ -23,13 +23,12 @@ InputJSON::InputJSON(string fileName):
 		char* mode = "r";
 		fp = fopen64(fileName.c_str(), mode);
 	#endif
+	if (!fp) {
+        std::cerr << "Could not open file for reading!\n";
+    }
  
 	char readBuffer[65536];
 	FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-	// if ( !is.() )
-    // {
-    //     std::cerr << "Could not open file for reading!\n";
-    // }
 
 	std::cout << "Parsing simulation: " << fileName << std::endl;
     doc.ParseStream( is );
