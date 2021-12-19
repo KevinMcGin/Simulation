@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 delete_build='false'
 build_folder='builds/build'
 

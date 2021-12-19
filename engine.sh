@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 build_folder='builds/build'
 file='engine.config'
 no_compile='false'
