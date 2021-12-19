@@ -7,7 +7,7 @@ CudaWithError::CudaWithError(string className): className(className) { }
 void CudaWithError::throwErrorMaybe(cudaError_t cudaStatus, string error) {
     if (cudaStatus != cudaSuccess) {
         string totalError = className + ": " + error + "\n" + cudaGetErrorString(cudaStatus);
-        cerr << endl << totalError;
+        cerr << endl << totalError << endl;
         throw new runtime_error(totalError);
     }
 }
@@ -27,9 +27,9 @@ void CudaWithError::memcpy(void* dst, const void* src, size_t count, cudaMemcpyK
     throwErrorMaybe(cudaStatus, "cudaMemcpy failed!");
 }
 
-void CudaWithError::deviceSynchronize() {
+void CudaWithError::deviceSynchronize(string message) {
     cudaError_t cudaStatus = cudaDeviceSynchronize();
-    throwErrorMaybe(cudaStatus, "cudaDeviceSynchronize failed!");
+    throwErrorMaybe(cudaStatus, message + ": cudaDeviceSynchronize failed!");
 }
 
 void CudaWithError::free(void* devPtr) {

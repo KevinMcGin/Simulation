@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
 	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
-	double seconds = 10;
+	unsigned int seconds = 10;
 	double meanMass = 0.01;	
 	double starMass = 50;
 	double meanSpeed = 0.04;
@@ -123,15 +123,15 @@ int main(int argc, char *argv[])
 	unsigned int endTime = seconds * frameRate;
 
 	Vector3D meanPosition = {0,0,0};
-	Distribution* massDistrubtion = new DistributionSimple(meanMass, meanMass*0.9);
+	Distribution* massDistribution = new DistributionSimple(meanMass, meanMass*0.9);
 	Distribution* density = new DistributionValue(meanDensity);
-	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
+	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistribution, density);
 	DistributionDensity* distributionDensityStar = new DistributionMassDensity(new DistributionValue(starMass), density);
-	Distribution3D* positionDistrubtion5 = new DistributionCircle(meanPosition, 0);
-	Distribution3D* velocityDistrubtion5 = new DistributionCircle(meanPosition, 0);
-	Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
-	ParticleDistribution* particleDistributionDisk = new ParticleDistributionDisk(densityDistribution, starMass*2, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistrubtion);	
-	ParticleDistribution* particleDistributionStar = new ParticleDistributionSimple(distributionDensityStar, positionDistrubtion5, velocityDistrubtion5, angularVelocityDistrubtion);
+	Distribution3D* positionDistribution = new DistributionCircle(meanPosition, 0);
+	Distribution3D* velocityDistribution = new DistributionCircle(meanPosition, 0);
+	Distribution3D* angularVelocityDistribution = new DistributionCircle({ 0,0,0 }, 0);
+	ParticleDistribution* particleDistributionDisk = new ParticleDistributionDisk(densityDistribution, 2 * starMass, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistribution);	
+	ParticleDistribution* particleDistributionStar = new ParticleDistributionSimple(distributionDensityStar, positionDistribution, velocityDistribution, angularVelocityDistribution);
 	SimulationInput* input = new SimulationInputRandomSimple(
 		{ particleCount - 1, 1 },
 		{ particleDistributionDisk, particleDistributionStar }

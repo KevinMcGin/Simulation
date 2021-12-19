@@ -37,7 +37,7 @@ find_package(GLUT REQUIRED)
 include_directories( 
     ${OPENGL_INCLUDE_DIRS}  
     ${GLUT_INCLUDE_DIR} 
-    "${CMAKE_SOURCE_DIR}/build/SimulationRenderer/vendor/rapidjson/src/rapidjson/include" 
+    "${CMAKE_CURRENT_BINARY_DIR}/vendor/rapidjson/src/rapidjson/include" 
     "lib/freeglut/bin/x64"
 )
 

@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "CollisionDetectorSimple.h"
+#include "CollisionDetectorSimple.cuh"
 #include "ParticleSimple.h"
 
 #include <vector>

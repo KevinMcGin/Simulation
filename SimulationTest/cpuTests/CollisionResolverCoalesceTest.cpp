@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "CollisionResolverCoalesce.h"
+#include "CollisionResolverCoalesce.cuh"
 #include "ParticleSimple.h"
 
 #include <vector>

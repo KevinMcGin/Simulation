@@ -7,13 +7,10 @@
 __device__ __host__ Vector3D::Vector3D(double x, double y, double z):
 	x(x),
 	y(y),
-	z(z) {
+	z(z) { }
 
-}
+__device__ __host__ Vector3D::Vector3D() { }
 
-__device__ __host__ Vector3D::Vector3D() {
-
-}
 __device__ __host__
  Vector3D Vector3D::unit() {
 	return Vector3D(x,y,z) / magnitude();

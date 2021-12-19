@@ -1,21 +1,23 @@
-#!/usr/bin/env sh
+#!/bin/bash
 delete_build='false'
+build_folder='builds/build'
 
 print_usage() {
-  printf "Usage: $0 [-d <delete build folder before build>]"
+  printf "Usage: $0 [-f <specify folder to build to> -d <delete build folder before build>]"
 }
 
 do_delete_build() {
-    rm -rf build
-    mkdir build
+    rm -rf $build_folder
+    mkdir $build_folder
 }
 
 create_config_maybe() {
    test -f $1 || (cp $1.example $1 && echo "Created config file: $1")
 }
 
-while getopts 'd' flag; do
+while getopts 'b:d' flag; do
   case "${flag}" in
+    b) build_folder="${OPTARG}" ;;
     d) delete_build='true' ;;
     *) print_usage
        exit 1 ;;
@@ -27,14 +29,14 @@ then
    do_delete_build
 fi
 
-cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
+cmake -S. -B$build_folder -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
 if [ $? -ne 0 ]
 then
    echo -e "\ncompile failed"
    exit 1
 fi
 
-cmake --build build
+cmake --build $build_folder
 if [ $? -ne 0 ]
 then
    echo -e "\nbuild failed"
@@ -46,4 +48,5 @@ create_config_maybe config/engine/engine.config
 
 # TODO: link these instead of copying the file (move to compile?)
 source ./config/project.config
-cp SimulationRenderer/lib/freeglut/bin/x64/freeglut.dll ./${BUILD_PATH:-'build/bin'}
+cp SimulationRenderer/lib/freeglut/bin/x64/freeglut.dll ./$build_folder${BUILD_PATH_END:-'/bin'}
+

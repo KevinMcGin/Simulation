@@ -1,17 +1,19 @@
 #include  <gtest/gtest.h>
 #include "NewtonGravity.cuh"
+#include "GpuDataController.cuh"
 #include "ParticleSimple.h"
 
-#include <vector>
-
-TEST(NewtonGravityTest, ParticlesAccelerateGPU) {
-	Law* law = new NewtonGravity(0.05);
+TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
+	NewtonGravity law = NewtonGravity(0.05);
 	vector<Particle*> particles = { 
 		new ParticleSimple(1,1,{0,0.1,0},{0,0,0},{0,0,0}),  
 		new ParticleSimple(100,1,{10,0,-0.03},{0,0,0},{0,0,0}),
 		new ParticleSimple(1,1,{-10,0,-0.03},{0,0,0},{0,0,0})
 	 };
-	law->gpuRun(particles);
+    GpuDataController gpuDataController = GpuDataController();
+    gpuDataController.putParticlesOnDevice(particles, true);
+	law.gpuRun(gpuDataController.get_td_par(), gpuDataController.getParticleCount());
+    gpuDataController.getParticlesFromDevice(particles);
 	Vector3D velocity1 = particles.front()->velocity;
 	Vector3D velocity2 = particles[1]->velocity;
 	Vector3D velocity3 = particles.back()->velocity;

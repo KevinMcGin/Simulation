@@ -1,12 +1,14 @@
-#!/usr/bin/env sh
+#!/bin/bash
+build_folder='builds/build'
 no_compile='false'
 
 print_usage() {
   printf "Usage: $0 [-n <don't compile before running>"
 }
 
-while getopts 'f:n' flag; do
+while getopts 'b:n' flag; do
   case "${flag}" in
+    b) build_folder="${OPTARG}" ;;
     n) no_compile='true' ;;
     *) print_usage
        exit 1 ;;
@@ -15,7 +17,7 @@ done
 
 if [ $no_compile = 'false' ]
 then 
-   ./compile.sh
+   ./compile.sh -b $build_folder
    if [ $? -ne 0 ]
    then
       exit 1
@@ -23,7 +25,7 @@ then
 fi
 
 source ./config/project.config
-./${BUILD_PATH:-'build/bin'}/SimulationRenderer
+./$build_folder${BUILD_PATH_END:-'/bin'}/SimulationRenderer
 if [ $? -ne 0 ]
 then
     echo -e "\nrender failed"
