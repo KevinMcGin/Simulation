@@ -12,16 +12,17 @@
 #include <rapidjson/ostreamwrapper.h>
 #include "rapidjson/filereadstream.h"
 
-InputJSON::InputJSON(string fileName): 
+InputJSON::InputJSON(const char* fileName): 
 	time(0)
 {
+	std::cout << "Parsing simulation: " << fileName << std::endl;
 	FILE* fp;
 	#if defined(WINDOWS)
 		char* mode = "rb";
-		fopen_s(&fp, fileName.c_str(), mode);
+		fopen_s(&fp, fileName, mode);
 	#else
 		char* mode = "r";
-		fp = fopen64(fileName.c_str(), mode);
+		fp = fopen64(fileName, mode);
 	#endif
 	if (!fp) {
         std::cerr << "Could not open file for reading!\n";
@@ -30,7 +31,6 @@ InputJSON::InputJSON(string fileName):
 	char readBuffer[65536];
 	FileReadStream is(fp, readBuffer, sizeof(readBuffer));
 
-	std::cout << "Parsing simulation: " << fileName << std::endl;
     doc.ParseStream( is );
 	std::cout << "Parsing done" << std::endl;
 	

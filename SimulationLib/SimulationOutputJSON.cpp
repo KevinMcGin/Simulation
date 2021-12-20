@@ -2,9 +2,9 @@
 
 
 
-SimulationOutputJSON::SimulationOutputJSON() : SimulationOutput()
+SimulationOutputJSON::SimulationOutputJSON(const char* outputFile) : SimulationOutput()
 {
-	myfile.open("simulation_output/simulation_output.json");
+	myfile.open(outputFile);
 	myfile << "{" << endl;
 }
 

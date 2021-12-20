@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 	double deltaSpeedFraction = 0.2;
 	double outerRadius = 15;
 	double meanDensity = 1000;
+	const char* outputFile = "simulation_output/simulation_output.json";
 
 	static struct cag_option options[] = {	   
 		{'p',
@@ -62,7 +63,11 @@ int main(int argc, char *argv[])
 		{'r',
 		 "r",
 		 "radius",
-		 "Outer radius of the disk"},	  		 	   
+		 "Outer radius of the disk"},
+		 {'o',
+		  "o",
+		  "output-file",
+		  "Output file at simulation_output folder"},	  		 	   
 		{'h',
 		 "h",
 		 "help",
@@ -112,6 +117,9 @@ int main(int argc, char *argv[])
 				const char* value = cag_option_get_value(&context);
 				outerRadius = atof(value);
 				break;}
+			case 'o':{
+				outputFile = cag_option_get_value(&context);
+				break;}
 			case 'h':{
 				printf("Usage: ./SimulationEngine.exe [OPTION]...\n");
 				cag_option_print(options, CAG_ARRAY_SIZE(options), stdout);
@@ -137,7 +145,7 @@ int main(int argc, char *argv[])
 		{ particleDistributionDisk, particleDistributionStar }
 	);
 
-	SimulationOutput* output = new SimulationOutputJSON();
+	SimulationOutput* output = new SimulationOutputJSON(outputFile);
 
 	Universe* universe = new UniverseImplSimple(input, output, endTime);
 	universe->run();

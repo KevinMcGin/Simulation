@@ -14,7 +14,7 @@ using namespace std;
 
 class InputJSON {
 public:
-    InputJSON(string fileName);
+    InputJSON(const char* fileName);
 	~InputJSON();
 	Value* input();
 
