@@ -6,7 +6,4 @@
 
 
 UniverseImplSimple::UniverseImplSimple(SimulationInput* input, SimulationOutput* output, unsigned long endTime) : 
-	UniverseImpl({ new CollisionCoalesce(), new NewtonGravity(), new NewtonFirstLaw }, input, output, 1, endTime)
-{
-
-}
+	UniverseImpl({ new CollisionCoalesce(), new NewtonGravity(), new NewtonFirstLaw }, input, output, 1, endTime) { }

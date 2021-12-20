@@ -10,7 +10,7 @@ NewtonGravity::NewtonGravity(double G) : Law("NewtonGravity"), G(G) { }
 
 void runOnParticles(Particle* p1, Particle* p2, double G);
 __device__ __host__ void runOnParticle(Particle* p1, Particle* p2, Vector3D radiusComponent);	
-__device__ __host__ Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G);
+__device__ __host__ Vector3D getRadiusComponent(Particle* p1, Particle* p2, double G);
 
 __global__ 
 void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponent, int n, double G) {
@@ -18,7 +18,7 @@ void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponen
 	if(idx < n) { 
 		int x, y;
 		MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
-		devicePRadiusComponent[idx] = getRadiusComponent(particles[x]->position, particles[y]->position, G);
+		devicePRadiusComponent[idx] = getRadiusComponent(particles[x], particles[y], G);
 	} 
 }
 
@@ -72,7 +72,7 @@ void NewtonGravity::gpuRun(Particle** td_par, int particleCount) {
 }
 
 void runOnParticles(Particle* p1, Particle* p2, double G) {	
-	Vector3D radiusComponent = getRadiusComponent(p1->position, p2->position, G);
+	Vector3D radiusComponent = getRadiusComponent(p1, p2, G);
 	runOnParticle(p1, p2, -radiusComponent);
 	runOnParticle(p2, p1, radiusComponent);
 }
@@ -84,12 +84,11 @@ void runOnParticle(Particle* p1, Particle* p2, Vector3D radiusComponent) {
 }
 
 __device__ __host__ 
-Vector3D getRadiusComponent(Vector3D position1, Vector3D position2, double G)
-{
-	Vector3D displacement = position1 - position2;
+Vector3D getRadiusComponent(Particle* p1, Particle* p2, double G) {
+	Vector3D displacement = p1->position - p2->position;
 	double displacementSquared = displacement.magnitudeSquared();
-	if (displacementSquared == 0 ) {
-		return {0,0,0};
+	if (displacementSquared <= pow(p1->radius + p2->radius, 2)) {
+		return {0, 0, 0};
 	} else {
 		Vector3D unit = displacement / sqrt(displacementSquared);
 		return (G / displacementSquared) * unit;
