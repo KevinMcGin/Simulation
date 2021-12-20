@@ -26,6 +26,6 @@ public:
 		this->angularVelocity = angularVelocity;
 		this->deleted = false;
 	}
-	void advance();
+	__device__ __host__ void advance();
 	virtual double getTemperature() = 0;
 }; 

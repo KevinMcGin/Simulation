@@ -46,7 +46,7 @@ fi
 create_config_maybe config/project.config
 create_config_maybe config/engine/engine.config
 
-# TODO: link these instead of copying the file (move to compile?)
+# TODO: link these instead of copying the file
 source ./config/project.config
 cp SimulationRenderer/lib/freeglut/bin/x64/freeglut.dll ./$build_folder${BUILD_PATH_END:-'/bin'}
 
