@@ -8,7 +8,7 @@ __global__
 static void advanceParticles(Particle** particles, int particleCount) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < particleCount) { 
-		particles[idx]->position = particles[idx]->position + particles[idx]->velocity;
+		particles[idx]->advance();
 	} 
 }
 

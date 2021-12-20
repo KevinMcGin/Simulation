@@ -25,10 +25,12 @@ char* name = "Simulation Renderer";
 
 InputJSON* input;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     cout << "Renderer running" << endl;
 
-    input = new InputJSON("simulation_output/simulation_output.json");
+    const char* inputFile = argc > 1 ? argv[1] : "simulation_output/simulation_output.json";
+
+    input = new InputJSON(inputFile);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -58,7 +60,6 @@ int main(int argc, char **argv) {
     glPushMatrix();
     glutMainLoop();
         
-    
     return 0;
 }
 

@@ -41,13 +41,9 @@ jobs:
       run: ./compile.sh
 
     - name: Test CPU
-      env:
-        SIMULATION_USE_GPU: "false"
       shell: bash
       run: ./test.sh -nc
 
     - name: Run CPU
-      env:
-        SIMULATION_USE_GPU: "false"
       shell: bash
       run: ./engine.sh -n

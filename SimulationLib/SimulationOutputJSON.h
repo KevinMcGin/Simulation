@@ -8,7 +8,7 @@ using namespace std;
 
 class SimulationOutputJSON : public SimulationOutput {
 public:
-	SimulationOutputJSON();
+	SimulationOutputJSON(const char* outputFile);
 	~SimulationOutputJSON();
 
 	virtual void output(vector<Particle*> particles, unsigned long time);
