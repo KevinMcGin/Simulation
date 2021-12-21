@@ -1,20 +1,18 @@
 #include "Timing.h"
 #include <sstream>
 
-chrono::high_resolution_clock::time_point Timing::startTime;
-
 void Timing::setTime() {
-    Timing::startTime = chrono::high_resolution_clock::now();
+    startTime = chrono::high_resolution_clock::now();
 }
 
 float Timing::getTimeSeconds() {
     auto now = chrono::high_resolution_clock::now();
-    double milliseconds = (now - Timing::startTime).count();
+    double milliseconds = (now - startTime).count();
     return milliseconds/1000000000.0;
 }
 
 string Timing::getTimeWithUnit() {
-    float seconds = Timing::getTimeSeconds();
+    float seconds = getTimeSeconds();
     double time;
     string unit;
     if(seconds < 60) {

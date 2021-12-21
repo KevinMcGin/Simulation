@@ -2,8 +2,9 @@
 #include "Timing.h"
 
 TEST(TimingTest, TimeInSeconds) {
-	Timing::setTime();
-    string time = Timing::getTimeWithUnit();
+	Timing timing= Timing();
+	timing.setTime();
+    string time = timing.getTimeWithUnit();
 	EXPECT_EQ('s', time.back());
 }
 

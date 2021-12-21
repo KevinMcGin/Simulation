@@ -19,6 +19,8 @@ UniverseImpl::~UniverseImpl() {
 	delete gpuDataController;
 }
 
+Timing timingTotal = Timing();
+Timing timingSections = Timing();
 float progresses[7] = {0, 0, 0, 0, 0, 0, 0};
 int progressIndex = 0;
 
@@ -26,15 +28,16 @@ void UniverseImpl::run() {
 	cout << "Simulation running" << endl;
 	cout << particles.size() << " particles" << endl;
 	cout << "Frames: " << endTime << endl;
-	// printPercentComplete(0);
+	timingTotal.setTime();
+	printPercentComplete(0);
 	output->output(particles, 0);
 	this->progress = -1;
 	int lawsRan = 0;
 	bool particleDeleted = false;
 	if(USE_GPU == TRUE) {
-		Timing::setTime();
+		timingSections.setTime();
 		gpuDataController->putParticlesOnDevice(particles, true);
-		printPercentComplete(0);
+		updateSectionsTiming(0);
 	}
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		if(USE_GPU == TRUE) {
@@ -45,21 +48,22 @@ void UniverseImpl::run() {
 		particleDeleted = false;
 		int j = 1;
 		for (const auto& l : laws) {
-			Timing::setTime();
+			timingSections.setTime();
 			if(USE_GPU == TRUE) {
 				l->gpuRun(gpuDataController->get_td_par(), gpuDataController->getParticleCount());
 			} else {
 				l->cpuRun(particles);
 			}
-			printPercentComplete(j++);
+			updateSectionsTiming(j++);
+			printPercentComplete(++lawsRan);
 		}
 		if(USE_GPU == TRUE) {
-			Timing::setTime();
+			timingSections.setTime();
 			gpuDataController->getParticlesFromDevice(particles);
-			printPercentComplete(4);
+			updateSectionsTiming(4);
 			//TODO: do this on gpu
 			//Erase particles for deletion
-			Timing::setTime();
+			timingSections.setTime();
 			for (auto it = particles.begin(); it != particles.end();) {
 				if((*it)->deleted) {
 					delete *it;
@@ -69,21 +73,31 @@ void UniverseImpl::run() {
 				else
 					++it;
 			}
-			printPercentComplete(6);
+			updateSectionsTiming(6);
 		}
-		Timing::setTime();
+		timingSections.setTime();
 		output->output(particles, i + 1);
-		printPercentComplete(5);
+		updateSectionsTiming(5);
 	}
+	printSectionsTiming();
 	cout << endl << "Simulation complete" << endl;
 }
 
 void UniverseImpl::printPercentComplete(int lawsRan) {
-	// float accurary = 1000.f;
-	// float timePassed = (lawsRan/(float)laws.size()) / endTime;
-	// progress = (100 * timePassed * accurary) / accurary;
-	progresses[lawsRan] += Timing::getTimeSeconds();
+	float accurary = 1000.f;
+	float timePassed = (lawsRan/(float)laws.size()) / endTime;
+	progress = (100 * timePassed * accurary) / accurary;
 	cout << "\r" << 
+		progress << "% " << timingTotal.getTimeWithUnit() << 
+		"                       " << std::flush;
+}
+
+void UniverseImpl::updateSectionsTiming(int index) {
+	progresses[index] += timingSections.getTimeSeconds();
+}
+
+void UniverseImpl::printSectionsTiming() {
+	cout << std::endl << 
 		"Collision" << ": " << progresses[1] << ", " <<
 		"Gravity" << ": " << progresses[2] << ", " <<
 		"First Law" << ": " << progresses[3] << ", " <<
@@ -91,7 +105,6 @@ void UniverseImpl::printPercentComplete(int lawsRan) {
 		"Deletions" << ": " << progresses[6] << ", " <<
 		"Data to GPU" << ": " << progresses[0] << ", " <<
 		"Data to JSON" << ": " << progresses[5] <<
-		"            " << std::flush;
-	// cout << "\r" << progress << "% " << Timing::getTimeWithUnit() << "            " << std::flush;
+		std::endl;
 }
 

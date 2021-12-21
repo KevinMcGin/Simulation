@@ -12,10 +12,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-int main(int argc, char *argv[])
-{
-	Timing::setTime();
-
+int main(int argc, char *argv[]) {
 	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
 	unsigned int seconds = 10;
