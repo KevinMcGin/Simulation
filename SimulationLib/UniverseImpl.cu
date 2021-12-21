@@ -1,6 +1,8 @@
 #include "UniverseImpl.cuh"
-#include<cmath>
 #include "Timing.h"
+#include "ParticlesHelper.h"
+
+#include<cmath>
 #include <iostream>
 
 
@@ -61,18 +63,8 @@ void UniverseImpl::run() {
 			timingSections.setTime();
 			gpuDataController->getParticlesFromDevice(particles);
 			updateSectionsTiming(4);
-			//TODO: do this on gpu
-			//Erase particles for deletion
 			timingSections.setTime();
-			for (auto it = particles.begin(); it != particles.end();) {
-				if((*it)->deleted) {
-					delete *it;
-					it = particles.erase(it);
-					particleDeleted = true;
-				}
-				else
-					++it;
-			}
+			particleDeleted = ParticlesHelper::removeDeletedParticles(particles);
 			updateSectionsTiming(6);
 		}
 		timingSections.setTime();

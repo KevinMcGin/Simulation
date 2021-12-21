@@ -1,10 +1,9 @@
 #include  <gtest/gtest.h>
 #include "NewtonGravity.cuh"
-#include "GpuDataController.cuh"
-#include "ParticleSimple.h"
+#include "LawHelper.h"
 
 TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
-	NewtonGravity law = NewtonGravity(0.05);
+	Law* law = new NewtonGravity(0.05);
 	vector<Particle*> particles = { 
 		new ParticleSimple(1,1,{0,0.1,0},{0,0,0},{0,0,0}),  
 		new ParticleSimple(100,1,{10,0,-0.03},{0,0,0},{0,0,0}),
@@ -12,10 +11,7 @@ TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
 		new ParticleSimple(1.2,1,{10,40,-1.03},{0,0,0},{0,0,0}),
 		new ParticleSimple(1.5,1,{-10,-1,0.03},{0,0,0},{0,0,0})
 	 };
-    GpuDataController gpuDataController = GpuDataController();
-    gpuDataController.putParticlesOnDevice(particles, true);
-	law.gpuRun(gpuDataController.get_td_par(), gpuDataController.getParticleCount());
-    gpuDataController.getParticlesFromDevice(particles);
+    LawHelper::runGpuLaw(law, particles);
 	Vector3D velocity1 = particles.front()->velocity;
 	Vector3D velocity2 = particles[1]->velocity;
 	Vector3D velocity3 = particles[2]->velocity;
@@ -37,4 +33,11 @@ TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
 	EXPECT_DOUBLE_EQ(0.012956787685491428, velocity5.x);
 	EXPECT_DOUBLE_EQ(0.00070256366697729947, velocity5.y);
 	EXPECT_DOUBLE_EQ(-3.9501889427382019e-05, velocity5.z);
+}
+
+TEST(NewtonGravityTest, ParticlesAccelerateGpuLikeCpu) {
+	const int particleCount = 300;
+	const int stepsCount = 2;
+	Law* law = new NewtonGravity(0.05);
+	LawHelper::expectGpuLikeCpu(law, particleCount, stepsCount);
 }
