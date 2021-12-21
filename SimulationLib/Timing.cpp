@@ -7,12 +7,16 @@ void Timing::setTime() {
     Timing::startTime = chrono::high_resolution_clock::now();
 }
 
-string Timing::getTime() {
+float Timing::getTimeSeconds() {
     auto now = chrono::high_resolution_clock::now();
     double milliseconds = (now - Timing::startTime).count();
-    double seconds = milliseconds/1000000000.0;
-    string unit;
+    return milliseconds/1000000000.0;
+}
+
+string Timing::getTimeWithUnit() {
+    float seconds = Timing::getTimeSeconds();
     double time;
+    string unit;
     if(seconds < 60) {
         time = seconds;
         unit = "s";

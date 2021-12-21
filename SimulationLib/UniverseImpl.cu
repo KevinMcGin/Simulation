@@ -68,7 +68,7 @@ void UniverseImpl::run() {
 void UniverseImpl::printPercentComplete(int lawsRan) {
 	float accurary = 1000.f;
 	float timePassed = (lawsRan/(float)laws.size()) / endTime;
-	progress =  (100 * timePassed * accurary) / accurary;
-	cout << "\r" << progress << "% " << Timing::getTime() << "            " << std::flush;
+	progress = (100 * timePassed * accurary) / accurary;
+	cout << "\r" << progress << "% " << Timing::getTimeWithUnit() << "            " << std::flush;
 }
 

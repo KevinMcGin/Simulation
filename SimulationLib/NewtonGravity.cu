@@ -29,7 +29,7 @@ void newtonGravityKernelLower(Particle** particles, Vector3D* devicePRadiusCompo
 	if(x < n) { 
 		int radiusComponentIndex = MatrixMaths::getLowerTriangularIndx(x, y);
 		runOnParticle(particles[x], particles[y], -devicePRadiusComponent[radiusComponentIndex]);
-	} 
+	}  
 }
 
 __global__ 
