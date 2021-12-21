@@ -9,11 +9,11 @@ void MatrixMaths::getLowerTriangularCoordinates(int i, int* x, int* y) {
 }
 
 __device__ __host__
-int MatrixMaths::getUpperTriangularIndx(int x, int y) {
+int MatrixMaths::getUpperTriangularIndex(int x, int y) {
     return y + (x-1)*x/2;
 }
 
 __device__ __host__
-int MatrixMaths::getLowerTriangularIndx(int x, int y) {
-    return getUpperTriangularIndx(y, x);
+int MatrixMaths::getLowerTriangularIndex(int x, int y) {
+    return getUpperTriangularIndex(y, x);
 }

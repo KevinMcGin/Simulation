@@ -9,78 +9,84 @@ NewtonGravity::NewtonGravity() : Law("NewtonGravity"), G(PhysicalConstants::GRAV
 NewtonGravity::NewtonGravity(double G) : Law("NewtonGravity"), G(G) { }
 
 void runOnParticles(Particle* p1, Particle* p2, double G);
-__device__ __host__ void runOnParticle(Particle* p1, Particle* p2, Vector3D radiusComponent);	
+__device__ __host__ Vector3D getAcceleration(double mass, Vector3D radiusComponent);
+__device__ __host__ void runOnParticle(Particle* p1, Vector3D acceleration);	
 __device__ __host__ Vector3D getRadiusComponent(Particle* p1, Particle* p2, double G);
 
 __global__ 
-void radiusComponentKernel(Particle** particles, Vector3D* devicePRadiusComponent, int n, double G) {
+void radiusComponentKernel(Particle** particles, Vector3D* accelerations, int n, double G) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
 		int x, y;
 		MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
-		devicePRadiusComponent[idx] = getRadiusComponent(particles[x], particles[y], G);
+		Vector3D devicePRadiusComponent = getRadiusComponent(particles[x], particles[y], G);
+		accelerations[idx] = -getAcceleration(particles[y]->mass, devicePRadiusComponent);
+		accelerations[idx + n] = getAcceleration(particles[x]->mass, devicePRadiusComponent);
 	} 
 }
 
 __global__ 
-void newtonGravityKernelLower(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n) {
+void addAccelerationsKernelLower(Particle** particles, Vector3D* accelerations, int x0, int y, int n) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	int x = idx + x0;
 	if(x < n) { 
-		int radiusComponentIndex = MatrixMaths::getLowerTriangularIndx(x, y);
-		runOnParticle(particles[x], particles[y], -devicePRadiusComponent[radiusComponentIndex]);
-	}  
+		int radiusComponentIndex = MatrixMaths::getLowerTriangularIndex(x, y);
+		runOnParticle(particles[x], accelerations[radiusComponentIndex]);
+	} 
 }
 
 __global__ 
-void newtonGravityKernelUpper(Particle** particles, Vector3D* devicePRadiusComponent, int x0, int y, int n) {
+void addAccelerationsKernelUpper(Particle** particles, Vector3D* accelerations, int x0, int y, int n, int betweenParticlesTriangularCount) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	int x = idx + x0;
 	if(x < n) { 
-		int radiusComponentIndex = MatrixMaths::getUpperTriangularIndx(x, y);
-		runOnParticle(particles[x], particles[y], devicePRadiusComponent[radiusComponentIndex]);
+		int radiusComponentIndex = MatrixMaths::getUpperTriangularIndex(x, y);
+		runOnParticle(particles[x], accelerations[radiusComponentIndex + betweenParticlesTriangularCount]);
 	} 
 }
 
 void NewtonGravity::cpuRun(vector<Particle*>& particles) {
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
 		auto p1 = *it1;
-		for (auto it2 = it1+1; it2 < particles.end(); it2++) {
+		for (auto it2 = it1 + 1; it2 < particles.end(); it2++) {
 			auto p2 = *it2;
-			runOnParticles(p1,p2,G);
+			runOnParticles(p1, p2, G);
 		}
 	}
 } 
 
 void NewtonGravity::gpuRun(Particle** td_par, int particleCount) {
 	//Radius component
-	int betweenParticlesCount = (particleCount-1)*particleCount/2;
-	Vector3D* devicePRadiusComponent = NULL;
-	cudaWithError->malloc((void**)&devicePRadiusComponent, betweenParticlesCount*sizeof(Vector3D));
-	radiusComponentKernel <<<1 + betweenParticlesCount/256, 256>>> (td_par, devicePRadiusComponent, betweenParticlesCount, G);
+	int betweenParticlesCount = (particleCount-1)*particleCount;
+	int betweenParticlesTriangularCount = betweenParticlesCount/2;
+	Vector3D* accelerations = NULL;
+	cudaWithError->malloc((void**)&accelerations, betweenParticlesCount*sizeof(Vector3D));
+	radiusComponentKernel <<<1 + betweenParticlesTriangularCount/256, 256>>> (td_par, accelerations, betweenParticlesTriangularCount, G);
 	cudaWithError->deviceSynchronize();
 
 	for(int i = 0; i < particleCount; i++) {
-		newtonGravityKernelLower <<<1 + i/256, 256>>> (td_par, devicePRadiusComponent, 0, i, i);
-		newtonGravityKernelUpper <<<1 + (particleCount-1-i)/256, 256>>> (td_par, devicePRadiusComponent, i+1, i, particleCount);
-		//TODO can we move this out of the loop? 
-		//Or do the calculations in parallel fully, and then apply them with this deviceSynchronize every loop
-		cudaWithError->deviceSynchronize();
+		addAccelerationsKernelLower <<<1 + i/256, 256>>> (td_par, accelerations, 0, i, i);
+		addAccelerationsKernelUpper <<<1 + (particleCount-1-i)/256, 256>>> (td_par, accelerations, i+1, i, particleCount, betweenParticlesTriangularCount);
 	}
+	cudaWithError->deviceSynchronize();
 	
-	cudaWithError->free(devicePRadiusComponent);
+	cudaWithError->free(accelerations);
 }
 
 void runOnParticles(Particle* p1, Particle* p2, double G) {	
 	Vector3D radiusComponent = getRadiusComponent(p1, p2, G);
-	runOnParticle(p1, p2, -radiusComponent);
-	runOnParticle(p2, p1, radiusComponent);
+	runOnParticle(p1, -getAcceleration(p2->mass, radiusComponent));
+	runOnParticle(p2, getAcceleration(p1->mass, radiusComponent));
 }
 
 __device__ __host__ 
-void runOnParticle(Particle* p1, Particle* p2, Vector3D radiusComponent) {	
-	Vector3D acceleration1 = p2->mass * radiusComponent;
-	p1->velocity = p1->velocity + acceleration1;
+Vector3D getAcceleration(double mass, Vector3D radiusComponent) {	
+	return mass * radiusComponent;
+}
+
+__device__ __host__ 
+void runOnParticle(Particle* p1, Vector3D acceleration) {
+	p1->velocity = p1->velocity + acceleration;
 }
 
 __device__ __host__ 

@@ -20,36 +20,36 @@ TEST(MatrixMathsTest, getLowerTriangularCoordinates) {
 	EXPECT_EQ(3, y);
 }
 
-TEST(MatrixMathsTest, getUpperTriangularIndx) {
+TEST(MatrixMathsTest, getUpperTriangularIndex) {
     int x = 1;
     int y = 0;
-    auto i = MatrixMaths::getUpperTriangularIndx(x, y);
+    auto i = MatrixMaths::getUpperTriangularIndex(x, y);
 	EXPECT_EQ(0, i);
 
     x = 4;
     y = 0;
-    i = MatrixMaths::getUpperTriangularIndx(x, y);
+    i = MatrixMaths::getUpperTriangularIndex(x, y);
 	EXPECT_EQ(6, i);
     
     x = 3;
     y = 2;
-    i = MatrixMaths::getUpperTriangularIndx(x, y);
+    i = MatrixMaths::getUpperTriangularIndex(x, y);
 	EXPECT_EQ(5, i);
 }
 
-TEST(MatrixMathsTest, getLowerTriangularIndx) {
+TEST(MatrixMathsTest, getLowerTriangularIndex) {
     int x = 0;
     int y = 01;
-    auto i = MatrixMaths::getLowerTriangularIndx(x, y);
+    auto i = MatrixMaths::getLowerTriangularIndex(x, y);
 	EXPECT_EQ(0, i);
 
     x = 0;
     y = 4;
-    i = MatrixMaths::getLowerTriangularIndx(x, y);
+    i = MatrixMaths::getLowerTriangularIndex(x, y);
 	EXPECT_EQ(6, i);
     
     x = 2;
     y = 3;
-    i = MatrixMaths::getLowerTriangularIndx(x, y);
+    i = MatrixMaths::getLowerTriangularIndex(x, y);
 	EXPECT_EQ(5, i);
 }
