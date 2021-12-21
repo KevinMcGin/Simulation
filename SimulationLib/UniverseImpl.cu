@@ -19,7 +19,7 @@ UniverseImpl::~UniverseImpl() {
 	delete gpuDataController;
 }
 
-float progresses[6] = {0, 0, 0, 0, 0, 0};
+float progresses[7] = {0, 0, 0, 0, 0, 0, 0};
 int progressIndex = 0;
 
 void UniverseImpl::run() {
@@ -34,7 +34,7 @@ void UniverseImpl::run() {
 	if(USE_GPU == TRUE) {
 		Timing::setTime();
 		gpuDataController->putParticlesOnDevice(particles, true);
-		printPercentComplete(lawsRan);
+		printPercentComplete(0);
 	}
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		if(USE_GPU == TRUE) {
@@ -43,6 +43,7 @@ void UniverseImpl::run() {
 			}
 		}
 		particleDeleted = false;
+		int j = 1;
 		for (const auto& l : laws) {
 			Timing::setTime();
 			if(USE_GPU == TRUE) {
@@ -50,13 +51,15 @@ void UniverseImpl::run() {
 			} else {
 				l->cpuRun(particles);
 			}
-			printPercentComplete(++lawsRan);
+			printPercentComplete(j++);
 		}
 		if(USE_GPU == TRUE) {
 			Timing::setTime();
 			gpuDataController->getParticlesFromDevice(particles);
+			printPercentComplete(4);
 			//TODO: do this on gpu
 			//Erase particles for deletion
+			Timing::setTime();
 			for (auto it = particles.begin(); it != particles.end();) {
 				if((*it)->deleted) {
 					delete *it;
@@ -66,28 +69,29 @@ void UniverseImpl::run() {
 				else
 					++it;
 			}
-			printPercentComplete(lawsRan);
+			printPercentComplete(6);
 		}
+		Timing::setTime();
 		output->output(particles, i + 1);
+		printPercentComplete(5);
 	}
 	cout << endl << "Simulation complete" << endl;
 }
 
 void UniverseImpl::printPercentComplete(int lawsRan) {
-	float accurary = 1000.f;
-	float timePassed = (lawsRan/(float)laws.size()) / endTime;
-	progress = (100 * timePassed * accurary) / accurary;
-	progressIndex = progressIndex % 6;
-	progresses[progressIndex] += Timing::getTimeSeconds();
+	// float accurary = 1000.f;
+	// float timePassed = (lawsRan/(float)laws.size()) / endTime;
+	// progress = (100 * timePassed * accurary) / accurary;
+	progresses[lawsRan] += Timing::getTimeSeconds();
 	cout << "\r" << 
 		"Collision" << ": " << progresses[1] << ", " <<
 		"Gravity" << ": " << progresses[2] << ", " <<
 		"First Law" << ": " << progresses[3] << ", " <<
 		"Data from GPU" << ": " << progresses[4] << ", " <<
+		"Deletions" << ": " << progresses[6] << ", " <<
 		"Data to GPU" << ": " << progresses[0] << ", " <<
 		"Data to JSON" << ": " << progresses[5] <<
 		"            " << std::flush;
-	progressIndex++;
 	// cout << "\r" << progress << "% " << Timing::getTimeWithUnit() << "            " << std::flush;
 }
 
