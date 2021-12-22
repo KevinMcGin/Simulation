@@ -5,6 +5,6 @@
 #include <vector>
 
 class UniverseImplSimple : public UniverseImpl {
-	public:
-		UniverseImplSimple(SimulationInput* input, SimulationOutput* output, unsigned long endTime);
+public:
+	UniverseImplSimple(SimulationInput* input, SimulationOutput* output, unsigned long endTime);
 };

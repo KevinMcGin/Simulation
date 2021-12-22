@@ -16,7 +16,7 @@ class InputJSON {
 public:
     InputJSON(const char* fileName);
 	~InputJSON();
-	Value* input();
+	Value* input(int elapsedFrames);
 
 private:
 	Document doc;

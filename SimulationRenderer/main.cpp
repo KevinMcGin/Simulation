@@ -2,8 +2,10 @@
 #include <windows.h>  // For MS Windows
 #endif
 #include <glut.h>  // GLUT, includes glu.h and gl.h
+#include <chrono>
 
 #include "InputJSON.h"
+#include "Timing.h"
 
 // from OpenGL.GLUT import *
 // from OpenGL.GLU import *
@@ -22,8 +24,12 @@ void display_scene();
 
 char* name = "Simulation Renderer";
 
+unsigned int frameRate = 60;
+float frameTime = 1.f / frameRate;
 
 InputJSON* input;
+Timing timing = Timing();
+float slackTime = 0;
 
 int main(int argc, char** argv) {
     cout << "Renderer running" << endl;
@@ -37,6 +43,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize(800, 800);
     glutInitWindowPosition(350, 200);
     glutCreateWindow(name);
+    timing.setTime();
     glClearColor(0., 0., 0., 1.);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_CULL_FACE);
@@ -64,9 +71,6 @@ int main(int argc, char** argv) {
 }
 
 void display_scene() {
-    // global sim
-    // global frame
-    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // # Textured thing 
     // auto tex = read_texture("brick.jpg");
@@ -77,8 +81,14 @@ void display_scene() {
     // gluSphere(qobj, 1, 50, 50);
     // gluDeleteQuadric(qobj);
     // glDisable(GL_TEXTURE_2D);
+
+    float elapsedSeconds = timing.getTimeSeconds();
+    float totalElapsedSeconds = elapsedSeconds + slackTime;
+    int elapsedFrames = (int)(totalElapsedSeconds / frameTime);
+    slackTime = totalElapsedSeconds - elapsedFrames * frameTime;
+    timing.setTime();
     
-    auto particles = input->input();
+    auto particles = input->input(elapsedFrames);
     for(const auto& p : particles->GetArray()) {
         GLfloat color[] = {1.0, 1.0, 0.0, 1.0};
         float radius = p["r"].GetFloat();
@@ -99,8 +109,6 @@ void display_scene() {
     }
 
     glutSwapBuffers();
-
-    // time.sleep((1/60) * 1)
 }
     
 // GLuint read_texture(char* filename) {

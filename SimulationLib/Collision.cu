@@ -59,9 +59,9 @@ __device__ MergeStatus mergeCollisionsRows(bool* collisionMarks, int idx, int ro
 		case NO_COLLISION_FOUND: break;
 	}
 	for(int i = 0; i < row; i++) {
-		int collisionMarksIndex = MatrixMaths::getLowerTriangularIndx(i, row);
+		int collisionMarksIndex = MatrixMaths::getLowerTriangularIndex(i, row);
 		if(collisionMarks[collisionMarksIndex]) {
-			int correspondingCollisionMarksIndex = MatrixMaths::getLowerTriangularIndx(i, idx);
+			int correspondingCollisionMarksIndex = MatrixMaths::getLowerTriangularIndex(i, idx);
 			if(firstRun || !collisionMarks[correspondingCollisionMarksIndex]) {
 				collisionMarks[correspondingCollisionMarksIndex] = true;
 				collisionsToResolve = true;
@@ -78,12 +78,12 @@ __device__ MergeStatus mergeCollisionsRows(bool* collisionMarks, int idx, int ro
 __device__ MergeStatus mergeCollisionsColumns(bool* collisionMarks, int idx, int row, int n) {
 	bool collisionsToResolve = false;
 	for(int i = row + 1; i < n; i++) {
-		int collisionMarksIndex = MatrixMaths::getLowerTriangularIndx(row, i);
+		int collisionMarksIndex = MatrixMaths::getLowerTriangularIndex(row, i);
 		if(collisionMarks[collisionMarksIndex]) {
 			if(i > idx) {
 				return LOWER_COLLISION_FOUND;
 			} else if(i < idx) {
-				int correspondingCollisionMarksIndex = MatrixMaths::getLowerTriangularIndx(i, idx);
+				int correspondingCollisionMarksIndex = MatrixMaths::getLowerTriangularIndex(i, idx);
 				if(!collisionMarks[correspondingCollisionMarksIndex]) {
 					collisionMarks[correspondingCollisionMarksIndex] = true;
 					collisionsToResolve = true;
@@ -127,8 +127,7 @@ void resolveCollidedParticles(Particle** particles, bool* collisionMarks, int n,
 	} 
 }
 
-void Collision::cpuRun(vector<Particle*>& particles)
-{
+void Collision::cpuRun(vector<Particle*>& particles) {
 	// get particles that collided
 	vector<set<Particle*>*> particlesCollidedVector;
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
@@ -187,7 +186,6 @@ void Collision::cpuRun(vector<Particle*>& particles)
 
 
 void Collision::gpuRun(Particle** td_par, int particleCount) {
-
 	// get particles that collided
 	int betweenParticlesCount = (particleCount-1)*particleCount/2;
 	bool* collisionMarks = NULL;

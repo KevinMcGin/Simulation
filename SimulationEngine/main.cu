@@ -12,10 +12,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-int main(int argc, char *argv[])
-{
-	Timing::setTime();
-
+int main(int argc, char *argv[]) {
 	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
 	unsigned int seconds = 10;
@@ -138,7 +135,7 @@ int main(int argc, char *argv[])
 	Distribution3D* positionDistribution = new DistributionCircle(meanPosition, 0);
 	Distribution3D* velocityDistribution = new DistributionCircle(meanPosition, 0);
 	Distribution3D* angularVelocityDistribution = new DistributionCircle({ 0,0,0 }, 0);
-	ParticleDistribution* particleDistributionDisk = new ParticleDistributionDisk(densityDistribution, 2 * starMass, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistribution);	
+	ParticleDistribution* particleDistributionDisk = new ParticleDistributionDisk(densityDistribution, starMass, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistribution);	
 	ParticleDistribution* particleDistributionStar = new ParticleDistributionSimple(distributionDensityStar, positionDistribution, velocityDistribution, angularVelocityDistribution);
 	SimulationInput* input = new SimulationInputRandomSimple(
 		{ particleCount - 1, 1 },

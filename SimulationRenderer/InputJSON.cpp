@@ -38,10 +38,12 @@ InputJSON::InputJSON(const char* fileName):
 
 InputJSON::~InputJSON() { }
 
-Value* InputJSON::input() {
-	char timeString[11]; 
+Value* InputJSON::input(int elapsedFrames) {
+	unsigned int originalTime = time;
+	time += elapsedFrames;
+	char timeString[11];
 	#if defined(WINDOWS)
-		sprintf_s(timeString,"%ld", time++);
+		sprintf_s(timeString,"%ld", time);
 	#else
 		sprintf(timeString,"%ld", time++);
 	#endif
@@ -49,7 +51,7 @@ Value* InputJSON::input() {
 		return &doc[timeString];
 	} else  {
 		char timeString2[11]; 
-		time = time - 2;
+		time = originalTime;
 		#if defined(WINDOWS)
 			sprintf_s(timeString2,"%ld", time);
 		#else
