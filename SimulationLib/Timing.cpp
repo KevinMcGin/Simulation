@@ -20,10 +20,10 @@ string Timing::getTimeWithUnit(float seconds) {
         unit = "s";
     } else if(seconds < 3600) {
         time = seconds / 60.0;
-        unit = "mins";
+        unit = " mins";
     } else {
         time = seconds / 3600.0;
-        unit = "hrs";
+        unit = " hrs";
     }
 
     ostringstream secondsString;
