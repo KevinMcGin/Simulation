@@ -13,7 +13,7 @@ get_build_path() {
 
 while getopts 'b:cn' flag; do
   case "${flag}" in
-    b) build_folder"${OPTARG}" ;;
+    b) build_folder="${OPTARG}" ;;
     c) cpu_only='true' ;;
     n) no_compile='true' ;;
     *) print_usage
