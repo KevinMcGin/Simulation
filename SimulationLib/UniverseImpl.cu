@@ -6,7 +6,6 @@
 #include <iostream>
 #include <map>
 
-
 UniverseImpl::UniverseImpl(vector<Law*> laws, SimulationInput* input, SimulationOutput* output, unsigned int deltaTime, unsigned long endTime) : Universe() {
 	particles = input->input();
 	this->laws = laws;
@@ -25,13 +24,14 @@ UniverseImpl::~UniverseImpl() {
 Timing timingTotal = Timing();
 Timing timingSections = Timing();
 map<string, float> progresses = {};
+float lastPrintedSeconds = 0.f;
+float maxTimeBetweenPrints = 0.8f;
 
 void UniverseImpl::run() {
 	cout << "Simulation running" << endl;
 	cout << particles.size() << " particles" << endl;
 	cout << "Frames: " << endTime << endl;
 	timingTotal.setTime();
-	printPercentComplete(0);
 	output->output(particles, 0);
 	this->progress = -1;
 	int lawsRan = 0;
@@ -74,11 +74,18 @@ void UniverseImpl::run() {
 
 void UniverseImpl::printPercentComplete(int lawsRan) {
 	float accurary = 1000.f;
-	float timePassed = (lawsRan/(float)laws.size()) / endTime;
-	progress = (100 * timePassed * accurary) / accurary;
-	cout << "\r" << 
-		progress << "% " << timingTotal.getTimeWithUnit() << 
-		"                       " << std::flush;
+	float fractionPassed = (lawsRan/(float)laws.size()) / endTime;
+	progress = (100 * fractionPassed * accurary) / accurary;
+	float elapsedSeconds = timingTotal.getTimeSeconds();
+	if(elapsedSeconds - lastPrintedSeconds > maxTimeBetweenPrints) {
+		lastPrintedSeconds = elapsedSeconds;
+		float remainingPercent = 100 - progress;
+		float timeRemaining = remainingPercent * (elapsedSeconds / progress);
+		cout << "\r" << 
+			"passed: " << progress << "% " << Timing::getTimeWithUnit(elapsedSeconds) << ", "
+			"remaining: " << remainingPercent << "% " << Timing::getTimeWithUnit(timeRemaining) <<
+			"                       " << std::flush;
+	}
 }
 
 void UniverseImpl::updateSectionsTiming(string name) {
