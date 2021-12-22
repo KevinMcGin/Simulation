@@ -89,7 +89,6 @@ void display_scene() {
     timing.setTime();
     
     auto particles = input->input(elapsedFrames);
-    cout << "got particles" << endl;
     for(const auto& p : particles->GetArray()) {
         GLfloat color[] = {1.0, 1.0, 0.0, 1.0};
         float radius = p["r"].GetFloat();

@@ -33,8 +33,14 @@ Particle* ParticleDistributionDisk::getParticle()
     DistributionCircle circle(meanPosition, outerRadius);
     Vector3D position = circle.getValue();
     Vector3D difference = position - meanPosition;
-    double speed = sqrt( (G * centralMass) / difference.magnitude());
-    Vector3D velocity = (clockwise ? -1 : 1) * speed * Vector3D(0, 0, 1).crossProduct(position - meanPosition).unit();
+    double differenceMagnitude = difference.magnitude();
+    Vector3D velocity;
+    if(differenceMagnitude != 0) {
+        double speed = sqrt( (G * centralMass) / differenceMagnitude);
+        velocity = (clockwise ? -1 : 1) * speed * Vector3D(0, 0, 1).crossProduct(difference).unit();
+    } else {
+        velocity = { 0.0, 0.0, 0.0 };
+    }
 
 	return new ParticleSimple(
         mass, radius, 
