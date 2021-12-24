@@ -30,7 +30,7 @@ done
 
 if [ $delete_build = 'true' ]; then do_delete_build; fi
 
-cmake -S. -B$build_folder -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
+cmake -S. -B$build_folder -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DUSE_GPU_TESTS=ON
 if [ $? -ne 0 ]; then echo -e "\ncompile failed"; exit 1; fi
 
 cmake --build $build_folder

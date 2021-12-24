@@ -191,11 +191,9 @@ void Collision::gpuRun(Particle** td_par, int particleCount) {
 	bool* collisionMarks = NULL;
 	cudaWithError->malloc((void**)&collisionMarks, betweenParticlesCount*sizeof(bool));
 	getCollidedParticles <<<1 + betweenParticlesCount/256, 256>>> (td_par, collisionMarks, betweenParticlesCount, collisionDetector->getIndex());
-	cudaWithError->deviceSynchronize("getCollidedParticles");
 
 	// merge sets of particles that collided and resolve
 	resolveCollidedParticles <<<1 + particleCount/256, 256>>> (td_par, collisionMarks, particleCount, collisionResolver->getIndex());
-	cudaWithError->deviceSynchronize("resolveCollidedParticles");
 
 	cudaWithError->free(collisionMarks);
 }

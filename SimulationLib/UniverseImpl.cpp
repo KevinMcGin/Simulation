@@ -1,10 +1,10 @@
-#include "UniverseImpl.cuh"
+#include "UniverseImpl.h"
 #include "Timing.h"
 #include "ParticlesHelper.h"
 
 #include<cmath>
 #include <iostream>
-
+#include <map>
 
 UniverseImpl::UniverseImpl(vector<Law*> laws, SimulationInput* input, SimulationOutput* output, unsigned int deltaTime, unsigned long endTime) : Universe() {
 	particles = input->input();
@@ -23,53 +23,50 @@ UniverseImpl::~UniverseImpl() {
 
 Timing timingTotal = Timing();
 Timing timingSections = Timing();
-float progresses[7] = {0, 0, 0, 0, 0, 0, 0};
-int progressIndex = 0;
+map<string, float> progresses = {};
+float lastPrintedSeconds = 0.f;
+float maxTimeBetweenPrints = 0.8f;
 
 void UniverseImpl::run() {
 	cout << "Simulation running" << endl;
 	cout << particles.size() << " particles" << endl;
 	cout << "Frames: " << endTime << endl;
 	timingTotal.setTime();
-	printPercentComplete(0);
 	output->output(particles, 0);
 	this->progress = -1;
 	int lawsRan = 0;
 	bool particleDeleted = false;
+	timingSections.setTime();
 	if(USE_GPU == TRUE) {
-		timingSections.setTime();
 		gpuDataController->putParticlesOnDevice(particles, true);
-		updateSectionsTiming(0);
+		updateSectionsTiming("Data to GPU");
 	}
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		if(USE_GPU == TRUE) {
 			if(particleDeleted) {
 				gpuDataController->putParticlesOnDevice(particles);
+				updateSectionsTiming("Data to GPU");
 			}
 		}
 		particleDeleted = false;
-		int j = 1;
 		for (const auto& l : laws) {
-			timingSections.setTime();
 			if(USE_GPU == TRUE) {
 				l->gpuRun(gpuDataController->get_td_par(), gpuDataController->getParticleCount());
 			} else {
 				l->cpuRun(particles);
 			}
-			updateSectionsTiming(j++);
+			updateSectionsTiming(l->getClassName());
 			printPercentComplete(++lawsRan);
+			updateSectionsTiming("Printing");
 		}
 		if(USE_GPU == TRUE) {
-			timingSections.setTime();
 			gpuDataController->getParticlesFromDevice(particles);
-			updateSectionsTiming(4);
-			timingSections.setTime();
+			updateSectionsTiming("Data from GPU");
 			particleDeleted = ParticlesHelper::removeDeletedParticles(particles);
-			updateSectionsTiming(6);
+			updateSectionsTiming("Deletions");
 		}
-		timingSections.setTime();
 		output->output(particles, i + 1);
-		updateSectionsTiming(5);
+		updateSectionsTiming("Data to JSON");
 	}
 	printSectionsTiming();
 	cout << endl << "Simulation complete" << endl;
@@ -77,26 +74,33 @@ void UniverseImpl::run() {
 
 void UniverseImpl::printPercentComplete(int lawsRan) {
 	float accurary = 1000.f;
-	float timePassed = (lawsRan/(float)laws.size()) / endTime;
-	progress = (100 * timePassed * accurary) / accurary;
-	cout << "\r" << 
-		progress << "% " << timingTotal.getTimeWithUnit() << 
-		"                       " << std::flush;
+	float fractionPassed = (lawsRan/(float)laws.size()) / endTime;
+	progress = (100 * fractionPassed * accurary) / accurary;
+	float elapsedSeconds = timingTotal.getTimeSeconds();
+	if(elapsedSeconds - lastPrintedSeconds > maxTimeBetweenPrints) {
+		lastPrintedSeconds = elapsedSeconds;
+		float remainingPercent = 100 - progress;
+		float timeRemaining = remainingPercent * (elapsedSeconds / progress);
+		cout << "\r" << 
+			"passed: " << progress << "% " << Timing::getTimeWithUnit(elapsedSeconds) << ", "
+			"remaining: " << remainingPercent << "% " << Timing::getTimeWithUnit(timeRemaining) <<
+			"                       " << std::flush;
+	}
 }
 
-void UniverseImpl::updateSectionsTiming(int index) {
-	progresses[index] += timingSections.getTimeSeconds();
+void UniverseImpl::updateSectionsTiming(string name) {
+	if(progresses.find(name) == progresses.end()) {
+		progresses[name] = 0;
+	}
+	progresses[name] += timingSections.getTimeSeconds();
+	timingSections.setTime();
 }
 
 void UniverseImpl::printSectionsTiming() {
-	cout << std::endl << 
-		"Collision" << ": " << progresses[1] << ", " <<
-		"Gravity" << ": " << progresses[2] << ", " <<
-		"First Law" << ": " << progresses[3] << ", " <<
-		"Data from GPU" << ": " << progresses[4] << ", " <<
-		"Deletions" << ": " << progresses[6] << ", " <<
-		"Data to GPU" << ": " << progresses[0] << ", " <<
-		"Data to JSON" << ": " << progresses[5] <<
-		std::endl;
+	string sections = "";
+	for (auto const& it : progresses) {
+		sections += it.first + ": " + Timing::getTimeWithUnit(it.second) + ", ";
+	}
+	cout << endl << sections << endl;
 }
 

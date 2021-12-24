@@ -11,8 +11,8 @@ float Timing::getTimeSeconds() {
     return milliseconds/1000000000.0;
 }
 
-string Timing::getTimeWithUnit() {
-    float seconds = getTimeSeconds();
+
+string Timing::getTimeWithUnit(float seconds) {
     double time;
     string unit;
     if(seconds < 60) {
@@ -20,13 +20,19 @@ string Timing::getTimeWithUnit() {
         unit = "s";
     } else if(seconds < 3600) {
         time = seconds / 60.0;
-        unit = "mins";
+        unit = " mins";
     } else {
         time = seconds / 3600.0;
-        unit = "hrs";
+        unit = " hrs";
     }
 
     ostringstream secondsString;
     secondsString << time << unit;
     return secondsString.str();
+}
+
+
+string Timing::getTimeWithUnit() {
+    float seconds = getTimeSeconds();
+    return Timing::getTimeWithUnit(seconds);
 }

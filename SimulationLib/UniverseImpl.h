@@ -16,6 +16,6 @@ private:
 	GpuDataController* gpuDataController;
 
 	void printPercentComplete(int lawsRan);
-	void updateSectionsTiming(int index);
+	void updateSectionsTiming(string name);
 	void printSectionsTiming();
 };

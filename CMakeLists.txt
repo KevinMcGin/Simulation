@@ -10,12 +10,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
-
-# we cannot analyse results without gcov
-#find_program(GCOV_PATH gcov)
-#if(NOT GCOV_PATH)
-  #message(FATAL_ERROR "Code coverage analysis requires gcov!")
-#endif()
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+  message("Coverage enabled")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g -O0")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
 
 option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
 option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
@@ -33,4 +32,6 @@ add_subdirectory(SimulationRenderer)
 
 enable_testing()
 add_subdirectory(SimulationTest/cpuTests)
-add_subdirectory(SimulationTest/gpuTests)
+if(USE_GPU_TESTS)
+  add_subdirectory(SimulationTest/gpuTests)
+endif()

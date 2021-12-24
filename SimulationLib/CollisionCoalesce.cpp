@@ -1,4 +1,4 @@
-#include "CollisionCoalesce.cuh"
+#include "CollisionCoalesce.h"
 #include "CollisionDetectorSimple.cuh"
 #include "CollisionResolverCoalesce.cuh"
 

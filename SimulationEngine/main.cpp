@@ -1,6 +1,6 @@
 #include "SimulationInputRandomSimple.h"
 #include "SimulationOutputJSON.h"
-#include "UniverseImplSimple.cuh"
+#include "UniverseImplSimple.h"
 #include "DistributionValue.h"
 #include "DistributionCircle.h"
 #include "DistributionMassDensity.h"
