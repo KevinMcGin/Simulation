@@ -1,4 +1,4 @@
-#include "UniverseImpl.cuh"
+#include "UniverseImpl.h"
 #include "Timing.h"
 #include "ParticlesHelper.h"
 

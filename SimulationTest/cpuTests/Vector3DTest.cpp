@@ -1,5 +1,6 @@
 #include  "gtest/gtest.h"
 #include "Vector3D.cuh"
+#include <cmath>
 #include <sstream>
 
 TEST(Vector3DTest, vectorsMagnitudeSquared) {

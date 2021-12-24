@@ -1,4 +1,4 @@
-﻿add_executable (SimulationEngine main.cu)
+﻿add_executable (SimulationEngine main.cpp)
 set_target_properties(SimulationEngine PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
 
