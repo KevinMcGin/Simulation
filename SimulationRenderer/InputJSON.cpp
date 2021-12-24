@@ -42,7 +42,7 @@ Value* InputJSON::input(int elapsedFrames) {
 	unsigned int originalTime = time;
 	time += elapsedFrames;
 	const size_t buggerSize = 11;
-	const int bufferSizeInt = (int)buggerSize;
+	const auto bufferSizeInt = (int)buggerSize;
 	char timeString[bufferSizeInt];
 	#if defined(WINDOWS)
 		sprintf_s(timeString, "%ld", time);
