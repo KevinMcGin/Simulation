@@ -68,16 +68,17 @@ void UniverseImpl::run() {
 		output->output(particles, i + 1);
 		updateSectionsTiming("Data to JSON");
 	}
+	printPercentComplete(lawsRan, true);
 	printSectionsTiming();
 	cout << endl << "Simulation complete" << endl;
 }
 
-void UniverseImpl::printPercentComplete(int lawsRan) {
+void UniverseImpl::printPercentComplete(int lawsRan, bool force) {
 	float accurary = 1000.f;
 	float fractionPassed = (lawsRan/(float)laws.size()) / endTime;
 	progress = (100 * fractionPassed * accurary) / accurary;
 	float elapsedSeconds = timingTotal.getTimeSeconds();
-	if(elapsedSeconds - lastPrintedSeconds > maxTimeBetweenPrints) {
+	if(force || elapsedSeconds - lastPrintedSeconds > maxTimeBetweenPrints) {
 		lastPrintedSeconds = elapsedSeconds;
 		float remainingPercent = 100 - progress;
 		float timeRemaining = remainingPercent * (elapsedSeconds / progress);

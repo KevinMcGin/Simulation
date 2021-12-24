@@ -15,7 +15,7 @@ private:
 	double progress;
 	GpuDataController* gpuDataController;
 
-	void printPercentComplete(int lawsRan);
+	void printPercentComplete(int lawsRan, bool force = false);
 	void updateSectionsTiming(string name);
 	void printSectionsTiming();
 };

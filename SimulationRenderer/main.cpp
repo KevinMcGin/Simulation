@@ -16,8 +16,6 @@
 // import time
 // import json
 
-//TODO: get input
-
 void display_scene();
 // GLuint read_texture(char* filename);
         
