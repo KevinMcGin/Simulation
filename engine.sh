@@ -57,8 +57,7 @@ get_output_path $output_file
    --mean-density=${MEAN_DENSITY:-1000} \
    --star-mass=${STAR_MASS:-50} \
    --radius=${RADIUS:-15} \
-   --frame-rate=${FRAME_RATE:-60} 
-   -h
+   --frame-rate=${FRAME_RATE:-60}
 if [ $? -ne 0 ]; then echo -e "\nengine failed"; exit 1; fi
 if [ $render = 'true' ]
 then
