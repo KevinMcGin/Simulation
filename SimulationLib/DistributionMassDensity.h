@@ -1,8 +1,9 @@
 #pragma once
 #define _USE_MATH_DEFINES
+#include <memory>
+
 #include "DistributionDensity.h"
 #include "Distribution.h"
-#include <memory>
 
 class DistributionMassDensity :
     public DistributionDensity

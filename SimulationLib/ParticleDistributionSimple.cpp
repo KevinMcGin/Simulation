@@ -1,6 +1,7 @@
+#include <memory>
+
 #include "ParticleDistributionSimple.h"
 #include "ParticleSimple.h"
-
 
 ParticleDistributionSimple::ParticleDistributionSimple(
 		std::shared_ptr<DistributionDensity> densityDistribution,

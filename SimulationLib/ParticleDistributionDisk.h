@@ -1,8 +1,8 @@
 #pragma once
-#include "ParticleDistribution.h"
-#include "PhysicalConstants.h"
-	
 #include <memory>
+
+#include "ParticleDistribution.h"
+#include "PhysicalConstants.h"	
 
 class ParticleDistributionDisk : public ParticleDistribution
 {

@@ -1,9 +1,11 @@
 ﻿#pragma once
+#include <vector>
+#include <memory>
+
 #include "Particle.cuh"
 #include "SimulationOutput.h"
 #include "Law.h"
 
-#include <vector>
 
 enum Usage { UNDEFINED, TRUE, FALSE };
 

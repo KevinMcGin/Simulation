@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <memory>
+
 #include "ParticleDistribution.h"
 
 class ParticleDistributionSimple: public ParticleDistribution {
