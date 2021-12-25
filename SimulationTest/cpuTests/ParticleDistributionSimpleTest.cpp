@@ -8,12 +8,12 @@
 
 
 TEST(ParticleDistributionSimpleTest, ParticleMade) {
-	Distribution* massDistrubtion = new DistributionSimple(0.1, 0.05);
-	Distribution* density = new DistributionValue(1);
-	DistributionDensity* densityDistribution = new DistributionMassDensity(massDistrubtion, density);
-	Distribution3D* positionDistrubtion = new DistributionCircle({ 0,0,0 }, 1);
-	Distribution3D* velocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0.005);
-	Distribution3D* angularVelocityDistrubtion = new DistributionCircle({ 0,0,0 }, 0);
+	auto massDistrubtion = make_shared<DistributionSimple>(0.1, 0.05);
+	auto density = make_shared<DistributionValue>(1);
+	auto densityDistribution = make_shared<DistributionMassDensity>(massDistrubtion, density);
+	auto positionDistrubtion = make_shared<DistributionCircle>(Vector3D(0, 0, 0), 1);
+	auto velocityDistrubtion = make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0.005);
+	auto angularVelocityDistrubtion = make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
 	ParticleDistributionSimple particleDistribution(densityDistribution, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
 	Particle* p = particleDistribution.getParticle();
 	EXPECT_TRUE(p->mass >= 0.05 && p->mass <= 0.15);

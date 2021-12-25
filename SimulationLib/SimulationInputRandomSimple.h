@@ -7,12 +7,12 @@
 
 class SimulationInputRandomSimple : public SimulationInput {
 public:
-	SimulationInputRandomSimple(vector<unsigned long> particleCounts, vector <ParticleDistribution*> particleDistributions);
+	SimulationInputRandomSimple(vector<unsigned long> particleCounts, vector<shared_ptr<ParticleDistribution>> particleDistributions);
 
 	virtual vector<Particle*> input();
 
 
 private:
 	vector<unsigned long> particleCounts;
-	vector<ParticleDistribution*> particleDistributions;
+	vector<shared_ptr<ParticleDistribution>> particleDistributions;
 };

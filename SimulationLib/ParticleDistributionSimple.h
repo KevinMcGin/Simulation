@@ -4,17 +4,17 @@
 class ParticleDistributionSimple: public ParticleDistribution {
 public:
 	ParticleDistributionSimple(
-		DistributionDensity* densityDistribution,
-		Distribution3D* positionDistribution, 
-		Distribution3D* velocityDistribution, 
-		Distribution3D* angularVelocityDistribution
+		shared_ptr<DistributionDensity> densityDistribution,
+		shared_ptr<Distribution3D> positionDistribution, 
+		shared_ptr<Distribution3D> velocityDistribution, 
+		shared_ptr<Distribution3D> angularVelocityDistribution
 	);
 
 	virtual Particle* getParticle();
 
 private:
-	DistributionDensity* densityDistribution;
-	Distribution3D* positionDistribution;
-	Distribution3D* velocityDistribution;
-	Distribution3D* angularVelocityDistribution;
+	shared_ptr<DistributionDensity> densityDistribution;
+	shared_ptr<Distribution3D> positionDistribution;
+	shared_ptr<Distribution3D> velocityDistribution;
+	shared_ptr<Distribution3D> angularVelocityDistribution;
 };

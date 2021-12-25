@@ -19,6 +19,4 @@ Universe::Universe() {
     }
 }
 
-Universe::~Universe() {
-	delete output;
-}
+Universe::~Universe() {}

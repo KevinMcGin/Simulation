@@ -16,7 +16,7 @@ public:
 
 protected:
 	vector<Law*> laws;
-	SimulationOutput* output;
+	shared_ptr<SimulationOutput> output;
 	unsigned int deltaTime;
 	unsigned long endTime;
 	static Usage USE_GPU;

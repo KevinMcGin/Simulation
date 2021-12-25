@@ -3,7 +3,7 @@
 #include "DistributionCircle.h"
 	
 ParticleDistributionDisk::ParticleDistributionDisk(
-    DistributionDensity* densityDistribution,
+    shared_ptr<DistributionDensity> densityDistribution,
     double centralMass,
     Vector3D meanPosition,
     double thetaPosition,
@@ -12,7 +12,7 @@ ParticleDistributionDisk::ParticleDistributionDisk(
     double innerRadius,
     double outerRadius, 
     double eccentricity,
-    Distribution3D* angularVelocityDistribution,
+    shared_ptr<Distribution3D> angularVelocityDistribution,
     double G
 ) : densityDistribution(densityDistribution), centralMass(centralMass), meanPosition(meanPosition), thetaPosition(thetaPosition), phiPosition(phiPosition),
     clockwise(clockwise), innerRadius(innerRadius), outerRadius(outerRadius), eccentricity(eccentricity), angularVelocityDistribution(angularVelocityDistribution),

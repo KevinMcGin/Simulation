@@ -3,10 +3,11 @@
 #include "DistributionValue.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <memory>
 
 TEST(DistributionMassDensityTest, GetsMassRadius) {
-	Distribution* massDistribution = new DistributionValue(10);
-	Distribution* densityDistribution = new DistributionValue(1);
+	auto massDistribution = std::make_shared<DistributionValue>(10);
+	auto densityDistribution = std::make_shared<DistributionValue>(1);
 	DistributionMassDensity distrubtion(massDistribution, densityDistribution);
 
 	double mass, radius;

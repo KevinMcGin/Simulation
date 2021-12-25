@@ -1,9 +1,8 @@
 #include "DistributionMassDensity.h"
-#define _USE_MATH_DEFINES
 #include <cmath>
 
-DistributionMassDensity::DistributionMassDensity(Distribution* massDistribution, Distribution* densityDistribution)
-	:DistributionDensity(),
+DistributionMassDensity::DistributionMassDensity(std::shared_ptr<Distribution> massDistribution, std::shared_ptr<Distribution> densityDistribution)
+	: DistributionDensity(),
 	massDistribution(massDistribution),
 	densityDistribution(densityDistribution)
 {
