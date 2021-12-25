@@ -2,6 +2,8 @@
 #include "ParticleDistribution.h"
 #include "PhysicalConstants.h"
 	
+#include <memory>
+
 class ParticleDistributionDisk : public ParticleDistribution
 {
 public:
