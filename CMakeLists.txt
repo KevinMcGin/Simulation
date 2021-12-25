@@ -20,7 +20,8 @@ option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
 option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED true)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 enable_language(CUDA)
 
 
