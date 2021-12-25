@@ -8,7 +8,7 @@ class ParticleDistributionDisk : public ParticleDistribution
 {
 public:
 	ParticleDistributionDisk(
-		shared_ptr<DistributionDensity> densityDistribution,
+		std::shared_ptr<DistributionDensity> densityDistribution,
 		double centralMass,
 		Vector3D meanPosition,
 		double thetaPosition,
@@ -25,7 +25,7 @@ public:
 	virtual Particle* getParticle();
 
 private:
-	shared_ptr<DistributionDensity> densityDistribution;
+	std::shared_ptr<DistributionDensity> densityDistribution;
 	double centralMass;
 	Vector3D meanPosition;
 	double thetaPosition;
@@ -34,6 +34,6 @@ private:
 	double innerRadius;
 	double outerRadius; 
 	double eccentricity;
-	shared_ptr<Distribution3D> angularVelocityDistribution;
+	std::shared_ptr<Distribution3D> angularVelocityDistribution;
 	double G;
 };
