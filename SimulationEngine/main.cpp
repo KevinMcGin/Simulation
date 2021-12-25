@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 	
 	auto input = make_shared<SimulationInputRandomSimple>(
 		vector<unsigned long> { particleCount - 1, 1 }, 
-		vector<shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
+		vector<std::shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
 	);
 	auto output = make_shared<SimulationOutputJSON>(outputFile);
 

@@ -2,7 +2,7 @@
 
 
 
-SimulationInputRandomSimple::SimulationInputRandomSimple(vector<unsigned long> particleCounts, vector<shared_ptr<ParticleDistribution>> particleDistributions) :
+SimulationInputRandomSimple::SimulationInputRandomSimple(vector<unsigned long> particleCounts, vector<std::shared_ptr<ParticleDistribution>> particleDistributions) :
 	particleCounts(particleCounts),
 	particleDistributions(particleDistributions)
 {
