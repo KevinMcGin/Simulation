@@ -13,9 +13,49 @@
 #include <stdlib.h>
 #include <memory>
 
-int printUsage(int exitStatus, cag_option options[]) {
+const struct cag_option options[] = {	   
+	{'p',
+		"p",
+		"particle-count",
+		"Particle count value"},
+	{'f',
+		"f",
+		"frame-rate",
+		"Frame rate of render"},
+	{'s',
+		"s",
+		"seconds",
+		"Seconds of render"},	
+	{'m',
+		"m",
+		"mean-mass",
+		"Mean mass of particles"},	
+		{'u',
+		"u",
+		"mean-density",
+		"Mean density of particles"},	
+	{'c',
+		"c",
+		"star-mass",
+		"Mass of the central body"},
+	{'r',
+		"r",
+		"radius",
+		"Outer radius of the disk"},
+	{'o',
+		"o",
+		"output-file",
+		"Output file at simulation_output folder"},	  		 	   
+	{'h',
+		"h",
+		"help",
+		"VALUE",
+		"Shows the command help"}
+};
+
+int printUsage(int exitStatus) {
 	printf("Usage: ./SimulationEngine.exe [OPTION]...\n");
-	cag_option_print(options, CAG_ARRAY_SIZE(options), stdout);
+	// cag_option_print(options, CAG_ARRAY_SIZE(options), stdout);
 	return exitStatus;
 }
 
@@ -28,46 +68,6 @@ int main(int argc, char *argv[]) {
 	double outerRadius = 15;
 	double meanDensity = 1000;
 	const char* outputFile = "simulation_output/simulation_output.json";
-
-	static struct cag_option options[] = {	   
-		{'p',
-		 "p",
-		 "particle-count",
-		 "Particle count value"},
-		{'f',
-		 "f",
-		 "frame-rate",
-		 "Frame rate of render"},
-		{'s',
-		 "s",
-		 "seconds",
-		 "Seconds of render"},	
-		{'m',
-		 "m",
-		 "mean-mass",
-		 "Mean mass of particles"},	
-		 {'u',
-		  "u",
-		  "mean-density",
-		  "Mean density of particles"},	
-		{'c',
-		 "c",
-		  "star-mass",
-		 "Mass of the central body"},
-		{'r',
-		 "r",
-		 "radius",
-		 "Outer radius of the disk"},
-		 {'o',
-		  "o",
-		  "output-file",
-		  "Output file at simulation_output folder"},	  		 	   
-		{'h',
-		 "h",
-		 "help",
-   		 "VALUE",
-		 "Shows the command help"}
-	};
 
 	char identifier;
 	cag_option_context context;
@@ -100,31 +100,31 @@ int main(int argc, char *argv[]) {
 				outputFile = cag_option_get_value(&context);
 				break;
 			case 'h':
-				return printUsage(EXIT_SUCCESS, options);
+				return printUsage(EXIT_SUCCESS);
 			default:
-				return printUsage(EXIT_FAILURE, options);
+				return printUsage(EXIT_FAILURE);
 		}
 	}
 	unsigned int endTime = seconds * frameRate;
 
-	Vector3D meanPosition = {0,0,0};
-	auto massDistribution = make_shared<DistributionSimple>(meanMass, meanMass*0.9);
-	auto density = make_shared<DistributionValue>(meanDensity);
-	auto densityDistribution = make_shared<DistributionMassDensity>(massDistribution, density);
-	auto distributionDensityStar = make_shared<DistributionMassDensity>(make_shared<DistributionValue>(starMass), density);
-	auto positionDistribution = make_shared<DistributionCircle>(meanPosition, 0);
-	auto velocityDistribution = make_shared<DistributionCircle>(meanPosition, 0);
-	auto angularVelocityDistribution = make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
-	auto particleDistributionDisk = make_shared<ParticleDistributionDisk>(densityDistribution, starMass, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistribution);	
-	auto particleDistributionStar = make_shared<ParticleDistributionSimple>(distributionDensityStar, positionDistribution, velocityDistribution, angularVelocityDistribution);
+	Vector3D meanPosition = { 0, 0, 0 };
+	auto massDistribution = std::make_shared<DistributionSimple>(meanMass, meanMass*0.9);
+	auto density = std::make_shared<DistributionValue>(meanDensity);
+	auto densityDistribution = std::make_shared<DistributionMassDensity>(massDistribution, density);
+	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(make_shared<DistributionValue>(starMass), density);
+	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
+	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
+	auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
+	auto particleDistributionDisk = std::make_shared<ParticleDistributionDisk>(densityDistribution, starMass, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistribution);	
+	auto particleDistributionStar = std::make_shared<ParticleDistributionSimple>(distributionDensityStar, positionDistribution, velocityDistribution, angularVelocityDistribution);
 	
-	auto input = make_shared<SimulationInputRandomSimple>(
+	auto input = std::make_shared<SimulationInputRandomSimple>(
 		vector<unsigned long> { particleCount - 1, 1 }, 
 		vector<std::shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
 	);
-	auto output = make_shared<SimulationOutputJSON>(outputFile);
+	auto output = std::make_shared<SimulationOutputJSON>(outputFile);
 
-	auto universe = make_unique<UniverseImplSimple>(input, output, endTime);
+	auto universe = std::make_unique<UniverseImplSimple>(input, output, endTime);
 	universe->run();
 	return 0;
 }
