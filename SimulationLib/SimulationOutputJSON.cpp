@@ -2,8 +2,6 @@
 
 #include "SimulationOutputJSON.h"
 
-
-
 SimulationOutputJSON::SimulationOutputJSON(const char* outputFile) : SimulationOutput()
 {
 	myfile.open(outputFile);
@@ -14,7 +12,6 @@ SimulationOutputJSON::~SimulationOutputJSON()
 	myfile << buffer << "}" << endl;
 	myfile.close();
 }
-
 
 void SimulationOutputJSON::output(vector<Particle*> particles, unsigned long time)
 {
