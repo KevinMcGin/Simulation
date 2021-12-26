@@ -19,4 +19,4 @@ Universe::Universe() {
     }
 }
 
-Universe::~Universe() {}
+Universe::~Universe() = default;
