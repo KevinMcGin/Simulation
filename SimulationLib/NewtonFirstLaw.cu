@@ -19,4 +19,5 @@ void NewtonFirstLaw::cpuRun(vector<Particle*>& particles) {
 
 void NewtonFirstLaw::gpuRun(Particle** td_par, int particleCount) {
 	advanceParticles <<<1 + particleCount/256, 256>>> (td_par, particleCount);
+	cudaWithError->peekAtLastError("advanceParticles");
 }

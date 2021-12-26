@@ -36,3 +36,8 @@ void CudaWithError::free(void* devPtr) {
     cudaError_t cudaStatus = cudaFree(devPtr);
     throwErrorMaybe(cudaStatus, "cudaFree failed!");
 }
+
+void CudaWithError::peekAtLastError(string message) {
+    cudaError_t cudaStatus = cudaPeekAtLastError();
+    throwErrorMaybe(cudaStatus, message + ": cudaPeekAtLastError failed!");
+}
