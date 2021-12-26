@@ -15,4 +15,6 @@ public:
 
 private:
 	ofstream myfile;
+	string buffer = "{\n";
+	const size_t maxBufferLength = 10000;
 };

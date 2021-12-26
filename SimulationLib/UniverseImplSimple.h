@@ -6,5 +6,5 @@
 
 class UniverseImplSimple : public UniverseImpl {
 public:
-	UniverseImplSimple(SimulationInput* input, SimulationOutput* output, unsigned long endTime);
+	UniverseImplSimple(shared_ptr<SimulationInput> input, shared_ptr<SimulationOutput> output, unsigned long endTime);
 };

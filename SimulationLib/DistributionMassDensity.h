@@ -1,4 +1,7 @@
 #pragma once
+#define _USE_MATH_DEFINES
+#include <memory>
+
 #include "DistributionDensity.h"
 #include "Distribution.h"
 
@@ -6,12 +9,12 @@ class DistributionMassDensity :
     public DistributionDensity
 {
 public:
-	DistributionMassDensity(Distribution* massDistribution, Distribution* densityDistribution);
+	DistributionMassDensity(std::shared_ptr<Distribution> massDistribution, std::shared_ptr<Distribution> densityDistribution);
 	void getMassRadius(double& mass, double& radius) override;
 
 private:
-	Distribution* massDistribution;
-	Distribution* densityDistribution;
+	std::shared_ptr<Distribution> massDistribution;
+	std::shared_ptr<Distribution> densityDistribution;
 
 };
 

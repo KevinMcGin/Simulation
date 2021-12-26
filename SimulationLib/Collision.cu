@@ -116,7 +116,7 @@ void resolveCollidedParticles(Particle** particles, bool* collisionMarks, int n,
 		if(collisionsToResolve) {
 			auto p1 = particles[idx];
 			for(int i = 0; i < idx; i++) {
-				int collisionMarksIndex = i + (idx-1)*idx/2;
+				int collisionMarksIndex = MatrixMaths::getLowerTriangularIndex(i, idx);
 				if (collisionMarks[collisionMarksIndex]) {
 					auto p2 = particles[i];
 					collisionResolver.resolve(p1, p2);
@@ -191,9 +191,11 @@ void Collision::gpuRun(Particle** td_par, int particleCount) {
 	bool* collisionMarks = NULL;
 	cudaWithError->malloc((void**)&collisionMarks, betweenParticlesCount*sizeof(bool));
 	getCollidedParticles <<<1 + betweenParticlesCount/256, 256>>> (td_par, collisionMarks, betweenParticlesCount, collisionDetector->getIndex());
+	cudaWithError->peekAtLastError("getCollidedParticles");
 
 	// merge sets of particles that collided and resolve
 	resolveCollidedParticles <<<1 + particleCount/256, 256>>> (td_par, collisionMarks, particleCount, collisionResolver->getIndex());
+	cudaWithError->peekAtLastError("resolveCollidedParticles");
 
 	cudaWithError->free(collisionMarks);
 }

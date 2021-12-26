@@ -41,21 +41,23 @@ InputJSON::~InputJSON() { }
 Value* InputJSON::input(int elapsedFrames) {
 	unsigned int originalTime = time;
 	time += elapsedFrames;
-	char timeString[11];
+	const size_t buggerSize = 11;
+	const auto bufferSizeInt = (int)buggerSize;
+	char timeString[bufferSizeInt];
 	#if defined(WINDOWS)
-		sprintf_s(timeString,"%ld", time);
+		sprintf_s(timeString, "%ld", time);
 	#else
-		sprintf(timeString,"%ld", time++);
+		snprintf(timeString, buggerSize, "%ld", time++);
 	#endif
 	if(doc.HasMember(timeString)) {
 		return &doc[timeString];
 	} else  {
-		char timeString2[11]; 
+		char timeString2[buggerSize]; 
 		time = originalTime;
 		#if defined(WINDOWS)
-			sprintf_s(timeString2,"%ld", time);
+			sprintf_s(timeString2, "%ld", time);
 		#else
-			sprintf(timeString2,"%ld", time);
+			snprintf(timeString2, buggerSize, "%ld", time);
 		#endif
 		return &doc[timeString2];
 	}

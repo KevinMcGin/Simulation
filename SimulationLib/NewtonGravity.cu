@@ -62,10 +62,13 @@ void NewtonGravity::gpuRun(Particle** td_par, int particleCount) {
 	Vector3D* accelerations = NULL;
 	cudaWithError->malloc((void**)&accelerations, betweenParticlesCount*sizeof(Vector3D));
 	radiusComponentKernel <<<1 + betweenParticlesTriangularCount/256, 256>>> (td_par, accelerations, betweenParticlesTriangularCount, G);
+	cudaWithError->peekAtLastError("radiusComponentKernel");
 
 	for(int i = 0; i < particleCount; i++) {
 		addAccelerationsKernelLower <<<1 + i/256, 256>>> (td_par, accelerations, 0, i, i);
+		cudaWithError->peekAtLastError("addAccelerationsKernelLower");
 		addAccelerationsKernelUpper <<<1 + (particleCount-1-i)/256, 256>>> (td_par, accelerations, i+1, i, particleCount, betweenParticlesTriangularCount);
+		cudaWithError->peekAtLastError("addAccelerationsKernelUpper");
 	}
 	
 	cudaWithError->free(accelerations);

@@ -7,8 +7,8 @@ void Timing::setTime() {
 
 float Timing::getTimeSeconds() {
     auto now = chrono::high_resolution_clock::now();
-    double milliseconds = (now - startTime).count();
-    return milliseconds/1000000000.0;
+    auto milliseconds = (float)(now - startTime).count();
+    return milliseconds/1000000000.f;
 }
 
 string Timing::getTimeWithUnit() {

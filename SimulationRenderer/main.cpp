@@ -3,23 +3,12 @@
 #endif
 #include <glut.h>  // GLUT, includes glu.h and gl.h
 #include <chrono>
+#include <memory>
 
 #include "InputJSON.h"
 #include "Timing.h"
 
-// from OpenGL.GLUT import *
-// from OpenGL.GLU import *
-// from OpenGL.GL import *
-// import sys
-// from PIL import Image as Image
-// import numpy
-// import time
-// import json
-
-//TODO: get input
-
 void display_scene();
-// GLuint read_texture(char* filename);
         
 
 char* name = "Simulation Renderer";
@@ -27,16 +16,16 @@ char* name = "Simulation Renderer";
 unsigned int frameRate = 60;
 float frameTime = 1.f / frameRate;
 
-InputJSON* input;
+std::unique_ptr<InputJSON> input;
 Timing timing = Timing();
-float slackTime = 0;
+float slackTime = 0.f;
 
 int main(int argc, char** argv) {
     cout << "Renderer running" << endl;
 
     const char* inputFile = argc > 1 ? argv[1] : "simulation_output/simulation_output.json";
 
-    input = new InputJSON(inputFile);
+    input = std::make_unique<InputJSON>(inputFile);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -72,15 +61,6 @@ int main(int argc, char** argv) {
 
 void display_scene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // # Textured thing 
-    // auto tex = read_texture("brick.jpg");
-    // auto qobj = gluNewQuadric();
-    // gluQuadricTexture(qobj, GL_TRUE);
-    // glEnable(GL_TEXTURE_2D);
-    // // glBindTexture(GL_TEXTURE_2D, tex);
-    // gluSphere(qobj, 1, 50, 50);
-    // gluDeleteQuadric(qobj);
-    // glDisable(GL_TEXTURE_2D);
 
     float elapsedSeconds = timing.getTimeSeconds();
     float totalElapsedSeconds = elapsedSeconds + slackTime;
@@ -111,19 +91,3 @@ void display_scene() {
     glutSwapBuffers();
 }
     
-// GLuint read_texture(char* filename) {
-//     auto img = Image.open(filename);
-//     auto img_data = numpy.array(list(img.getdata()), numpy.int8);
-//     auto textID = glGenTextures(1);
-//     glBindTexture(GL_TEXTURE_2D, textID); //# This is what's missing
-//     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-//     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-//     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-//     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.size[0], img.size[1], 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-//     return textID;
-// }

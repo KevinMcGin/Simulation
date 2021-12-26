@@ -1,37 +1,49 @@
+#include <string>
+
 #include "SimulationOutputJSON.h"
-
-
 
 SimulationOutputJSON::SimulationOutputJSON(const char* outputFile) : SimulationOutput()
 {
 	myfile.open(outputFile);
-	myfile << "{" << endl;
 }
 
 SimulationOutputJSON::~SimulationOutputJSON()
 {
-	myfile << "}" << endl;
+	myfile << buffer << "}" << endl;
 	myfile.close();
 }
 
 void SimulationOutputJSON::output(vector<Particle*> particles, unsigned long time)
 {
-	if (time > 0)
-		myfile << "," << endl;
-	myfile << "\"" << time << "\"" << ": [" << endl;
+	if (time > 0) {
+		buffer = buffer.append(",\n");
+	}
+	buffer = buffer.append("\"")
+			.append(to_string(time))
+			.append("\": [\n");
 	unsigned int particleCount = particles.size();
 	unsigned int i = 0;
 	for (const auto& p : particles) {
-		myfile << "{ ";
-		myfile << "\"r\": " << p->radius << "," << endl;
-		myfile << "\"pos\": [";
-		myfile << p->position.x << ",";
-		myfile << p->position.y << ",";
-		myfile << p->position.z;
-		myfile << "]}" << endl;
-		if (++i < particleCount)
-			myfile << "," << endl;
-
+		buffer = buffer.append("{ ")
+			.append("\"r\": ")
+			.append(to_string(p->radius))
+			.append(",\n")
+			.append("\"pos\": [")
+			.append(to_string(p->position.x))
+			.append(",")
+			.append(to_string(p->position.y))
+			.append(",")
+			.append(to_string(p->position.z))
+			.append("]}\n");
+		if (++i < particleCount) {
+			buffer = buffer.append(",\n");
+		}
 	}
-	myfile << "]";
+	buffer = buffer.append("]");
+
+	auto bufferLength = buffer.length();
+	if(bufferLength >= maxBufferLength) {
+		myfile << buffer;
+		buffer = "";
+	}
 }

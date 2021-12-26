@@ -1,12 +1,14 @@
 #pragma once
+#include <memory>
+
 #include "ParticleDistribution.h"
-#include "PhysicalConstants.h"
-	
+#include "PhysicalConstants.h"	
+
 class ParticleDistributionDisk : public ParticleDistribution
 {
 public:
 	ParticleDistributionDisk(
-		DistributionDensity* densityDistribution,
+		std::shared_ptr<DistributionDensity> densityDistribution,
 		double centralMass,
 		Vector3D meanPosition,
 		double thetaPosition,
@@ -15,7 +17,7 @@ public:
 		double innerRadius,
 		double outerRadius, 
 		double eccentricity,
-		Distribution3D* angularVelocityDistribution,
+		shared_ptr<Distribution3D> angularVelocityDistribution,
 		double G = PhysicalConstants::GRAVITATIONAL_CONSTANT
 	);
 	~ParticleDistributionDisk();
@@ -23,7 +25,7 @@ public:
 	virtual Particle* getParticle();
 
 private:
-	DistributionDensity* densityDistribution;
+	std::shared_ptr<DistributionDensity> densityDistribution;
 	double centralMass;
 	Vector3D meanPosition;
 	double thetaPosition;
@@ -32,6 +34,6 @@ private:
 	double innerRadius;
 	double outerRadius; 
 	double eccentricity;
-	Distribution3D* angularVelocityDistribution;
+	std::shared_ptr<Distribution3D> angularVelocityDistribution;
 	double G;
 };
