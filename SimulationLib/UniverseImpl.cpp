@@ -6,12 +6,8 @@
 #include <iostream>
 #include <map>
 
-UniverseImpl::UniverseImpl(vector<Law*> laws, shared_ptr<SimulationInput> input, shared_ptr<SimulationOutput> output, unsigned int deltaTime, unsigned long endTime) : Universe() {
-	particles = input->input();
-	this->laws = laws;
-	this->output = output;
-	this->deltaTime = deltaTime;
-	this->endTime = endTime;
+UniverseImpl::UniverseImpl(vector<Law*> laws, shared_ptr<SimulationInput> input, shared_ptr<SimulationOutput> output, unsigned int deltaTime, unsigned long endTime) 
+	: Universe(input->input(), laws, output, deltaTime, endTime) {
 	if(USE_GPU == TRUE) {
 		gpuDataController = new GpuDataController();
 	}

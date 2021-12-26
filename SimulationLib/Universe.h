@@ -11,14 +11,14 @@ enum Usage { UNDEFINED, TRUE, FALSE };
 
 class Universe {
 public:
-	Universe();
+	Universe(vector<Particle*> particles, vector<Law*> laws, const shared_ptr<SimulationOutput> output, unsigned int deltaTime, unsigned long endTime);
 	~Universe();
 	vector<Particle*> particles;
 	virtual void run() = 0;
 
 protected:
 	vector<Law*> laws;
-	shared_ptr<SimulationOutput> output;
+	const shared_ptr<SimulationOutput> output;
 	unsigned int deltaTime;
 	unsigned long endTime;
 	static Usage USE_GPU;

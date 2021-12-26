@@ -4,7 +4,12 @@
 const char* SIMULATION_USE_GPU = "SIMULATION_USE_GPU";
 Usage Universe::USE_GPU = UNDEFINED;
 
-Universe::Universe() {
+Universe::Universe(vector<Particle*> particles, vector<Law*> laws, const shared_ptr<SimulationOutput> output, unsigned int deltaTime, unsigned long endTime)
+    : particles(particles),
+	laws(laws),
+	output(output),
+	deltaTime(deltaTime),
+	endTime(endTime) {
 	if(Universe::USE_GPU == UNDEFINED) {
         const char* envVar = std::getenv(SIMULATION_USE_GPU);
 		if(!envVar) envVar = "true";
