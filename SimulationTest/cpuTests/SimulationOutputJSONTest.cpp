@@ -9,6 +9,7 @@ TEST(SimulationOutputJSONTest, SimulationOutputtedToJSON) {
         new ParticleSimple(2,2,{2,-0.2,0},{0,0,0},{0,0,0})
     };
 	simulationOutputJSON->output(particles, 0);
+	simulationOutputJSON->output(particles, 1);
     delete simulationOutputJSON;
 }
 
