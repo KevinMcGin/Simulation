@@ -116,7 +116,7 @@ void resolveCollidedParticles(Particle** particles, bool* collisionMarks, int n,
 		if(collisionsToResolve) {
 			auto p1 = particles[idx];
 			for(int i = 0; i < idx; i++) {
-				int collisionMarksIndex = i + (idx-1)*idx/2;
+				int collisionMarksIndex = MatrixMaths::getLowerTriangularIndex(i, idx);
 				if (collisionMarks[collisionMarksIndex]) {
 					auto p2 = particles[i];
 					collisionResolver.resolve(p1, p2);
