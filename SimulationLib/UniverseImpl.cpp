@@ -13,9 +13,7 @@ UniverseImpl::UniverseImpl(vector<Law*> laws, shared_ptr<SimulationInput> input,
 	}
 }
 
-UniverseImpl::~UniverseImpl() {
-	delete gpuDataController;
-}
+UniverseImpl::~UniverseImpl() = default;
 
 Timing timingTotal = Timing();
 Timing timingSections = Timing();

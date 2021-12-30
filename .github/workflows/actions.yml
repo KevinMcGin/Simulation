@@ -41,6 +41,13 @@ jobs:
     - name: Install OpenGL
       run: ./scripts/installation/install_open_gl_${{ matrix.INSTALL_SCRIPT }}
 
+    - name: Windows Pre Build
+      shell: bash
+      if: matrix.os == 'windows-2016'
+      run: |
+        rm config/project.config.example
+        mv config/mvsc_project.config.example config/project.config.example
+
     - name: Build
       shell: bash
       run: ./compile.sh -p "${{ matrix.build_params }}"
