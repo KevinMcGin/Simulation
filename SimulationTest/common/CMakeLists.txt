@@ -38,5 +38,6 @@ endif()
 target_link_libraries(SimulationTestCommon
   PRIVATE
     SimulationLib
+  PUBLIC
     gtest_main
 )
