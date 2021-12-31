@@ -14,11 +14,12 @@ add_executable(
     SimulationTestCpu
     ${tests_src}
     )
-    set_target_properties(SimulationTestCpu PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+set_target_properties(SimulationTestCpu PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
 target_link_libraries(SimulationTestCpu
   PRIVATE
     SimulationLib
+    SimulationTestCommon
     gtest_main
   )
 

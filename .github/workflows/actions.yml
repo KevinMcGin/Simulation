@@ -1,4 +1,4 @@
-name: Ubuntu CPU Build & Test
+name: CPU Build & Test
 
 on: [push]
 
