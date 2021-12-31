@@ -41,7 +41,8 @@ void setCollisionResolver(CollisionResolver** collisionResolverGpu, int collisio
 
 Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver, bool use_gpu): Law("Collision"),
 	collisionDetector(collisionDetector),
-	collisionResolver(collisionResolver) {
+	collisionResolver(collisionResolver),
+	use_gpu(use_gpu) {
 	if(use_gpu) {
 		cudaWithError->malloc((void**)&collisionDetectorGpu, sizeof(*collisionDetector));
 		cudaWithError->malloc((void**)&collisionResolverGpu, sizeof(*collisionResolver));
@@ -52,8 +53,10 @@ Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* co
 }
 
 Collision::~Collision() {
-	cudaWithError->free(collisionDetectorGpu);
-	cudaWithError->free(collisionResolverGpu);
+	if(use_gpu) {
+		cudaWithError->free(collisionDetectorGpu);
+		cudaWithError->free(collisionResolverGpu);
+	}
 }
 
 __global__ 

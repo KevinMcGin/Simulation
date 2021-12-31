@@ -17,5 +17,7 @@ private:
     CollisionResolver* collisionResolver;
     CollisionDetector** collisionDetectorGpu = NULL;
     CollisionResolver** collisionResolverGpu = NULL;
+
+    bool use_gpu;
 };
 
