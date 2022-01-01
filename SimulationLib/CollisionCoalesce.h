@@ -6,6 +6,6 @@ class CollisionCoalesce :
     public Collision
 {
 public:
-    CollisionCoalesce();
+    CollisionCoalesce(bool use_gpu = false);
 };
 

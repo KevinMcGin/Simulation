@@ -1,0 +1,43 @@
+﻿include(FetchContent)
+FetchContent_Declare(gtest
+  QUIET
+  URL https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+)
+# configure build of googletest
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(gtest)
+
+file(GLOB cpp_headers CONFIGURE_DEPENDS "*.h")
+file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
+
+add_library(SimulationTestCommon STATIC ${cpp_source} ${cpp_headers})
+set_target_properties(SimulationTestCommon PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+set_target_properties(SimulationTestCommon PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+
+target_include_directories(SimulationTestCommon
+  PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}
+)
+
+if(NOT DEFINED CMAKE_CUDA_STANDARD)
+    set(CMAKE_CUDA_STANDARD 11)
+    set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+endif()
+
+if (CUDA_FOUND)
+    message("CUDA found")
+    #include(FindCUDA)
+    INCLUDE_DIRECTORIES(${CUDA_INCLUDE_DIRS})
+    target_include_directories(SimulationTestCommon PUBLIC ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+
+else()
+    message("CUDA not found")
+endif()
+
+target_link_libraries(SimulationTestCommon
+  PRIVATE
+    SimulationLib
+  PUBLIC
+    gtest_main
+)

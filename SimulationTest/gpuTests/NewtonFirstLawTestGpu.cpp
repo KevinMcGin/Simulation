@@ -1,15 +1,13 @@
 #include  <gtest/gtest.h>
+#include "NewtonFirstLawTestHelper.h"
 #include "NewtonFirstLaw.cuh"
 #include "LawHelper.h"
 
 TEST(NewtonFirstLawTest, ParticleMoveGpu) {
 	Law* law = new NewtonFirstLaw();
-	vector<Particle*> particles = { new ParticleSimple(1,1,{0,0,0},{1,-1,0},{0,0,0}) };
+	vector<Particle*> particles = NewtonFirstLawTestHelper::getParticleMove();
     LawHelper::runGpuLaw(law, particles);
-	Vector3D positions = particles.front()->position;
-	EXPECT_EQ(1, positions.x);
-	EXPECT_EQ(-1, positions.y);
-	EXPECT_EQ(0, positions.z);
+	NewtonFirstLawTestHelper::testParticleMove(particles);
 }
 
 TEST(NewtonFirstLawTest, ParticleMoveGpuLikeCpu) {

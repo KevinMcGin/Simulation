@@ -2,25 +2,32 @@
 #include <cstring>
 
 const char* SIMULATION_USE_GPU = "SIMULATION_USE_GPU";
-Usage Universe::USE_GPU = UNDEFINED;
 
-Universe::Universe(vector<Particle*> particles, vector<Law*> laws, const shared_ptr<SimulationOutput> output, unsigned int deltaTime, unsigned long endTime)
-    : particles(particles),
+Universe::Universe(
+    vector<Particle*> particles, 
+    vector<Law*> laws, 
+    const shared_ptr<SimulationOutput> output, 
+    unsigned int deltaTime,
+    unsigned long endTime,
+    Usage use_gpu
+) : particles(particles),
 	laws(laws),
 	output(output),
 	deltaTime(deltaTime),
 	endTime(endTime) {
-	if(Universe::USE_GPU == UNDEFINED) {
+	if(use_gpu == UNDEFINED) {
         const char* envVar = std::getenv(SIMULATION_USE_GPU);
-		if(!envVar) envVar = "true";
+		envVar = envVar ? envVar : "true";
         if(strcmp(envVar, "true") == 0) {
-            Universe::USE_GPU = TRUE;
+            this->use_gpu = TRUE;
             std::cout << std::endl << "Running on GPU" << std::endl;
         }
         else {
             std::cout << std::endl << "Running on CPU" << std::endl;
-            Universe::USE_GPU = FALSE;
+            this->use_gpu = FALSE;
         }
+    } else {
+        this->use_gpu = use_gpu;
     }
 }
 

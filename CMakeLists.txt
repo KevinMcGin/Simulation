@@ -30,6 +30,7 @@ add_subdirectory(SimulationEngine)
 add_subdirectory(SimulationRenderer)
 
 enable_testing()
+add_subdirectory(SimulationTest/common)
 add_subdirectory(SimulationTest/cpuTests)
 if(USE_GPU_TESTS)
   add_subdirectory(SimulationTest/gpuTests)

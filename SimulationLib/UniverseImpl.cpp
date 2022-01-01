@@ -6,16 +6,20 @@
 #include <iostream>
 #include <map>
 
-UniverseImpl::UniverseImpl(vector<Law*> laws, shared_ptr<SimulationInput> input, shared_ptr<SimulationOutput> output, unsigned int deltaTime, unsigned long endTime) 
-	: Universe(input->input(), laws, output, deltaTime, endTime) {
-	if(USE_GPU == TRUE) {
+UniverseImpl::UniverseImpl(
+	vector<Law*> laws, 
+	shared_ptr<SimulationInput> input, 
+	shared_ptr<SimulationOutput> output, 
+	unsigned int deltaTime, 
+	unsigned long endTime,
+	Usage use_gpu
+) : Universe(input->input(), laws, output, deltaTime, endTime, use_gpu) {
+	if(this->use_gpu == TRUE) {
 		gpuDataController = new GpuDataController();
 	}
 }
 
-UniverseImpl::~UniverseImpl() {
-	delete gpuDataController;
-}
+UniverseImpl::~UniverseImpl() = default;
 
 Timing timingTotal = Timing();
 Timing timingSections = Timing();
@@ -33,12 +37,12 @@ void UniverseImpl::run() {
 	int lawsRan = 0;
 	bool particleDeleted = false;
 	timingSections.setTime();
-	if(USE_GPU == TRUE) {
+	if(use_gpu == TRUE) {
 		gpuDataController->putParticlesOnDevice(particles, true);
 		updateSectionsTiming("Data to GPU");
 	}
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
-		if(USE_GPU == TRUE) {
+		if(use_gpu == TRUE) {
 			if(particleDeleted) {
 				gpuDataController->putParticlesOnDevice(particles);
 				updateSectionsTiming("Data to GPU");
@@ -46,7 +50,7 @@ void UniverseImpl::run() {
 		}
 		particleDeleted = false;
 		for (const auto& l : laws) {
-			if(USE_GPU == TRUE) {
+			if(use_gpu == TRUE) {
 				l->gpuRun(gpuDataController->get_td_par(), gpuDataController->getParticleCount());
 			} else {
 				l->cpuRun(particles);
@@ -55,7 +59,7 @@ void UniverseImpl::run() {
 			printPercentComplete(++lawsRan);
 			updateSectionsTiming("Printing");
 		}
-		if(USE_GPU == TRUE) {
+		if(use_gpu == TRUE) {
 			gpuDataController->getParticlesFromDevice(particles);
 			updateSectionsTiming("Data from GPU");
 			particleDeleted = ParticlesHelper::removeDeletedParticles(particles);

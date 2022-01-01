@@ -29,23 +29,8 @@ https://user-images.githubusercontent.com/23276119/146377747-62b6992a-f834-4974-
 - CUDA
 - OpenGL
 
-## Install
-### CMake
-``sudo apt install cmake``
-
-### CUDA
-``export cuda=11.2``
-
-``./scripts/installation/install_cuda_ubuntu.sh``
-
-``export CUDA_HOME=/usr/local/cuda-$cuda``
-
-``export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$cuda/lib64:$cuda/extras/CUPTI/lib64``
-
-``export PATH=$PATH:$CUDA_HOME/bin``
-
-### OpenGL
-```./scripts/installation/install_open_gl_ubuntu.sh```
+## Installation
+[Installation Guide](scripts/installation/README.md)
 
 ## Build
 ``./compile.sh``

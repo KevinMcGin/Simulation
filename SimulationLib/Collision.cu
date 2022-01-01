@@ -12,36 +12,66 @@
 #include <cmath>
 #include <typeinfo>
 
-Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver): Law("Collision"),
+
+//Cuda doesn't recognise virtual functions of classes initialised on the CPU, so we have to initialise them here
+__global__ 
+void setCollisionDetector(CollisionDetector** collisionDetectorGpu, int collisionDetectorIndex) {
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	if(idx < 1) {
+		if(collisionDetectorIndex == CollisionDetectorSimple::INDEX) {
+			collisionDetectorGpu[0] = new CollisionDetectorSimple();
+		} else {
+			printf("collisionDetectorGpu could not be initialised\n");
+			assert(false);
+		}
+	} 
+}
+__global__ 
+void setCollisionResolver(CollisionResolver** collisionResolverGpu, int collisionResolverIndex) {
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	if(idx < 1) {
+		if(collisionResolverIndex == CollisionResolverCoalesce::INDEX) {
+			collisionResolverGpu[0] = new CollisionResolverCoalesce();
+		} else {
+			printf("collisionResolverGpu could not be initialised\n");
+			assert(false);
+		}
+	} 
+}
+
+Collision::Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver, bool use_gpu): Law("Collision"),
 	collisionDetector(collisionDetector),
-	collisionResolver(collisionResolver) {
-		
+	collisionResolver(collisionResolver),
+	use_gpu(use_gpu) {
+	if(use_gpu) {
+		cudaWithError->malloc((void**)&collisionDetectorGpu, sizeof(*collisionDetector));
+		cudaWithError->malloc((void**)&collisionResolverGpu, sizeof(*collisionResolver));
+		setCollisionDetector <<<1, 1>>> (collisionDetectorGpu, collisionDetector->getIndex());
+		setCollisionResolver <<<1, 1>>> (collisionResolverGpu, collisionResolver->getIndex());
+		cudaWithError->peekAtLastError("setCollisionDetector");
+	}
+}
+
+Collision::~Collision() {
+	if(use_gpu) {
+		cudaWithError->free(collisionDetectorGpu);
+		cudaWithError->free(collisionResolverGpu);
+	}
 }
 
 __global__ 
-void getCollidedParticles(Particle** particles, bool* collisionMarks, int n, int collisionDetectorIndex) {
+void getCollidedParticles(Particle** particles, bool* collisionMarks, CollisionDetector** collisionDetectorGpu, int n) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
-		//TODO find soluation to this, creating new class with a pointer is slow on GPU threads
-		//Cuda doesn't recognise virtual functions of classes initialised on the CPU, so we have to initialise them here
-		// CollisionDetector* collisionDetector;
-		// if(collisionDetectorIndex == CollisionDetectorSimple::INDEX) {
-		// 	collisionDetector = new CollisionDetectorSimple();
-		// } else {
-		// 	//printf("CollisionDetector could not be initialised\n");
-		// 	assert(false);
-		// }
-		CollisionDetectorSimple collisionDetector = CollisionDetectorSimple();
 		int x, y;
 		MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
 		auto p1 = particles[x];
 		auto p2 = particles[y];
-		if (collisionDetector.isCollision(p1, p2)) {
+		if (collisionDetectorGpu[0]->isCollision(p1, p2)) {
 			collisionMarks[idx] = true;
 		} else {
 			collisionMarks[idx] = false;			
 		}
-		// delete collisionDetector;
 	} 
 }
 
@@ -99,19 +129,9 @@ __device__ MergeStatus mergeCollisionsColumns(bool* collisionMarks, int idx, int
 }
 
 __global__ 
-void resolveCollidedParticles(Particle** particles, bool* collisionMarks, int n, int collisionResolverIndex) {
+void resolveCollidedParticles(Particle** particles, bool* collisionMarks, CollisionResolver** collisionResolverGpu, int n) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
-		//TODO find soluation to this, creating new class with a pointer is slow on GPU threads
-		//Cuda doesn't recognise virtual functions of classes initialised on the CPU, so we have to initialise them here
-		// CollisionResolver* collisionResolver;
-		// if(collisionResolverIndex == CollisionResolverCoalesce::INDEX) {
-		// 	collisionResolver = new CollisionResolverCoalesce();
-		// } else {
-		// 	//printf("CollisionResolver could not be initialised\n");
-		// 	assert(false);
-		// }
-		CollisionResolverCoalesce collisionResolver = CollisionResolverCoalesce();
 		auto collisionsToResolve = mergeCollisionsRows(collisionMarks, idx, idx, n, true) == COLLISION_FOUND; 
 		if(collisionsToResolve) {
 			auto p1 = particles[idx];
@@ -119,7 +139,7 @@ void resolveCollidedParticles(Particle** particles, bool* collisionMarks, int n,
 				int collisionMarksIndex = MatrixMaths::getLowerTriangularIndex(i, idx);
 				if (collisionMarks[collisionMarksIndex]) {
 					auto p2 = particles[i];
-					collisionResolver.resolve(p1, p2);
+					collisionResolverGpu[0]->resolve(p1, p2);
 				}
 			}
 		}
@@ -184,17 +204,16 @@ void Collision::cpuRun(vector<Particle*>& particles) {
 	}
 }
 
-
 void Collision::gpuRun(Particle** td_par, int particleCount) {
 	// get particles that collided
 	int betweenParticlesCount = (particleCount-1)*particleCount/2;
 	bool* collisionMarks = NULL;
 	cudaWithError->malloc((void**)&collisionMarks, betweenParticlesCount*sizeof(bool));
-	getCollidedParticles <<<1 + betweenParticlesCount/256, 256>>> (td_par, collisionMarks, betweenParticlesCount, collisionDetector->getIndex());
+	getCollidedParticles <<<1 + betweenParticlesCount/256, 256>>> (td_par, collisionMarks, collisionDetectorGpu, betweenParticlesCount);
 	cudaWithError->peekAtLastError("getCollidedParticles");
 
 	// merge sets of particles that collided and resolve
-	resolveCollidedParticles <<<1 + particleCount/256, 256>>> (td_par, collisionMarks, particleCount, collisionResolver->getIndex());
+	resolveCollidedParticles <<<1 + particleCount/256, 256>>> (td_par, collisionMarks, collisionResolverGpu, particleCount);
 	cudaWithError->peekAtLastError("resolveCollidedParticles");
 
 	cudaWithError->free(collisionMarks);

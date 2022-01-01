@@ -6,7 +6,8 @@ class Collision :
     public Law
 {
 public:
-    Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver);
+    Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver, bool use_gpu = false);
+    ~Collision();
 
     void cpuRun(vector<Particle*>& particles) override;
 	void gpuRun(Particle** td_par, int particleCount) override;
@@ -14,5 +15,9 @@ public:
 private:
     CollisionDetector* collisionDetector;
     CollisionResolver* collisionResolver;
+    CollisionDetector** collisionDetectorGpu = NULL;
+    CollisionResolver** collisionResolverGpu = NULL;
+
+    bool use_gpu;
 };
 
