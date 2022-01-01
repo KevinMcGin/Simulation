@@ -18,11 +18,8 @@ Renders these simulations with OpenGL.
 ## Render Example
 https://user-images.githubusercontent.com/23276119/146377747-62b6992a-f834-4974-bd93-1703e3e06ea8.mp4
 
-## Project Goals
-- Simulate real world phenomenon.
-- Predict future motion of asteroids, planets, and stars.
-- Reverse engineer past motion of asteroids, planets, and stars.
-- Display the above simulations in dynamic views.
+## Road Map
+[Wiki](https://github.com/KevinMcGin/Simulation/wiki#road-map)
 
 ## Dependencies
 - CMake
