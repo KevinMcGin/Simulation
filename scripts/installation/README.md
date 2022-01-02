@@ -33,5 +33,6 @@ TODO: Add environment variables to PATH
 
 ### OpenGL
 - Temporary empty script: ```./install_open_gl_ubuntu.sh```
-- dlls are stored in `SimulationRenderer/lib/freeglut`
-- Environement variables should auto configure to these dlls
+- No action should be needed
+  - dlls are stored in `SimulationRenderer/lib/freeglut`
+  - Environment variables should auto configure to these dlls
