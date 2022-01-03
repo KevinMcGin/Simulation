@@ -9,28 +9,21 @@ ParticleDistributionDisk::ParticleDistributionDisk(
     double thetaPosition,
     double phiPosition,
     bool clockwise,
-    double innerRadius,
-    double outerRadius, 
-    double eccentricity,
+    std::shared_ptr<Distribution> innerRadius,
+    std::shared_ptr<Distribution> outerRadius, 
+    std::shared_ptr<Distribution> eccentricity,
     std::shared_ptr<Distribution3D> angularVelocityDistribution,
     double G
 ) : densityDistribution(densityDistribution), centralMass(centralMass), meanPosition(meanPosition), thetaPosition(thetaPosition), phiPosition(phiPosition),
     clockwise(clockwise), innerRadius(innerRadius), outerRadius(outerRadius), eccentricity(eccentricity), angularVelocityDistribution(angularVelocityDistribution),
-    G(G)
-{
+    G(G) { }
 	
-}
-	
-ParticleDistributionDisk::~ParticleDistributionDisk()
-{
-	
-}
+ParticleDistributionDisk::~ParticleDistributionDisk() = default;
 
-Particle* ParticleDistributionDisk::getParticle()
-{
+Particle* ParticleDistributionDisk::getParticle() {
 	double mass, radius;
 	densityDistribution->getMassRadius(mass, radius);
-    DistributionCircle circle(meanPosition, outerRadius);
+    DistributionCircle circle(meanPosition, outerRadius->getValue());
     Vector3D position = circle.getValue();
     Vector3D difference = position - meanPosition;
     double differenceMagnitude = difference.magnitude();

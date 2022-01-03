@@ -4,8 +4,7 @@
 #include "ParticleDistribution.h"
 #include "PhysicalConstants.h"	
 
-class ParticleDistributionDisk : public ParticleDistribution
-{
+class ParticleDistributionDisk : public ParticleDistribution {
 public:
 	ParticleDistributionDisk(
 		std::shared_ptr<DistributionDensity> densityDistribution,
@@ -14,9 +13,9 @@ public:
 		double thetaPosition,
 		double phiPosition,
     	bool clockwise,
-		double innerRadius,
-		double outerRadius, 
-		double eccentricity,
+		std::shared_ptr<Distribution> innerRadius,
+		std::shared_ptr<Distribution> outerRadius, 
+		std::shared_ptr<Distribution> eccentricity,
 		shared_ptr<Distribution3D> angularVelocityDistribution,
 		double G = PhysicalConstants::GRAVITATIONAL_CONSTANT
 	);
@@ -31,9 +30,9 @@ private:
 	double thetaPosition;
 	double phiPosition;
     bool clockwise;
-	double innerRadius;
-	double outerRadius; 
-	double eccentricity;
+	std::shared_ptr<Distribution> innerRadius;
+	std::shared_ptr<Distribution> outerRadius; 
+	std::shared_ptr<Distribution> eccentricity;
 	std::shared_ptr<Distribution3D> angularVelocityDistribution;
 	double G;
 };
