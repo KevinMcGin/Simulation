@@ -4,7 +4,8 @@
 
 class Distribution {
 public:
-	Distribution() { srand( (unsigned int)time(NULL) ); };
+	Distribution() { srand( (unsigned int)time(nullptr) ); };
+	virtual ~Distribution() = default;
 
 	virtual double getValue() = 0;
 	
