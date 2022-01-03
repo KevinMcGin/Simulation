@@ -2,6 +2,7 @@
 #include "Universe.h"
 #include "SimulationInput.h"
 #include "GpuDataController.cuh"
+#include "UniverseTiming.h"
 
 #include <vector>
 
@@ -19,8 +20,8 @@ public:
 	virtual void run();
 	
 private:
-	double progress;
 	GpuDataController* gpuDataController;
+	UniverseTiming universeTiming = UniverseTiming();
 
 	void printPercentComplete(int lawsRan, bool force = false);
 	void updateSectionsTiming(string name);

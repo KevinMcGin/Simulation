@@ -2,7 +2,7 @@
 #include "Timing.h"
 #include "ParticlesHelper.h"
 
-#include<cmath>
+#include <cmath>
 #include <iostream>
 #include <map>
 
@@ -21,22 +21,16 @@ UniverseImpl::UniverseImpl(
 
 UniverseImpl::~UniverseImpl() = default;
 
-Timing timingTotal = Timing();
-Timing timingSections = Timing();
-map<string, float> progresses = {};
-float lastPrintedSeconds = 0.f;
-float maxTimeBetweenPrints = 0.8f;
-
 void UniverseImpl::run() {
 	cout << "Simulation running" << endl;
 	cout << particles.size() << " particles" << endl;
 	cout << "Frames: " << endTime << endl;
-	timingTotal.setTime();
+	universeTiming.timingTotal.setTime();
 	output->output(particles, 0);
-	this->progress = -1;
+	universeTiming.progress = -1;
 	int lawsRan = 0;
 	bool particleDeleted = false;
-	timingSections.setTime();
+	universeTiming.timingSections.setTime();
 	if(use_gpu == TRUE) {
 		gpuDataController->putParticlesOnDevice(particles, true);
 		updateSectionsTiming("Data to GPU");
@@ -76,30 +70,34 @@ void UniverseImpl::run() {
 void UniverseImpl::printPercentComplete(int lawsRan, bool force) {
 	float accurary = 1000.f;
 	float fractionPassed = (lawsRan/(float)laws.size()) / endTime;
-	progress = (100 * fractionPassed * accurary) / accurary;
-	float elapsedSeconds = timingTotal.getTimeSeconds();
-	if(force || elapsedSeconds - lastPrintedSeconds > maxTimeBetweenPrints) {
-		lastPrintedSeconds = elapsedSeconds;
-		float remainingPercent = 100 - progress;
-		float timeRemaining = remainingPercent * (elapsedSeconds / progress);
+	universeTiming.progress = (100 * fractionPassed * accurary) / accurary;
+	float elapsedSeconds = universeTiming.timingTotal.getTimeSeconds();
+	if(force || elapsedSeconds - universeTiming.lastPrintedSeconds > universeTiming.maxTimeBetweenPrints) {
+		universeTiming.lastPrintedSeconds = elapsedSeconds;
+		float remainingPercent = 100 - universeTiming.progress;
+		float timeRemaining = remainingPercent * ((elapsedSeconds-universeTiming.lastEstimatedSeconds) / (universeTiming.progress-universeTiming.lastEstimatedProgress));
 		cout << "\r" << 
-			"passed: " << progress << "% " << Timing::getTimeWithUnit(elapsedSeconds) << ", "
+			"passed: " << universeTiming.progress << "% " << Timing::getTimeWithUnit(elapsedSeconds) << ", "
 			"remaining: " << remainingPercent << "% " << Timing::getTimeWithUnit(timeRemaining) <<
 			"                       " << std::flush;
+	}
+	if(elapsedSeconds - universeTiming.lastEstimatedSeconds > universeTiming.maxTimeBetweenEstimates) {
+		universeTiming.lastEstimatedSeconds = elapsedSeconds;
+		universeTiming.lastEstimatedProgress = universeTiming.progress;
 	}
 }
 
 void UniverseImpl::updateSectionsTiming(string name) {
-	if(progresses.find(name) == progresses.end()) {
-		progresses[name] = 0;
+	if(universeTiming.progresses.find(name) == universeTiming.progresses.end()) {
+		universeTiming.progresses[name] = 0;
 	}
-	progresses[name] += timingSections.getTimeSeconds();
-	timingSections.setTime();
+	universeTiming.progresses[name] += universeTiming.timingSections.getTimeSeconds();
+	universeTiming.timingSections.setTime();
 }
 
 void UniverseImpl::printSectionsTiming() {
 	string sections = "";
-	for (auto const& it : progresses) {
+	for (auto const& it : universeTiming.progresses) {
 		sections += it.first + ": " + Timing::getTimeWithUnit(it.second) + ", ";
 	}
 	cout << endl << sections << endl;
