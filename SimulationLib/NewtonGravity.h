@@ -8,12 +8,7 @@
 
 class NewtonGravity: public Law {
 public:
-	NewtonGravity();
-	NewtonGravity(double G);
-
-	virtual void cpuRun(vector<Particle*>& particles);
-	virtual void gpuRun(Particle** td_par, int particleCount);
-
+	NewtonGravity(double G = PhysicalConstants::GRAVITATIONAL_CONSTANT);
 protected:
 	const double G;
 };

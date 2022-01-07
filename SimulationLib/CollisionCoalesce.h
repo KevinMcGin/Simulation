@@ -1,5 +1,5 @@
 #pragma once
-#include "Collision.cuh"
+#include "Collision.h"
 
 
 class CollisionCoalesce :

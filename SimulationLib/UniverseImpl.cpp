@@ -45,11 +45,11 @@ void UniverseImpl::run() {
 		particleDeleted = false;
 		for (const auto& l : laws) {
 			if(use_gpu == TRUE) {
-				l->gpuRun(gpuDataController->get_td_par(), gpuDataController->getParticleCount());
+				l->gpuLaw->run(gpuDataController->get_td_par(), gpuDataController->getParticleCount());
 			} else {
-				l->cpuRun(particles);
+				l->cpuLaw->run(particles);
 			}
-			updateSectionsTiming(l->getClassName());
+			updateSectionsTiming(l->gpuLaw->getClassName());
 			printPercentComplete(++lawsRan);
 			updateSectionsTiming("Printing");
 		}

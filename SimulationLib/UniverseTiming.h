@@ -8,7 +8,7 @@ public:
     Timing timingTotal = Timing();
     Timing timingSections = Timing();
     map<string, float> progresses = {};
-	double progress;
+	float progress;
     const float maxTimeBetweenPrints = 0.8f;
     const float maxTimeBetweenEstimates = 5.f;
     float lastPrintedSeconds = 0.f;

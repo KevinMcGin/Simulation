@@ -1,8 +1,7 @@
-#include "NewtonFirstLaw.cuh"
+#include "GpuNewtonFirstLaw.cuh"
 #include "Particle.cuh"
 
-NewtonFirstLaw::NewtonFirstLaw() : Law("NewtonFirstLaw") { }
-
+GpuNewtonFirstLaw::GpuNewtonFirstLaw() : GpuLaw("NewtonFirstLaw") { }
 
 __global__ 
 static void advanceParticles(Particle** particles, int particleCount) {
@@ -12,12 +11,7 @@ static void advanceParticles(Particle** particles, int particleCount) {
 	} 
 }
 
-void NewtonFirstLaw::cpuRun(vector<Particle*>& particles) {
-	for (const auto& p : particles)
-		p->advance();
-}
-
-void NewtonFirstLaw::gpuRun(Particle** td_par, int particleCount) {
+void GpuNewtonFirstLaw::run(Particle** td_par, int particleCount) {
 	advanceParticles <<<1 + particleCount/256, 256>>> (td_par, particleCount);
 	cudaWithError->peekAtLastError("advanceParticles");
 }

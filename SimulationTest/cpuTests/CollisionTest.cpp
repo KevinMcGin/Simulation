@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "Collision.cuh"
+#include "Collision.h"
 #include "CollisionDetectorSimple.cuh"
 #include "CollisionResolverCoalesce.cuh"
 #include "ParticleSimple.h"
@@ -50,14 +50,14 @@ bool sortParticles(Particle* const &lhs, Particle* const &rhs) {
 TEST(CollisionTest, ParticlesCollide) {
 	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
 	vector<Particle*> particles = CollisionTestHelper::getParticlesCollideParticles();
-	law.cpuRun(particles);
+	law.cpuLaw->run(particles);
 	CollisionTestHelper::testParticlesCollide(particles);
 }
 
 TEST(CollisionTest, MultipleParticlesAllCollide) {
 	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
 	vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesAllCollide();
-	law.cpuRun(particles);
+	law.cpuLaw->run(particles);
 	std::sort(particles.begin(), particles.end(), sortParticles);
 	CollisionTestHelper::testMultipleParticlesAllCollide(particles);
 }
@@ -65,7 +65,7 @@ TEST(CollisionTest, MultipleParticlesAllCollide) {
 TEST(CollisionTest, MultipleParticlesPartialCollide) {
 	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
 	vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesPartialCollide();
-	law.cpuRun(particles);
+	law.cpuLaw->run(particles);
 	std::sort(particles.begin(), particles.end(), sortParticles);
 	CollisionTestHelper::testMultipleParticlesPartialCollide(particles);
 }
@@ -73,6 +73,6 @@ TEST(CollisionTest, MultipleParticlesPartialCollide) {
 TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
 	vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesIndependentlyCollide();
-	law.cpuRun(particles);
+	law.cpuLaw->run(particles);
 	CollisionTestHelper::testMultipleParticlesIndependentlyCollide(particles);
 }

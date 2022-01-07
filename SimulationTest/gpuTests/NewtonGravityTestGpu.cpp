@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "NewtonGravity.cuh"
+#include "NewtonGravity.h"
 #include "LawHelper.h"
 #include "NewtonGravityTestHelper.h"
 

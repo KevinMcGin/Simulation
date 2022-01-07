@@ -8,6 +8,4 @@
 class NewtonFirstLaw: public Law {
 public:
 	NewtonFirstLaw();
-	virtual void cpuRun(vector<Particle*>& particles);
-	virtual void gpuRun(Particle** td_par, int particleCount);
 };

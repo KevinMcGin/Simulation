@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "NewtonGravity.cuh"
+#include "NewtonGravity.h"
 #include "ParticleSimple.h"
 #include "NewtonGravityTestHelper.h"
 
@@ -8,6 +8,6 @@
 TEST(NewtonGravityTest, ParticlesAccelerate) {
 	Law* law = new NewtonGravity(0.05);
 	vector<Particle*> particles = NewtonGravityTestHelper::getParticlesAccelerate();
-	law->cpuRun(particles);
+	law->cpuLaw->run(particles);
 	NewtonGravityTestHelper::testParticlesAccelerate(particles);
 }
