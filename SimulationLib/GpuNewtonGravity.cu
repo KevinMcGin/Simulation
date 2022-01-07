@@ -3,6 +3,7 @@
 #include "Particle.cuh"
 #include "MatrixMaths.cuh"
 #include "NewtonGravityHeper.cuh"
+#include "GpuNewtonGravityHelper.cuh"
 
 #include <cmath>
 
@@ -12,32 +13,20 @@ __global__
 void radiusComponentKernel(Particle** particles, Vector3D* accelerations, int n, double G) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
-		int x, y;
-		MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
-		Vector3D devicePRadiusComponent = getRadiusComponent(particles[x], particles[y], G);
-		accelerations[idx] = -getAcceleration(particles[y]->mass, devicePRadiusComponent);
-		accelerations[idx + n] = getAcceleration(particles[x]->mass, devicePRadiusComponent);
+		radiusComponentKernelHelper(idx, particles, accelerations, n, G);
 	} 
 }
 
 __global__ 
 void addAccelerationsKernelLower(Particle** particles, Vector3D* accelerations, int x0, int y, int n) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
-	int x = idx + x0;
-	if(x < n) { 
-		int radiusComponentIndex = MatrixMaths::getLowerTriangularIndex(x, y);
-		runOnParticle(particles[x], accelerations[radiusComponentIndex]);
-	} 
+	addAccelerationsKernelLowerHelper(idx, particles, accelerations, x0, y, n);
 }
 
 __global__ 
 void addAccelerationsKernelUpper(Particle** particles, Vector3D* accelerations, int x0, int y, int n, int betweenParticlesTriangularCount) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
-	int x = idx + x0;
-	if(x < n) { 
-		int radiusComponentIndex = MatrixMaths::getUpperTriangularIndex(x, y);
-		runOnParticle(particles[x], accelerations[radiusComponentIndex + betweenParticlesTriangularCount]);
-	} 
+	addAccelerationsKernelUpperHelper(idx, particles, accelerations, x0, y, n, betweenParticlesTriangularCount);
 }
 
 void GpuNewtonGravity::run(Particle** td_par, int particleCount) {
