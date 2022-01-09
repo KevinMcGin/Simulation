@@ -1,12 +1,12 @@
-#include "SimulationInputRandomSimple.h"
-#include "SimulationOutputJSON.h"
-#include "UniverseImplSimple.h"
-#include "DistributionValue.h"
-#include "DistributionCircle.h"
-#include "DistributionMassDensity.h"
-#include "ParticleDistributionSimple.h"
-#include "ParticleDistributionDisk.h"
-#include "Timing.h"
+#include "universe/input/SimulationInputRandomSimple.h"
+#include "universe/output/SimulationOutputJSON.h"
+#include "universe/UniverseImplSimple.h"
+#include "distribution/DistributionValue.h"
+#include "distribution/DistributionCircle.h"
+#include "distribution/DistributionMassDensity.h"
+#include "distribution/ParticleDistributionSimple.h"
+#include "distribution/ParticleDistributionDisk.h"
+#include "util/Timing.h"
 
 #include <cargs.h>
 #include <stdbool.h>
@@ -115,7 +115,10 @@ int main(int argc, char *argv[]) {
 	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
-	auto particleDistributionDisk = std::make_shared<ParticleDistributionDisk>(densityDistribution, starMass, meanPosition, 0, 0, false, 0, outerRadius, 1, angularVelocityDistribution);	
+	auto innerRadiusDistribution = std::make_shared<DistributionValue>(0);
+	auto outerRadiusDistribution = std::make_shared<DistributionValue>(outerRadius);
+	auto eccentricityDistribution = std::make_shared<DistributionValue>(1);
+	auto particleDistributionDisk = std::make_shared<ParticleDistributionDisk>(densityDistribution, starMass, meanPosition, 0, 0, false, innerRadiusDistribution, outerRadiusDistribution, eccentricityDistribution, angularVelocityDistribution);	
 	auto particleDistributionStar = std::make_shared<ParticleDistributionSimple>(distributionDensityStar, positionDistribution, velocityDistribution, angularVelocityDistribution);
 	
 	auto input = std::make_shared<SimulationInputRandomSimple>(

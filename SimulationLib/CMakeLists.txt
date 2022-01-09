@@ -1,7 +1,7 @@
-﻿file(GLOB cpp_headers CONFIGURE_DEPENDS "*.h")
-file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
-file(GLOB cu_headers CONFIGURE_DEPENDS "*.cuh")
-file(GLOB cu_source CONFIGURE_DEPENDS "*.cu")
+﻿file(GLOB_RECURSE  cpp_headers CONFIGURE_DEPENDS "*.h")
+file(GLOB_RECURSE  cpp_source CONFIGURE_DEPENDS "*.cpp")
+file(GLOB_RECURSE  cu_headers CONFIGURE_DEPENDS "*.cuh")
+file(GLOB_RECURSE  cu_source CONFIGURE_DEPENDS "*.cu")
 
 add_library(SimulationLib STATIC ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers})
 set_target_properties(SimulationLib PROPERTIES CUDA_SEPARABLE_COMPILATION ON)

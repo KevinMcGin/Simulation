@@ -1,10 +1,10 @@
 #include  <gtest/gtest.h>
 #include "LawHelper.h"
-#include "ParticlesHelper.h"
+#include "particle/helper/ParticlesHelper.h"
 
 void LawHelper::runCpuLaw(Law* law, vector<Particle*>& particles, const int stepsCount) {
 	for(int i = 0; i < stepsCount; i++) {
-		law->cpuRun(particles);
+		law->cpuLaw->run(particles);
 	}
 }
 
@@ -12,7 +12,7 @@ void LawHelper::runGpuLaw(Law* law, vector<Particle*>& particles, const int step
     GpuDataController gpuDataController = GpuDataController();
 	for(int i = 0; i < stepsCount; i++) {
     	gpuDataController.putParticlesOnDevice(particles, true);
-		law->gpuRun(gpuDataController.get_td_par(), gpuDataController.getParticleCount());
+		law->gpuLaw->run(gpuDataController.get_td_par(), gpuDataController.getParticleCount());
     	gpuDataController.getParticlesFromDevice(particles);
     	ParticlesHelper::removeDeletedParticles(particles);
 	}

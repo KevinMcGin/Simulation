@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "DistributionCircle.h"
+#include "distribution/DistributionCircle.h"
 
 TEST(DistributionCircleTest, ParticleInGlobe) {
 	Vector3D mean = { 1,-1,0 };

@@ -1,7 +1,7 @@
 #include  <gtest/gtest.h>
-#include "Collision.cuh"
-#include "CollisionDetectorSimple.cuh"
-#include "CollisionResolverCoalesce.cuh"
+#include "law/collision/Collision.h"
+#include "law/collision/detector/CollisionDetectorSimple.cuh"
+#include "law/collision/resolver/CollisionResolverCoalesce.cuh"
 #include "LawHelper.h"
 #include "CollisionTestHelper.h"
 

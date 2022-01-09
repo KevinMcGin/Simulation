@@ -1,6 +1,6 @@
 #include  <gtest/gtest.h>
-#include "DistributionMassDensity.h"
-#include "DistributionValue.h"
+#include "distribution/DistributionMassDensity.h"
+#include "distribution/DistributionValue.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <memory>

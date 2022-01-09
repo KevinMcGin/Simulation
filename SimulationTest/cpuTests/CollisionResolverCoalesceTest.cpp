@@ -1,6 +1,6 @@
 #include  <gtest/gtest.h>
-#include "CollisionResolverCoalesce.cuh"
-#include "ParticleSimple.h"
+#include "law/collision/resolver/CollisionResolverCoalesce.cuh"
+#include "particle/ParticleSimple.h"
 
 #include <vector>
 

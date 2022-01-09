@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "DistributionSquare.h"
+#include "distribution/DistributionSquare.h"
 
 TEST(DistributionSquareTest, ParticleInGlobe) {
 	DistributionSquare square({ 0,0,0 }, 1);

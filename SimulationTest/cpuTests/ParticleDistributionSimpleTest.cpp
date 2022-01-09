@@ -1,10 +1,10 @@
 #include  <gtest/gtest.h>
-#include "ParticleDistributionSimple.h"
-#include "DistributionGlobe.h"
-#include "DistributionSimple.h"
-#include "DistributionCircle.h"
-#include "DistributionValue.h"
-#include "DistributionMassDensity.h"
+#include "distribution/ParticleDistributionSimple.h"
+#include "distribution/DistributionGlobe.h"
+#include "distribution/DistributionSimple.h"
+#include "distribution/DistributionCircle.h"
+#include "distribution/DistributionValue.h"
+#include "distribution/DistributionMassDensity.h"
 
 
 TEST(ParticleDistributionSimpleTest, ParticleMade) {

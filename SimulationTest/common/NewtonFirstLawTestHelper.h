@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "ParticleSimple.h"
+#include "particle/ParticleSimple.h"
 
 #include <algorithm>
 

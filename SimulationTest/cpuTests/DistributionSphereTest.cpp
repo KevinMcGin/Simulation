@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "DistributionSphere.h"
+#include "distribution/DistributionSphere.h"
 
 TEST(DistributionSphereTest, ParticleInGlobe) {
 	Vector3D mean = { 1,-1,0 };
