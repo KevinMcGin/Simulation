@@ -1,5 +1,5 @@
 #include  "gtest/gtest.h"
-#include "Timing.h"
+#include "util/Timing.h"
 
 TEST(TimingTest, TimeInSeconds) {
 	Timing timing= Timing();

@@ -1,8 +1,8 @@
 #include  <gtest/gtest.h>
-#include "Collision.h"
-#include "CollisionDetectorSimple.cuh"
-#include "CollisionResolverCoalesce.cuh"
-#include "ParticleSimple.h"
+#include "law/collision/Collision.h"
+#include "law/collision/detector/CollisionDetectorSimple.cuh"
+#include "law/collision/resolver/CollisionResolverCoalesce.cuh"
+#include "particle/ParticleSimple.h"
 #include "CollisionTestHelper.h"
 
 #include <algorithm>

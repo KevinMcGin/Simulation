@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "MatrixMaths.cuh"
+#include "util/MatrixMaths.cuh"
 
 TEST(MatrixMathsTest, getLowerTriangularCoordinates) {
     int x, y;

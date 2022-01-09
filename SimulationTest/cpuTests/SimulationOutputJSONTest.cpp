@@ -1,6 +1,6 @@
 #include  "gtest/gtest.h"
-#include "SimulationOutputJSON.h"
-#include "ParticleSimple.h"
+#include "universe/output/SimulationOutputJSON.h"
+#include "particle/ParticleSimple.h"
 
 TEST(SimulationOutputJSONTest, SimulationOutputtedToJSON) {
 	SimulationOutput* simulationOutputJSON = new SimulationOutputJSON("simulation_output/SimulationOutputJSONTest_SimulationOutputtedToJSON.json");

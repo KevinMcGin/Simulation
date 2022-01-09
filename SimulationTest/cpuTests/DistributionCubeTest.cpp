@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "DistributionCube.h"
+#include "distribution/DistributionCube.h"
 
 TEST(DistributionCubeTest, ParticleInGlobe) {
 	DistributionCube cube({ 0,0,0 }, 1);

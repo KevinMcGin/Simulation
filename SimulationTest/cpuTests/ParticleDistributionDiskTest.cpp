@@ -1,9 +1,9 @@
 #include  <gtest/gtest.h>
-#include "ParticleDistributionDisk.h"
-#include "DistributionValue.h"
-#include "DistributionMassDensity.h"
-#include "DistributionCircle.h"
-#include "DistributionSimple.h"
+#include "distribution/ParticleDistributionDisk.h"
+#include "distribution/DistributionValue.h"
+#include "distribution/DistributionMassDensity.h"
+#include "distribution/DistributionCircle.h"
+#include "distribution/DistributionSimple.h"
 
 #include <memory>
 

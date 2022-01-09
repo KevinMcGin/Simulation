@@ -1,12 +1,12 @@
-#include "SimulationInputRandomSimple.h"
-#include "SimulationOutputJSON.h"
-#include "UniverseImplSimple.h"
-#include "DistributionValue.h"
-#include "DistributionCircle.h"
-#include "DistributionMassDensity.h"
-#include "ParticleDistributionSimple.h"
-#include "ParticleDistributionDisk.h"
-#include "Timing.h"
+#include "universe/input/SimulationInputRandomSimple.h"
+#include "universe/output/SimulationOutputJSON.h"
+#include "universe/UniverseImplSimple.h"
+#include "distribution/DistributionValue.h"
+#include "distribution/DistributionCircle.h"
+#include "distribution/DistributionMassDensity.h"
+#include "distribution/ParticleDistributionSimple.h"
+#include "distribution/ParticleDistributionDisk.h"
+#include "util/Timing.h"
 
 #include <cargs.h>
 #include <stdbool.h>

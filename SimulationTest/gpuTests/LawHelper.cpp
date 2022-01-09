@@ -1,6 +1,6 @@
 #include  <gtest/gtest.h>
 #include "LawHelper.h"
-#include "ParticlesHelper.h"
+#include "particle/helper/ParticlesHelper.h"
 
 void LawHelper::runCpuLaw(Law* law, vector<Particle*>& particles, const int stepsCount) {
 	for(int i = 0; i < stepsCount; i++) {
