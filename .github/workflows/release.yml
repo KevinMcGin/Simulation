@@ -1,0 +1,74 @@
+name: Release
+
+on: 
+  push:
+    tags:
+    - '*'
+
+env:
+  BUILD_TYPE: Release
+  SONAR_SCANNER_VERSION: 4.4.0.2170
+  SONAR_SERVER_URL: "https://sonarcloud.io"
+  BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory  # Directory where build-wrapper output will be placed
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            INSTALL_SHELL: bash
+            INSTALL_SCRIPT: ubuntu.sh
+            cuda: "11.2"
+            build_params: ""
+            asset_name: "simulation-ubuntu"
+          # - os: macos-latest
+          #   INSTALL_SHELL: bash
+          - os: windows-2016
+            INSTALL_SHELL: powershell
+            INSTALL_SCRIPT: windows.ps1
+            build_params: "-A x64"
+            asset_name: "simulation-windows"
+            cuda: "11.2.0"
+    defaults:
+      run:
+        shell: ${{ matrix.INSTALL_SHELL }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install CUDA
+      env:
+        cuda: ${{ matrix.cuda }}
+      run: ./scripts/installation/install_cuda_${{ matrix.INSTALL_SCRIPT }}
+  
+    - name: Install OpenGL
+      run: ./scripts/installation/install_open_gl_${{ matrix.INSTALL_SCRIPT }}
+
+    - name: Windows Pre Build
+      shell: bash
+      if: matrix.os == 'windows-2016'
+      run: |
+        rm config/project.config.example
+        mv config/mvsc_project.config.example config/project.config.example
+
+    - name: Build
+      shell: bash
+      run: ./compile.sh -p "${{ matrix.build_params }}"
+
+    - name: Test CPU
+      shell: bash
+      run: ./test.sh -nc
+
+    - name: Run CPU
+      shell: bash
+      run: ./engine.sh -n
+
+    - name: Upload build
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: builds.build
+        asset_name: ${{ matrix.asset_name }}
+        tag: ${{ github.ref }}
