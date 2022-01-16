@@ -23,14 +23,14 @@ jobs:
             INSTALL_SCRIPT: ubuntu.sh
             cuda: "11.2"
             build_params: ""
-            asset_name: "simulation-ubuntu"
+            asset_name: "simulation-ubuntu.zip"
           # - os: macos-latest
           #   INSTALL_SHELL: bash
           - os: windows-2016
             INSTALL_SHELL: powershell
             INSTALL_SCRIPT: windows.ps1
             build_params: "-A x64"
-            asset_name: "simulation-windows"
+            asset_name: "simulation-windows.zip"
             cuda: "11.2.0"
     defaults:
       run:
@@ -65,10 +65,22 @@ jobs:
       shell: bash
       run: ./engine.sh -n
 
-    - name: Upload build
+    - name: Zip Build (Ubuntu)
+      shell: bash
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd builds
+        zip -r ../build.zip build 
+
+    - name: Zip Build (Windows)
+      shell: powershell
+      if: matrix.os == 'windows-2016'
+      run: Compress-Archive builds/build build.zip
+
+    - name: Archive Build
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: builds.build
+        file: build.zip
         asset_name: ${{ matrix.asset_name }}
         tag: ${{ github.ref }}
