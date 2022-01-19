@@ -26,6 +26,7 @@ enable_language(CUDA)
 
 
 add_subdirectory(SimulationLib)
+add_subdirectory(SimulationCommon)
 add_subdirectory(SimulationEngine)
 add_subdirectory(SimulationRenderer)
 

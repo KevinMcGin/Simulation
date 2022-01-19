@@ -41,4 +41,8 @@ include_directories(
     "lib/freeglut/bin/x64"
 )
 
-target_link_libraries(SimulationRenderer ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
+target_link_libraries(SimulationRenderer 
+    SimulationCommon
+    ${OPENGL_LIBRARIES} 
+    ${GLUT_LIBRARIES}
+)
