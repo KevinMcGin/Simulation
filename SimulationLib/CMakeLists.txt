@@ -9,8 +9,13 @@ set_target_properties(SimulationLib PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
 
 target_include_directories(SimulationLib
   PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}
-  )
+  ${CMAKE_CURRENT_LIST_DIR}
+)
+
+target_link_libraries(SimulationLib
+  PUBLIC
+  SimulationCommon
+)
 
 if(NOT DEFINED CMAKE_CUDA_STANDARD)
     set(CMAKE_CUDA_STANDARD 11)
@@ -26,17 +31,3 @@ if (CUDA_FOUND)
 else()
     message("CUDA not found")
 endif()
-
-
-# we use this to get code coverage
-# flags are only valid with the GNU compiler and on Linux
-#if(CMAKE_CXX_COMPILER_ID MATCHES GNU AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
- # target_compile_options(Simulation
-  #  PUBLIC
-   #   "--coverage"
-    #)
-  #target_link_options(Simulation
-   # INTERFACE
-    #  "--coverage"
-    #)
-#endif()
