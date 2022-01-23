@@ -6,6 +6,6 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/cargs)
 
 target_link_libraries(SimulationEngine
   PRIVATE
-  SimulationLib
+  SimulationEngineLib
   cargs
 )

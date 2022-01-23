@@ -37,7 +37,7 @@ endif()
 
 target_link_libraries(SimulationTestCommon
   PRIVATE
-    SimulationLib
+    SimulationEngineLib
   PUBLIC
     gtest_main
 )

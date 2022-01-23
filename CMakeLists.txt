@@ -25,10 +25,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 enable_language(CUDA)
 
 
-add_subdirectory(SimulationLib)
-add_subdirectory(SimulationCommon)
+add_subdirectory(SimulationEngineLib)
 add_subdirectory(SimulationEngine)
 add_subdirectory(SimulationRenderer)
+add_subdirectory(SimulationRendererLib)
+add_subdirectory(SimulationCommon)
 
 enable_testing()
 add_subdirectory(SimulationTest/common)
