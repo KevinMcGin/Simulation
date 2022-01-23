@@ -41,3 +41,17 @@ void CudaWithError::peekAtLastError(string message) {
     cudaError_t cudaStatus = cudaPeekAtLastError();
     throwErrorMaybe(cudaStatus, message + ": cudaPeekAtLastError failed!");
 }
+
+
+unsigned long CudaWithError::getFreeGpuMemory() 
+{
+    size_t free_t, total_t;
+
+    cudaMemGetInfo(&free_t, &total_t);
+
+    free_t = free_t / 1.0485760;
+
+    unsigned long free_m = (unsigned int)free_t;
+
+    return free_m;
+}

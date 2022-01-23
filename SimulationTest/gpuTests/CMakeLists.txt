@@ -8,7 +8,7 @@ set_target_properties(SimulationTestGpu PROPERTIES CUDA_SEPARABLE_COMPILATION ON
 
 target_link_libraries(SimulationTestGpu
   PRIVATE
-    SimulationLib
+    SimulationEngineLib
     SimulationCommon
     SimulationTestCommon
     gtest_main
