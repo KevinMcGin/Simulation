@@ -14,6 +14,7 @@ public:
     void deviceSynchronize(string message = "");
     void peekAtLastError(string message);
     void free(void* devPtr);
+    unsigned long getFreeGpuMemory();
 private: 
     string className;
     void throwErrorMaybe(cudaError_t cudaStatus, string error);
