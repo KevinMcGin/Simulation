@@ -36,7 +36,7 @@ void setCollisionResolver(CollisionResolver** collisionResolverGpu, int collisio
 			assert(false);
 		}
 	} 
-}
+} 
 
 GpuCollision::GpuCollision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver) : GpuLaw("Collision") {
 	cudaWithError->malloc((void**)&collisionDetectorGpu, sizeof(*collisionDetector));
@@ -69,7 +69,7 @@ void resolveCollidedParticles(Particle** particles, bool* collisionMarks, Collis
 
 void GpuCollision::run(Particle** td_par, int particleCount) {
 	// get particles that collided
-	int betweenParticlesCount = (particleCount-1)*particleCount/2;
+	unsigned long long betweenParticlesCount = ((unsigned long long)particleCount-1)*particleCount/2;
 	bool* collisionMarks = NULL;
 	cudaWithError->malloc((void**)&collisionMarks, betweenParticlesCount*sizeof(bool));
 	getCollidedParticles <<<1 + betweenParticlesCount/256, 256>>> (td_par, collisionMarks, collisionDetectorGpu, betweenParticlesCount);
