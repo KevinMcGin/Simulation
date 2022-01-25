@@ -1,8 +1,6 @@
 #include "util/MatrixMaths.cuh"
 
 #include <cmath>
-#include< cstdio>
-using namespace std;
 
 __device__ __host__
 void MatrixMaths::getLowerTriangularCoordinates(unsigned long long i, unsigned long long* x, unsigned long long* y) {
