@@ -11,22 +11,22 @@
 GpuNewtonGravity::GpuNewtonGravity(double G) : GpuLaw("GpuNewtonGravity"), G(G) { }
 
 __global__ 
-void radiusComponentKernel(Particle** particles, Vector3D* accelerations, int n, double G, int vectorsProcessedTriangular) {
-	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+void radiusComponentKernel(Particle** particles, Vector3D* accelerations, unsigned long long n, double G, unsigned long long vectorsProcessedTriangular) {
+	unsigned long long idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
 		radiusComponentKernelHelper(idx, particles, accelerations, n, G, vectorsProcessedTriangular);
 	} 
 }
 
 __global__ 
-void addAccelerationsKernelLower(Particle** particles, Vector3D* accelerations, int x0, int y, int n, int vectorsProcessedTriangular) {
-	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+void addAccelerationsKernelLower(Particle** particles, Vector3D* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular) {
+	unsigned long long idx = threadIdx.x + blockIdx.x*blockDim.x;
 	addAccelerationsKernelLowerHelper(idx, particles, accelerations, x0, y, n, vectorsProcessedTriangular);
 }
 
 __global__ 
-void addAccelerationsKernelUpper(Particle** particles, Vector3D* accelerations, int x0, int y, int n, int vectorsProcessedTriangular, int particlesProcessed, int betweenParticlesTriangularCount) {
-	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+void addAccelerationsKernelUpper(Particle** particles, Vector3D* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long particlesProcessed, unsigned long long betweenParticlesTriangularCount) {
+	unsigned long long idx = threadIdx.x + blockIdx.x*blockDim.x;
 	addAccelerationsKernelUpperHelper(idx, particles, accelerations, x0, y, n, vectorsProcessedTriangular, particlesProcessed, betweenParticlesTriangularCount);
 }
 
