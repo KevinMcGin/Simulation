@@ -2,9 +2,9 @@
 #include "util/MatrixMaths.cuh"
 
 TEST(MatrixMathsTest, getLowerTriangularCoordinates) {
-    int x, y;
+    unsigned long long x, y;
 
-    int i = 0;
+    unsigned long long i = 0;
     MatrixMaths::getLowerTriangularCoordinates(i, &x, &y);
 	EXPECT_EQ(0, x);
 	EXPECT_EQ(1, y);
@@ -21,8 +21,8 @@ TEST(MatrixMathsTest, getLowerTriangularCoordinates) {
 }
 
 TEST(MatrixMathsTest, getUpperTriangularIndex) {
-    int x = 1;
-    int y = 0;
+    unsigned long long x = 1;
+    unsigned long long y = 0;
     auto i = MatrixMaths::getUpperTriangularIndex(x, y);
 	EXPECT_EQ(0, i);
 
@@ -38,8 +38,8 @@ TEST(MatrixMathsTest, getUpperTriangularIndex) {
 }
 
 TEST(MatrixMathsTest, getLowerTriangularIndex) {
-    int x = 0;
-    int y = 01;
+    unsigned long long x = 0;
+    unsigned long long y = 01;
     auto i = MatrixMaths::getLowerTriangularIndex(x, y);
 	EXPECT_EQ(0, i);
 

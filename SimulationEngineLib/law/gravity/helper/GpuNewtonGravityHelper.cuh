@@ -1,10 +1,10 @@
 #include "particle/Particle.cuh"
 
 __device__ 
-void radiusComponentKernelHelper(int idx, Particle** particles, Vector3D* accelerations, int betweenParticlesTriangularCount, double G, int vectorsProcessedTriangular);
+void radiusComponentKernelHelper(unsigned long long idx, Particle** particles, Vector3D* accelerations, unsigned long long betweenParticlesTriangularCount, double G, unsigned long long vectorsProcessedTriangular);
 
 __device__ 
-void addAccelerationsKernelLowerHelper(int idx, Particle** particles, Vector3D* accelerations, int x0, int y, int n, int vectorsProcessedTriangular);
+void addAccelerationsKernelLowerHelper(unsigned long long idx, Particle** particles, Vector3D* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular);
 
 __device__ 
-void addAccelerationsKernelUpperHelper(int idx, Particle** particles, Vector3D* accelerations, int x0, int y, int n, int vectorsProcessedTriangular, int particlesProcessed, int betweenParticlesTriangularCount);
+void addAccelerationsKernelUpperHelper(unsigned long long idx, Particle** particles, Vector3D* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long particlesProcessed, unsigned long long betweenParticlesTriangularCount);
