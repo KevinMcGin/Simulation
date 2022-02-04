@@ -31,6 +31,8 @@ then
    if [ $? -ne 0 ]; then exit 1; fi
 fi
 
+cd ..
+
 get_build_path $build_folder
 source ./config/project.config
 ./$build_path/${BUILD_PATH_END:-'/bin'}/SimulationRenderer $output_path

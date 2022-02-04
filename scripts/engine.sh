@@ -41,6 +41,8 @@ then
    if [ $? -ne 0 ]; then exit 1; fi
 fi
 
+cd ..
+
 get_config $config_file
 source ./config/project.config
 
@@ -61,6 +63,7 @@ get_output_path $output_file
 if [ $? -ne 0 ]; then echo -e "\nengine failed"; exit 1; fi
 if [ $render = 'true' ]
 then
+   cd scripts
    ./render.sh -n -b $build_folder -i $output_file 
    if [ $? -ne 0 ]; then exit 1; fi
 fi

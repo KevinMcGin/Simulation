@@ -30,6 +30,8 @@ while getopts 'b:dp:' flag; do
   esac
 done
 
+cd ..
+
 if [ $delete_build = 'true' ]; then do_delete_build; fi
 
 cmake -S. -B$build_folder $build_params -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DUSE_GPU_TESTS=ON

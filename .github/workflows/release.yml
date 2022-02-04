@@ -55,15 +55,21 @@ jobs:
 
     - name: Build
       shell: bash
-      run: ./compile.sh -p "${{ matrix.build_params }}"
+      run: | 
+        cd scripts
+        ./compile.sh -p "${{ matrix.build_params }}"
 
     - name: Test CPU
       shell: bash
-      run: ./test.sh -nc
+      run: | 
+        cd scripts
+        ./test.sh -nc
 
     - name: Run CPU
       shell: bash
-      run: ./engine.sh -n
+      run: | 
+        cd scripts
+        ./engine.sh -n
 
     - name: Zip Build (Ubuntu)
       shell: bash
