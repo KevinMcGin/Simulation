@@ -27,3 +27,9 @@ TEST(CollisionDetectorSimpleTest, particlesIntersect) {
 	bool didCollide = detector.isCollision(p1, p2);
 	EXPECT_TRUE(didCollide);
 }
+
+TEST(CollisionDetectorSimpleTest, GetIndex) {
+	CollisionDetectorSimple detector;
+	int index = detector.getIndex();
+	EXPECT_EQ(0, index);
+}

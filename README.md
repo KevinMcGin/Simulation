@@ -29,8 +29,7 @@ https://user-images.githubusercontent.com/23276119/146377747-62b6992a-f834-4974-
 ## Installation
 [Installation Guide](scripts/installation/README.md)
 
-## Build
-``./compile.sh``
+
 
 ## Configuration
 Configuration files are in the ``config`` folder.

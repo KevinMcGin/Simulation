@@ -16,3 +16,9 @@ TEST(CollisionResolverCoalesceTest, ParticlesCoalesce) {
 	EXPECT_EQ(Vector3D(1,0,0), p1->velocity);
 	EXPECT_EQ(Vector3D(0,0,0), p1->angularVelocity);
 }
+
+TEST(CollisionResolverCoalesceTest, GetIndex) {
+	CollisionResolverCoalesce resolver;
+	int index = resolver.getIndex();
+	EXPECT_EQ(0, index);
+}

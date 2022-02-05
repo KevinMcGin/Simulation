@@ -27,6 +27,8 @@ then
    if [ $? -ne 0 ];  then exit 1; fi
 fi
 
+cd ..
+
 get_build_path $build_folder
 cd $build_path
 if [ $cpu_only = 'true' ]
