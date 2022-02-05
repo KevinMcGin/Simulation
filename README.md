@@ -11,7 +11,7 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=KevinMcGin_Simulation&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=KevinMcGin_Simulation)
 
 # Simulation
-Simulates the motion of particles on the GPU with Nvidia's CUDA, or just on the CPU if a GPU is not available.
+Simulates the motion of particles on the CPU or on the GPU with CUDA.
 
 Renders these simulations with OpenGL.
 
