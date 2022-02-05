@@ -60,10 +60,10 @@ void getCollidedParticles(Particle** particles, unsigned long long betweenPartic
 }
 
 __global__ 
-void resolveCollidedParticles(Particle** particles, int* collisionMarks,  unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionResolver** collisionResolverGpu, int n) {
+void resolveCollidedParticles(Particle** particles, int particlesOffset, int* collisionMarks,  unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionResolver** collisionResolverGpu, int thisParticleCount, int n) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
-	if(idx < n) { 
-		resolveCollidedParticlesHelper(idx, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, n);
+	if(idx < thisParticleCount) { 
+		resolveCollidedParticlesHelper(idx + particlesOffset, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, n);
 	} 
 }
 
@@ -104,8 +104,13 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 	//TODO remove deviceSynchronize
 	cudaWithError->deviceSynchronize("get");
 
-	resolveCollidedParticles <<<1 + particleCount/256, 256>>> (particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, particleCount);
-	cudaWithError->peekAtLastError("resolveCollidedParticles");
+	//TODO this may need to be configured based on the number of threads and or timeout time
+	const int maxParticlesPerResolve = 1000 * 1000;
+	for(int particlesOffset = 0; particlesOffset < particleCount; particlesOffset += maxParticlesPerResolve) {
+		const int thisParticleCount = std::min(maxParticlesPerResolve, particleCount - particlesOffset);
+		resolveCollidedParticles <<<1 + thisParticleCount/256, 256>>> (particles, particlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, thisParticleCount, particleCount);
+		cudaWithError->peekAtLastError("resolveCollidedParticles");
+	}
 
 	//TODO remove deviceSynchronize
 	cudaWithError->deviceSynchronize("resolved");
