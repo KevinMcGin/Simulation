@@ -29,8 +29,6 @@ https://user-images.githubusercontent.com/23276119/146377747-62b6992a-f834-4974-
 ## Installation
 [Installation Guide](scripts/installation/README.md)
 
-
-
 ## Configuration
 Configuration files are in the ``config`` folder.
 
@@ -39,15 +37,5 @@ Git ignored configuration files are generate from ``*.config.example`` files aft
 ### Project
 The project config file allows the configuration of the ``BUILD_PATH`` and whether to ``USE_GPU`` in the simulation engine.
 
-## Test
-### All Tests
-``./test.sh``
-
-### CPU Tests Only
-``./test.sh -c``
-
-## Run Engine
-``./engine.sh``
-
-## Run Renderer
-``./render.sh``
+## Scripts
+[Scripts Guide](scripts/README.md)
