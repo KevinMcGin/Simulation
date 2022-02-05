@@ -53,7 +53,7 @@ GpuCollision::~GpuCollision() {
 
 __global__ 
 void getCollidedParticles(Particle** particles, unsigned long long betweenParticlesOffset, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionDetector** collisionDetectorGpu, unsigned long long n) {
-	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	unsigned long long idx = threadIdx.x + (unsigned long long)blockIdx.x*blockDim.x;
 	if(idx < n) { 
 		getCollidedParticlesHelper(idx + betweenParticlesOffset, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu);
 	} 
@@ -76,7 +76,7 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 	unsigned long long maxIntsAllocatableStage1 = (freeGpuMemory - particlesCollidedSize - sizeof(unsigned long long)) / sizeof(int);
 	unsigned long long maxIntsAllocatableFactor = 200;
 	unsigned long long maxIntsAllocatable = std::min(maxIntsAllocatableStage1, betweenParticlesPairsCount * maxIntsAllocatableFactor);
-	// cout << maxIntsAllocatable << endl;
+	// cout << "maxIntsAllocatable: " << maxIntsAllocatable << endl;
 	int* collisionMarks = NULL;
 	cudaWithError->malloc((void**)&collisionMarks, maxIntsAllocatable * sizeof(int));
 
@@ -95,6 +95,7 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 	//TODO this may need to be configured based on the number of threads and or timeout time
 	const unsigned long long maxBetweenParticlesPerGet = 1 * 1000 * 1000;
 	for(unsigned long long betweenParticlesOffset = 0; betweenParticlesOffset < betweenParticlesCount; betweenParticlesOffset += maxBetweenParticlesPerGet) {
+		// cout << "getting in the loop: " << betweenParticlesOffset << endl;
 		const unsigned long long thisBetweenParticlesCount = std::min(maxBetweenParticlesPerGet, betweenParticlesCount - betweenParticlesOffset);
 		getCollidedParticles <<<1 + thisBetweenParticlesCount/256, 256>>> (particles, betweenParticlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu, thisBetweenParticlesCount);
 		cudaWithError->peekAtLastError("getCollidedParticles");

@@ -18,6 +18,11 @@ TEST(MatrixMathsTest, getLowerTriangularCoordinates) {
     MatrixMaths::getLowerTriangularCoordinates(i, &x, &y);
 	EXPECT_EQ(2, x);
 	EXPECT_EQ(3, y);
+
+    i = 5 * 1000 * 1000 * 1000;
+    MatrixMaths::getLowerTriangularCoordinates(i, &x, &y);
+	EXPECT_EQ(12679, x);
+	EXPECT_EQ(37551, y);
 }
 
 TEST(MatrixMathsTest, getUpperTriangularIndex) {

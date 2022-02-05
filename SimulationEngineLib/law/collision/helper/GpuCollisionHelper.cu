@@ -151,10 +151,9 @@ void resolveCollidedParticlesHelper(int idx, Particle** particles, int* collisio
 }
 
 __device__
-void getCollidedParticlesHelper(int idx, Particle** particles, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionDetector** collisionDetectorGpu) {
+void getCollidedParticlesHelper(unsigned long long idx, Particle** particles, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionDetector** collisionDetectorGpu) {
 	unsigned long long x, y;
 	MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
-	// printf("Checking collision: %d: %llu - %llu\n", idx, x, y);
 	//TODO find out why out of bounds error is occuring here
 	auto p1 = particles[x];
 	auto p2 = particles[y];	
