@@ -11,7 +11,7 @@
 #include <cmath>
 #include <typeinfo>
 
-const int MAX_MERGE_COLLISION_RUNS = 15;
+const int MAX_MERGE_COLLISION_RUNS = 5;
 
 __device__ MergeStatus mergeCollisionsRows(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int idx, int row, int n, int runCount = 0);
 __device__ MergeStatus mergeCollisionsColumns(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable,  bool* particlesCollided, int idx, int row, int n, int runCount = 0);
@@ -54,6 +54,7 @@ __device__ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long l
 
 __device__ void markCollision(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int particleIndex1, int particleIndex2) {
 	unsigned long long i = atomicAdd(collisionMarksIndex, 2);
+	// printf("maxIntsAllocatable: %llu\n", maxIntsAllocatable);
 	// printf("Marking collision at: %llu: %d, %d\n", i, particleIndex1, particleIndex2);
 	if(i + 1 >= maxIntsAllocatable - 1) {
 		printf("GpuCollisionHelper: collisionMarks overflow\n");
@@ -66,7 +67,7 @@ __device__ void markCollision(int* collisionMarks, unsigned long long* collision
 
 __device__
 MergeStatus mergeCollisionsRows(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int idx, int row, int n, int runCount) {  
-	//printf("rows: idx: %d row: %d\n", idx, row);
+	// printf("rows: idx: %d row: %d\n", idx, row);
 	if(!particlesCollided[row] || (runCount > 0 && idx == row) || runCount >= MAX_MERGE_COLLISION_RUNS) {
 		return NO_COLLISION_FOUND;
 	}

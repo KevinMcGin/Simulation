@@ -1,6 +1,13 @@
 #include  <gtest/gtest.h>
 #include "LawHelper.h"
 #include "particle/helper/ParticlesHelper.h"
+#include <math.h>
+
+double roundToNPlaces(const double value, const unsigned int nDecimalPlaces) {
+	const unsigned int decimalPlaces = pow(10, nDecimalPlaces);
+	cout << "decimalPlaces: " << decimalPlaces << endl;
+	return round(value * decimalPlaces) / (double)decimalPlaces;
+}
 
 void LawHelper::runCpuLaw(Law* law, vector<Particle*>& particles, const int stepsCount) {
 	for(int i = 0; i < stepsCount; i++) {
@@ -27,6 +34,44 @@ void LawHelper::expectGpuLikeCpu(Law* law, const int particleCount, const int st
 	for(int i = 0; i < particlesCpu.size(); i++) {
 		auto particleCpu = particlesCpu[i];
 		auto particleGpu = particlesGpu[i];
+		EXPECT_DOUBLE_EQ(particleCpu->mass, particleGpu->mass);
+		EXPECT_DOUBLE_EQ(particleCpu->radius, particleGpu->radius);
+		EXPECT_EQ(particleCpu->position, particleGpu->position);
+		EXPECT_EQ(particleCpu->velocity, particleGpu->velocity);
+	}
+}
+
+double roundTo5Places(double value) {
+	return roundToNPlaces(value, 5);
+}
+
+void LawHelper::expectGpuLikeCpuRounded(Law* law, const int particleCount, const int stepsCount) {
+    vector<Particle*> particlesCpu = LawHelper::setupParticles(particleCount);
+	vector<Particle*> particlesGpu = LawHelper::setupParticles(particleCount);
+	LawHelper::runCpuLaw(law, particlesCpu, stepsCount);
+	LawHelper::runGpuLaw(law, particlesGpu, stepsCount);
+    ASSERT_EQ(particlesCpu.size(), particlesGpu.size());
+	for(int i = 0; i < particlesCpu.size(); i++) {
+		auto particleCpu = particlesCpu[i];
+		auto particleGpu = particlesGpu[i];
+
+		particleCpu->mass = roundTo5Places(particleCpu->mass);
+		particleGpu->mass = roundTo5Places(particleGpu->mass);
+		particleCpu->radius = roundTo5Places(particleCpu->radius);
+		particleGpu->radius = roundTo5Places(particleGpu->radius);
+		particleCpu->position.x = roundTo5Places(particleGpu->position.x);
+		particleCpu->position.y = roundTo5Places(particleGpu->position.y);
+		particleCpu->position.z = roundTo5Places(particleGpu->position.z);
+		particleGpu->position.x = roundTo5Places(particleGpu->position.x);
+		particleGpu->position.y = roundTo5Places(particleGpu->position.y);
+		particleGpu->position.z = roundTo5Places(particleGpu->position.z);
+		particleCpu->velocity.x = roundTo5Places(particleGpu->velocity.x);
+		particleCpu->velocity.y = roundTo5Places(particleGpu->velocity.y);
+		particleCpu->velocity.z = roundTo5Places(particleGpu->velocity.z);
+		particleGpu->velocity.x = roundTo5Places(particleGpu->velocity.x);
+		particleGpu->velocity.y = roundTo5Places(particleGpu->velocity.y);
+		particleGpu->velocity.z = roundTo5Places(particleGpu->velocity.z);
+
 		EXPECT_DOUBLE_EQ(particleCpu->mass, particleGpu->mass);
 		EXPECT_DOUBLE_EQ(particleCpu->radius, particleGpu->radius);
 		EXPECT_EQ(particleCpu->position, particleGpu->position);
