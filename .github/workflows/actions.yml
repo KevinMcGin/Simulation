@@ -119,7 +119,7 @@ jobs:
         export SIMULATION_USE_GPU=false
         make test
         sudo apt-get install gcovr
-        gcovr -r . . --sonarqube coverage.xml
+        gcovr -r . . --exclude-throw-branches --sonarqube coverage.xml
         echo "COVERAGE"
         cat coverage.xml
         ls
