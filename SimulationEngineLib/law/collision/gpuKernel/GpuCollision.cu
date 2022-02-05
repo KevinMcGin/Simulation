@@ -52,10 +52,10 @@ GpuCollision::~GpuCollision() {
 }
 
 __global__ 
-void getCollidedParticles(Particle** particles, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionDetector** collisionDetectorGpu, int n) {
-	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+void getCollidedParticles(Particle** particles, unsigned long long betweenParticlesOffset, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionDetector** collisionDetectorGpu, unsigned long long n) {
+	unsigned long long idx = threadIdx.x + (unsigned long long)blockIdx.x*blockDim.x;
 	if(idx < n) { 
-		getCollidedParticlesHelper(idx, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu);
+		getCollidedParticlesHelper(idx + betweenParticlesOffset, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu);
 	} 
 }
 
@@ -68,14 +68,15 @@ void resolveCollidedParticles(Particle** particles, int* collisionMarks,  unsign
 }
 
 void GpuCollision::run(Particle** particles, int particleCount) {
-	// get particles that collided
-	unsigned long long betweenParticlesCount = ((unsigned long long)particleCount-1)*particleCount/2;
+	unsigned long long betweenParticlesPairsCount = ((unsigned long long)particleCount-1)*particleCount;
+	unsigned long long betweenParticlesCount = betweenParticlesPairsCount/2;
 
 	unsigned long long freeGpuMemory = cudaWithError->getFreeGpuMemory();
 	unsigned long long particlesCollidedSize = particleCount * sizeof(bool);
 	unsigned long long maxIntsAllocatableStage1 = (freeGpuMemory - particlesCollidedSize - sizeof(unsigned long long)) / sizeof(int);
-	unsigned long long maxIntsAllocatable = std::min(maxIntsAllocatableStage1, betweenParticlesCount * 2 * 2000);
-	// cout << maxIntsAllocatable << endl;
+	unsigned long long maxIntsAllocatableFactor = 200;
+	unsigned long long maxIntsAllocatable = std::min(maxIntsAllocatableStage1, betweenParticlesPairsCount * maxIntsAllocatableFactor);
+	// cout << "maxIntsAllocatable: " << maxIntsAllocatable << endl;
 	int* collisionMarks = NULL;
 	cudaWithError->malloc((void**)&collisionMarks, maxIntsAllocatable * sizeof(int));
 
@@ -91,13 +92,18 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 		cudaWithError->memcpy(&(particlesCollided[i]), &particlesCollidedDefault, sizeof(bool), cudaMemcpyHostToDevice);
 	}
 
-	getCollidedParticles <<<1 + betweenParticlesCount/256, 256>>> (particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu, betweenParticlesCount);
-	cudaWithError->peekAtLastError("getCollidedParticles");
+	//TODO this may need to be configured based on the number of threads and or timeout time
+	const unsigned long long maxBetweenParticlesPerGet = 1 * 1000 * 1000;
+	for(unsigned long long betweenParticlesOffset = 0; betweenParticlesOffset < betweenParticlesCount; betweenParticlesOffset += maxBetweenParticlesPerGet) {
+		// cout << "getting in the loop: " << betweenParticlesOffset << endl;
+		const unsigned long long thisBetweenParticlesCount = std::min(maxBetweenParticlesPerGet, betweenParticlesCount - betweenParticlesOffset);
+		getCollidedParticles <<<1 + thisBetweenParticlesCount/256, 256>>> (particles, betweenParticlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu, thisBetweenParticlesCount);
+		cudaWithError->peekAtLastError("getCollidedParticles");
+	}
 
 	//TODO remove deviceSynchronize
 	cudaWithError->deviceSynchronize("get");
 
-	// merge sets of particles that collided and resolve
 	resolveCollidedParticles <<<1 + particleCount/256, 256>>> (particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, particleCount);
 	cudaWithError->peekAtLastError("resolveCollidedParticles");
 
