@@ -36,7 +36,7 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 TEST(CollisionTest, ParticlesCollideGpuLikeCpu) {
 	//TODO find out why particleCount fails for > 12
 	const int particleCount = 50;
-	const int stepsCount = 2;
+	const int stepsCount = 1;
 	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
 
 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
