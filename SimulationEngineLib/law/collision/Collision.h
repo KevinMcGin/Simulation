@@ -6,7 +6,7 @@ class Collision :
     public Law
 {
 public:
-    Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver, bool use_gpu = false);
+    Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver, bool useGpu = false);
 
 private:
     CollisionDetector* collisionDetector;

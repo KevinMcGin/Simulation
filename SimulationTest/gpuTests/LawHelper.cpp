@@ -1,11 +1,12 @@
 #include  <gtest/gtest.h>
 #include "LawHelper.h"
 #include "particle/helper/ParticlesHelper.h"
+#include "ParticleTestHelper.h"
+
 #include <math.h>
 
 double roundToNPlaces(const double value, const unsigned int nDecimalPlaces) {
 	const unsigned int decimalPlaces = pow(10, nDecimalPlaces);
-	cout << "decimalPlaces: " << decimalPlaces << endl;
 	return round(value * decimalPlaces) / (double)decimalPlaces;
 }
 
@@ -25,20 +26,16 @@ void LawHelper::runGpuLaw(Law* law, vector<Particle*>& particles, const int step
 	}
 }
 
+void runGpuAndCpu(Law* law, vector<Particle*>& particlesCpu, vector<Particle*>& particlesGpu, const int stepsCount) {
+	LawHelper::runCpuLaw(law, particlesCpu, stepsCount);
+	LawHelper::runGpuLaw(law, particlesGpu, stepsCount);
+}
+
 void LawHelper::expectGpuLikeCpu(Law* law, const int particleCount, const int stepsCount) {
     vector<Particle*> particlesCpu = LawHelper::setupParticles(particleCount);
 	vector<Particle*> particlesGpu = LawHelper::setupParticles(particleCount);
-	LawHelper::runCpuLaw(law, particlesCpu, stepsCount);
-	LawHelper::runGpuLaw(law, particlesGpu, stepsCount);
-    ASSERT_EQ(particlesCpu.size(), particlesGpu.size());
-	for(int i = 0; i < particlesCpu.size(); i++) {
-		auto particleCpu = particlesCpu[i];
-		auto particleGpu = particlesGpu[i];
-		EXPECT_DOUBLE_EQ(particleCpu->mass, particleGpu->mass);
-		EXPECT_DOUBLE_EQ(particleCpu->radius, particleGpu->radius);
-		EXPECT_EQ(particleCpu->position, particleGpu->position);
-		EXPECT_EQ(particleCpu->velocity, particleGpu->velocity);
-	}
+	runGpuAndCpu(law, particlesCpu, particlesGpu, stepsCount);
+	ParticleTestHelper::expectParticlesEqual(particlesCpu, particlesGpu);
 }
 
 double roundTo5Places(double value) {
@@ -48,8 +45,7 @@ double roundTo5Places(double value) {
 void LawHelper::expectGpuLikeCpuRounded(Law* law, const int particleCount, const int stepsCount) {
     vector<Particle*> particlesCpu = LawHelper::setupParticles(particleCount);
 	vector<Particle*> particlesGpu = LawHelper::setupParticles(particleCount);
-	LawHelper::runCpuLaw(law, particlesCpu, stepsCount);
-	LawHelper::runGpuLaw(law, particlesGpu, stepsCount);
+	runGpuAndCpu(law, particlesCpu, particlesGpu, stepsCount);
     ASSERT_EQ(particlesCpu.size(), particlesGpu.size());
 	for(int i = 0; i < particlesCpu.size(); i++) {
 		auto particleCpu = particlesCpu[i];
