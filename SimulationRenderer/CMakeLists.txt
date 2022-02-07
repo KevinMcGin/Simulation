@@ -1,7 +1,10 @@
 ﻿file(GLOB cpp_headers CONFIGURE_DEPENDS "*.h")
 file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
 
-add_executable (SimulationRenderer ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers}
+add_executable (SimulationRenderer 
+    ${cpp_source} 
+    ${cpp_headers} 
+    "resource/resource.rc"
 )
 
 # TODO: configure these dependencies dynamically from https://www.transmissionzero.co.uk/software/freeglut-devel
