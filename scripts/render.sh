@@ -2,9 +2,10 @@
 build_folder='build'
 no_compile='false'
 output_file=''
+verbose=''
 
 print_usage() {
-  printf "Usage: $0 [-n <don't compile before running> -i <FILE_NAME>]"
+  printf "Usage: $0 [-n <don't compile before running> -i <FILE_NAME> -v <verbose output>]"
 }
 
 get_build_path() {
@@ -15,11 +16,12 @@ set_output_path() {
    output_path="simulation_output/$1"
 }
 
-while getopts 'b:i:n' flag; do
+while getopts 'b:i:nv' flag; do
   case "${flag}" in
     b) build_folder="${OPTARG}" ;;
     i) set_output_path "${OPTARG}" ;;
     n) no_compile='true' ;;
+    v) verbose='-v' ;;
     *) print_usage
        exit 1 ;;
   esac
@@ -27,7 +29,7 @@ done
 
 if [ $no_compile = 'false' ]
 then 
-   ./compile.sh -b $build_folder
+   ./compile.sh -b $build_folder $verbose
    if [ $? -ne 0 ]; then exit 1; fi
 fi
 

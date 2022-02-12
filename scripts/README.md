@@ -3,7 +3,7 @@ Scripts are to be run from this `scripts` directory.
 Run with `-h` for information on the flags for each script.
 
 ## Build & Compile
-``./compile.sh``
+``./compile.sh -v``
 
 ## Test
 ### All Tests

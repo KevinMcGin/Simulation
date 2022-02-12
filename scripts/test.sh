@@ -2,20 +2,22 @@
 build_folder='build'
 no_compile='false'
 cpu_only='false'
+verbose=''
 
 print_usage() {
-  printf "Usage: $0 [-n <don't compile before running> [-c <only CPU tests>]"
+  printf "Usage: $0 [-n <don't compile before running> [-c <only CPU tests> -v <verbose output>]"
 }
 
 get_build_path() {
    build_path="builds/$1"
 }
 
-while getopts 'b:cn' flag; do
+while getopts 'b:cnv' flag; do
   case "${flag}" in
     b) build_folder="${OPTARG}" ;;
     c) cpu_only='true' ;;
     n) no_compile='true' ;;
+    v) verbose='-v' ;;
     *) print_usage
        exit 1 ;;
   esac
@@ -23,7 +25,7 @@ done
 
 if [ $no_compile = 'false' ]
 then 
-   ./compile.sh -b $build_folder
+   ./compile.sh -b $build_folder $verbose
    if [ $? -ne 0 ];  then exit 1; fi
 fi
 
