@@ -6,8 +6,8 @@
 #include "universe/output/SimulationOutputPrint.h"
 
 TEST(UniverseImplTest, UniverseRuns) {
-	auto input = make_shared<SimulationInputSimple>();
-	auto output = make_shared<SimulationOutputPrint>();
+	auto input = std::make_shared<SimulationInputSimple>();
+	auto output = std::make_shared<SimulationOutputPrint>();
 	Law* law1 = new NewtonGravity(0.05);
 	Law* law2 = new NewtonFirstLaw();
 	//TODO: change delta time to non 1 value with required implementation and change in expects

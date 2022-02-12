@@ -7,7 +7,7 @@
 
 TEST(NewtonGravityTest, ParticlesAccelerate) {
 	Law* law = new NewtonGravity(0.05);
-	vector<Particle*> particles = NewtonGravityTestHelper::getParticlesAccelerate();
+	std::vector<Particle*> particles = NewtonGravityTestHelper::getParticlesAccelerate();
 	law->cpuLaw->run(particles);
 	NewtonGravityTestHelper::testParticlesAccelerate(particles);
 }

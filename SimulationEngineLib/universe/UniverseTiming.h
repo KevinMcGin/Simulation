@@ -7,7 +7,7 @@ class UniverseTiming {
 public:
     Timing timingTotal = Timing();
     Timing timingSections = Timing();
-    map<string, float> progresses = {};
+    std::map<std::string, float> progresses = {};
 	float progress;
     const float maxTimeBetweenPrints = 0.8f;
     const float maxTimeBetweenEstimates = 5.f;

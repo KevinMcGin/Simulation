@@ -1,7 +1,7 @@
 #include  <gtest/gtest.h>
 #include "ParticleTestHelper.h"
 
-void ParticleTestHelper::expectParticlesEqual(vector<Particle*> particlesCpu, vector<Particle*> particlesGpu) {
+void ParticleTestHelper::expectParticlesEqual(std::vector<Particle*> particlesCpu, std::vector<Particle*> particlesGpu) {
     ASSERT_EQ(particlesCpu.size(), particlesGpu.size());
 	for(int i = 0; i < particlesCpu.size(); i++) {
 		auto particleCpu = particlesCpu[i];

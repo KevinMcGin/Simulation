@@ -6,5 +6,5 @@
 class SimulationOutput {
 	public:
 		virtual ~SimulationOutput() {}
-		virtual void output(vector<Particle*> particles, unsigned long time) = 0;
+		virtual void output(std::vector<Particle*> particles, unsigned long time) = 0;
 };

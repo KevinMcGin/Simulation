@@ -4,7 +4,7 @@
 
 TEST(SimulationOutputJSONTest, SimulationOutputtedToJSON) {
 	SimulationOutput* simulationOutputJSON = new SimulationOutputJSON("simulation_output/SimulationOutputJSONTest_SimulationOutputtedToJSON.json");
-    vector<Particle*> particles = {
+    std::vector<Particle*> particles = {
         new ParticleSimple(1,1,{0,0.1,0},{0,0,0}),
         new ParticleSimple(2,2,{2,-0.2,0},{0,0,0})
     };

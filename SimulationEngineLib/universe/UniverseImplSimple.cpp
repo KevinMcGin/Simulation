@@ -6,8 +6,8 @@
 
 
 UniverseImplSimple::UniverseImplSimple(
-	shared_ptr<SimulationInput> input, 
-	shared_ptr<SimulationOutput> output, 
+	std::shared_ptr<SimulationInput> input, 
+	std::shared_ptr<SimulationOutput> output, 
 	unsigned long endTime,  
 	Usage useGpu
 ) : UniverseImpl(

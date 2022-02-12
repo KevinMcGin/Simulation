@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 	auto massDistribution = std::make_shared<DistributionSimple>(meanMass, meanMass*0.9);
 	auto density = std::make_shared<DistributionValue>(meanDensity);
 	auto densityDistribution = std::make_shared<DistributionMassDensity>(massDistribution, density);
-	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(make_shared<DistributionValue>(starMass), density);
+	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(std::make_shared<DistributionValue>(starMass), density);
 	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
@@ -122,8 +122,8 @@ int main(int argc, char *argv[]) {
 	auto particleDistributionStar = std::make_shared<ParticleDistributionSimple>(distributionDensityStar, positionDistribution, velocityDistribution/*, angularVelocityDistribution*/);
 	
 	auto input = std::make_shared<SimulationInputRandomSimple>(
-		vector<unsigned long> { particleCount - 1, 1 }, 
-		vector<std::shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
+		std::vector<unsigned long> { particleCount - 1, 1 }, 
+		std::vector<std::shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
 	);
 	auto output = std::make_shared<SimulationOutputJSON>(outputFile);
 

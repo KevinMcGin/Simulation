@@ -58,8 +58,8 @@ void GpuNewtonGravity::run(Particle** td_par, int particleCount) {
 			(unsigned long long)particleCount
 		) - (vectorsProcessed > 0 ? getRowsFromRowsAndColsCountMinusIdentity(vectorsProcessed) : 0);
 		if(particlesProcessable == 0) { 
-			cout << "GPU can not run these many particles in Gravity\n";
-			throw new runtime_error("GPU can not run these many particles in Gravity");
+			std::cout << "GPU can not run these many particles in Gravity\n";
+			throw new std::runtime_error("GPU can not run these many particles in Gravity");
 		}
 		unsigned long long vectorsProcessable = getRowsAndColsCountMinusIdentityFromRows(particlesProcessed + particlesProcessable) - getRowsAndColsCountMinusIdentityFromRows(particlesProcessed);
 		unsigned long long vectorsProcessableTriangular = vectorsProcessable / 2;

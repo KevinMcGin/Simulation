@@ -3,7 +3,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath> 
 
-using namespace std;
+
 
 class DistributionSphere : public Distribution3D {
 public:

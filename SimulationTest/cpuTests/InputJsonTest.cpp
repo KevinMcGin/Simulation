@@ -5,7 +5,7 @@
 #include <fstream>
 
 TEST(InputJsonTest, JsonRead) {
-    string fileName = "test_file_name.json";
+    std::string fileName = "test_file_name.json";
     std::ofstream file;
     file.open(fileName);
     file << "{"

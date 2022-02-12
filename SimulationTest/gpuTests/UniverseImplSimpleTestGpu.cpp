@@ -7,8 +7,8 @@
 #include "ParticleTestHelper.h"
 
 TEST(UniverseImplSimpleTest, UniverseRunsGpu) {
-	auto input = make_shared<SimulationInputSimple>();
-	auto output = make_shared<SimulationOutputPrint>();
+	auto input = std::make_shared<SimulationInputSimple>();
+	auto output = std::make_shared<SimulationOutputPrint>();
 	//TODO: change delta time to non 1 value with required implementation and change in expects
 	Universe* universe = new UniverseImplSimple(input, output, 10, TRUE);
 	universe->run();
@@ -20,8 +20,8 @@ TEST(UniverseImplSimpleTest, UniverseRunsGpu) {
 
 TEST(UniverseImplSimpleTest, UniverseCpuLikeGpu) {
 	const int stepCount = 2;
-	auto input = make_shared<SimulationInputSimple>();
-	auto output = make_shared<SimulationOutputPrint>();
+	auto input = std::make_shared<SimulationInputSimple>();
+	auto output = std::make_shared<SimulationOutputPrint>();
 	//TODO: change delta time to non 1 value with required implementation and change in expects
 	Universe* universeCpu = new UniverseImplSimple(input, output, stepCount, FALSE);
 	universeCpu->run();

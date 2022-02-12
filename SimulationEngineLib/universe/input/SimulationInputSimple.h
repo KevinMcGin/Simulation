@@ -6,5 +6,5 @@
 
 class SimulationInputSimple: public SimulationInput {
 	public:
-		virtual vector<Particle*> input();
+		virtual std::vector<Particle*> input();
 };

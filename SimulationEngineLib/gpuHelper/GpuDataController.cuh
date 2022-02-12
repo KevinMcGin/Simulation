@@ -8,8 +8,8 @@ class GpuDataController {
 public:
     GpuDataController();
     ~GpuDataController();
-    void putParticlesOnDevice(vector<Particle*> particles, bool firstRun = false);
-    void getParticlesFromDevice(vector<Particle*>& particles);
+    void putParticlesOnDevice(std::vector<Particle*> particles, bool firstRun = false);
+    void getParticlesFromDevice(std::vector<Particle*>& particles);
     // Particle** get_d_par() { return d_par; }
     Particle** get_td_par() { return td_par; }
     int getParticleCount() { return particleCount; }

@@ -7,12 +7,12 @@ CpuCollision::CpuCollision(CollisionDetector* collisionDetector, CollisionResolv
 	collisionDetector(collisionDetector),
 	collisionResolver(collisionResolver) { }
 
-void CpuCollision::run(vector<Particle*>& particles) {
+void CpuCollision::run(std::vector<Particle*>& particles) {
 	// get particles that collided
-	vector<set<Particle*>*> particlesCollidedVector;
+	std::vector<std::set<Particle*>*> particlesCollidedVector;
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
 		auto p1 = *it1;
-    	set<Particle*> particlesCollidedSet = {};
+    	std::set<Particle*> particlesCollidedSet = {};
 		for (auto it2 = it1+1; it2 < particles.end(); it2++) {
 			auto p2 = *it2;
 			if (collisionDetector->isCollision(p1, p2)) {
@@ -21,7 +21,7 @@ void CpuCollision::run(vector<Particle*>& particles) {
 			}
 		}
 		if(particlesCollidedSet.size() > 0)
-			particlesCollidedVector.push_back(new set<Particle*>(particlesCollidedSet));
+			particlesCollidedVector.push_back(new std::set<Particle*>(particlesCollidedSet));
 	}
 	// merge sets of particles that collided
 	for (auto it1 = particlesCollidedVector.begin(); it1 != particlesCollidedVector.end(); it1++) {

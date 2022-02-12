@@ -10,7 +10,7 @@
 class CpuCollision: public CpuLaw {
 public:
 	CpuCollision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver);
-	virtual void run(vector<Particle*>& particles);
+	virtual void run(std::vector<Particle*>& particles);
 
 private:
     CollisionDetector* collisionDetector;

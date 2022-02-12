@@ -5,7 +5,7 @@
 
 TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
 	Law* law = new NewtonGravity(0.05);
-	vector<Particle*> particles = NewtonGravityTestHelper::getParticlesAccelerate();
+	std::vector<Particle*> particles = NewtonGravityTestHelper::getParticlesAccelerate();
     LawHelper::runGpuLaw(law, particles);
 	NewtonGravityTestHelper::testParticlesAccelerate(particles);
 }
@@ -13,7 +13,7 @@ TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
 TEST(NewtonGravityTest, ManyParticlesAccelerateGpu) {
 	Law* law = new NewtonGravity(0.5);
 	int particleCount = 30 * 1000;
-	vector<Particle*> particles = LawHelper::setupParticles(particleCount);
+	std::vector<Particle*> particles = LawHelper::setupParticles(particleCount);
 	auto p1 = particles[20 * 1000];
 	EXPECT_EQ(Vector3D(-20000, 40000, -40000), p1->velocity);
     LawHelper::runGpuLaw(law, particles);

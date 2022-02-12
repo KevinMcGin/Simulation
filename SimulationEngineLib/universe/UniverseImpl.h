@@ -9,9 +9,9 @@
 class UniverseImpl: public Universe {
 public:
 	UniverseImpl(
-		vector<Law*> laws, 
-		shared_ptr<SimulationInput> input, 
-		shared_ptr<SimulationOutput> output, 
+		std::vector<Law*> laws, 
+		std::shared_ptr<SimulationInput> input, 
+		std::shared_ptr<SimulationOutput> output, 
 		unsigned int deltaTime, 
 		unsigned long endTime,
 		Usage useGpu = UNDEFINED
@@ -24,6 +24,6 @@ private:
 	UniverseTiming universeTiming = UniverseTiming();
 
 	void printPercentComplete(int lawsRan, bool force = false);
-	void updateSectionsTiming(string name);
+	void updateSectionsTiming(std::string name);
 	void printSectionsTiming();
 };

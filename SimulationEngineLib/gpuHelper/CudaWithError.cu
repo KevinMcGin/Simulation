@@ -2,13 +2,13 @@
 #include<iostream>
 
 
-CudaWithError::CudaWithError(string className): className(className) { }
+CudaWithError::CudaWithError(std::string className): className(className) { }
 
-void CudaWithError::throwErrorMaybe(cudaError_t cudaStatus, string error) {
+void CudaWithError::throwErrorMaybe(cudaError_t cudaStatus, std::string error) {
     if (cudaStatus != cudaSuccess) {
-        string totalError = className + ": " + error + "\n" + cudaGetErrorString(cudaStatus);
-        cerr << endl << totalError << endl;
-        throw new runtime_error(totalError);
+        std::string totalError = className + ": " + error + "\n" + cudaGetErrorString(cudaStatus);
+        std::cerr << std::endl << totalError << std::endl;
+        throw new std::runtime_error(totalError);
     }
 }
 
@@ -27,7 +27,7 @@ void CudaWithError::memcpy(void* dst, const void* src, size_t count, cudaMemcpyK
     throwErrorMaybe(cudaStatus, "cudaMemcpy failed!");
 }
 
-void CudaWithError::deviceSynchronize(string message) {
+void CudaWithError::deviceSynchronize(std::string message) {
     cudaError_t cudaStatus = cudaDeviceSynchronize();
     throwErrorMaybe(cudaStatus, message + ": cudaDeviceSynchronize failed!");
 }
@@ -37,7 +37,7 @@ void CudaWithError::free(void* devPtr) {
     throwErrorMaybe(cudaStatus, "cudaFree failed!");
 }
 
-void CudaWithError::peekAtLastError(string message) {
+void CudaWithError::peekAtLastError(std::string message) {
     cudaError_t cudaStatus = cudaPeekAtLastError();
     throwErrorMaybe(cudaStatus, message + ": cudaPeekAtLastError failed!");
 }

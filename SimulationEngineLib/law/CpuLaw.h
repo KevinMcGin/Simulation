@@ -5,5 +5,5 @@
 
 class CpuLaw {
 public:
-	virtual void run(vector<Particle*>& particles) = 0;
+	virtual void run(std::vector<Particle*>& particles) = 0;
 };

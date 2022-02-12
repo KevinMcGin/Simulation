@@ -21,7 +21,7 @@ Timing timing = Timing();
 float slackTime = 0.f;
 
 int main(int argc, char** argv) {
-    cout << "Renderer running" << endl;
+    std::cout << "Renderer running" << std::endl;
 
     const char* inputFile = argc > 1 ? argv[1] : "simulation_output/simulation_output.json";
 

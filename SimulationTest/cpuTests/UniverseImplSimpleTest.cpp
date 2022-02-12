@@ -6,8 +6,8 @@
 #include "universe/output/SimulationOutputPrint.h"
 
 TEST(UniverseImplSimpleTest, UniverseRuns) {
-	auto input = make_shared<SimulationInputSimple>();
-	auto output = make_shared<SimulationOutputPrint>();
+	auto input = std::make_shared<SimulationInputSimple>();
+	auto output = std::make_shared<SimulationOutputPrint>();
 	//TODO: change delta time to non 1 value with required implementation and change in expects
 	Universe* universe = new UniverseImplSimple(input, output, 10, FALSE);
 	universe->run();

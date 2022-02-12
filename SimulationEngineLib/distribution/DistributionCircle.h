@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "distribution/DistributionSphere.h"
 
-using namespace std;
+
 
 class DistributionCircle: public DistributionSphere {
 public:

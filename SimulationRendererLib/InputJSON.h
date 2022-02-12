@@ -10,7 +10,7 @@
 using namespace rapidjson;
 
 // #include "particle/Particle.cuh"
-using namespace std;
+
 
 class InputJSON {
 public:
@@ -20,6 +20,6 @@ public:
 
 private:
 	Document doc;
-	// vector<Particle*> particles;
+	// std::vector<Particle*> particles;
 	unsigned long time;
 };

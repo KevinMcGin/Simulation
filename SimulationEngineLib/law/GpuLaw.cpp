@@ -1,5 +1,5 @@
 ﻿#include "law/GpuLaw.h"
 
-GpuLaw::GpuLaw(string className) : className(className) {
+GpuLaw::GpuLaw(std::string className) : className(className) {
 	cudaWithError = new CudaWithError(className);
 }

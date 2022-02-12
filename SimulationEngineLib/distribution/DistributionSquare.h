@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "distribution/DistributionCuboid.h"
 
-using namespace std;
+
 
 class DistributionSquare: public DistributionCuboid {
 public:

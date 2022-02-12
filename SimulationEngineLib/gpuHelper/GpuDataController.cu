@@ -15,7 +15,7 @@ GpuDataController::~GpuDataController() {
 	delete d_par;
 }
 
-void GpuDataController::putParticlesOnDevice(vector<Particle*> particles, bool firstRun) {
+void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, bool firstRun) {
 	if(!firstRun) {
 		for(int i = 0; i < particleCount; i++) {
 			cudaWithError->free(d_par[i]);
@@ -38,7 +38,7 @@ void GpuDataController::putParticlesOnDevice(vector<Particle*> particles, bool f
 	cudaWithError->memcpy(td_par, d_par, particleCount * sizeof(Particle*), cudaMemcpyHostToDevice);
 }
 
-void GpuDataController::getParticlesFromDevice(vector<Particle*>& particles) {
+void GpuDataController::getParticlesFromDevice(std::vector<Particle*>& particles) {
 	cudaWithError->deviceSynchronize();
 	for(int i = 0; i < particleCount; i++) {
 		cudaWithError->memcpy(particles[i], d_par[i], sizeof(*particles[i]), cudaMemcpyDeviceToHost);

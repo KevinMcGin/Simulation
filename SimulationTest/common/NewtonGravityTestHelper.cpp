@@ -1,7 +1,7 @@
 #include "NewtonGravityTestHelper.h"
 
-vector<Particle*> NewtonGravityTestHelper::getParticlesAccelerate() {
-    vector<Particle*> particles = { 
+std::vector<Particle*> NewtonGravityTestHelper::getParticlesAccelerate() {
+    std::vector<Particle*> particles = { 
 		new ParticleSimple(1,1,{0,0.1,0},{0,0,0}),  
 		new ParticleSimple(100,1,{10,0,-0.03},{0,0,0}),
 		new ParticleSimple(1,1,{-10,0,-0.03},{0,0,0}),
@@ -11,7 +11,7 @@ vector<Particle*> NewtonGravityTestHelper::getParticlesAccelerate() {
     return particles;
 }
 
-void NewtonGravityTestHelper::testParticlesAccelerate(vector<Particle*> particles) {
+void NewtonGravityTestHelper::testParticlesAccelerate(std::vector<Particle*> particles) {
 	Vector3D velocity1 = particles.front()->velocity;
 	Vector3D velocity2 = particles[1]->velocity;
 	Vector3D velocity3 = particles[2]->velocity;

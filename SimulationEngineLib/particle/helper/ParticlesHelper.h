@@ -5,5 +5,5 @@
 
 class ParticlesHelper {
 public:
-    static bool removeDeletedParticles(vector<Particle*>& particles);
+    static bool removeDeletedParticles(std::vector<Particle*>& particles);
 };
