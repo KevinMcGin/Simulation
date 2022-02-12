@@ -20,7 +20,7 @@ TEST(ParticleDistributionDiskTest, Disk) {
 	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(starMassDistribution, density);
 	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
-	auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
+	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
 	auto innerRadiusDistribution = std::make_shared<DistributionValue>(0);
 	auto outerRadiusDistribution = std::make_shared<DistributionValue>(outerRadius);
 	auto eccentricityDistribution = std::make_shared<DistributionValue>(1);
@@ -33,8 +33,8 @@ TEST(ParticleDistributionDiskTest, Disk) {
         true, 
         innerRadiusDistribution, 
         outerRadiusDistribution, 
-        eccentricityDistribution, 
-        angularVelocityDistribution
+        eccentricityDistribution//, 
+        // angularVelocityDistribution
     );
     auto particle = particleDistributionDisk.getParticle();
 	EXPECT_DOUBLE_EQ(1, particle->mass);
@@ -60,7 +60,7 @@ TEST(ParticleDistributionDiskTest, DiskZeroRadius) {
 	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(starMassDistribution, density);
 	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
-	auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
+	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
 	auto innerRadiusDistribution = std::make_shared<DistributionValue>(0);
 	auto outerRadiusDistribution = std::make_shared<DistributionValue>(outerRadius);
 	auto eccentricityDistribution = std::make_shared<DistributionValue>(1);
@@ -73,8 +73,8 @@ TEST(ParticleDistributionDiskTest, DiskZeroRadius) {
         true, 
         innerRadiusDistribution, 
         outerRadiusDistribution, 
-        eccentricityDistribution, 
-        angularVelocityDistribution
+        eccentricityDistribution//, 
+        // angularVelocityDistribution
     );
     auto particle = particleDistributionDisk.getParticle();
 	EXPECT_DOUBLE_EQ(1, particle->mass);

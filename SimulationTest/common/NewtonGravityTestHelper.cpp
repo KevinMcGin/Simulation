@@ -2,11 +2,11 @@
 
 vector<Particle*> NewtonGravityTestHelper::getParticlesAccelerate() {
     vector<Particle*> particles = { 
-		new ParticleSimple(1,1,{0,0.1,0},{0,0,0},{0,0,0}),  
-		new ParticleSimple(100,1,{10,0,-0.03},{0,0,0},{0,0,0}),
-		new ParticleSimple(1,1,{-10,0,-0.03},{0,0,0},{0,0,0}),
-		new ParticleSimple(1.2,1,{10,40,-1.03},{0,0,0},{0,0,0}),
-		new ParticleSimple(1.5,1,{-10,-1,0.03},{0,0,0},{0,0,0})
+		new ParticleSimple(1,1,{0,0.1,0},{0,0,0}),  
+		new ParticleSimple(100,1,{10,0,-0.03},{0,0,0}),
+		new ParticleSimple(1,1,{-10,0,-0.03},{0,0,0}),
+		new ParticleSimple(1.2,1,{10,40,-1.03},{0,0,0}),
+		new ParticleSimple(1.5,1,{-10,-1,0.03},{0,0,0})
 	 };
     return particles;
 }

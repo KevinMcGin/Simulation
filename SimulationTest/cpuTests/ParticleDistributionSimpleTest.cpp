@@ -13,8 +13,8 @@ TEST(ParticleDistributionSimpleTest, ParticleMade) {
 	auto densityDistribution = make_shared<DistributionMassDensity>(massDistrubtion, density);
 	auto positionDistrubtion = make_shared<DistributionCircle>(Vector3D(0, 0, 0), 1);
 	auto velocityDistrubtion = make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0.005);
-	auto angularVelocityDistrubtion = make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
-	ParticleDistributionSimple particleDistribution(densityDistribution, positionDistrubtion, velocityDistrubtion, angularVelocityDistrubtion);
+	// auto angularVelocityDistrubtion = make_shared<DistributionCircle>(Vector3D(0, 0, 0), 0);
+	ParticleDistributionSimple particleDistribution(densityDistribution, positionDistrubtion, velocityDistrubtion/*, angularVelocityDistrubtion*/);
 	Particle* p = particleDistribution.getParticle();
 	EXPECT_TRUE(p->mass >= 0.05 && p->mass <= 0.15);
 	EXPECT_TRUE(p->radius >= 0 && p->radius <= 0.5);

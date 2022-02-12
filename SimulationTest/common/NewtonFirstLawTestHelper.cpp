@@ -1,7 +1,7 @@
 #include "NewtonFirstLawTestHelper.h"
 
 vector<Particle*> NewtonFirstLawTestHelper::getParticleMove() {
-    vector<Particle*> particles = { new ParticleSimple(1,1,{0,0,0},{1,-1,0},{0,0,0}) };
+    vector<Particle*> particles = { new ParticleSimple(1,1,{0,0,0},{1,-1,0}) };
     return particles;
 }
 

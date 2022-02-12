@@ -41,9 +41,9 @@ bool CollisionTestHelper::sortParticles(Particle* const &lhs, Particle* const &r
 }
 
 vector<Particle*> CollisionTestHelper::getParticlesCollideParticles() {
-    Particle* p1 = new ParticleSimple(1, 1, { 2,1,0 }, { 1,-1,0 }, { 0,0,0 });
-    Particle* p2 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p3 = new ParticleSimple(1, 1, { 20,0,0 }, { 1,1,0 }, { 0,0,0 });
+    Particle* p1 = new ParticleSimple(1, 1, { 2,1,0 }, { 1,-1,0 });
+    Particle* p2 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 });
+    Particle* p3 = new ParticleSimple(1, 1, { 20,0,0 }, { 1,1,0 });
     vector<Particle*> particles = { p1, p2, p3 };
     return particles;
 }
@@ -55,14 +55,13 @@ void CollisionTestHelper::testParticlesCollide(vector<Particle*> particles) {
     EXPECT_DOUBLE_EQ(1.2599210498948732, particles[1]->radius);
     EXPECT_EQ(Vector3D(2,0.5,0), particles[1]->position);
     EXPECT_EQ(Vector3D(1,0,0), particles[1]->velocity);
-    EXPECT_EQ(Vector3D(0,0,0), particles[1]->angularVelocity);
 }
 
 vector<Particle*> CollisionTestHelper::getMultipleParticlesAllCollide() {
-    Particle* p1 = new ParticleSimple(1, 1, { 2,1,0 }, { 1,-1,0 }, { 0,0,0 });
-    Particle* p2 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p3 = new ParticleSimple(1, 1, { 200,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p4 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 }, { 0,0,0 });
+    Particle* p1 = new ParticleSimple(1, 1, { 2,1,0 }, { 1,-1,0 });
+    Particle* p2 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 });
+    Particle* p3 = new ParticleSimple(1, 1, { 200,0,0 }, { 1,1,0 });
+    Particle* p4 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 });
     vector<Particle*> particles = { p1, p2, p3, p4 };
     return particles;
 }
@@ -74,15 +73,14 @@ void CollisionTestHelper::testMultipleParticlesAllCollide(vector<Particle*> part
     EXPECT_DOUBLE_EQ(1.4422495703074083, particles[1]->radius);
     EXPECT_EQ(Vector3D(2,1/3.0,0), particles[1]->position);
     EXPECT_EQ(Vector3D(1,1/3.0,0), particles[1]->velocity);
-    EXPECT_EQ(Vector3D(0,0,0), particles[1]->angularVelocity);
 }
 
 vector<Particle*> CollisionTestHelper::getMultipleParticlesPartialCollide() {
-    Particle* p1 = new ParticleSimple(1, 1, { 0,0,0 }, { 1,-1,0 }, { 0,0,0 });
-    Particle* p2 = new ParticleSimple(1, 1, { 0.5,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p3 = new ParticleSimple(1, 1, { 200,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p4 = new ParticleSimple(1, 1, { 1,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p5 = new ParticleSimple(1, 1, { 400,0,0 }, { 1,1,0 }, { 0,0,0 });
+    Particle* p1 = new ParticleSimple(1, 1, { 0,0,0 }, { 1,-1,0 });
+    Particle* p2 = new ParticleSimple(1, 1, { 0.5,0,0 }, { 1,1,0 });
+    Particle* p3 = new ParticleSimple(1, 1, { 200,0,0 }, { 1,1,0 });
+    Particle* p4 = new ParticleSimple(1, 1, { 1,0,0 }, { 1,1,0 });
+    Particle* p5 = new ParticleSimple(1, 1, { 400,0,0 }, { 1,1,0 });
     vector<Particle*> particles = { p1, p2, p3, p4, p5 };
     return particles;
 }
@@ -96,15 +94,14 @@ void CollisionTestHelper::testMultipleParticlesPartialCollide(vector<Particle*> 
     EXPECT_DOUBLE_EQ(1.4422495703074083, particles[2]->radius);
     EXPECT_EQ(Vector3D(0.5,0.0,0), particles[2]->position);
     EXPECT_EQ(Vector3D(1,1/3.0,0), particles[2]->velocity);
-    EXPECT_EQ(Vector3D(0,0,0), particles[2]->angularVelocity);
 }
 
 vector<Particle*> CollisionTestHelper::getMultipleParticlesIndependentlyCollide() {
-    Particle* p1 = new ParticleSimple(1, 1, { 0,0,0 }, { 1,-1,0 }, { 0,0,0 });
-    Particle* p2 = new ParticleSimple(1, 1, { 0.5,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p3 = new ParticleSimple(1, 1, { 200,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p4 = new ParticleSimple(1.5, 1, { 201,0,0 }, { 1,1,0 }, { 0,0,0 });
-    Particle* p5 = new ParticleSimple(1, 1, { 400,0,0 }, { 1,1,0 }, { 0,0,0 });
+    Particle* p1 = new ParticleSimple(1, 1, { 0,0,0 }, { 1,-1,0 });
+    Particle* p2 = new ParticleSimple(1, 1, { 0.5,0,0 }, { 1,1,0 });
+    Particle* p3 = new ParticleSimple(1, 1, { 200,0,0 }, { 1,1,0 });
+    Particle* p4 = new ParticleSimple(1.5, 1, { 201,0,0 }, { 1,1,0 });
+    Particle* p5 = new ParticleSimple(1, 1, { 400,0,0 }, { 1,1,0 });
     vector<Particle*> particles = { p1, p2, p3, p4, p5 };
     return particles;
 }
@@ -118,5 +115,4 @@ void CollisionTestHelper::testMultipleParticlesIndependentlyCollide(vector<Parti
     EXPECT_DOUBLE_EQ(1.2599210498948732, particles[1]->radius);
     EXPECT_EQ(Vector3D(0.25,0.0,0), particles[1]->position);
     EXPECT_EQ(Vector3D(1,0,0), particles[1]->velocity);
-    EXPECT_EQ(Vector3D(0,0,0), particles[1]->angularVelocity);
 }

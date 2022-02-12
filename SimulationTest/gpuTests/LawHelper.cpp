@@ -80,7 +80,7 @@ vector<Particle*> LawHelper::setupParticles(const int particleCount) {
 	for(double i = 0; i < particleCount; i++) {
 		particles.push_back(
 			new ParticleSimple(
-				i + 1, i + 1, { i, -i, i }, { -i, 2 * i, -2 * i }, { 0, 0, 0 }
+				i + 1, i + 1, { i, -i, i }, { -i, 2 * i, -2 * i }
 			)
 		);
 	}

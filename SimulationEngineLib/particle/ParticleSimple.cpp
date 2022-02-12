@@ -1,6 +1,5 @@
 #include "particle/ParticleSimple.h"
 
-double ParticleSimple::getTemperature()
-{
-	return temperature;
-}
+// double ParticleSimple::getTemperature() {
+// 	return temperature;
+// }

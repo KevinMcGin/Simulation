@@ -12,10 +12,11 @@ ParticleDistributionDisk::ParticleDistributionDisk(
     std::shared_ptr<Distribution> innerRadius,
     std::shared_ptr<Distribution> outerRadius, 
     std::shared_ptr<Distribution> eccentricity,
-    std::shared_ptr<Distribution3D> angularVelocityDistribution,
+    // std::shared_ptr<Distribution3D> angularVelocityDistribution,
     double G
 ) : densityDistribution(densityDistribution), centralMass(centralMass), meanPosition(meanPosition), thetaPosition(thetaPosition), phiPosition(phiPosition),
-    clockwise(clockwise), innerRadius(innerRadius), outerRadius(outerRadius), eccentricity(eccentricity), angularVelocityDistribution(angularVelocityDistribution),
+    clockwise(clockwise), innerRadius(innerRadius), outerRadius(outerRadius), eccentricity(eccentricity), 
+    // angularVelocityDistribution(angularVelocityDistribution),
     G(G) { }
 	
 ParticleDistributionDisk::~ParticleDistributionDisk() = default;
@@ -36,8 +37,10 @@ Particle* ParticleDistributionDisk::getParticle() {
     }
 
 	return new ParticleSimple(
-        mass, radius, 
-        position, velocity, 
-        angularVelocityDistribution->getValue()
+        mass, 
+        radius, 
+        position, 
+        velocity//, 
+        // angularVelocityDistribution->getValue()
     );
 }

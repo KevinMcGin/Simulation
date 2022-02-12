@@ -9,23 +9,14 @@ public:
 	double            radius;
 	Vector3D  position;
 	Vector3D  velocity;
-	Vector3D  angularVelocity;
-	bool deleted;
+	bool deleted = false;
 
 	__device__ __host__ Particle(
-		double			  mass,
-		double            radius,
+		double mass,
+		double radius,
 		Vector3D  position,
-		Vector3D  velocity,
-		Vector3D  angularVelocity
-	) {
-		this->mass = mass;
-		this->radius = radius;
-		this->position = position;
-		this->velocity = velocity;
-		this->angularVelocity = angularVelocity;
-		this->deleted = false;
-	}
+		Vector3D  velocity
+	) : mass(mass), radius(radius), position(position), velocity(velocity) {}
 	__device__ __host__ void advance();
-	virtual double getTemperature() = 0;
+	// virtual double getTemperature() = 0;
 }; 

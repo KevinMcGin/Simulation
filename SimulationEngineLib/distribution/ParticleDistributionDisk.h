@@ -16,7 +16,7 @@ public:
 		std::shared_ptr<Distribution> innerRadius,
 		std::shared_ptr<Distribution> outerRadius, 
 		std::shared_ptr<Distribution> eccentricity,
-		shared_ptr<Distribution3D> angularVelocityDistribution,
+		// shared_ptr<Distribution3D> angularVelocityDistribution,
 		double G = PhysicalConstants::GRAVITATIONAL_CONSTANT
 	);
 	~ParticleDistributionDisk();
@@ -33,6 +33,6 @@ private:
 	std::shared_ptr<Distribution> innerRadius;
 	std::shared_ptr<Distribution> outerRadius; 
 	std::shared_ptr<Distribution> eccentricity;
-	std::shared_ptr<Distribution3D> angularVelocityDistribution;
+	// std::shared_ptr<Distribution3D> angularVelocityDistribution;
 	double G;
 };
