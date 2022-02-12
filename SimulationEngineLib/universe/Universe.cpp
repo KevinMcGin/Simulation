@@ -9,26 +9,35 @@ Universe::Universe(
     const shared_ptr<SimulationOutput> output, 
     unsigned int deltaTime,
     unsigned long endTime,
-    Usage use_gpu
+    Usage useGpu
 ) : particles(particles),
 	laws(laws),
 	output(output),
 	deltaTime(deltaTime),
 	endTime(endTime) {
-	if(use_gpu == UNDEFINED) {
+	if(useGpu == UNDEFINED) {
         const char* envVar = std::getenv(SIMULATION_USE_GPU);
 		envVar = envVar ? envVar : "true";
         if(strcmp(envVar, "true") == 0) {
-            this->use_gpu = TRUE;
-            std::cout << std::endl << "Running on GPU" << std::endl;
-        }
-        else {
-            std::cout << std::endl << "Running on CPU" << std::endl;
-            this->use_gpu = FALSE;
+            this->useGpu = TRUE;
+        } else {
+            this->useGpu = FALSE;
         }
     } else {
-        this->use_gpu = use_gpu;
+        this->useGpu = useGpu;
     }
+    printUseGpu();
 }
 
 Universe::~Universe() = default;
+
+void Universe::printUseGpu() {
+    if(this->useGpu == TRUE) {
+        std::cout << std::endl << "Running on GPU" << std::endl;
+    } else if(this->useGpu == FALSE) {
+        std::cout << std::endl << "Running on CPU" << std::endl;
+    } else {
+        std::cout << std::endl << "Running on UNDEFINED" << std::endl;
+    }
+    
+}

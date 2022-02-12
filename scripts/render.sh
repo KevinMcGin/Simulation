@@ -4,7 +4,7 @@ no_compile='false'
 output_file=''
 
 print_usage() {
-  printf "Usage: $0 [-n <don't compile before running>"
+  printf "Usage: $0 [-n <don't compile before running> -i <FILE_NAME>]"
 }
 
 get_build_path() {

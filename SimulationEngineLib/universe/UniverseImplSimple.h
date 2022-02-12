@@ -10,6 +10,6 @@ public:
 		shared_ptr<SimulationInput> input, 
 		shared_ptr<SimulationOutput> output, 
 		unsigned long endTime, 
-		Usage use_gpu = UNDEFINED
+		Usage useGpu = UNDEFINED
 	);
 };

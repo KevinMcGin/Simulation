@@ -17,7 +17,7 @@ public:
 		const shared_ptr<SimulationOutput> output, 
 		unsigned int deltaTime,
 		unsigned long endTime,
-		Usage use_gpu = UNDEFINED
+		Usage useGpu = UNDEFINED
 	);
 	~Universe();
 	vector<Particle*> particles;
@@ -28,5 +28,8 @@ protected:
 	const shared_ptr<SimulationOutput> output;
 	unsigned int deltaTime;
 	unsigned long endTime;
-	Usage use_gpu;
+	Usage useGpu;
+
+private:
+	void printUseGpu();
 };

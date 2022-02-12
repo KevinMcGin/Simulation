@@ -3,5 +3,5 @@
 #include "law/collision/resolver/CollisionResolverCoalesce.cuh"
 
 
-CollisionCoalesce::CollisionCoalesce(bool use_gpu) :
-	Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), use_gpu) { }
+CollisionCoalesce::CollisionCoalesce(bool useGpu) :
+	Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), useGpu) { }
