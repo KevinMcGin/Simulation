@@ -2,7 +2,7 @@
 
 
 
-double DistributionSimple::getValue()
+float DistributionSimple::getValue()
 {
 	return Distribution::random(mean, delta);
 }

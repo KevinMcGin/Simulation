@@ -12,10 +12,10 @@ TEST(UniverseImplSimpleTest, UniverseRunsGpu) {
 	//TODO: change delta time to non 1 value with required implementation and change in expects
 	Universe* universe = new UniverseImplSimple(input, output, 10, TRUE);
 	universe->run();
-	Vector3D position1 = universe->particles.front()->position;
-	Vector3D position2 = universe->particles.back()->position;
-	EXPECT_EQ(Vector3D(10.999709230039111, 0.00042869149976955677, 0), position1);
-	EXPECT_EQ(Vector3D(3.7443363493448025e-06, 19.999949766975732, 0), position2);
+	Vector3D<float> position1 = universe->particles.front()->position;
+	Vector3D<float> position2 = universe->particles.back()->position;
+	EXPECT_EQ(Vector3D<float>(10.99970817565918, 0.00042869150638580322, 0), position1);
+	EXPECT_EQ(Vector3D<float>(3.744336027011741e-06, 19.999950408935547, 0), position2);
 }
 
 TEST(UniverseImplSimpleTest, UniverseCpuLikeGpu) {

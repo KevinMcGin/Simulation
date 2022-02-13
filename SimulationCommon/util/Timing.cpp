@@ -7,13 +7,13 @@ void Timing::setTime() {
 
 float Timing::getTimeSeconds() {
     auto now = std::chrono::high_resolution_clock::now();
-    double milliseconds = (now - startTime).count();
+    float milliseconds = (float)(now - startTime).count();
     return milliseconds/1000000000.0;
 }
 
 
 std::string Timing::getTimeWithUnit(float seconds) {
-    double time;
+    float time;
     std::string unit;
     if(seconds < 60) {
         time = seconds;

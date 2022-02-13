@@ -2,7 +2,7 @@
 
 
 
-DistributionSquare::DistributionSquare(Vector3D mean, double delta) : DistributionCuboid(mean, { delta, delta, 0 })
+DistributionSquare::DistributionSquare(Vector3D<float> mean, float delta) : DistributionCuboid(mean, { delta, delta, 0 })
 {
 
 }

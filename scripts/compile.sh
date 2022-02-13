@@ -36,17 +36,18 @@ cd ..
 
 if [ $delete_build = 'true' ]; then do_delete_build; fi
 
-echo -e "\ncompiling and building";
+echo -e "\ncompiling";
 compile_cmd_params="-S. -B$build_folder $build_params -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DUSE_GPU_TESTS=ON"
 if [ $ignore_output = 'true' ]; then cmake $compile_cmd_params > /dev/null 2>&1; else cmake $compile_cmd_params; fi
 
 if [ $? -ne 0 ]; then echo -e "\ncompile failed"; exit 1; fi
-echo -e "\ncompile succeeded";
+echo -e "compile succeeded";
 
+echo -e "\nbuilding";
 build_cmd_params="--build $build_folder"
 if [ $ignore_output = 'true' ]; then cmake $build_cmd_params > /dev/null 2>&1; else cmake $build_cmd_params; fi
 if [ $? -ne 0 ]; then echo -e "\nbuild failed"; exit 1; fi
-echo -e "\nbuild succeeded";
+echo -e "build succeeded";
 
 create_config_maybe config/project.config
 create_config_maybe config/engine/engine.config

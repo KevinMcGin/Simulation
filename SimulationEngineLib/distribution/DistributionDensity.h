@@ -7,6 +7,6 @@ class DistributionDensity
 public:
 	DistributionDensity() {};
 
-	virtual void getMassRadius(double &mass, double &radius) = 0;
+	virtual void getMassRadius(float &mass, float &radius) = 0;
 };
 

@@ -5,6 +5,6 @@
 
 class DistributionSquare: public DistributionCuboid {
 public:
-	DistributionSquare(Vector3D mean, double delta);
+	DistributionSquare(Vector3D<float> mean, float delta);
 
 };

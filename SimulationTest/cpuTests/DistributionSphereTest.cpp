@@ -2,10 +2,10 @@
 #include "distribution/DistributionSphere.h"
 
 TEST(DistributionSphereTest, ParticleInGlobe) {
-	Vector3D mean = { 1,-1,0 };
-	double delta = 2;
+	Vector3D<float> mean = { 1,-1,0 };
+	float delta = 2;
 	DistributionSphere sphere(mean, delta);
-	Vector3D position = sphere.getValue();
-	double magnitude = (position - mean).magnitude();
+	Vector3D<float> position = sphere.getValue();
+	float magnitude = (position - mean).magnitude();
 	EXPECT_TRUE(magnitude <= delta);
 }

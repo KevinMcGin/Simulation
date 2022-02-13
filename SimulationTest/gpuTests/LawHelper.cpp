@@ -5,9 +5,9 @@
 
 #include <math.h>
 
-double roundToNPlaces(const double value, const unsigned int nDecimalPlaces) {
+float roundToNPlaces(const float value, const unsigned int nDecimalPlaces) {
 	const unsigned int decimalPlaces = pow(10, nDecimalPlaces);
-	return round(value * decimalPlaces) / (double)decimalPlaces;
+	return round(value * decimalPlaces) / (float)decimalPlaces;
 }
 
 void LawHelper::runCpuLaw(Law* law, std::vector<Particle*>& particles, const int stepsCount) {
@@ -38,7 +38,7 @@ void LawHelper::expectGpuLikeCpu(Law* law, const int particleCount, const int st
 	ParticleTestHelper::expectParticlesEqual(particlesCpu, particlesGpu);
 }
 
-double roundTo5Places(double value) {
+float roundTo5Places(float value) {
 	return roundToNPlaces(value, 5);
 }
 
@@ -68,8 +68,8 @@ void LawHelper::expectGpuLikeCpuRounded(Law* law, const int particleCount, const
 		particleGpu->velocity.y = roundTo5Places(particleGpu->velocity.y);
 		particleGpu->velocity.z = roundTo5Places(particleGpu->velocity.z);
 
-		EXPECT_DOUBLE_EQ(particleCpu->mass, particleGpu->mass);
-		EXPECT_DOUBLE_EQ(particleCpu->radius, particleGpu->radius);
+		EXPECT_FLOAT_EQ(particleCpu->mass, particleGpu->mass);
+		EXPECT_FLOAT_EQ(particleCpu->radius, particleGpu->radius);
 		EXPECT_EQ(particleCpu->position, particleGpu->position);
 		EXPECT_EQ(particleCpu->velocity, particleGpu->velocity);
 	}
@@ -77,7 +77,7 @@ void LawHelper::expectGpuLikeCpuRounded(Law* law, const int particleCount, const
 
 std::vector<Particle*> LawHelper::setupParticles(const int particleCount) {
 	std::vector<Particle*> particles = {};
-	for(double i = 0; i < particleCount; i++) {
+	for(float i = 0; i < particleCount; i++) {
 		particles.push_back(
 			new ParticleSimple(
 				i + 1, i + 1, { i, -i, i }, { -i, 2 * i, -2 * i }

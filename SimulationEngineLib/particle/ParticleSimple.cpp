@@ -1,5 +1,5 @@
 #include "particle/ParticleSimple.h"
 
-// double ParticleSimple::getTemperature() {
+// float ParticleSimple::getTemperature() {
 // 	return temperature;
 // }

@@ -3,16 +3,16 @@
 
 class ParticleSimple: public Particle {
 	public:
-		Vector3D  angle;
-		Vector3D  angularVelocity;
+		Vector3D<float>  angle;
+		Vector3D<float>  angularVelocity;
 		
 		ParticleAngularSimple(
-			double  mass,
-			double radius,
-			Vector3D  position,
-			Vector3D  velocity,
-			Vector3D  angle;
-			Vector3D  angularVelocity
+			float  mass,
+			float radius,
+			Vector3D<float>  position,
+			Vector3D<float>  velocity,
+			Vector3D<float>  angle;
+			Vector3D<float>  angularVelocity
 		) : Particle(mass, radius, position, velocity), 
 			angle(angle),
 			angularVelocity(angularVelocity) {}

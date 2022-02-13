@@ -19,11 +19,11 @@ ParticleDistributionSimple::ParticleDistributionSimple(
 
 Particle* ParticleDistributionSimple::getParticle()
 {
-	double mass, radius;
+	float mass, radius;
 	densityDistribution->getMassRadius(mass, radius);
-	Vector3D position = positionDistribution->getValue();
-	Vector3D velocity = velocityDistribution->getValue();
-	// Vector3D angularVelocity = angularVelocityDistribution->getValue();
+	Vector3D<float> position = positionDistribution->getValue();
+	Vector3D<float> velocity = velocityDistribution->getValue();
+	// Vector3D<float> angularVelocity = angularVelocityDistribution->getValue();
 
 	return new ParticleSimple(
 		mass, 

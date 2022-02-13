@@ -8,7 +8,7 @@
 class CollisionTestHelper {
 public:
     template <typename T>
-    static bool sortVector(T const &lhs, T const &rhs, std::vector<double*> compareLhs, std::vector<double*> compareRhs);
+    static bool sortVector(T const &lhs, T const &rhs, std::vector<float*> compareLhs, std::vector<float*> compareRhs);
     static bool sortParticles(Particle* const &lhs, Particle* const &rhs);
 
     static std::vector<Particle*> getParticlesCollideParticles();

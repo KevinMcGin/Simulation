@@ -5,14 +5,14 @@
 
 class DistributionCuboid : public Distribution3D {
 public:
-	DistributionCuboid(Vector3D mean, Vector3D delta): Distribution3D(),
+	DistributionCuboid(Vector3D<float> mean, Vector3D<float> delta): Distribution3D(),
 		mean(mean),
 		delta(delta)
 	{};
 
-	virtual  Vector3D getValue();
+	virtual  Vector3D<float> getValue();
 
 private:
-	const Vector3D mean, delta;
+	const Vector3D<float> mean, delta;
 
 };

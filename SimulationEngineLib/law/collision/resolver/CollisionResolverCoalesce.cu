@@ -11,6 +11,6 @@ void CollisionResolverCoalesce::resolve(Particle* p1, Particle* p2) {
 }
 
 __device__ __host__
-Vector3D CollisionResolverCoalesce::getCoalesced(double mass1, double mass2, Vector3D vec1, Vector3D vec2) {
+Vector3D<float> CollisionResolverCoalesce::getCoalesced(float mass1, float mass2, Vector3D<float> vec1, Vector3D<float> vec2) {
 	return (mass1 * vec1 + mass2 * vec2) / (mass1 + mass2);
 }

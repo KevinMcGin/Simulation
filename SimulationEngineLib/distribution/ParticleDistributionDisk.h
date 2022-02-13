@@ -8,16 +8,16 @@ class ParticleDistributionDisk : public ParticleDistribution {
 public:
 	ParticleDistributionDisk(
 		std::shared_ptr<DistributionDensity> densityDistribution,
-		double centralMass,
-		Vector3D meanPosition,
-		double thetaPosition,
-		double phiPosition,
+		float centralMass,
+		Vector3D<float> meanPosition,
+		float thetaPosition,
+		float phiPosition,
     	bool clockwise,
 		std::shared_ptr<Distribution> innerRadius,
 		std::shared_ptr<Distribution> outerRadius, 
 		std::shared_ptr<Distribution> eccentricity,
 		// std::shared_ptr<Distribution3D> angularVelocityDistribution,
-		double G = PhysicalConstants::GRAVITATIONAL_CONSTANT
+		float G = PhysicalConstants::GRAVITATIONAL_CONSTANT
 	);
 	~ParticleDistributionDisk();
 
@@ -25,14 +25,14 @@ public:
 
 private:
 	std::shared_ptr<DistributionDensity> densityDistribution;
-	double centralMass;
-	Vector3D meanPosition;
-	double thetaPosition;
-	double phiPosition;
+	float centralMass;
+	Vector3D<float> meanPosition;
+	float thetaPosition;
+	float phiPosition;
     bool clockwise;
 	std::shared_ptr<Distribution> innerRadius;
 	std::shared_ptr<Distribution> outerRadius; 
 	std::shared_ptr<Distribution> eccentricity;
 	// std::shared_ptr<Distribution3D> angularVelocityDistribution;
-	double G;
+	float G;
 };
