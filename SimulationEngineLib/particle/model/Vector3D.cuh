@@ -60,8 +60,6 @@ public:
 		};
 	}
 
-	
-	template <typename T>
 	__device__ __host__ friend Vector3D<T> operator*(const T scale, const Vector3D<T>& vec) {
 		return vec * scale;
 	}
@@ -73,7 +71,6 @@ public:
 		return x == vec.x && y == vec.y && z == vec.z;
 	}
 
-	template <typename T>
 	friend std::ostream& operator<<(std::ostream& out, const Vector3D<T>& vec) {
     	out << std::setprecision(17) << "{x: " << vec.x << ", y: " << vec.y << ", z: " << vec.z << "}";
     	return out;
