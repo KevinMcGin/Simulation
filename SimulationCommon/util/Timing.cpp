@@ -2,19 +2,19 @@
 #include <sstream>
 
 void Timing::setTime() {
-    startTime = chrono::high_resolution_clock::now();
+    startTime = std::chrono::high_resolution_clock::now();
 }
 
 float Timing::getTimeSeconds() {
-    auto now = chrono::high_resolution_clock::now();
-    double milliseconds = (now - startTime).count();
+    auto now = std::chrono::high_resolution_clock::now();
+    float milliseconds = (float)(now - startTime).count();
     return milliseconds/1000000000.0;
 }
 
 
-string Timing::getTimeWithUnit(float seconds) {
-    double time;
-    string unit;
+std::string Timing::getTimeWithUnit(float seconds) {
+    float time;
+    std::string unit;
     if(seconds < 60) {
         time = seconds;
         unit = "s";
@@ -26,13 +26,13 @@ string Timing::getTimeWithUnit(float seconds) {
         unit = " hrs";
     }
 
-    ostringstream secondsString;
+    std::ostringstream secondsString;
     secondsString << time << unit;
     return secondsString.str();
 }
 
 
-string Timing::getTimeWithUnit() {
+std::string Timing::getTimeWithUnit() {
     float seconds = getTimeSeconds();
     return Timing::getTimeWithUnit(seconds);
 }

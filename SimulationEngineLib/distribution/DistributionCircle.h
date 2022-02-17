@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include "distribution/DistributionSphere.h"
 
-using namespace std;
+
 
 class DistributionCircle: public DistributionSphere {
 public:
-	DistributionCircle(Vector3D mean, double delta);
+	DistributionCircle(Vector3D<float> mean, float delta);
 
-	virtual  Vector3D getValue();
+	virtual  Vector3D<float> getValue();
 };

@@ -10,7 +10,7 @@ class DistributionMassDensity :
 {
 public:
 	DistributionMassDensity(std::shared_ptr<Distribution> massDistribution, std::shared_ptr<Distribution> densityDistribution);
-	void getMassRadius(double& mass, double& radius) override;
+	void getMassRadius(float& mass, float& radius) override;
 
 private:
 	std::shared_ptr<Distribution> massDistribution;

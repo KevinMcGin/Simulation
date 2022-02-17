@@ -1,12 +1,12 @@
 #include "distribution/Distribution.h"
 
-double Distribution::random(double mean, double delta)
+float Distribution::random(float mean, float delta)
 {
-	const double deltaRand = ((double)rand() / RAND_MAX) * 2 * delta - delta;
+	const float deltaRand = ((float)rand() / RAND_MAX) * 2 * delta - delta;
 	return mean + deltaRand;
 }
 
-double Distribution::random(double delta)
+float Distribution::random(float delta)
 {
-	return ((double)rand() / RAND_MAX) * delta;
+	return ((float)rand() / RAND_MAX) * delta;
 }

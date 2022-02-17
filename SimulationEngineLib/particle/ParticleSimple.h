@@ -4,14 +4,13 @@
 class ParticleSimple: public Particle {
 	public:
 		ParticleSimple(
-			double			  mass,
-			double            radius,
-			Vector3D  position,
-			Vector3D  velocity,
-			Vector3D  angularVelocity
-		) : Particle(mass, radius, position, velocity, angularVelocity) {}
-		virtual double getTemperature();
+			float			  mass,
+			float            radius,
+			Vector3D<float>  position,
+			Vector3D<float>  velocity
+		) : Particle(mass, radius, position, velocity) {}
+		// virtual float getTemperature();
 
-	private:
-		double temperature = 273;
+	// private:
+		// float temperature = 273;
 };

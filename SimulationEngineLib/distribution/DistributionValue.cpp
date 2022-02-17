@@ -1,12 +1,12 @@
 #include "distribution/DistributionValue.h"
 
-DistributionValue::DistributionValue(double value) : Distribution(),
+DistributionValue::DistributionValue(float value) : Distribution(),
 	value(value)
 {
 
 }
 
-double DistributionValue::getValue()
+float DistributionValue::getValue()
 {
 	return value;
 }

@@ -3,10 +3,10 @@
 class DistributionValue : public Distribution
 {
 public:
-	DistributionValue(double value);
-	virtual double getValue();
+	DistributionValue(float value);
+	virtual float getValue();
 
 private:
-	const double value;
+	const float value;
 };
 

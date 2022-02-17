@@ -2,7 +2,7 @@
 
 
 
-void SimulationOutputPrint::output(vector<Particle*> particles, unsigned long time)
+void SimulationOutputPrint::output(std::vector<Particle*> particles, unsigned long time)
 {
 	unsigned int i = 0;
 	for (const auto& p : particles) {

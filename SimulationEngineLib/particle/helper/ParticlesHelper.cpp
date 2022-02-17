@@ -1,6 +1,6 @@
 #include "particle/helper/ParticlesHelper.h"
 
-bool ParticlesHelper::removeDeletedParticles(vector<Particle*>& particles) {
+bool ParticlesHelper::removeDeletedParticles(std::vector<Particle*>& particles) {
     bool particleDeleted = false;
     for (auto it = particles.begin(); it != particles.end();) {
         if((*it)->deleted) {

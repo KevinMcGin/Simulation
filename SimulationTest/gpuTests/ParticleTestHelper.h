@@ -3,5 +3,5 @@
 
 class ParticleTestHelper {
 public:
-    static void expectParticlesEqual(vector<Particle*> particlesCpu, vector<Particle*> particlesGpu);
+    static void expectParticlesEqual(std::vector<Particle*> particlesCpu, std::vector<Particle*> particlesGpu);
 };

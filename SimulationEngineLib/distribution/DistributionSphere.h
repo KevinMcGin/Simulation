@@ -3,15 +3,15 @@
 #define _USE_MATH_DEFINES
 #include <cmath> 
 
-using namespace std;
+
 
 class DistributionSphere : public Distribution3D {
 public:
-	DistributionSphere(Vector3D mean, double delta);
+	DistributionSphere(Vector3D<float> mean, float delta);
 
-	virtual Vector3D getValue() override;
+	virtual Vector3D<float> getValue() override;
 
 protected:
-	const Vector3D mean;
-	const double delta;
+	const Vector3D<float> mean;
+	const float delta;
 };

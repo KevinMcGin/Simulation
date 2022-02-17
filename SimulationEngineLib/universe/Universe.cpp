@@ -4,9 +4,9 @@
 const char* SIMULATION_USE_GPU = "SIMULATION_USE_GPU";
 
 Universe::Universe(
-    vector<Particle*> particles, 
-    vector<Law*> laws, 
-    const shared_ptr<SimulationOutput> output, 
+    std::vector<Particle*> particles, 
+    std::vector<Law*> laws, 
+    const std::shared_ptr<SimulationOutput> output, 
     unsigned int deltaTime,
     unsigned long endTime,
     Usage useGpu

@@ -6,8 +6,8 @@ DistributionMassDensity::DistributionMassDensity(std::shared_ptr<Distribution> m
 	massDistribution(massDistribution),
 	densityDistribution(densityDistribution) { }
 
-void DistributionMassDensity::getMassRadius(double& mass, double& radius) {
-	double density = densityDistribution->getValue();
+void DistributionMassDensity::getMassRadius(float& mass, float& radius) {
+	float density = densityDistribution->getValue();
 	mass = massDistribution->getValue();
 	radius = pow(3 * mass / (4 * M_PI * density), 1 / 3.0);
 

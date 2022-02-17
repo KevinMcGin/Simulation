@@ -9,31 +9,31 @@ SimulationOutputJSON::SimulationOutputJSON(const char* outputFile) : SimulationO
 
 SimulationOutputJSON::~SimulationOutputJSON()
 {
-	myfile << buffer << "}" << endl;
+	myfile << buffer << "}" << std::endl;
 	myfile.close();
 }
 
-void SimulationOutputJSON::output(vector<Particle*> particles, unsigned long time)
+void SimulationOutputJSON::output(std::vector<Particle*> particles, unsigned long time)
 {
 	if (time > 0) {
 		buffer = buffer.append(",\n");
 	}
 	buffer = buffer.append("\"")
-			.append(to_string(time))
+			.append(std::to_string(time))
 			.append("\": [\n");
 	unsigned int particleCount = particles.size();
 	unsigned int i = 0;
 	for (const auto& p : particles) {
 		buffer = buffer.append("{ ")
 			.append("\"r\": ")
-			.append(to_string(p->radius))
+			.append(std::to_string(p->radius))
 			.append(",\n")
 			.append("\"pos\": [")
-			.append(to_string(p->position.x))
+			.append(std::to_string(p->position.x))
 			.append(",")
-			.append(to_string(p->position.y))
+			.append(std::to_string(p->position.y))
 			.append(",")
-			.append(to_string(p->position.z))
+			.append(std::to_string(p->position.z))
 			.append("]}\n");
 		if (++i < particleCount) {
 			buffer = buffer.append(",\n");

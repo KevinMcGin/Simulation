@@ -5,7 +5,7 @@
 
 TEST(NewtonFirstLawTest, ParticleMoveGpu) {
 	Law* law = new NewtonFirstLaw();
-	vector<Particle*> particles = NewtonFirstLawTestHelper::getParticleMove();
+	std::vector<Particle*> particles = NewtonFirstLawTestHelper::getParticleMove();
     LawHelper::runGpuLaw(law, particles);
 	NewtonFirstLawTestHelper::testParticleMove(particles);
 }

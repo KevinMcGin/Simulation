@@ -8,7 +8,7 @@
 
 class NewtonGravity: public Law {
 public:
-	NewtonGravity(double G = PhysicalConstants::GRAVITATIONAL_CONSTANT);
+	NewtonGravity(float G = PhysicalConstants::GRAVITATIONAL_CONSTANT);
 protected:
-	const double G;
+	const float G;
 };

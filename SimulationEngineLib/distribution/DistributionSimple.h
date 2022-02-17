@@ -3,15 +3,15 @@
 
 class DistributionSimple: public Distribution {
 public:
-	DistributionSimple(double mean, double delta) : Distribution(),
+	DistributionSimple(float mean, float delta) : Distribution(),
 		mean(mean),
 		delta(delta) {};
 
 
-	virtual double getValue();
+	virtual float getValue();
 
 private:
-	const double mean;
-	const double delta;
+	const float mean;
+	const float delta;
 
 };

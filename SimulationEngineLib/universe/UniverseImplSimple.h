@@ -7,8 +7,8 @@
 class UniverseImplSimple : public UniverseImpl {
 public:
 	UniverseImplSimple(
-		shared_ptr<SimulationInput> input, 
-		shared_ptr<SimulationOutput> output, 
+		std::shared_ptr<SimulationInput> input, 
+		std::shared_ptr<SimulationOutput> output, 
 		unsigned long endTime, 
 		Usage useGpu = UNDEFINED
 	);

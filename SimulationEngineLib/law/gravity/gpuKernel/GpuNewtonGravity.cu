@@ -8,10 +8,10 @@
 #include <cmath>
 #include <algorithm>
 
-GpuNewtonGravity::GpuNewtonGravity(double G) : GpuLaw("GpuNewtonGravity"), G(G) { }
+GpuNewtonGravity::GpuNewtonGravity(float G) : GpuLaw("GpuNewtonGravity"), G(G) { }
 
 __global__ 
-void radiusComponentKernel(Particle** particles, Vector3D* accelerations, unsigned long long n, double G, unsigned long long vectorsProcessedTriangular) {
+void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations, unsigned long long n, float G, unsigned long long vectorsProcessedTriangular) {
 	unsigned long long idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < n) { 
 		radiusComponentKernelHelper(idx, particles, accelerations, n, G, vectorsProcessedTriangular);
@@ -19,13 +19,13 @@ void radiusComponentKernel(Particle** particles, Vector3D* accelerations, unsign
 }
 
 __global__ 
-void addAccelerationsKernelLower(Particle** particles, Vector3D* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular) {
+void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular) {
 	unsigned long long idx = threadIdx.x + blockIdx.x*blockDim.x;
 	addAccelerationsKernelLowerHelper(idx, particles, accelerations, x0, y, n, vectorsProcessedTriangular);
 }
 
 __global__ 
-void addAccelerationsKernelUpper(Particle** particles, Vector3D* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long particlesProcessed, unsigned long long betweenParticlesTriangularCount) {
+void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long particlesProcessed, unsigned long long betweenParticlesTriangularCount) {
 	unsigned long long idx = threadIdx.x + blockIdx.x*blockDim.x;
 	addAccelerationsKernelUpperHelper(idx, particles, accelerations, x0, y, n, vectorsProcessedTriangular, particlesProcessed, betweenParticlesTriangularCount);
 }
@@ -41,14 +41,14 @@ unsigned long long getRowsAndColsCountMinusIdentityFromRows(unsigned long long r
 void GpuNewtonGravity::run(Particle** td_par, int particleCount) {
 	//Radius component
 	unsigned long long betweenParticlesCount = ((unsigned long long)particleCount-1)*particleCount;
-	Vector3D* accelerations = NULL;
+	Vector3D<float>* accelerations = NULL;
 	
 	unsigned long long freeGpuMemory = cudaWithError->getFreeGpuMemory();
-	unsigned long long vector3DSize = sizeof(Vector3D);
+	unsigned long long vector3DSize = sizeof(Vector3D<float>);
 	unsigned long long maxVectorsAllocatableStage1 = freeGpuMemory / vector3DSize;
 	unsigned long long maxVectorsAllocatable = std::min(maxVectorsAllocatableStage1, betweenParticlesCount);
 
-	cudaWithError->malloc((void**)&accelerations, maxVectorsAllocatable * sizeof(Vector3D));
+	cudaWithError->malloc((void**)&accelerations, maxVectorsAllocatable * sizeof(Vector3D<float>));
 
 	unsigned long long particlesProcessed = 0;
 	unsigned long long vectorsProcessed = 0;
@@ -58,8 +58,8 @@ void GpuNewtonGravity::run(Particle** td_par, int particleCount) {
 			(unsigned long long)particleCount
 		) - (vectorsProcessed > 0 ? getRowsFromRowsAndColsCountMinusIdentity(vectorsProcessed) : 0);
 		if(particlesProcessable == 0) { 
-			cout << "GPU can not run these many particles in Gravity\n";
-			throw new runtime_error("GPU can not run these many particles in Gravity");
+			std::cout << "GPU can not run these many particles in Gravity\n";
+			throw new std::runtime_error("GPU can not run these many particles in Gravity");
 		}
 		unsigned long long vectorsProcessable = getRowsAndColsCountMinusIdentityFromRows(particlesProcessed + particlesProcessable) - getRowsAndColsCountMinusIdentityFromRows(particlesProcessed);
 		unsigned long long vectorsProcessableTriangular = vectorsProcessable / 2;

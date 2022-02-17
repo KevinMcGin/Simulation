@@ -9,12 +9,12 @@
 
 class SimulationInputRandomSimple : public SimulationInput {
 public:
-	SimulationInputRandomSimple(vector<unsigned long> particleCounts, vector<std::shared_ptr<ParticleDistribution>> particleDistributions);
+	SimulationInputRandomSimple(std::vector<unsigned long> particleCounts, std::vector<std::shared_ptr<ParticleDistribution>> particleDistributions);
 
-	virtual vector<Particle*> input();
+	virtual std::vector<Particle*> input();
 
 
 private:
-	vector<unsigned long> particleCounts;
-	vector<std::shared_ptr<ParticleDistribution>> particleDistributions;
+	std::vector<unsigned long> particleCounts;
+	std::vector<std::shared_ptr<ParticleDistribution>> particleDistributions;
 };

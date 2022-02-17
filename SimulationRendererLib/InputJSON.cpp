@@ -13,7 +13,8 @@
 #include "rapidjson/filereadstream.h"
 
 InputJSON::InputJSON(const char* fileName): 
-	time(0)
+	time(0),
+	originalTime(0)
 {
 	std::cout << "Parsing simulation: " << fileName << std::endl;
 	FILE* fp;
@@ -39,26 +40,42 @@ InputJSON::InputJSON(const char* fileName):
 InputJSON::~InputJSON() { }
 
 Value* InputJSON::input(int elapsedFrames) {
-	unsigned int originalTime = time;
+	originalTime = time;
 	time += elapsedFrames;
-	const size_t buggerSize = 11;
-	const auto bufferSizeInt = (int)buggerSize;
+	return getFrame();
+}
+
+Value* InputJSON::getFrame() {
+	const size_t bufferSize = 11;
+	const auto bufferSizeInt = (int)bufferSize;
 	char timeString[bufferSizeInt];
 	#if defined(WINDOWS)
 		sprintf_s(timeString, "%ld", time);
 	#else
-		snprintf(timeString, buggerSize, "%ld", time++);
+		snprintf(timeString, bufferSize, "%ld", time);
 	#endif
 	if(doc.HasMember(timeString)) {
 		return &doc[timeString];
-	} else  {
-		char timeString2[buggerSize]; 
+	} else {
 		time = originalTime;
-		#if defined(WINDOWS)
-			sprintf_s(timeString2, "%ld", time);
-		#else
-			snprintf(timeString2, buggerSize, "%ld", time);
-		#endif
-		return &doc[timeString2];
+		return getLastFrame();
+	}
+}
+
+Value* InputJSON::getLastFrame() {
+	const size_t bufferSize = 11;
+	const auto bufferSizeInt = (int)bufferSize;
+	char timeString[bufferSizeInt];
+	#if defined(WINDOWS)
+		sprintf_s(timeString, "%ld", time);
+	#else
+		snprintf(timeString, bufferSize, "%ld", time);
+	#endif
+	if(!doc.HasMember(timeString)) {
+		time--;
+		return getFrame();
+	} else {
+		time++;
+		return getLastFrame();
 	}
 }

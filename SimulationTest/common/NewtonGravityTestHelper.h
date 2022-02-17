@@ -5,6 +5,6 @@
 
 class NewtonGravityTestHelper {
 public:
-    static vector<Particle*> getParticlesAccelerate();
-    static void testParticlesAccelerate(vector<Particle*> particles);
+    static std::vector<Particle*> getParticlesAccelerate();
+    static void testParticlesAccelerate(std::vector<Particle*> particles);
 };

@@ -6,11 +6,11 @@
 
 class GpuLaw {
 public:
-	GpuLaw(string className = "GpuLaw");
+	GpuLaw(std::string className = "GpuLaw");
 	virtual void run(Particle** td_par, int particleCount) {};
-	string getClassName() { return className; }
+	std::string getClassName() { return className; }
 protected:
 	CudaWithError* cudaWithError;
 private:
-	string className = "GpuLaw";
+	std::string className = "GpuLaw";
 };

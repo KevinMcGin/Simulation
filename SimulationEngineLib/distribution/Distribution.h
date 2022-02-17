@@ -7,8 +7,8 @@ public:
 	Distribution() { srand( (unsigned int)time(nullptr) ); };
 	virtual ~Distribution() = default;
 
-	virtual double getValue() = 0;
+	virtual float getValue() = 0;
 	
-	static double random(double mean, double delta);
-	static double random(double delta);
+	static float random(float mean, float delta);
+	static float random(float delta);
 };

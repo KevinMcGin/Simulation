@@ -5,6 +5,6 @@
 
 class NewtonFirstLawTestHelper {
 public:
-    static vector<Particle*> getParticleMove();
-    static void testParticleMove(vector<Particle*> particles);
+    static std::vector<Particle*> getParticleMove();
+    static void testParticleMove(std::vector<Particle*> particles);
 };

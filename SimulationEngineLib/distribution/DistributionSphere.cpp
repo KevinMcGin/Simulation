@@ -2,16 +2,16 @@
 #include "distribution/Distribution.h"
 
 
-DistributionSphere::DistributionSphere(Vector3D mean, double delta) : Distribution3D(),
+DistributionSphere::DistributionSphere(Vector3D<float> mean, float delta) : Distribution3D(),
 	mean(mean), delta(delta)
 {
 
 }
 
-Vector3D DistributionSphere::getValue()
+Vector3D<float> DistributionSphere::getValue()
 {
-	double theta = Distribution::random(M_PI, M_PI);
-	double magnitude = Distribution::random(delta);
+	float theta = Distribution::random(M_PI, M_PI);
+	float magnitude = Distribution::random(delta);
 
 	//Is it ok to have these mean terms all unique in this equation?
 	return { mean.x + magnitude * cos(theta),

@@ -7,9 +7,9 @@
 #include <map>
 
 UniverseImpl::UniverseImpl(
-	vector<Law*> laws, 
-	shared_ptr<SimulationInput> input, 
-	shared_ptr<SimulationOutput> output, 
+	std::vector<Law*> laws, 
+	std::shared_ptr<SimulationInput> input, 
+	std::shared_ptr<SimulationOutput> output, 
 	unsigned int deltaTime, 
 	unsigned long endTime,
 	Usage useGpu
@@ -22,9 +22,9 @@ UniverseImpl::UniverseImpl(
 UniverseImpl::~UniverseImpl() = default;
 
 void UniverseImpl::run() {
-	cout << "Simulation running" << endl;
-	cout << particles.size() << " particles" << endl;
-	cout << "Frames: " << endTime << endl;
+	std::cout << "Simulation running" << std::endl;
+	std::cout << particles.size() << " particles" << std::endl;
+	std::cout << "Frames: " << endTime << std::endl;
 	universeTiming.timingTotal.setTime();
 	output->output(particles, 0);
 	universeTiming.progress = -1;
@@ -64,7 +64,7 @@ void UniverseImpl::run() {
 	}
 	printPercentComplete(lawsRan, true);
 	printSectionsTiming();
-	cout << endl << "Simulation complete" << endl;
+	std::cout << std::endl << "Simulation complete" << std::endl;
 }
 
 void UniverseImpl::printPercentComplete(int lawsRan, bool force) {
@@ -76,7 +76,7 @@ void UniverseImpl::printPercentComplete(int lawsRan, bool force) {
 		universeTiming.lastPrintedSeconds = elapsedSeconds;
 		float remainingPercent = 100 - universeTiming.progress;
 		float timeRemaining = remainingPercent * ((elapsedSeconds-universeTiming.lastEstimatedSeconds) / (universeTiming.progress-universeTiming.lastEstimatedProgress));
-		cout << "\r" << 
+		std::cout << "\r" << 
 			"passed: " << universeTiming.progress << "% " << Timing::getTimeWithUnit(elapsedSeconds) << ", "
 			"remaining: " << remainingPercent << "% " << Timing::getTimeWithUnit(timeRemaining) <<
 			"                       " << std::flush;
@@ -87,7 +87,7 @@ void UniverseImpl::printPercentComplete(int lawsRan, bool force) {
 	}
 }
 
-void UniverseImpl::updateSectionsTiming(string name) {
+void UniverseImpl::updateSectionsTiming(std::string name) {
 	if(universeTiming.progresses.find(name) == universeTiming.progresses.end()) {
 		universeTiming.progresses[name] = 0;
 	}
@@ -96,10 +96,10 @@ void UniverseImpl::updateSectionsTiming(string name) {
 }
 
 void UniverseImpl::printSectionsTiming() {
-	string sections = "";
+	std::string sections = "";
 	for (auto const& it : universeTiming.progresses) {
 		sections += it.first + ": " + Timing::getTimeWithUnit(it.second) + ", ";
 	}
-	cout << endl << sections << endl;
+	std::cout << std::endl << sections << std::endl;
 }
 
