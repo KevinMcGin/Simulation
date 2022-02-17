@@ -4,6 +4,22 @@
 #include <iostream>
 #include <fstream>
 
+void testJsonReadPosition0(Value* input) {
+    auto particles = input->GetArray();
+	EXPECT_FLOAT_EQ(0.030432f, particles[0]["r"].GetFloat());
+	EXPECT_FLOAT_EQ(-15.061090, particles[0]["pos"][0].GetFloat());
+	EXPECT_FLOAT_EQ(0.032683f, particles[1]["r"].GetFloat());
+	EXPECT_FLOAT_EQ(-7.088444, particles[1]["pos"][1].GetFloat());
+}
+
+void testJsonReadPosition1(Value* input) {
+    auto particles = input->GetArray();
+	EXPECT_FLOAT_EQ(1.030432f, particles[0]["r"].GetFloat());
+	EXPECT_FLOAT_EQ(-1.061090, particles[0]["pos"][0].GetFloat());
+	EXPECT_FLOAT_EQ(1.032683f, particles[1]["r"].GetFloat());
+	EXPECT_FLOAT_EQ(17.088444, particles[1]["pos"][1].GetFloat());
+}
+
 TEST(InputJsonTest, JsonRead) {
     std::string fileName = "test_file_name.json";
     std::ofstream file;
@@ -26,24 +42,9 @@ TEST(InputJsonTest, JsonRead) {
 
 	InputJSON inputJSON(fileName.c_str());
 
-    auto input = inputJSON.input(0);
-    auto particles = input->GetArray();
-	EXPECT_FLOAT_EQ(0.030432f, particles[0]["r"].GetFloat());
-	EXPECT_FLOAT_EQ(-15.061090, particles[0]["pos"][0].GetFloat());
-	EXPECT_FLOAT_EQ(0.032683f, particles[1]["r"].GetFloat());
-	EXPECT_FLOAT_EQ(-7.088444, particles[1]["pos"][1].GetFloat());
-
-    auto input2 = inputJSON.input(1);
-    auto particles2 = input2->GetArray();
-	EXPECT_FLOAT_EQ(1.030432f, particles2[0]["r"].GetFloat());
-	EXPECT_FLOAT_EQ(-1.061090, particles2[0]["pos"][0].GetFloat());
-	EXPECT_FLOAT_EQ(1.032683f, particles2[1]["r"].GetFloat());
-	EXPECT_FLOAT_EQ(17.088444, particles2[1]["pos"][1].GetFloat());
-    
-    auto input3 = inputJSON.input(10);
-    auto particles3 = input3->GetArray();
-	EXPECT_FLOAT_EQ(1.030432f, particles3[0]["r"].GetFloat());
-	EXPECT_FLOAT_EQ(-1.061090, particles3[0]["pos"][0].GetFloat());
-	EXPECT_FLOAT_EQ(1.032683f, particles3[1]["r"].GetFloat());
-	EXPECT_FLOAT_EQ(17.088444, particles3[1]["pos"][1].GetFloat());
+    testJsonReadPosition0(inputJSON.input(0));
+    testJsonReadPosition1(inputJSON.input(1));
+    testJsonReadPosition1(inputJSON.input(10));
+    testJsonReadPosition0(inputJSON.input(-1));
+    testJsonReadPosition1(inputJSON.input(10));
 }

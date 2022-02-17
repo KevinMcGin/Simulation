@@ -22,4 +22,8 @@ private:
 	Document doc;
 	// std::vector<Particle*> particles;
 	unsigned long time;
+	unsigned long originalTime;
+
+	Value* getFrame();
+	Value* getLastFrame();
 };
