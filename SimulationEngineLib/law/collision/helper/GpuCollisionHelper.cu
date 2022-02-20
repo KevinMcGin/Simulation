@@ -12,6 +12,7 @@
 #include <typeinfo>
 
 const int MAX_MERGE_COLLISION_RUNS = 5;
+const int MAX_COLLISIONS_PER_PARTICLE = 100;
 
 __device__ MergeStatus mergeCollisionsRows(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int idx, int row, int n, int runCount = 0);
 __device__ MergeStatus mergeCollisionsColumns(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable,  bool* particlesCollided, int idx, int row, int n, int runCount = 0);
@@ -68,6 +69,7 @@ __device__ void markCollision(int* collisionMarks, unsigned long long* collision
 __device__
 MergeStatus mergeCollisionsRows(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int idx, int row, int n, int runCount) {  
 	// printf("rows: idx: %d row: %d\n", idx, row);
+	int collisionsFound = 0;
 	if(!particlesCollided[row] || (runCount > 0 && idx == row) || runCount >= MAX_MERGE_COLLISION_RUNS) {
 		return NO_COLLISION_FOUND;
 	}
@@ -85,6 +87,9 @@ MergeStatus mergeCollisionsRows(int* collisionMarks, unsigned long long* collisi
 	while(collidedParticleIndex >= 0) {
 		if(runCount == 0 || !getParticlesCollidedByIndex(collisionMarks, *collisionMarksIndex, idx, collidedParticleIndex)) {
 			//printf("rows: collidedParticleIndex: %d\n", collidedParticleIndex);
+			if(++collisionsFound >= MAX_COLLISIONS_PER_PARTICLE) {
+				return COLLISION_FOUND;
+			}
 			if(runCount > 0 && idx != collidedParticleIndex) {
 				// printf("rows: collisionMarksIndex: %llu\n", *collisionMarksIndex);
 				markCollision(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, idx, collidedParticleIndex);
@@ -102,6 +107,7 @@ MergeStatus mergeCollisionsRows(int* collisionMarks, unsigned long long* collisi
 
 __device__ 
 MergeStatus mergeCollisionsColumns(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int idx, int row, int n, int runCount) {
+	int collisionsFound = 0;
 	if(runCount >= MAX_MERGE_COLLISION_RUNS) {
 		return NO_COLLISION_FOUND;
 	}
@@ -118,6 +124,9 @@ MergeStatus mergeCollisionsColumns(int* collisionMarks, unsigned long long* coll
 				//printf("cols: %d, %d\n", idx, collidedParticleIndex);
 				//printf("cols: collisionMarksIndex: %llu\n", *collisionMarksIndex);
 				// printf("col: Marking collision at: %llu: %d, %d\n", *collisionMarksIndex, idx, collidedParticleIndex);
+				if(++collisionsFound >= MAX_COLLISIONS_PER_PARTICLE) {
+					return COLLISION_FOUND;
+				}
 				markCollision(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, idx, collidedParticleIndex);
 				collisionsToResolve = true;
 				MergeStatus mergeStatus = mergeCollisionsRows(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, idx, collidedParticleIndex, n, runCount + 1);
@@ -156,11 +165,12 @@ void getCollidedParticlesHelper(unsigned long long idx, Particle** particles, in
 	unsigned long long x, y;
 	MatrixMaths::getLowerTriangularCoordinates(idx, &x, &y);
 	//TODO find out why out of bounds error is occuring here
+	//Is the above resolved?
 	auto p1 = particles[x];
 	auto p2 = particles[y];	
 	if((*collisionDetectorGpu)->isCollision(p1, p2)) {		
-		// //printf("Collision: %llu - %llu\n", x, y);	
-		// //printf("Getting collision: %llu \n", *collisionMarksIndex);
+		// printf("Collision: %llu - %llu\n", x, y);	
+		// printf("Getting collision: %llu \n", *collisionMarksIndex);
 		// printf("get: Marking collision at: %llu: %d, %d\n", *collisionMarksIndex, (int)y, (int)x);
 		markCollision(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, (int)y, (int)x);
 	}

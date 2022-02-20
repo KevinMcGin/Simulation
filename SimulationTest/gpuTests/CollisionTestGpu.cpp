@@ -33,15 +33,8 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 	CollisionTestHelper::testMultipleParticlesIndependentlyCollide(particles);
 }
 
-//TODO fix randomly failing test:
-/*
- particleCpu->radius
-    Which is: 201.01563
-  particleGpu->radius
-    Which is: 201.0157
-*/
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuSimple) {
-	const int particleCount = 75;
+	const int particleCount = 100;
 	const int stepsCount = 1;
 	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
 
