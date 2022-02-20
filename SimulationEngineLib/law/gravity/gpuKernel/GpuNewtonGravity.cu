@@ -25,9 +25,9 @@ void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelera
 }
 
 __global__ 
-void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long particlesProcessed, unsigned long long betweenParticlesTriangularCount) {
+void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount) {
 	unsigned long long idx = threadIdx.x + blockIdx.x*blockDim.x;
-	addAccelerationsKernelUpperHelper(idx, particles, accelerations, xOffset, y, n, vectorsProcessedTriangular, particlesProcessed, betweenParticlesTriangularCount);
+	addAccelerationsKernelUpperHelper(idx, particles, accelerations, xOffset, y, n, vectorsProcessedTriangular, betweenParticlesTriangularCount);
 }
 
 unsigned long long getRowsFromRowsAndColsCountMinusIdentity(unsigned long long rowsAndColsCount) {
@@ -71,9 +71,8 @@ void GpuNewtonGravity::run(Particle** td_par, int particleCount) {
 		cudaWithError->peekAtLastError("radiusComponentKernel");
 
 		for(int i = 0; i < particlesProcessed; i++) {
-			//TODO can we change xOffset here to particlesProcessed, and (particleCount - 1 - i) to particlesProcessable?
-			addAccelerationsKernelUpper <<<1 + (particleCount - 1 - i) / threadCount, threadCount>>> (
-				td_par, accelerations, 0, i, particlesProcessed + particlesProcessable, vectorsProcessed / 2, particlesProcessed, vectorsProcessableTriangular
+			addAccelerationsKernelUpper <<<1 + particlesProcessable / threadCount, threadCount>>> (
+				td_par, accelerations, std::max((int)particlesProcessed - i - 1, 0), i, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
 			);
 			cudaWithError->peekAtLastError("addAccelerationsKernelUpper");
 		}
@@ -81,7 +80,7 @@ void GpuNewtonGravity::run(Particle** td_par, int particleCount) {
 			addAccelerationsKernelLower <<<1 + i/threadCount, threadCount>>> (td_par, accelerations, i, vectorsProcessed / 2);
 			cudaWithError->peekAtLastError("addAccelerationsKernelLower");
 			addAccelerationsKernelUpper <<<1 + particlesProcessable / threadCount, threadCount>>> (
-				td_par, accelerations, 0, i, particlesProcessed + particlesProcessable, vectorsProcessed / 2, particlesProcessed, vectorsProcessableTriangular
+				td_par, accelerations, 0, i, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
 			);
 			cudaWithError->peekAtLastError("addAccelerationsKernelUpper");
 		}

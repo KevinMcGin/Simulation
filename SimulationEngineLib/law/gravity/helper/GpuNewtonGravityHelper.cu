@@ -34,9 +34,9 @@ void addAccelerationsKernelLowerHelper(unsigned long long idx, Particle** partic
 }
 
 __device__ 
-void addAccelerationsKernelUpperHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long particlesProcessed, unsigned long long betweenParticlesTriangularCount) {
+void addAccelerationsKernelUpperHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount) {
 	unsigned long long x = idx + y + 1 + xOffset;
-	if(x < n && x >= particlesProcessed) {
+	if(x < n) {
 		if(particlesExist(particles[x], particles[y])) {
 			unsigned long long radiusComponentIndex = MatrixMaths::getUpperTriangularIndex(x, y);
 			runOnParticle(particles[x], accelerations[radiusComponentIndex - vectorsProcessedTriangular + betweenParticlesTriangularCount]);
