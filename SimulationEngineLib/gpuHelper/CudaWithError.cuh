@@ -14,8 +14,14 @@ public:
     void deviceSynchronize(std::string message = "");
     void peekAtLastError(std::string message);
     void free(void* devPtr);
-    unsigned long getFreeGpuMemory();
+    unsigned long long getFreeGpuMemory();
+    
+    static void setMinMemoryRemaining(unsigned long long minMemoryRemaining);
+    static void setMaxMemoryPerEvent(unsigned long long maxMemoryPerEvent);
 private: 
     std::string className;
+    static unsigned long long minMemoryRemaining;
+    static unsigned long long maxMemoryPerEvent;
+
     void throwErrorMaybe(cudaError_t cudaStatus, std::string error);
 };

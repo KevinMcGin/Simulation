@@ -1,6 +1,9 @@
 #include "gpuHelper/CudaWithError.cuh"
-#include<iostream>
+#include <iostream>
+#include <algorithm>
 
+unsigned long long CudaWithError::minMemoryRemaining = 0;
+unsigned long long CudaWithError::maxMemoryPerEvent = ULLONG_MAX;
 
 CudaWithError::CudaWithError(std::string className): className(className) { }
 
@@ -42,16 +45,18 @@ void CudaWithError::peekAtLastError(std::string message) {
     throwErrorMaybe(cudaStatus, message + ": cudaPeekAtLastError failed!");
 }
 
-
-unsigned long CudaWithError::getFreeGpuMemory() 
-{
+unsigned long long CudaWithError::getFreeGpuMemory() {
     size_t free_t, total_t;
-
     cudaMemGetInfo(&free_t, &total_t);
+    float factor = 1.0485760;
+    auto freeMemory = (unsigned long long)(free_t / factor) - CudaWithError::minMemoryRemaining;
+    return std::min(freeMemory, maxMemoryPerEvent); 
+}
 
-    free_t = free_t / 1.0485760;
+void CudaWithError::setMinMemoryRemaining(unsigned long long minMemoryRemaining) {
+    CudaWithError::minMemoryRemaining = minMemoryRemaining;
+}
 
-    unsigned long free_m = (unsigned int)free_t;
-
-    return free_m;
+void CudaWithError::setMaxMemoryPerEvent(unsigned long long maxMemoryPerEvent) {
+    CudaWithError::maxMemoryPerEvent = maxMemoryPerEvent;
 }

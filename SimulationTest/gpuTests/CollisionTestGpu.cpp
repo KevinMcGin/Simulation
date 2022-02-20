@@ -33,10 +33,55 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 	CollisionTestHelper::testMultipleParticlesIndependentlyCollide(particles);
 }
 
-TEST(CollisionTest, ParticlesCollideGpuLikeCpu) {
+//TODO fix randomly failing test:
+/*
+ particleCpu->radius
+    Which is: 201.01563
+  particleGpu->radius
+    Which is: 201.0157
+*/
+TEST(CollisionTest, ParticlesCollideGpuLikeCpuSimple) {
 	const int particleCount = 75;
 	const int stepsCount = 1;
 	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
 
 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+}
+
+TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow) {
+	CudaWithError::setMaxMemoryPerEvent(1000 * 1000);
+
+	const int particleCount = 75;
+	const int stepsCount = 1;
+	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+
+	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+}
+
+//TODO get passing
+// TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryVeryLow) {
+// 	CudaWithError::setMaxMemoryPerEvent(1000);
+
+// 	const int particleCount = 75;
+// 	const int stepsCount = 1;
+// 	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+
+// 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+// }
+
+TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryTooLow) {
+	CudaWithError::setMaxMemoryPerEvent(10);
+
+	const int particleCount = 75;
+	const int stepsCount = 1;
+	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+
+	 try {
+        LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+        FAIL() << "No error thrown: expected Ran out of GPU memory";
+    } catch(std::runtime_error const &err) {
+        EXPECT_EQ(err.what(), std::string("Ran out of GPU memory"));
+    } catch(...) {
+        FAIL() << "Wrong error thrown: expected Ran out of GPU memory";
+    }
 }

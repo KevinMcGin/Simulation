@@ -19,17 +19,13 @@ void radiusComponentKernelHelper(unsigned long long idx, Particle** particles, V
 		Vector3D<float> devicePRadiusComponent = getRadiusComponent(particles[x], particles[y], G);
 		accelerations[idx] = -getAcceleration(particles[y]->mass, devicePRadiusComponent);
 		accelerations[idx + betweenParticlesTriangularCount] = getAcceleration(particles[x]->mass, devicePRadiusComponent);
-	 } // else {		
-	// 	Vector3D<float> zeroVector(0, 0, 0);
-	// 	accelerations[idx] = zeroVector;
-	// 	accelerations[idx + betweenParticlesTriangularCount] = zeroVector;
-	// }
+	 }
 }
 
 __device__ 
-void addAccelerationsKernelLowerHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular) {
-	unsigned long long x = idx + x0;
-	if(x < n) {
+void addAccelerationsKernelLowerHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long y, unsigned long long vectorsProcessedTriangular) {
+	unsigned long long x = idx;
+	if(x < y) {
 		if(particlesExist(particles[x], particles[y])) {
 			unsigned long long radiusComponentIndex = MatrixMaths::getLowerTriangularIndex(x, y);
 			runOnParticle(particles[x], accelerations[radiusComponentIndex - vectorsProcessedTriangular]);
@@ -38,8 +34,8 @@ void addAccelerationsKernelLowerHelper(unsigned long long idx, Particle** partic
 }
 
 __device__ 
-void addAccelerationsKernelUpperHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long x0, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long particlesProcessed, unsigned long long betweenParticlesTriangularCount) {
-	unsigned long long x = idx + x0;
+void addAccelerationsKernelUpperHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long particlesProcessed, unsigned long long betweenParticlesTriangularCount) {
+	unsigned long long x = idx + y + 1 + xOffset;
 	if(x < n && x >= particlesProcessed) {
 		if(particlesExist(particles[x], particles[y])) {
 			unsigned long long radiusComponentIndex = MatrixMaths::getUpperTriangularIndex(x, y);
