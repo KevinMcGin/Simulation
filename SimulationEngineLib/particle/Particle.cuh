@@ -18,5 +18,6 @@ public:
 		Vector3D<float>  velocity
 	) : mass(mass), radius(radius), position(position), velocity(velocity) {}
 	__device__ __host__ void advance();
+	__device__ bool particlesExist(Particle* p2);
 	// virtual float getTemperature() = 0;
 }; 
