@@ -34,7 +34,7 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 }
 
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuSimple) {
-	const int particleCount = 100;
+	const int particleCount = 75;
 	const int stepsCount = 1;
 	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
 
@@ -51,18 +51,34 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow) {
 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
 }
 
-//TODO get passing
-// TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryVeryLow) {
-// 	CudaWithError::setMaxMemoryPerEvent(1000);
+TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryVeryLow) {
+	CudaWithError::setMaxMemoryPerEvent(1000);
 
-// 	const int particleCount = 75;
-// 	const int stepsCount = 1;
-// 	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	const int particleCount = 75;
+	const int stepsCount = 1;
+	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
 
-// 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
-// }
+	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+}
 
-TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryTooLow) {
+TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryTooLow1) {
+	CudaWithError::setMaxMemoryPerEvent(100);
+
+	const int particleCount = 75;
+	const int stepsCount = 1;
+	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+
+	 try {
+        LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+        FAIL() << "No error thrown: expected Max Loops in GpuCollision reached";
+    } catch(std::runtime_error const &err) {
+        EXPECT_EQ(err.what(), std::string("Max Loops in GpuCollision reached"));
+    } catch(...) {
+        FAIL() << "Wrong error thrown: expected Max Loops in GpuCollision reached";
+    }
+}
+
+TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryTooLow2) {
 	CudaWithError::setMaxMemoryPerEvent(10);
 
 	const int particleCount = 75;

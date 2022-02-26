@@ -85,38 +85,46 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 
 	unsigned long long* collisionMarksIndex = NULL;
 	cudaWithError->malloc((void**)&collisionMarksIndex, sizeof(unsigned long long));
-	unsigned long long collisionMarksIndexDefault = 0;
-	cudaWithError->memcpy(collisionMarksIndex, &collisionMarksIndexDefault, sizeof(unsigned long long), cudaMemcpyHostToDevice);
 	
 	bool* particlesCollided = NULL;
-	bool particlesCollidedDefault = false;
 	cudaWithError->malloc((void**)&particlesCollided, particleCount * sizeof(bool));
-	for(int i = 0; i < particleCount; ++i) {
-		cudaWithError->memcpy(&(particlesCollided[i]), &particlesCollidedDefault, sizeof(bool), cudaMemcpyHostToDevice);
-	}
 
 	//TODO this may need to be configured based on the number of threads and or timeout time
 	const unsigned long long maxBetweenParticlesPerGet = 1 * 1000 * 1000;
-	for(unsigned long long betweenParticlesOffset = 0; betweenParticlesOffset < betweenParticlesCount; betweenParticlesOffset += maxBetweenParticlesPerGet) {
-		// std::cout << "getting in the loop: " << betweenParticlesOffset << std::endl;
-		const unsigned long long thisBetweenParticlesCount = std::min(maxBetweenParticlesPerGet, betweenParticlesCount - betweenParticlesOffset);
-		getCollidedParticles <<<1 + thisBetweenParticlesCount/256, 256>>> (particles, betweenParticlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu, thisBetweenParticlesCount);
-		cudaWithError->peekAtLastError("getCollidedParticles");
-	}
-
-	//TODO remove deviceSynchronize
-	cudaWithError->deviceSynchronize("get");
-
-	//TODO this may need to be configured based on the number of threads and or timeout time
 	const int maxParticlesPerResolve = 1000 * 1000;
-	for(int particlesOffset = 0; particlesOffset < particleCount; particlesOffset += maxParticlesPerResolve) {
-		const int thisParticleCount = std::min(maxParticlesPerResolve, particleCount - particlesOffset);
-		resolveCollidedParticles <<<1 + thisParticleCount/256, 256>>> (particles, particlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, thisParticleCount, particleCount);
-		cudaWithError->peekAtLastError("resolveCollidedParticles");
-	}
+	unsigned long long collisionMarksIndexCpu = 0;
+	const unsigned int maxLoops = 20;
+	unsigned int indexLoops = 0;
+	do {
+		if(++indexLoops > maxLoops) {
+			std::cout << "Max Loops in GpuCollision reached" << std::endl;
+			throw std::runtime_error("Max Loops in GpuCollision reached");
+		}
+		// std::cout << "collisionMarksIndexCpu: " << collisionMarksIndexCpu << std::endl;
+		collisionMarksIndexCpu = 0;
+		cudaWithError->memcpy(collisionMarksIndex, &collisionMarksIndexCpu, sizeof(collisionMarksIndexCpu), cudaMemcpyHostToDevice);
+		bool particlesCollidedDefault = false;
+		for(int i = 0; i < particleCount; ++i) {
+			cudaWithError->memcpy(&(particlesCollided[i]), &particlesCollidedDefault, sizeof(bool), cudaMemcpyHostToDevice);
+		}
 
-	//TODO remove deviceSynchronize
-	cudaWithError->deviceSynchronize("resolved");
+		for(unsigned long long betweenParticlesOffset = 0; betweenParticlesOffset < betweenParticlesCount; betweenParticlesOffset += maxBetweenParticlesPerGet) {
+			// std::cout << "getting in the loop: " << betweenParticlesOffset << std::endl;
+			const unsigned long long thisBetweenParticlesCount = std::min(maxBetweenParticlesPerGet, betweenParticlesCount - betweenParticlesOffset);
+			getCollidedParticles <<<1 + thisBetweenParticlesCount/256, 256>>> (particles, betweenParticlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu, thisBetweenParticlesCount);
+			cudaWithError->peekAtLastError("getCollidedParticles");
+		}
+		cudaWithError->deviceSynchronize("getCollidedParticles");
+
+		for(int particlesOffset = 0; particlesOffset < particleCount; particlesOffset += maxParticlesPerResolve) {
+			const int thisParticleCount = std::min(maxParticlesPerResolve, particleCount - particlesOffset);
+			resolveCollidedParticles <<<1 + thisParticleCount/256, 256>>> (particles, particlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, thisParticleCount, particleCount);
+			cudaWithError->peekAtLastError("resolveCollidedParticles");
+		}
+		cudaWithError->deviceSynchronize("resolveCollidedParticles");
+		cudaWithError->memcpy(&collisionMarksIndexCpu, collisionMarksIndex, sizeof(collisionMarksIndexCpu), cudaMemcpyDeviceToHost);
+	} while(collisionMarksIndexCpu >= maxIntsAllocatable - 1);
+
 	cudaWithError->free(collisionMarks);
 	cudaWithError->free(collisionMarksIndex);
 	cudaWithError->free(particlesCollided);
