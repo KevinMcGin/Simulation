@@ -76,7 +76,6 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 	long long maxIntsAllocatableStage1 = (freeGpuMemory - particlesCollidedSize - (long long)sizeof(unsigned long long)) / (long long)sizeof(int);
 	unsigned long long maxIntsAllocatableFactor = 200;
 	long long maxIntsAllocatable = std::min(maxIntsAllocatableStage1, (long long)(betweenParticlesPairsCount * maxIntsAllocatableFactor));
-	// std::cout << "maxIntsAllocatable: " << maxIntsAllocatable << std::endl;
 	if(maxIntsAllocatable <= 0) {
 		throw std::runtime_error("Ran out of GPU memory");
 	}
@@ -102,7 +101,6 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 			std::cout << "Max Loops in GpuCollision reached" << std::endl;
 			throw std::runtime_error("Max Loops in GpuCollision reached");
 		}
-		// std::cout << "collisionMarksIndexCpu: " << collisionMarksIndexCpu << std::endl;
 		collisionMarksIndexCpu = 0;
 		cudaWithError->memcpy(collisionMarksIndex, &collisionMarksIndexCpu, sizeof(collisionMarksIndexCpu), cudaMemcpyHostToDevice);
 		bool particlesCollidedDefault = false;
@@ -111,7 +109,6 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 		}
 
 		for(unsigned long long betweenParticlesOffset = 0; betweenParticlesOffset < betweenParticlesCount; betweenParticlesOffset += maxBetweenParticlesPerGet) {
-			// std::cout << "getting in the loop: " << betweenParticlesOffset << std::endl;
 			const unsigned long long thisBetweenParticlesCount = std::min(maxBetweenParticlesPerGet, betweenParticlesCount - betweenParticlesOffset);
 			getCollidedParticles <<<1 + thisBetweenParticlesCount/256, 256>>> (particles, betweenParticlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu, thisBetweenParticlesCount);
 			cudaWithError->peekAtLastError("getCollidedParticles");
