@@ -15,6 +15,7 @@ public:
     void peekAtLastError(std::string message);
     void free(void* devPtr);
     unsigned long long getFreeGpuMemory();
+    unsigned long long getMaxThreads();
     
     static void setMinMemoryRemaining(unsigned long long minMemoryRemaining);
     static void setMaxMemoryPerEvent(unsigned long long maxMemoryPerEvent);

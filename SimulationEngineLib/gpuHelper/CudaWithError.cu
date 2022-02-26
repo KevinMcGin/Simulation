@@ -53,6 +53,12 @@ unsigned long long CudaWithError::getFreeGpuMemory() {
     return std::min(freeMemory, maxMemoryPerEvent); 
 }
 
+unsigned long long CudaWithError::getMaxThreads() {
+    struct cudaDeviceProp properties;
+    cudaGetDeviceProperties(&properties, 0);
+    return ((unsigned long long)properties.multiProcessorCount) * ((unsigned long long)properties.maxThreadsPerMultiProcessor);
+}
+
 void CudaWithError::setMinMemoryRemaining(unsigned long long minMemoryRemaining) {
     CudaWithError::minMemoryRemaining = minMemoryRemaining;
 }

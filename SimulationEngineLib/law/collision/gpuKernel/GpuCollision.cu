@@ -89,9 +89,11 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 	bool* particlesCollided = NULL;
 	cudaWithError->malloc((void**)&particlesCollided, particleCount * sizeof(bool));
 
-	//TODO this may need to be configured based on the number of threads and or timeout time
-	const unsigned long long maxBetweenParticlesPerGet = 1 * 1000 * 1000;
-	const int maxParticlesPerResolve = 1000 * 1000;
+	const unsigned long long maxThreads = cudaWithError->getMaxThreads();
+	const unsigned long long maxBetweenParticlesPerGetOverMaxThreads = 37;
+	const unsigned long long maxBetweenParticlesPerGet = maxThreads * maxBetweenParticlesPerGetOverMaxThreads;
+	const unsigned long long maxParticlesPerResolveOverMaxThreads = 37;
+	const unsigned int maxParticlesPerResolve = (unsigned int)(maxThreads * maxBetweenParticlesPerGetOverMaxThreads);
 	unsigned long long collisionMarksIndexCpu = 0;
 	const unsigned int maxLoops = 20;
 	unsigned int indexLoops = 0;
@@ -117,7 +119,7 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 		cudaWithError->deviceSynchronize("getCollidedParticles");
 
 		for(int particlesOffset = 0; particlesOffset < particleCount; particlesOffset += maxParticlesPerResolve) {
-			const int thisParticleCount = std::min(maxParticlesPerResolve, particleCount - particlesOffset);
+			const int thisParticleCount = std::min(maxParticlesPerResolve, (unsigned int)(particleCount - particlesOffset));
 			resolveCollidedParticles <<<1 + thisParticleCount/256, 256>>> (particles, particlesOffset, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, thisParticleCount, particleCount);
 			cudaWithError->peekAtLastError("resolveCollidedParticles");
 		}
