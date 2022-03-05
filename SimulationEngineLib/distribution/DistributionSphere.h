@@ -9,7 +9,7 @@ class DistributionSphere : public Distribution3D {
 public:
 	DistributionSphere(Vector3D<float> mean, float delta);
 
-	virtual Vector3D<float> getValue() override;
+	Vector3D<float> getValue() override;
 
 protected:
 	const Vector3D<float> mean;

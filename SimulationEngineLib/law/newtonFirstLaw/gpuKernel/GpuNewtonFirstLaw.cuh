@@ -8,5 +8,5 @@
 class GpuNewtonFirstLaw: public GpuLaw {
 public:
 	GpuNewtonFirstLaw();
-	virtual void run(Particle** particles, int particleCount);
+	void run(Particle** particles, int particleCount) override;
 };

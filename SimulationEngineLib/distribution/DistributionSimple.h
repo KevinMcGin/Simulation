@@ -8,7 +8,7 @@ public:
 		delta(delta) {};
 
 
-	virtual float getValue();
+	float getValue() override;
 
 private:
 	const float mean;

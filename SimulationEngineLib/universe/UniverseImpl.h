@@ -17,7 +17,7 @@ public:
 		Usage useGpu = UNDEFINED
 	);
 	~UniverseImpl();
-	virtual void run();
+	void run() override;
 	
 private:
 	GpuDataController* gpuDataController;

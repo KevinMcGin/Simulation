@@ -8,7 +8,7 @@
 class CpuNewtonGravity: public CpuLaw {
 public:
 	CpuNewtonGravity(float G);
-	virtual void run(std::vector<Particle*>& particles);
+	void run(std::vector<Particle*>& particles) override;
 protected:
 	const float G;
 };

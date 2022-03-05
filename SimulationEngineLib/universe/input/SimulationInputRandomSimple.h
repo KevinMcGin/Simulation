@@ -11,7 +11,7 @@ class SimulationInputRandomSimple : public SimulationInput {
 public:
 	SimulationInputRandomSimple(std::vector<unsigned long> particleCounts, std::vector<std::shared_ptr<ParticleDistribution>> particleDistributions);
 
-	virtual std::vector<Particle*> input();
+	std::vector<Particle*> input() override;
 
 
 private:

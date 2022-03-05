@@ -10,7 +10,7 @@ public:
 		delta(delta)
 	{};
 
-	virtual  Vector3D<float> getValue();
+	Vector3D<float> getValue() override;
 
 private:
 	const Vector3D<float> mean, delta;
