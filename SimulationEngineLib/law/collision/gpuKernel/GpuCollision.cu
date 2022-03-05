@@ -60,10 +60,10 @@ void getCollidedParticles(Particle** particles, unsigned long long betweenPartic
 }
 
 __global__ 
-void resolveCollidedParticles(Particle** particles, int particlesOffset, int* collisionMarks,  unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionResolver** collisionResolverGpu, int thisParticleCount, int n) {
+void resolveCollidedParticles(Particle** particles, int particlesOffset, int* collisionMarks,  unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionResolver** collisionResolverGpu, int thisParticleCount, int particleCount) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if(idx < thisParticleCount) { 
-		resolveCollidedParticlesHelper(idx + particlesOffset, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, n);
+		resolveCollidedParticlesHelper(idx + particlesOffset, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, particleCount);
 	} 
 }
 
@@ -104,8 +104,8 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 		collisionMarksIndexCpu = 0;
 		cudaWithError->memcpy(collisionMarksIndex, &collisionMarksIndexCpu, sizeof(collisionMarksIndexCpu), cudaMemcpyHostToDevice);
 		bool particlesCollidedDefault = false;
-		for(int i = 0; i < particleCount; ++i) {
-			cudaWithError->memcpy(&(particlesCollided[i]), &particlesCollidedDefault, sizeof(bool), cudaMemcpyHostToDevice);
+		for(int particleIndex = 0; particleIndex < particleCount; ++particleIndex) {
+			cudaWithError->memcpy(&(particlesCollided[particleIndex]), &particlesCollidedDefault, sizeof(bool), cudaMemcpyHostToDevice);
 		}
 
 		for(unsigned long long betweenParticlesOffset = 0; betweenParticlesOffset < betweenParticlesCount; betweenParticlesOffset += maxBetweenParticlesPerGet) {

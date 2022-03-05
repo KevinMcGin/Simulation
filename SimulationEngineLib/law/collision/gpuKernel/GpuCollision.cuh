@@ -11,7 +11,7 @@ class GpuCollision: public GpuLaw {
 public:
 	GpuCollision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver);
     ~GpuCollision();
-	virtual void run(Particle** td_par, int particleCount);
+	virtual void run(Particle** particles, int particleCount);
 
 private:
     CollisionDetector** collisionDetectorGpu = NULL;

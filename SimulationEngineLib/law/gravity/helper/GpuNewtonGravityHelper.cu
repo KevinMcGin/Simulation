@@ -7,34 +7,33 @@
 #include <cmath>
 
 __device__ 
-void radiusComponentKernelHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long betweenParticlesTriangularCount, float G, unsigned long long vectorsProcessedTriangular) {
-	unsigned long long x, y;
-	if(particles[x]->particlesExist(particles[y])) {
-		MatrixMaths::getLowerTriangularCoordinates(idx + vectorsProcessedTriangular, &x, &y);
-		Vector3D<float> devicePRadiusComponent = getRadiusComponent(particles[x], particles[y], G);
-		accelerations[idx] = -getAcceleration(particles[y]->mass, devicePRadiusComponent);
-		accelerations[idx + betweenParticlesTriangularCount] = getAcceleration(particles[x]->mass, devicePRadiusComponent);
+void radiusComponentKernelHelper(unsigned long long betweenParticlesTriangularIndex, Particle** particles, Vector3D<float>* accelerations, unsigned long long betweenParticlesTriangularCount, float G, unsigned long long vectorsProcessedTriangular) {
+	unsigned long long particleIndex1, particleIndex2;
+	MatrixMaths::getLowerTriangularCoordinates(betweenParticlesTriangularIndex + vectorsProcessedTriangular, &particleIndex1, &particleIndex2);
+	if(particles[particleIndex1]->particlesExist(particles[particleIndex2])) {
+		Vector3D<float> devicePRadiusComponent = getRadiusComponent(particles[particleIndex1], particles[particleIndex2], G);
+		accelerations[betweenParticlesTriangularIndex] = -getAcceleration(particles[particleIndex2]->mass, devicePRadiusComponent);
+		accelerations[betweenParticlesTriangularIndex + betweenParticlesTriangularCount] = getAcceleration(particles[particleIndex1]->mass, devicePRadiusComponent);
 	 }
 }
 
 __device__ 
-void addAccelerationsKernelLowerHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long y, unsigned long long vectorsProcessedTriangular) {
-	unsigned long long x = idx;
-	if(x < y) {
-		if(particles[x]->particlesExist(particles[y])) {
-			unsigned long long radiusComponentIndex = MatrixMaths::getLowerTriangularIndex(x, y);
-			runOnParticle(particles[x], accelerations[radiusComponentIndex - vectorsProcessedTriangular]);
+void addAccelerationsKernelLowerHelper(unsigned long long particleIndex1, Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular) {
+	if(particleIndex1 < particleIndex2) {
+		if(particles[particleIndex1]->particlesExist(particles[particleIndex2])) {
+			unsigned long long radiusComponentIndex = MatrixMaths::getLowerTriangularIndex(particleIndex1, particleIndex2);
+			runOnParticle(particles[particleIndex1], accelerations[radiusComponentIndex - vectorsProcessedTriangular]);
 		} 
 	}
 }
 
 __device__ 
-void addAccelerationsKernelUpperHelper(unsigned long long idx, Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long y, unsigned long long n, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount) {
-	unsigned long long x = idx + y + 1 + xOffset;
-	if(x < n) {
-		if(particles[x]->particlesExist(particles[y])) {
-			unsigned long long radiusComponentIndex = MatrixMaths::getUpperTriangularIndex(x, y);
-			runOnParticle(particles[x], accelerations[radiusComponentIndex - vectorsProcessedTriangular + betweenParticlesTriangularCount]);
+void addAccelerationsKernelUpperHelper(unsigned long long particleIndex1Local, Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount) {
+	unsigned long long particleIndex1 = particleIndex1Local + particleIndex2 + 1 + xOffset;
+	if(particleIndex1 < particleCount) {
+		if(particles[particleIndex1]->particlesExist(particles[particleIndex2])) {
+			unsigned long long radiusComponentIndex = MatrixMaths::getUpperTriangularIndex(particleIndex1, particleIndex2);
+			runOnParticle(particles[particleIndex1], accelerations[radiusComponentIndex - vectorsProcessedTriangular + betweenParticlesTriangularCount]);
 		} 
 	}
 }

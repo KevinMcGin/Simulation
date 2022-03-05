@@ -8,7 +8,7 @@
 class GpuNewtonGravity: public GpuLaw {
 public:
 	GpuNewtonGravity(float G);
-	virtual void run(Particle** td_par, int particleCount);
+	virtual void run(Particle** particles, int particleCount);
 protected:
 	const float G;
 };
