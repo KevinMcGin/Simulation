@@ -45,3 +45,7 @@ void GpuDataController::getParticlesFromDevice(std::vector<Particle*>& particles
 	}
 }
 
+
+Particle** GpuDataController::get_td_par() { return td_par; }
+int GpuDataController::getParticleCount() { return particleCount; }
+
