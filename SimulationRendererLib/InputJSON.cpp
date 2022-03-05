@@ -27,6 +27,7 @@ InputJSON::InputJSON(const char* fileName):
 	#endif
 	if (!fp) {
         std::cerr << "Could not open file for reading!\n";
+		throw std::runtime_error("Could not open file for reading!");
     }
  
 	char readBuffer[65536];

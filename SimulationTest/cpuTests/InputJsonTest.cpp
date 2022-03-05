@@ -48,3 +48,14 @@ TEST(InputJsonTest, JsonRead) {
     testJsonReadPosition0(inputJSON.input(-1));
     testJsonReadPosition1(inputJSON.input(10));
 }
+
+TEST(InputJsonTest, FileNoFound) {
+	 try {
+        InputJSON inputJSON("file_not_exist");
+        FAIL() << "No error thrown: Could not open file for reading!";
+    } catch(std::runtime_error const &err) {
+        EXPECT_EQ(err.what(), std::string("Could not open file for reading!"));
+    } catch(...) {
+        FAIL() << "Wrong error thrown: expected Could not open file for reading!";
+    }
+}
