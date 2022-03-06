@@ -6,28 +6,28 @@
 #include "CollisionTestHelper.h"
 
 TEST(CollisionTest, ParticlesCollideGpu) {
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 	std::vector<Particle*> particles = CollisionTestHelper::getParticlesCollideParticles();  
     LawHelper::runGpuLaw(law, particles);
 	CollisionTestHelper::testParticlesCollide(particles);
 }
 
 TEST(CollisionTest, MultipleParticlesAllCollideGpu) {
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesAllCollide();
     LawHelper::runGpuLaw(law, particles);
 	CollisionTestHelper::testMultipleParticlesAllCollide(particles);
 }
 
 TEST(CollisionTest, MultipleParticlesPartialCollideGpu) {
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesPartialCollide();
     LawHelper::runGpuLaw(law, particles);
 	CollisionTestHelper::testMultipleParticlesPartialCollide(particles);
 }
 
 TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesIndependentlyCollide();
     LawHelper::runGpuLaw(law, particles);
 	CollisionTestHelper::testMultipleParticlesIndependentlyCollide(particles);
@@ -36,7 +36,7 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuSimple) {
 	const int particleCount = 75;
 	const int stepsCount = 1;
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
 }
@@ -46,7 +46,7 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow) {
 
 	const int particleCount = 75;
 	const int stepsCount = 1;
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
 }
@@ -56,7 +56,7 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryVeryLow) {
 
 	const int particleCount = 75;
 	const int stepsCount = 1;
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
 }
@@ -66,7 +66,7 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryTooLow1) {
 
 	const int particleCount = 75;
 	const int stepsCount = 1;
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
 	 try {
         LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
@@ -83,7 +83,7 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryTooLow2) {
 
 	const int particleCount = 75;
 	const int stepsCount = 1;
-	Law* law = new Collision(new CollisionDetectorSimple(), new CollisionResolverCoalesce(), true);
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
 	 try {
         LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);

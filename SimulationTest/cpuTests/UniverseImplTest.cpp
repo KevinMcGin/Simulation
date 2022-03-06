@@ -8,13 +8,13 @@
 TEST(UniverseImplTest, UniverseRuns) {
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
-	Law* law1 = new NewtonGravity(0.05);
-	Law* law2 = new NewtonFirstLaw();
+	auto law1 = std::make_shared<NewtonGravity>(0.05);
+	auto law2 = std::make_shared<NewtonFirstLaw>();
 	//TODO: change delta time to non 1 value with required implementation and change in expects
-	Universe* universe = new UniverseImpl({ law1, law2 }, input, output, 1, 10, FALSE);
-	universe->run();
-	Vector3D<float> position1 = universe->particles.front()->position;
-	Vector3D<float> position2 = universe->particles.back()->position;
+	UniverseImpl universe({ law1, law2 }, input, output, 1, 10, FALSE);
+	universe.run();
+	Vector3D<float> position1 = universe.particles.front()->position;
+	Vector3D<float> position2 = universe.particles.back()->position;
 	EXPECT_EQ(Vector3D<float>(10.70539665222168, 0.43437403440475464, 0), position1);
 	EXPECT_EQ(Vector3D<float>(0.0040383300853633879, 19.94956988354156, 0), position2);
 }

@@ -6,10 +6,10 @@ class Collision :
     public Law
 {
 public:
-    Collision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver, bool useGpu = false);
+    Collision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver, bool useGpu = false);
 
 private:
-    CollisionDetector* collisionDetector;
-    CollisionResolver* collisionResolver;
+    std::shared_ptr<CollisionDetector> collisionDetector;
+    std::shared_ptr<CollisionResolver> collisionResolver;
 };
 

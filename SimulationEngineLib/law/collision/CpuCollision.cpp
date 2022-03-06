@@ -3,7 +3,7 @@
 
 #include <set>
 
-CpuCollision::CpuCollision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver) : CpuLaw(),
+CpuCollision::CpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver) : CpuLaw(),
 	collisionDetector(collisionDetector),
 	collisionResolver(collisionResolver) { }
 

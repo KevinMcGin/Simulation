@@ -13,7 +13,7 @@ class Universe {
 public:
 	Universe(
 		std::vector<Particle*> particles, 
-		std::vector<Law*> laws, 
+		std::vector<std::shared_ptr<Law>> laws, 
 		const std::shared_ptr<SimulationOutput> output, 
 		unsigned int deltaTime,
 		unsigned long endTime,
@@ -24,7 +24,7 @@ public:
 	virtual void run() = 0;
 
 protected:
-	std::vector<Law*> laws;
+	std::vector<std::shared_ptr<Law>> laws;
 	const std::shared_ptr<SimulationOutput> output;
 	unsigned int deltaTime;
 	unsigned long endTime;

@@ -9,7 +9,7 @@
 
 class GpuCollision: public GpuLaw {
 public:
-	GpuCollision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver);
+	GpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver);
     ~GpuCollision();
 	void run(Particle** particles, int particleCount) override;
 

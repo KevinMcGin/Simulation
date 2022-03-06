@@ -10,13 +10,13 @@ float roundToNPlaces(const float value, const unsigned int nDecimalPlaces) {
 	return round(value * decimalPlaces) / (float)decimalPlaces;
 }
 
-void LawHelper::runCpuLaw(Law* law, std::vector<Particle*>& particles, const int stepsCount) {
+void LawHelper::runCpuLaw(std::shared_ptr<Law> law, std::vector<Particle*>& particles, const int stepsCount) {
 	for(int i = 0; i < stepsCount; i++) {
 		law->cpuLaw->run(particles);
 	}
 }
 
-void LawHelper::runGpuLaw(Law* law, std::vector<Particle*>& particles, const int stepsCount) {
+void LawHelper::runGpuLaw(std::shared_ptr<Law> law, std::vector<Particle*>& particles, const int stepsCount) {
     GpuDataController gpuDataController = GpuDataController();
 	for(int i = 0; i < stepsCount; i++) {
     	gpuDataController.putParticlesOnDevice(particles, true);
@@ -26,12 +26,12 @@ void LawHelper::runGpuLaw(Law* law, std::vector<Particle*>& particles, const int
 	}
 }
 
-void runGpuAndCpu(Law* law, std::vector<Particle*>& particlesCpu, std::vector<Particle*>& particlesGpu, const int stepsCount) {
+void runGpuAndCpu(std::shared_ptr<Law> law, std::vector<Particle*>& particlesCpu, std::vector<Particle*>& particlesGpu, const int stepsCount) {
 	LawHelper::runCpuLaw(law, particlesCpu, stepsCount);
 	LawHelper::runGpuLaw(law, particlesGpu, stepsCount);
 }
 
-void LawHelper::expectGpuLikeCpu(Law* law, const int particleCount, const int stepsCount) {
+void LawHelper::expectGpuLikeCpu(std::shared_ptr<Law> law, const int particleCount, const int stepsCount) {
     std::vector<Particle*> particlesCpu = LawHelper::setupParticles(particleCount);
 	std::vector<Particle*> particlesGpu = LawHelper::setupParticles(particleCount);
 	runGpuAndCpu(law, particlesCpu, particlesGpu, stepsCount);
@@ -42,7 +42,7 @@ float roundTo3Places(float value) {
 	return roundToNPlaces(value, 3);
 }
 
-void LawHelper::expectGpuLikeCpuRounded(Law* law, const int particleCount, const int stepsCount) {
+void LawHelper::expectGpuLikeCpuRounded(std::shared_ptr<Law> law, const int particleCount, const int stepsCount) {
     std::vector<Particle*> particlesCpu = LawHelper::setupParticles(particleCount);
 	std::vector<Particle*> particlesGpu = LawHelper::setupParticles(particleCount);
 	runGpuAndCpu(law, particlesCpu, particlesGpu, stepsCount);

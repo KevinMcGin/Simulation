@@ -48,14 +48,14 @@ bool sortParticles(Particle* const &lhs, Particle* const &rhs) {
 }
 
 TEST(CollisionTest, ParticlesCollide) {
-	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
+	Collision law(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>());
 	std::vector<Particle*> particles = CollisionTestHelper::getParticlesCollideParticles();
 	law.cpuLaw->run(particles);
 	CollisionTestHelper::testParticlesCollide(particles);
 }
 
 TEST(CollisionTest, MultipleParticlesAllCollide) {
-	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
+	Collision law(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>());
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesAllCollide();
 	law.cpuLaw->run(particles);
 	std::sort(particles.begin(), particles.end(), sortParticles);
@@ -63,7 +63,7 @@ TEST(CollisionTest, MultipleParticlesAllCollide) {
 }
 
 TEST(CollisionTest, MultipleParticlesPartialCollide) {
-	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
+	Collision law(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>());
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesPartialCollide();
 	law.cpuLaw->run(particles);
 	std::sort(particles.begin(), particles.end(), sortParticles);
@@ -71,7 +71,7 @@ TEST(CollisionTest, MultipleParticlesPartialCollide) {
 }
 
 TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
-	Collision law(new CollisionDetectorSimple(), new CollisionResolverCoalesce());
+	Collision law(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>());
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesIndependentlyCollide();
 	law.cpuLaw->run(particles);
 	CollisionTestHelper::testMultipleParticlesIndependentlyCollide(particles);

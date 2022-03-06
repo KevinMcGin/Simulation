@@ -4,7 +4,7 @@
 #include "LawHelper.h"
 
 TEST(NewtonFirstLawTest, ParticleMoveGpu) {
-	Law* law = new NewtonFirstLaw();
+	auto law = std::make_shared<NewtonFirstLaw>();
 	std::vector<Particle*> particles = NewtonFirstLawTestHelper::getParticleMove();
     LawHelper::runGpuLaw(law, particles);
 	NewtonFirstLawTestHelper::testParticleMove(particles);
@@ -13,6 +13,6 @@ TEST(NewtonFirstLawTest, ParticleMoveGpu) {
 TEST(NewtonFirstLawTest, ParticleMoveGpuLikeCpu) {
 	const int particleCount = 300;
 	const int stepsCount = 2;
-	Law* law = new NewtonFirstLaw();
+	auto law = std::make_shared<NewtonFirstLaw>();
 	LawHelper::expectGpuLikeCpu(law, particleCount, stepsCount);
 }

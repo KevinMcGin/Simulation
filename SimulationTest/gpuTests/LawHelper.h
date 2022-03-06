@@ -5,9 +5,9 @@
 
 class LawHelper {
 public:
-    static void runCpuLaw(Law* law, std::vector<Particle*>& particles, const int stepsCount = 1);
-    static void runGpuLaw(Law* law, std::vector<Particle*>& particles, const int stepsCount = 1);
-    static void expectGpuLikeCpu(Law* law, const int particleCount = 1, const int stepsCount = 1);
-    static void expectGpuLikeCpuRounded(Law* law, const int particleCount = 1, const int stepsCount = 1);
+    static void runCpuLaw(std::shared_ptr<Law> law, std::vector<Particle*>& particles, const int stepsCount = 1);
+    static void runGpuLaw(std::shared_ptr<Law> law, std::vector<Particle*>& particles, const int stepsCount = 1);
+    static void expectGpuLikeCpu(std::shared_ptr<Law> law, const int particleCount = 1, const int stepsCount = 1);
+    static void expectGpuLikeCpuRounded(std::shared_ptr<Law> law, const int particleCount = 1, const int stepsCount = 1);
     static std::vector<Particle*> setupParticles(const int particleCount = 1);
 };

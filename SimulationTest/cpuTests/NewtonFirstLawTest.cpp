@@ -6,7 +6,7 @@
 #include <vector>
 
 TEST(NewtonFirstLawTest, ParticleMove) {
-	Law* law = new NewtonFirstLaw();
+	auto law = std::make_shared<NewtonFirstLaw>();
 	std::vector<Particle*> particles = NewtonFirstLawTestHelper::getParticleMove();
 	law->cpuLaw->run(particles);
 	NewtonFirstLawTestHelper::testParticleMove(particles);

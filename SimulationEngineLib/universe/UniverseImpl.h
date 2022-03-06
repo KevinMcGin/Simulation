@@ -9,7 +9,7 @@
 class UniverseImpl: public Universe {
 public:
 	UniverseImpl(
-		std::vector<Law*> laws, 
+		std::vector<std::shared_ptr<Law>> laws, 
 		std::shared_ptr<SimulationInput> input, 
 		std::shared_ptr<SimulationOutput> output, 
 		unsigned int deltaTime, 
