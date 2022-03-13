@@ -8,7 +8,7 @@ void Timing::setTime() {
 float Timing::getTimeSeconds() {
     auto now = std::chrono::high_resolution_clock::now();
     float milliseconds = (float)(now - startTime).count();
-    return milliseconds/1000000000.0;
+    return milliseconds/1000000000.f;
 }
 
 
@@ -19,10 +19,10 @@ std::string Timing::getTimeWithUnit(float seconds) {
         time = seconds;
         unit = "s";
     } else if(seconds < 3600) {
-        time = seconds / 60.0;
+        time = seconds / 60.f;
         unit = " mins";
     } else {
-        time = seconds / 3600.0;
+        time = seconds / 3600.f;
         unit = " hrs";
     }
 

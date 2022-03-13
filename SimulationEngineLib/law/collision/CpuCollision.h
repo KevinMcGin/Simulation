@@ -6,13 +6,14 @@
 #include <vector>
 #include <stdio.h>
 #include <iostream>
+#include <memory>
 
 class CpuCollision: public CpuLaw {
 public:
-	CpuCollision(CollisionDetector* collisionDetector, CollisionResolver* collisionResolver);
+	CpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver);
 	virtual void run(std::vector<Particle*>& particles);
 
 private:
-    CollisionDetector* collisionDetector;
-    CollisionResolver* collisionResolver;
+    std::shared_ptr<CollisionDetector> collisionDetector;
+    std::shared_ptr<CollisionResolver> collisionResolver;
 };

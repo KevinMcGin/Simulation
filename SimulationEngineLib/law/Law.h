@@ -7,7 +7,7 @@
 
 class Law {
 public:
-	Law(CpuLaw* cpuLaw, GpuLaw* gpuLaw);
-	CpuLaw* cpuLaw;
-	GpuLaw* gpuLaw;
+	Law(std::shared_ptr<CpuLaw> cpuLaw, std::shared_ptr<GpuLaw> gpuLaw);
+	std::shared_ptr<CpuLaw> cpuLaw;
+	std::shared_ptr<GpuLaw> gpuLaw;
 };

@@ -2,6 +2,9 @@
 delete_build='false'
 build_folder='builds/build'
 build_params=''
+architecture_param=''
+generator_param=''
+toolset_version=''
 ignore_output='true'
 
 print_usage() {
@@ -21,12 +24,14 @@ create_config_maybe() {
    test -f $1 || (cp $1.example $1 && echo "Created config file: $1")
 }
 
-while getopts 'b:dp:v' flag; do
+while getopts 'a:b:dg:t:v' flag; do
   case "${flag}" in
+    a) architecture_param="-A ${OPTARG}" ;;
     b) set_build_folder "${OPTARG}" ;;
     d) delete_build='true' ;;
-    p) build_params="${OPTARG}" ;;
+    g) generator_param="-G${OPTARG}" ;;
     v) ignore_output='false'  ;;
+    t) toolset_version="-T version=${OPTARG}" ;;
     *) print_usage
        exit 1 ;;
   esac
@@ -37,8 +42,11 @@ cd ..
 if [ $delete_build = 'true' ]; then do_delete_build; fi
 
 echo -e "\ncompiling";
-compile_cmd_params="-S. -B$build_folder $build_params -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DUSE_GPU_TESTS=ON"
-if [ $ignore_output = 'true' ]; then cmake $compile_cmd_params > /dev/null 2>&1; else cmake $compile_cmd_params; fi
+if [ $ignore_output = 'true' ]; then 
+  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DUSE_GPU_TESTS=ON > /dev/null 2>&1
+else
+  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DUSE_GPU_TESTS=ON
+fi
 
 if [ $? -ne 0 ]; then echo -e "\ncompile failed"; exit 1; fi
 echo -e "compile succeeded";

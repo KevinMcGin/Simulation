@@ -12,7 +12,7 @@ public:
 		// std::shared_ptr<Distribution3D> angularVelocityDistribution
 	);
 
-	virtual Particle* getParticle();
+	Particle* getParticle() override;
 
 private:
 	std::shared_ptr<DistributionDensity> densityDistribution;

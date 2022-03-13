@@ -9,7 +9,7 @@ class ParticleSimple: public Particle {
 			Vector3D<float>  position,
 			Vector3D<float>  velocity
 		) : Particle(mass, radius, position, velocity) {}
-		// virtual float getTemperature();
+		// float getTemperature() override;
 
 	// private:
 		// float temperature = 273;

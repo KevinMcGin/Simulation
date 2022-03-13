@@ -3,8 +3,6 @@
 #include "law/newtonFirstLaw/NewtonFirstLaw.h"
 #include "law/collision/CollisionCoalesce.h"
 
-
-
 UniverseImplSimple::UniverseImplSimple(
 	std::shared_ptr<SimulationInput> input, 
 	std::shared_ptr<SimulationOutput> output, 
@@ -18,5 +16,8 @@ UniverseImplSimple::UniverseImplSimple(
 	endTime, 
 	useGpu
 ) {
-	this->laws = { new CollisionCoalesce(this->useGpu == TRUE), new NewtonGravity(), new NewtonFirstLaw };
+	this->laws = { 
+		std::make_shared<CollisionCoalesce>(this->useGpu == TRUE), 
+		std::make_shared<NewtonGravity>(), 
+		std::make_shared<NewtonFirstLaw>() };
  }

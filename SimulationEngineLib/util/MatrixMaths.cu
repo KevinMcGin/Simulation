@@ -4,7 +4,7 @@
 
 __device__ __host__
 void MatrixMaths::getLowerTriangularCoordinates(unsigned long long i, unsigned long long* x, unsigned long long* y) {
-    *y = ((-1+sqrt((double)8*i+1))/2) + 1;
+    *y = (unsigned long long)(((-1+sqrt((double)8*i+1))/2) + 1);
     *x = i - (*y-1)*(*y)/2;
 }
 

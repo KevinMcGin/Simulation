@@ -7,5 +7,5 @@ class DistributionCircle: public DistributionSphere {
 public:
 	DistributionCircle(Vector3D<float> mean, float delta);
 
-	virtual  Vector3D<float> getValue();
+	Vector3D<float> getValue() override;
 };

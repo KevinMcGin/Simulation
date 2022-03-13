@@ -7,6 +7,6 @@ class CollisionDetectorSimple: public CollisionDetector {
 public:
 	static const int INDEX = 0;
 public:
-	__device__ __host__ virtual bool isCollision(Particle* p1, Particle* p2);
-	virtual int getIndex() { return INDEX; };
+	__device__ __host__ bool isCollision(Particle* p1, Particle* p2) override;
+	int getIndex() override { return INDEX; };
 };

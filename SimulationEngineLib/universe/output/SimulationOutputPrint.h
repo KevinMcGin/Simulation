@@ -5,6 +5,6 @@
 #include <iostream>
 
 class SimulationOutputPrint: public SimulationOutput {
-	public:
-		virtual void output(std::vector<Particle*> particles, unsigned long time);
+public:
+	void output(std::vector<Particle*> particles, unsigned long time) override;
 };

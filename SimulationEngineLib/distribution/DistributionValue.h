@@ -4,7 +4,7 @@ class DistributionValue : public Distribution
 {
 public:
 	DistributionValue(float value);
-	virtual float getValue();
+	float getValue() override;
 
 private:
 	const float value;

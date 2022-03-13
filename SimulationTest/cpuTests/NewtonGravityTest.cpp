@@ -6,7 +6,7 @@
 #include <vector>
 
 TEST(NewtonGravityTest, ParticlesAccelerate) {
-	Law* law = new NewtonGravity(0.05);
+	auto law = std::make_shared<NewtonGravity>(0.05);
 	std::vector<Particle*> particles = NewtonGravityTestHelper::getParticlesAccelerate();
 	law->cpuLaw->run(particles);
 	NewtonGravityTestHelper::testParticlesAccelerate(particles);

@@ -3,6 +3,7 @@
 #include "gpuHelper/CudaWithError.cuh"
 
 #include <vector>
+#include <memory>
 
 class GpuLaw {
 public:
@@ -10,7 +11,7 @@ public:
 	virtual void run(Particle** td_par, int particleCount) {};
 	std::string getClassName() { return className; }
 protected:
-	CudaWithError* cudaWithError;
+	std::shared_ptr<CudaWithError> cudaWithError;
 private:
 	std::string className = "GpuLaw";
 };

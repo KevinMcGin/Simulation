@@ -11,7 +11,7 @@ public:
 	SimulationOutputJSON(const char* outputFile);
 	~SimulationOutputJSON();
 
-	virtual void output(std::vector<Particle*> particles, unsigned long time);
+	void output(std::vector<Particle*> particles, unsigned long time) override;
 
 private:
 	std::ofstream myfile;
