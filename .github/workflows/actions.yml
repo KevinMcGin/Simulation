@@ -22,6 +22,9 @@ jobs:
             build_params: ""
           # - os: macos-latest
           #   INSTALL_SHELL: bash
+          #   INSTALL_SCRIPT: macos.sh
+          #   cuda: "11.3"
+          #   build_params: ""
           - os: windows-2019
             INSTALL_SHELL: powershell
             INSTALL_SCRIPT: windows.ps1
