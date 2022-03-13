@@ -18,15 +18,15 @@ jobs:
           - os: ubuntu-latest
             INSTALL_SHELL: bash
             INSTALL_SCRIPT: ubuntu.sh
-            cuda: "11.2"
+            cuda: "11.3"
             build_params: ""
           # - os: macos-latest
           #   INSTALL_SHELL: bash
-          - os: windows-2016
+          - os: windows-2019
             INSTALL_SHELL: powershell
             INSTALL_SCRIPT: windows.ps1
-            build_params: "-A x64"
-            cuda: "11.2.0"
+            build_params: "-g \"Visual Studio 16 2019\" -a x64 -t 14.25"
+            cuda: "11.3.0"
     defaults:
       run:
         shell: ${{ matrix.INSTALL_SHELL }}
@@ -43,7 +43,7 @@ jobs:
 
     - name: Windows Pre Build
       shell: bash
-      if: matrix.os == 'windows-2016'
+      if: matrix.os == 'windows-2019'
       run: |
         rm config/project.config.example
         mv config/mvsc_project.config.example config/project.config.example
@@ -52,7 +52,7 @@ jobs:
       shell: bash
       run: | 
         cd scripts
-        ./compile.sh -v -p "${{ matrix.build_params }}"
+        ./compile.sh -v ${{ matrix.build_params }}
 
     - name: Test CPU
       shell: bash
