@@ -6,6 +6,7 @@ architecture_param=''
 generator_param=''
 toolset_version=''
 ignore_output='true'
+gpu_flag='-DUSE_GPU=OFF'
 
 print_usage() {
   printf "Usage: $0 [-f <specify folder to build to> -d <delete build folder before build> -v <verbose output>]"
@@ -39,27 +40,33 @@ done
 
 cd ..
 
+create_config_maybe config/project.config
+create_config_maybe config/engine/engine.config
+source ./config/project.config
+
 if [ $delete_build = 'true' ]; then do_delete_build; fi
+
+if [ $USE_GPU = 'true' ]; then 
+  gpu_flag='-DUSE_GPU=ON'
+else
+  gpu_flag='-DUSE_GPU=OFF'
+fi
 
 echo -e "\ncompiling";
 if [ $ignore_output = 'true' ]; then 
-  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DUSE_GPU_TESTS=ON > /dev/null 2>&1
+  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" "$gpu_flag" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON  > /dev/null 2>&1
 else
-  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DUSE_GPU_TESTS=ON
+  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" "$gpu_flag" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 fi
 
 if [ $? -ne 0 ]; then echo -e "\ncompile failed"; exit 1; fi
 echo -e "compile succeeded";
 
 echo -e "\nbuilding";
-build_cmd_params="--build $build_folder"
+build_cmd_params="--build $build_folder $gpu_flag"
 if [ $ignore_output = 'true' ]; then cmake $build_cmd_params > /dev/null 2>&1; else cmake $build_cmd_params; fi
 if [ $? -ne 0 ]; then echo -e "\nbuild failed"; exit 1; fi
 echo -e "build succeeded";
 
-create_config_maybe config/project.config
-create_config_maybe config/engine/engine.config
-
 # TODO: link these instead of copying the file
-source ./config/project.config
 cp SimulationRenderer/lib/freeglut/bin/x64/freeglut.dll ./$build_folder${BUILD_PATH_END:-'/bin'}

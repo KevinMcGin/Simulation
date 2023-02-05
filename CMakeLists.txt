@@ -1,8 +1,16 @@
 ﻿cmake_minimum_required (VERSION 3.13)
 
-project(Simulation LANGUAGES CUDA CXX C)
-set(CUDA_SEPARABLE_COMPILATION ON)
-find_package(CUDA REQUIRED)
+
+project(Simulation LANGUAGES CXX C)
+
+message("CMAKE_CXX_SOURCE_FILE_EXTENSIONS ${CMAKE_CXX_SOURCE_FILE_EXTENSIONS}")
+
+if(USE_GPU)
+  add_definitions(-DUSE_GPU)
+  set(CUDA_SEPARABLE_COMPILATION ON)
+  find_package(CUDA REQUIRED)
+  enable_language(CUDA)
+endif()
 
 # place binaries and libraries according to GNU standards
 include(GNUInstallDirs)
@@ -22,7 +30,6 @@ option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-enable_language(CUDA)
 
 
 add_subdirectory(SimulationEngineLib)
@@ -34,6 +41,6 @@ add_subdirectory(SimulationCommon)
 enable_testing()
 add_subdirectory(SimulationTest/common)
 add_subdirectory(SimulationTest/cpuTests)
-if(USE_GPU_TESTS)
+if(USE_GPU)
   add_subdirectory(SimulationTest/gpuTests)
 endif()

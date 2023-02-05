@@ -12,27 +12,31 @@ file(GLOB cpp_headers CONFIGURE_DEPENDS "*.h")
 file(GLOB cpp_source CONFIGURE_DEPENDS "*.cpp")
 
 add_library(SimulationTestCommon STATIC ${cpp_source} ${cpp_headers})
-set_target_properties(SimulationTestCommon PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
-set_target_properties(SimulationTestCommon PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+if(USE_GPU)    
+  set_target_properties(SimulationTestCommon PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+  set_target_properties(SimulationTestCommon PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+endif()
 
 target_include_directories(SimulationTestCommon
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
 )
 
-if(NOT DEFINED CMAKE_CUDA_STANDARD)
-    set(CMAKE_CUDA_STANDARD 11)
-    set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-endif()
+if(USE_GPU)
+  if(NOT DEFINED CMAKE_CUDA_STANDARD)
+      set(CMAKE_CUDA_STANDARD 11)
+      set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+  endif()
 
-if (CUDA_FOUND)
-    message("CUDA found")
-    #include(FindCUDA)
-    INCLUDE_DIRECTORIES(${CUDA_INCLUDE_DIRS})
-    target_include_directories(SimulationTestCommon PUBLIC ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+  if (CUDA_FOUND)
+      message("CUDA found")
+      #include(FindCUDA)
+      INCLUDE_DIRECTORIES(${CUDA_INCLUDE_DIRS})
+      target_include_directories(SimulationTestCommon PUBLIC ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 
-else()
-    message("CUDA not found")
+  else()
+      message("CUDA not found")
+  endif()
 endif()
 
 target_link_libraries(SimulationTestCommon

@@ -1,12 +1,16 @@
 #include "particle/Particle.cuh"
 
-__device__ __host__
+#if defined(USE_GPU)
+   __device__ __host__
+#endif
 void Particle::advance() {
 	position = position + velocity;
 }
 
 
-__device__ 
+#if defined(USE_GPU)
+	__device__ 
+#endif
 bool Particle::particlesExist(Particle* p2) {
 	return !deleted && !p2->deleted;
 }

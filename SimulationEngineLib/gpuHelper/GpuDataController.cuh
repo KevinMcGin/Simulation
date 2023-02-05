@@ -17,5 +17,5 @@ private:
     Particle** d_par;
     Particle** td_par;
     int particleCount = 0;
-	CudaWithError cudaWithError;
+    CudaWithError cudaWithError;
 };

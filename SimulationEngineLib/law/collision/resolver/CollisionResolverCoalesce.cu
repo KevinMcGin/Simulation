@@ -1,6 +1,8 @@
 #include "law/collision/resolver/CollisionResolverCoalesce.cuh"
 
-__device__ __host__
+#if defined(USE_GPU)
+   __device__ __host__
+#endif
 void CollisionResolverCoalesce::resolve(Particle* p1, Particle* p2) {
 	p1->radius = pow(pow(p1->radius, 3) + pow(p2->radius, 3), 1 / 3.0);
 	p1->position = getCoalesced(p1->mass, p2->mass, p1->position, p2->position);
@@ -10,7 +12,9 @@ void CollisionResolverCoalesce::resolve(Particle* p1, Particle* p2) {
 	p2->deleted = true;
 }
 
-__device__ __host__
+#if defined(USE_GPU)
+   __device__ __host__
+#endif
 Vector3D<float> CollisionResolverCoalesce::getCoalesced(float mass1, float mass2, Vector3D<float> vec1, Vector3D<float> vec2) {
 	return (mass1 * vec1 + mass2 * vec2) / (mass1 + mass2);
 }

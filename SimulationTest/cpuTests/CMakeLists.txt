@@ -4,7 +4,10 @@ add_executable(
     SimulationTestCpu
     ${tests_src}
     )
-set_target_properties(SimulationTestCpu PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+
+if(USE_GPU)    
+  set_target_properties(SimulationTestCpu PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+endif()
 
 target_link_libraries(SimulationTestCpu
   PRIVATE
