@@ -16,6 +16,8 @@
 
 ``export PATH=$PATH:$CUDA_HOME/bin``
 
+Credit: https://github.com/ptheywood/cuda-cmake-github-actions
+
 ### OpenGL
 ```./install_open_gl_ubuntu.sh```
 
