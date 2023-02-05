@@ -18,18 +18,18 @@ jobs:
           - os: ubuntu-latest
             INSTALL_SHELL: bash
             INSTALL_SCRIPT: ubuntu.sh
-            cuda: "11.2"
+            cuda: "11.4"
             build_params: ""
           # - os: macos-latest
           #   INSTALL_SHELL: bash
           #   INSTALL_SCRIPT: macos.sh
-          #   cuda: "11.2"
+          #   cuda: "11.4"
           #   build_params: ""
           - os: windows-2019
             INSTALL_SHELL: powershell
             INSTALL_SCRIPT: windows.ps1
             build_params: "-g \"Visual Studio 16 2019\" -a x64 -t 14.25"
-            cuda: "11.2.0"
+            cuda: "11.4.0"
     defaults:
       run:
         shell: ${{ matrix.INSTALL_SHELL }}
