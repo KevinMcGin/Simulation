@@ -6,6 +6,7 @@ file(GLOB_RECURSE  cu_source CONFIGURE_DEPENDS "*.cu")
 if (NOT USE_GPU)
   set_source_files_properties(${cu_headers} PROPERTIES LANGUAGE CXX)
   set_source_files_properties(${cu_source} PROPERTIES LANGUAGE CXX)
+  add_definitions("-xc++")
 endif()
 
 
