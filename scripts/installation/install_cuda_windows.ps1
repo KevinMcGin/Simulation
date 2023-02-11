@@ -84,19 +84,19 @@ $CUDA_PATCH=$Matches.patch
 ## Visual studio support check
 ## ---------------------------
 # Exit if visual studio is too new for the cuda version.
-$VISUAL_STUDIO = $env:visual_studio.trim()
-if ($VISUAL_STUDIO.length -ge 4) {
-$VISUAL_STUDIO_YEAR = $VISUAL_STUDIO.Substring($VISUAL_STUDIO.Length-4)
-    if ($VISUAL_STUDIO_YEAR.length -eq 4 -and $VISUAL_STUDIO_MIN_CUDA.containsKey($VISUAL_STUDIO_YEAR)){
-        $MINIMUM_CUDA_VERSION = $VISUAL_STUDIO_MIN_CUDA[$VISUAL_STUDIO_YEAR]
-        if ([version]$CUDA_VERSION_FULL -lt [version]$MINIMUM_CUDA_VERSION) {
-            Write-Output "Error: Visual Studio $($VISUAL_STUDIO_YEAR) requires CUDA >= $($MINIMUM_CUDA_VERSION)"
-            exit 1
-        }
-    }
-} else {
-    Write-Output "Warning: Unknown Visual Studio Version. CUDA version may be insufficient."
-}
+# $VISUAL_STUDIO = $env:visual_studio.trim()
+# if ($VISUAL_STUDIO.length -ge 4) {
+# $VISUAL_STUDIO_YEAR = $VISUAL_STUDIO.Substring($VISUAL_STUDIO.Length-4)
+#     if ($VISUAL_STUDIO_YEAR.length -eq 4 -and $VISUAL_STUDIO_MIN_CUDA.containsKey($VISUAL_STUDIO_YEAR)){
+#         $MINIMUM_CUDA_VERSION = $VISUAL_STUDIO_MIN_CUDA[$VISUAL_STUDIO_YEAR]
+#         if ([version]$CUDA_VERSION_FULL -lt [version]$MINIMUM_CUDA_VERSION) {
+#             Write-Output "Error: Visual Studio $($VISUAL_STUDIO_YEAR) requires CUDA >= $($MINIMUM_CUDA_VERSION)"
+#             exit 1
+#         }
+#     }
+# } else {
+#     Write-Output "Warning: Unknown Visual Studio Version. CUDA version may be insufficient."
+# }
 
 ## ------------------------------------------------
 ## Select CUDA packages to install from environment
