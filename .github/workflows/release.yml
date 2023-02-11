@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu--20.04
             INSTALL_SHELL: bash
             INSTALL_SCRIPT: ubuntu.sh
             cuda: "11.2"
@@ -73,7 +73,7 @@ jobs:
 
     - name: Zip Build (Ubuntu)
       shell: bash
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-20.04'
       run: |
         cd builds
         zip -r ../build.zip build 
