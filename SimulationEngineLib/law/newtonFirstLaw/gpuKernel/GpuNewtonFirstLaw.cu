@@ -3,15 +3,19 @@
 
 GpuNewtonFirstLaw::GpuNewtonFirstLaw() : GpuLaw("NewtonFirstLaw") { }
 
-__global__ 
-static void advanceParticles(Particle** particles, int particleCount) {
-	int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
-	if(particleIndex < particleCount) { 
-		particles[particleIndex]->advance();
-	} 
-}
+#if defined(USE_GPU) 
+	__global__
+	static void advanceParticles(Particle** particles, int particleCount) {
+		int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
+		if(particleIndex < particleCount) { 
+			particles[particleIndex]->advance();
+		} 
+	}
+#endif 
 
 void GpuNewtonFirstLaw::run(Particle** particles, int particleCount) {
-	advanceParticles <<<1 + particleCount/256, 256>>> (particles, particleCount);
-	cudaWithError->peekAtLastError("advanceParticles");
+	#if defined(USE_GPU) 
+		advanceParticles <<<1 + particleCount/256, 256>>> (particles, particleCount);
+		cudaWithError->peekAtLastError("advanceParticles");
+	#endif 
 }

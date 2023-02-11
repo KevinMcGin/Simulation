@@ -1,6 +1,8 @@
 ﻿add_executable (SimulationEngine main.cpp)
-set_target_properties(SimulationEngine PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
+if (USE_GPU)
+  set_target_properties(SimulationEngine PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+endif()
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/cargs) 
 

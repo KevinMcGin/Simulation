@@ -15,18 +15,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             INSTALL_SHELL: bash
             INSTALL_SCRIPT: ubuntu.sh
-            cuda: "11.3"
+            cuda: "11.5"
             build_params: ""
           # - os: macos-latest
           #   INSTALL_SHELL: bash
+          #   INSTALL_SCRIPT: macos.sh
+          #   cuda: "11.5"
+          #   build_params: ""
           - os: windows-2019
             INSTALL_SHELL: powershell
             INSTALL_SCRIPT: windows.ps1
             build_params: "-g \"Visual Studio 16 2019\" -a x64 -t 14.25"
-            cuda: "11.3.0"
+            cuda: "11.5.0"
     defaults:
       run:
         shell: ${{ matrix.INSTALL_SHELL }}
@@ -67,7 +70,7 @@ jobs:
         ./engine.sh -n
 
   sonar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
 

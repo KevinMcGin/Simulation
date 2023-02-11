@@ -7,6 +7,9 @@ class CollisionDetectorSimple: public CollisionDetector {
 public:
 	static const int INDEX = 0;
 public:
-	__device__ __host__ bool isCollision(Particle* p1, Particle* p2) override;
+#if defined(USE_GPU)
+   __device__ __host__
+#endif
+bool isCollision(Particle* p1, Particle* p2) override;
 	int getIndex() override { return INDEX; };
 };

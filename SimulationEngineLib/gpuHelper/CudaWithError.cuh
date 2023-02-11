@@ -1,9 +1,13 @@
 #pragma once
-#include "cuda_runtime.h"
+
+#if defined(USE_GPU)
+    #include "cuda_runtime.h"
+#else
+    struct cudaError_t {};
+    struct cudaMemcpyKind {};
+#endif
 
 #include <string>
-
-
 
 class CudaWithError {
 public:

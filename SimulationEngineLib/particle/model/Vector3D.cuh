@@ -1,5 +1,7 @@
 ﻿#pragma once
-#include "cuda_runtime.h"
+#if defined(USE_GPU)
+    #include "cuda_runtime.h"
+#endif
 #define _USE_MATH_DEFINES
 #include <iostream>
 #include <cmath>
@@ -8,51 +10,84 @@
 template <typename T>
 class Vector3D {
 public:
-	__device__ __host__ Vector3D<T>(T x, T y, T z) :
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D<T>(T x, T y, T z) :
 		x(x),
 		y(y),
 		z(z) { }
-	__device__ __host__ Vector3D<T>() { }
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D<T>() { }
 	T x,y,z;
 
-	__device__ __host__ Vector3D unit() {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D unit() {
 		return Vector3D<T>(x,y,z) / magnitude();
 	}
-	__device__ __host__ T magnitudeSquared() {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+T magnitudeSquared() {
 		return x * x + y * y + z * z;
 	}
-	__device__ __host__ T magnitude() {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+T magnitude() {
 		return sqrt(magnitudeSquared());
 	}
-	__device__ __host__ T dotProduct(Vector3D<T> vec) {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+T dotProduct(Vector3D<T> vec) {
 		return x * vec.x + y * vec.y + z * vec.z;
 	}
-	__device__ __host__ Vector3D<T> crossProduct(Vector3D vec) {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D<T> crossProduct(Vector3D vec) {
 		return {y*vec.z - vec.y*z, -(x*vec.z - vec.x*z), x*vec.y - vec.x*y};
 	} 
 
-	__device__ __host__ Vector3D<T> operator+(const Vector3D<T>& vec) const {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D<T> operator+(const Vector3D<T>& vec) const {
 		return {
 			x + vec.x,
 			y + vec.y,
 			z + vec.z
 		};
 	}
-	__device__ __host__ Vector3D<T> operator-(const Vector3D<T>& vec) const {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D<T> operator-(const Vector3D<T>& vec) const {
 		return {
 			x - vec.x,
 			y - vec.y,
 			z - vec.z
 		};
 	}
-	__device__ __host__ Vector3D<T> operator*(const T scale) const {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D<T> operator*(const T scale) const {
 		return {
 			x * scale,
 			y * scale,
 			z * scale
 		};
 	}
-	__device__ __host__ Vector3D<T> operator/(const T scale) const {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D<T> operator/(const T scale) const {
 		return {
 			x / scale,
 			y / scale,
@@ -60,11 +95,17 @@ public:
 		};
 	}
 
-	__device__ __host__ friend Vector3D<T> operator*(const T scale, const Vector3D<T>& vec) {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+friend Vector3D<T> operator*(const T scale, const Vector3D<T>& vec) {
 		return vec * scale;
 	}
 
-	__device__ __host__ Vector3D<T> operator-() const {
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
+Vector3D<T> operator-() const {
 		return Vector3D<T>(-x, -y, -z);
 	}
 	bool operator==(const Vector3D<T>& vec) const {

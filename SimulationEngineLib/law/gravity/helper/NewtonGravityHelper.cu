@@ -6,17 +6,23 @@
 
 #include <cmath>
 
-__device__ __host__
+#if defined(USE_GPU)
+   __device__ __host__
+#endif
 Vector3D<float> getAcceleration(float mass, Vector3D<float> radiusComponent) {	
 	return mass * radiusComponent;
 }
 
-__device__ __host__
+#if defined(USE_GPU)
+   __device__ __host__
+#endif
 void runOnParticle(Particle* p1, Vector3D<float> acceleration) {
 	p1->velocity = p1->velocity + acceleration;
 }
 
-__device__ __host__ 
+#if defined(USE_GPU)
+   __device__ __host__
+#endif 
 Vector3D<float> getRadiusComponent(Particle* p1, Particle* p2, float G) {
 	Vector3D<float> displacement = p1->position - p2->position;
 	float displacementSquared = displacement.magnitudeSquared();
