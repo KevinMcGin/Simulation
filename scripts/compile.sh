@@ -63,7 +63,7 @@ if [ $? -ne 0 ]; then echo -e "\ncompile failed"; exit 1; fi
 echo -e "compile succeeded";
 
 echo -e "\nbuilding";
-build_cmd_params="--build $build_folder $gpu_flag"
+build_cmd_params="--build $build_folder"
 if [ $ignore_output = 'true' ]; then cmake $build_cmd_params > /dev/null 2>&1; else cmake $build_cmd_params; fi
 if [ $? -ne 0 ]; then echo -e "\nbuild failed"; exit 1; fi
 echo -e "build succeeded";
