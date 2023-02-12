@@ -41,7 +41,7 @@ void SimulationOutputJSON::output(std::vector<Particle*> particles, unsigned lon
 	buffer = buffer.append("]");
 
 	auto bufferLength = buffer.length();
-	if(bufferLength >= maxBufferLength) {
+	if (bufferLength >= maxBufferLength) {
 		myfile << buffer;
 		buffer = "";
 	}

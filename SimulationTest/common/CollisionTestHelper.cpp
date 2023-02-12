@@ -7,7 +7,7 @@ bool CollisionTestHelper::sortVector(T const &lhs, T const &rhs, std::vector<flo
     } else if (*(compareRhs.back()) < *(compareLhs.back())) {
         return false;
     } else {
-        if(compareLhs.size() == 1) {
+        if (compareLhs.size() == 1) {
             return true;
         }
         compareLhs.pop_back();

@@ -7,7 +7,7 @@ GpuNewtonFirstLaw::GpuNewtonFirstLaw() : GpuLaw("NewtonFirstLaw") { }
 	__global__
 	static void advanceParticles(Particle** particles, int particleCount) {
 		int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
-		if(particleIndex < particleCount) { 
+		if (particleIndex < particleCount) { 
 			particles[particleIndex]->advance();
 		} 
 	}

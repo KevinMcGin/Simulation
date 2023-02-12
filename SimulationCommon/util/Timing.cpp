@@ -15,10 +15,10 @@ float Timing::getTimeSeconds() {
 std::string Timing::getTimeWithUnit(float seconds) {
     float time;
     std::string unit;
-    if(seconds < 60) {
+    if (seconds < 60) {
         time = seconds;
         unit = "s";
-    } else if(seconds < 3600) {
+    } else if (seconds < 3600) {
         time = seconds / 60.f;
         unit = " mins";
     } else {

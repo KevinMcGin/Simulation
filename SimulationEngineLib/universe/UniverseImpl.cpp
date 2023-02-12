@@ -14,7 +14,7 @@ UniverseImpl::UniverseImpl(
 	unsigned long endTime,
 	Usage useGpu
 ) : Universe(input->input(), laws, output, deltaTime, endTime, useGpu) {
-	if(this->useGpu == TRUE) {
+	if (this->useGpu == TRUE) {
 		gpuDataController = new GpuDataController();
 	}
 }
@@ -31,29 +31,31 @@ void UniverseImpl::run() {
 	int lawsRan = 0;
 	bool particleDeleted = false;
 	universeTiming.timingSections.setTime();
-	if(useGpu == TRUE) {
+	if (useGpu == TRUE) {
 		gpuDataController->putParticlesOnDevice(particles, true);
 		updateSectionsTiming("Data to GPU");
 	}
+	printPercentComplete(0, true);
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
-		if(useGpu == TRUE) {
-			if(particleDeleted) {
+		printPercentComplete(i, false);
+		if (useGpu == TRUE) {
+			if (particleDeleted) {
 				gpuDataController->putParticlesOnDevice(particles);
 				updateSectionsTiming("Data to GPU");
 			}
 		}
 		particleDeleted = false;
 		for (const auto& l : laws) {
-			if(useGpu == TRUE) {
+			if (useGpu == TRUE) {
 				l->gpuLaw->run(gpuDataController->get_td_par(), gpuDataController->getParticleCount());
 			} else {
 				l->cpuLaw->run(particles);
 			}
 			updateSectionsTiming(l->gpuLaw->getClassName());
-			printPercentComplete(++lawsRan);
 			updateSectionsTiming("Printing");
+			lawsRan++;
 		}
-		if(useGpu == TRUE) {
+		if (useGpu == TRUE) {
 			gpuDataController->getParticlesFromDevice(particles);
 			updateSectionsTiming("Data from GPU");
 			particleDeleted = ParticlesHelper::removeDeletedParticles(particles);
@@ -62,33 +64,37 @@ void UniverseImpl::run() {
 		output->output(particles, i + 1);
 		updateSectionsTiming("Data to JSON");
 	}
-	printPercentComplete(lawsRan, true);
+	printPercentComplete(endTime, true);
 	printSectionsTiming();
 	std::cout << std::endl << "Simulation complete" << std::endl;
 }
 
-void UniverseImpl::printPercentComplete(int lawsRan, bool force) {
-	float accurary = 1000.f;
-	float fractionPassed = (lawsRan/(float)laws.size()) / endTime;
-	universeTiming.progress = (100 * fractionPassed * accurary) / accurary;
+float round(float value, float accurary) {
+	return std::round(value * accurary) / accurary;
+}
+
+void UniverseImpl::printPercentComplete(unsigned long time, bool force) {
+	float fractionPassed = ((double)time) / endTime;
+	universeTiming.progress = round(100 * fractionPassed, universeTiming.accurary);
 	float elapsedSeconds = universeTiming.timingTotal.getTimeSeconds();
-	if(force || elapsedSeconds - universeTiming.lastPrintedSeconds > universeTiming.maxTimeBetweenPrints) {
+	if (force || elapsedSeconds - universeTiming.lastPrintedSeconds > universeTiming.maxTimeBetweenPrints) {
 		universeTiming.lastPrintedSeconds = elapsedSeconds;
 		float remainingPercent = 100 - universeTiming.progress;
 		float timeRemaining = remainingPercent * ((elapsedSeconds-universeTiming.lastEstimatedSeconds) / (universeTiming.progress-universeTiming.lastEstimatedProgress));
 		std::cout << "\r" << 
-			"passed: " << universeTiming.progress << "% " << Timing::getTimeWithUnit(elapsedSeconds) << ", "
-			"remaining: " << remainingPercent << "% " << Timing::getTimeWithUnit(timeRemaining) <<
+			"passed: " << universeTiming.progress << "% " << Timing::getTimeWithUnit(round(elapsedSeconds, universeTiming.accurary)) << ", "
+			"remaining: " << remainingPercent << "% " << Timing::getTimeWithUnit(round(timeRemaining, universeTiming.accurary)) <<
 			"                       " << std::flush;
 	}
-	if(elapsedSeconds - universeTiming.lastEstimatedSeconds > universeTiming.maxTimeBetweenEstimates) {
+	if (elapsedSeconds - universeTiming.lastEstimatedSeconds >= universeTiming.minTimeBetweenEstimates) {
 		universeTiming.lastEstimatedSeconds = elapsedSeconds;
 		universeTiming.lastEstimatedProgress = universeTiming.progress;
 	}
 }
 
+
 void UniverseImpl::updateSectionsTiming(std::string name) {
-	if(universeTiming.progresses.find(name) == universeTiming.progresses.end()) {
+	if (universeTiming.progresses.find(name) == universeTiming.progresses.end()) {
 		universeTiming.progresses[name] = 0;
 	}
 	universeTiming.progresses[name] += universeTiming.timingSections.getTimeSeconds();

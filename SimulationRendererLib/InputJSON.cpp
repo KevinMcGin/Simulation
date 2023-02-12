@@ -55,7 +55,7 @@ Value* InputJSON::getFrame() {
 	#else
 		snprintf(timeString, bufferSize, "%ld", time);
 	#endif
-	if(doc.HasMember(timeString)) {
+	if (doc.HasMember(timeString)) {
 		return &doc[timeString];
 	} else {
 		time = originalTime;
@@ -72,7 +72,7 @@ Value* InputJSON::getLastFrame() {
 	#else
 		snprintf(timeString, bufferSize, "%ld", time);
 	#endif
-	if(!doc.HasMember(timeString)) {
+	if (!doc.HasMember(timeString)) {
 		time--;
 		return getFrame();
 	} else {

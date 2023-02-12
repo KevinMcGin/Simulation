@@ -20,7 +20,7 @@ void CpuCollision::run(std::vector<Particle*>& particles) {
 				particlesCollidedSet.insert(p2);
 			}
 		}
-		if(particlesCollidedSet.size() > 0)
+		if (particlesCollidedSet.size() > 0)
 			particlesCollidedVector.push_back(new std::set<Particle*>(particlesCollidedSet));
 	}
 	// merge sets of particles that collided
@@ -30,7 +30,7 @@ void CpuCollision::run(std::vector<Particle*>& particles) {
 			auto particlesCollided2 = *it2;
 			if ([&]() {
 				for(auto p: *particlesCollided2) {
-					if(particlesCollided1->find(p) != particlesCollided1->end()) {
+					if (particlesCollided1->find(p) != particlesCollided1->end()) {
 						return true;
 					}
 				}
@@ -45,7 +45,7 @@ void CpuCollision::run(std::vector<Particle*>& particles) {
 	}
 	//resolve particles
 	for (auto particlesCollided1: particlesCollidedVector) {
-		if(particlesCollided1->size() > 0) {
+		if (particlesCollided1->size() > 0) {
 			auto p1 = *(particlesCollided1->begin());
 			particlesCollided1->erase(particlesCollided1->begin());
 			for(auto p2: *particlesCollided1) {
@@ -55,7 +55,7 @@ void CpuCollision::run(std::vector<Particle*>& particles) {
 	}
 	//erase particles marked for deletion safely
 	for (auto it = particles.begin(); it != particles.end();) {
-		if((*it)->deleted) {
+		if ((*it)->deleted) {
 			delete *it;
 			it = particles.erase(it);
 		}

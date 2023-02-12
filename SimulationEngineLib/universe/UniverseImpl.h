@@ -23,7 +23,7 @@ private:
 	GpuDataController* gpuDataController;
 	UniverseTiming universeTiming = UniverseTiming();
 
-	void printPercentComplete(int lawsRan, bool force = false);
+	void printPercentComplete(unsigned long time, bool force = false);
 	void updateSectionsTiming(std::string name);
 	void printSectionsTiming();
 };

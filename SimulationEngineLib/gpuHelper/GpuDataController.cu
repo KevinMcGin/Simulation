@@ -15,7 +15,7 @@
 	}
 
 	void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, bool firstRun) {
-		if(!firstRun) {
+		if (!firstRun) {
 			for(int i = 0; i < particleCount; i++) {
 				cudaWithError.free(d_par[i]);
 			}

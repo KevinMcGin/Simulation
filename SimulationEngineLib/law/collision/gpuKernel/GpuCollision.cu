@@ -17,8 +17,8 @@
 	__global__
 	void setCollisionDetector(CollisionDetector** collisionDetectorGpu, int collisionDetectorIndex) {
 		int idx = threadIdx.x + blockIdx.x*blockDim.x;
-		if(idx < 1) {
-			if(collisionDetectorIndex == CollisionDetectorSimple::INDEX) {
+		if (idx < 1) {
+			if (collisionDetectorIndex == CollisionDetectorSimple::INDEX) {
 				collisionDetectorGpu[0] = new CollisionDetectorSimple();
 			} else {
 				printf("collisionDetectorGpu could not be initialised\n");
@@ -31,8 +31,8 @@
 	__global__
 	void setCollisionResolver(CollisionResolver** collisionResolverGpu, int collisionResolverIndex) {
 		int idx = threadIdx.x + blockIdx.x*blockDim.x;
-		if(idx < 1) {
-			if(collisionResolverIndex == CollisionResolverCoalesce::INDEX) {
+		if (idx < 1) {
+			if (collisionResolverIndex == CollisionResolverCoalesce::INDEX) {
 				collisionResolverGpu[0] = new CollisionResolverCoalesce();
 			} else {
 				printf("collisionResolverGpu could not be initialised\n");
@@ -62,7 +62,7 @@ GpuCollision::~GpuCollision() {
 	__global__
 	void getCollidedParticles(Particle** particles, unsigned long long betweenParticlesOffset, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionDetector** collisionDetectorGpu, unsigned long long n) {
 		unsigned long long idx = threadIdx.x + (unsigned long long)blockIdx.x*blockDim.x;
-		if(idx < n) { 
+		if (idx < n) { 
 			getCollidedParticlesHelper(idx + betweenParticlesOffset, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionDetectorGpu);
 		} 
 	}
@@ -72,7 +72,7 @@ GpuCollision::~GpuCollision() {
 	__global__
 	void resolveCollidedParticles(Particle** particles, int particlesOffset, int* collisionMarks,  unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionResolver** collisionResolverGpu, int thisParticleCount, int particleCount) {
 		int idx = threadIdx.x + blockIdx.x*blockDim.x;
-		if(idx < thisParticleCount) { 
+		if (idx < thisParticleCount) { 
 			resolveCollidedParticlesHelper(idx + particlesOffset, particles, collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, collisionResolverGpu, particleCount);
 		} 
 	}
@@ -88,7 +88,7 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 		long long maxIntsAllocatableStage1 = (freeGpuMemory - particlesCollidedSize - (long long)sizeof(unsigned long long)) / (long long)sizeof(int);
 		unsigned long long maxIntsAllocatableFactor = 200;
 		long long maxIntsAllocatable = std::min(maxIntsAllocatableStage1, (long long)(betweenParticlesPairsCount * maxIntsAllocatableFactor));
-		if(maxIntsAllocatable <= 0) {
+		if (maxIntsAllocatable <= 0) {
 			throw std::runtime_error("Ran out of GPU memory");
 		}
 		int* collisionMarks = NULL;
@@ -109,7 +109,7 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 		const unsigned int maxLoops = 20;
 		unsigned int indexLoops = 0;
 		do {
-			if(++indexLoops > maxLoops) {
+			if (++indexLoops > maxLoops) {
 				std::cout << "Max Loops in GpuCollision reached" << std::endl;
 				throw std::runtime_error("Max Loops in GpuCollision reached");
 			}

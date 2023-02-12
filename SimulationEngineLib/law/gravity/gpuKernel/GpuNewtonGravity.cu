@@ -14,7 +14,7 @@ GpuNewtonGravity::GpuNewtonGravity(float G) : GpuLaw("GpuNewtonGravity"), G(G) {
 	__global__
 	void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations, unsigned long long betweenParticlesTriangularCount, float G, unsigned long long vectorsProcessedTriangular) {
 		unsigned long long betweenParticlesTriangularIndex = threadIdx.x + blockIdx.x*blockDim.x;
-		if(betweenParticlesTriangularIndex < betweenParticlesTriangularCount) { 
+		if (betweenParticlesTriangularIndex < betweenParticlesTriangularCount) { 
 			radiusComponentKernelHelper(betweenParticlesTriangularIndex, particles, accelerations, betweenParticlesTriangularCount, G, vectorsProcessedTriangular);
 		} 
 	}
@@ -53,7 +53,7 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 		unsigned long long vector3DSize = sizeof(Vector3D<float>);
 		long long maxVectorsAllocatableStage1 = freeGpuMemory / vector3DSize;
 		long long maxVectorsAllocatable = std::min(maxVectorsAllocatableStage1, (long long)betweenParticlesCount);
-		if(maxVectorsAllocatable <= 0) {
+		if (maxVectorsAllocatable <= 0) {
 			throw std::runtime_error("Ran out of GPU memory");
 		}
 
@@ -66,7 +66,7 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 				getRowsFromRowsAndColsCountMinusIdentity(vectorsProcessed + maxVectorsAllocatable),
 				(unsigned long long)particleCount
 			) - (vectorsProcessed > 0 ? getRowsFromRowsAndColsCountMinusIdentity(vectorsProcessed) : 0);
-			if(particlesProcessable == 0) { 
+			if (particlesProcessable == 0) { 
 				std::cout << "GPU can not run these many particles in Gravity\n";
 				throw std::runtime_error("GPU can not run these many particles in Gravity");
 			}
