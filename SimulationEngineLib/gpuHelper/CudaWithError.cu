@@ -105,5 +105,5 @@ CudaWithError::CudaWithError(std::string className): className(className) { }
 
     void CudaWithError::setMaxMemoryPerEvent(unsigned long long maxMemoryPerEvent) {}
 
-    void CudaWithError::setKernalSize(unsigned long kernalSize) {}
+    void CudaWithError::setKernelSize(unsigned long kernelSize) {}
 #endif
