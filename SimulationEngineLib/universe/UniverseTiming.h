@@ -5,6 +5,13 @@
 
 class UniverseTiming {
 public:
+    UniverseTiming(unsigned long endTime);
+    void start();
+	void printPercentComplete(unsigned long time, bool force = false);
+	void updateSectionsTiming(std::string name);
+	void printSectionsTiming();    
+private:
+    unsigned long endTime;
     Timing timingTotal = Timing();
     Timing timingSections = Timing();
     std::map<std::string, float> progresses = {};

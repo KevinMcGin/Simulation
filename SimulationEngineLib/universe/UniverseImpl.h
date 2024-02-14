@@ -21,9 +21,5 @@ public:
 	
 private:
 	GpuDataController* gpuDataController;
-	UniverseTiming universeTiming = UniverseTiming();
-
-	void printPercentComplete(unsigned long time, bool force = false);
-	void updateSectionsTiming(std::string name);
-	void printSectionsTiming();
+	UniverseTiming universeTiming;
 };
