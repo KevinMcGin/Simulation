@@ -72,24 +72,26 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 			}
 			unsigned long long vectorsProcessable = getRowsAndColsCountMinusIdentityFromRows(particlesProcessed + particlesProcessable) - getRowsAndColsCountMinusIdentityFromRows(particlesProcessed);
 			unsigned long long vectorsProcessableTriangular = vectorsProcessable / 2;
-			const unsigned int threadCount = 256;
-
-			radiusComponentKernel <<<1 + vectorsProcessableTriangular/threadCount, threadCount>>> (particles, accelerations, vectorsProcessableTriangular, G, vectorsProcessed / 2);
-			cudaWithError->peekAtLastError("radiusComponentKernel");
-
+			
+			cudaWithError->runKernel("radiusComponentKernel", [&](unsigned int kernelSize) {
+				radiusComponentKernel <<<1 + vectorsProcessableTriangular / kernelSize, kernelSize>>> (particles, accelerations, vectorsProcessableTriangular, G, vectorsProcessed / 2);
+			});
 			for(int particleIndex = 0; particleIndex < particlesProcessed; particleIndex++) {
-				addAccelerationsKernelUpper <<<1 + particlesProcessable / threadCount, threadCount>>> (
-					particles, accelerations, std::max((int)particlesProcessed - particleIndex - 1, 0), particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
-				);
-				cudaWithError->peekAtLastError("addAccelerationsKernelUpper");
+				cudaWithError->runKernel("addAccelerationsKernelUpper", [&](unsigned int kernelSize) {
+					addAccelerationsKernelUpper <<<1 + particlesProcessable / kernelSize, kernelSize>>> (
+						particles, accelerations, std::max((int)particlesProcessed - particleIndex - 1, 0), particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
+					);				
+				});
 			}
 			for(int particleIndex = particlesProcessed; particleIndex < particlesProcessable + particlesProcessed; particleIndex++) {
-				addAccelerationsKernelLower <<<1 + particleIndex/threadCount, threadCount>>> (particles, accelerations, particleIndex, vectorsProcessed / 2);
-				cudaWithError->peekAtLastError("addAccelerationsKernelLower");
-				addAccelerationsKernelUpper <<<1 + particlesProcessable / threadCount, threadCount>>> (
-					particles, accelerations, 0, particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
-				);
-				cudaWithError->peekAtLastError("addAccelerationsKernelUpper");
+				cudaWithError->runKernel("addAccelerationsKernelLower", [&](unsigned int kernelSize) {
+					addAccelerationsKernelLower <<<1 + particleIndex / kernelSize, kernelSize>>> (particles, accelerations, particleIndex, vectorsProcessed / 2);				
+				});
+				cudaWithError->runKernel("addAccelerationsKernelUpper", [&](unsigned int kernelSize) {
+					addAccelerationsKernelUpper <<<1 + particlesProcessable / kernelSize, kernelSize>>> (
+						particles, accelerations, 0, particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
+					);				
+				});
 			}
 
 			particlesProcessed += particlesProcessable;

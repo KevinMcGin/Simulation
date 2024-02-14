@@ -19,10 +19,12 @@ InputJSON::InputJSON(const char* fileName):
 	std::cout << "Parsing simulation: " << fileName << std::endl;
 	FILE* fp;
 	#if defined(WINDOWS)
-		char* mode = "rb";
+		char modeArray[] = "rb";
+		char* mode = modeArray;
 		fopen_s(&fp, fileName, mode);
 	#else
-		char* mode = "r";
+		char modeArray[] = "r";
+		char* mode = modeArray;
 		fp = fopen64(fileName, mode);
 	#endif
 	if (!fp) {

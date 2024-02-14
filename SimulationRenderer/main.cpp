@@ -11,7 +11,7 @@
 void display_scene();
         
 
-char* name = "Simulation Renderer";
+char name[] = "Simulation Renderer";
 
 unsigned int frameRate = 60;
 float frameTime = 1.f / frameRate;

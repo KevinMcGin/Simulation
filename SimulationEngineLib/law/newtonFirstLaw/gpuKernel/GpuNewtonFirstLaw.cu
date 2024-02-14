@@ -15,7 +15,9 @@ GpuNewtonFirstLaw::GpuNewtonFirstLaw() : GpuLaw("NewtonFirstLaw") { }
 
 void GpuNewtonFirstLaw::run(Particle** particles, int particleCount) {
 	#if defined(USE_GPU) 
-		advanceParticles <<<1 + particleCount/256, 256>>> (particles, particleCount);
-		cudaWithError->peekAtLastError("advanceParticles");
+		cudaWithError->runKernel("advanceParticles", [&](unsigned int kernelSize) {
+			advanceParticles <<<1 + particleCount/kernelSize, kernelSize>>> (particles, particleCount);
+		});
 	#endif 
 }
+ 
