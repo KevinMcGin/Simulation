@@ -42,7 +42,7 @@ $CUDA_KNOWN_URLS = @{
     "11.8.0" = "https://developer.download.nvidia.com/compute/cuda/11.8.0/network_installers/cuda_11.8.0_windows_network.exe";
     "12.0.0" = "https://developer.download.nvidia.com/compute/cuda/12.0.0/network_installers/cuda_12.0.0_windows_network.exe";
     "12.3.2" = "https://developer.download.nvidia.com/compute/cuda/12.0.0/network_installers/cuda_12.3.2_windows_network.exe";
-
+}
 
 # @todo - change this to be based on _MSC_VER intead, or invert it to be CUDA keyed instead
 $VISUAL_STUDIO_MIN_CUDA = @{
