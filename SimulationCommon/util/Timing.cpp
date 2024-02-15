@@ -5,9 +5,9 @@ void Timing::setTime() {
     startTime = std::chrono::high_resolution_clock::now();
 }
 
-float Timing::getTimeSeconds() {
+float Timing::getTimeSeconds() const {
     auto now = std::chrono::high_resolution_clock::now();
-    float milliseconds = (float)(now - startTime).count();
+    auto milliseconds = (float)(now - startTime).count();
     return milliseconds/1000000000.f;
 }
 

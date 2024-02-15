@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
 	unsigned int seconds = 10;
-	float meanMass = 0.01;	
+	float meanMass = 0.01f;	
 	float starMass = 50;
 	float outerRadius = 15;
 	float meanDensity = 1000;
