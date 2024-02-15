@@ -76,7 +76,7 @@ jobs:
 
     - name: Install CUDA
       env:
-        cuda: "11.2"
+        cuda: "12.3"
       shell: bash
       run: |
         source ./scripts/installation/install_cuda_ubuntu.sh
