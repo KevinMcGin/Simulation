@@ -6,7 +6,7 @@
 class Timing {
 public:
     void setTime();
-    float getTimeSeconds();
+    float getTimeSeconds() const;
     std::string getTimeWithUnit();
     static std::string getTimeWithUnit(float seconds);
 

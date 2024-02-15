@@ -15,10 +15,10 @@ Universe::Universe(
 	output(output),
 	deltaTime(deltaTime),
 	endTime(endTime) {
-	if(useGpu == UNDEFINED) {
+	if (useGpu == UNDEFINED) {
         const char* envVar = std::getenv(SIMULATION_USE_GPU);
 		envVar = envVar ? envVar : "true";
-        if(strcmp(envVar, "true") == 0) {
+        if (strcmp(envVar, "true") == 0) {
             this->useGpu = TRUE;
         } else {
             this->useGpu = FALSE;
@@ -32,9 +32,9 @@ Universe::Universe(
 Universe::~Universe() = default;
 
 void Universe::printUseGpu() {
-    if(this->useGpu == TRUE) {
+    if (this->useGpu == TRUE) {
         std::cout << std::endl << "Running on GPU" << std::endl;
-    } else if(this->useGpu == FALSE) {
+    } else if (this->useGpu == FALSE) {
         std::cout << std::endl << "Running on CPU" << std::endl;
     } else {
         std::cout << std::endl << "Running on UNDEFINED" << std::endl;

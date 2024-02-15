@@ -5,6 +5,7 @@
 #if defined(USE_GPU)
     unsigned long long CudaWithError::minMemoryRemaining = 0;
     unsigned long long CudaWithError::maxMemoryPerEvent = ULLONG_MAX;
+    unsigned long CudaWithError::kernelSize = 256;
 #endif
 
 CudaWithError::CudaWithError(std::string className): className(className) { }
@@ -62,12 +63,21 @@ CudaWithError::CudaWithError(std::string className): className(className) { }
         return ((unsigned long long)properties.multiProcessorCount) * ((unsigned long long)properties.maxThreadsPerMultiProcessor);
     }
 
+    void CudaWithError::runKernel(std::string message, std::function<void (unsigned int kernelSize)> kernelMethod) {
+        kernelMethod(CudaWithError::kernelSize);
+		peekAtLastError(message);
+    }
+
     void CudaWithError::setMinMemoryRemaining(unsigned long long minMemoryRemaining) {
         CudaWithError::minMemoryRemaining = minMemoryRemaining;
     }
 
     void CudaWithError::setMaxMemoryPerEvent(unsigned long long maxMemoryPerEvent) {
         CudaWithError::maxMemoryPerEvent = maxMemoryPerEvent;
+    }
+
+    void CudaWithError::setKernelSize(unsigned long kernelSize) {
+        CudaWithError::kernelSize = kernelSize;
     }
 #else
 
@@ -89,7 +99,11 @@ CudaWithError::CudaWithError(std::string className): className(className) { }
 
     unsigned long long CudaWithError::getMaxThreads() { return 0; }
 
+    void CudaWithError::runKernel(std::string message, std::function<void (unsigned int kernelSize)> kernelMethod) {}
+
     void CudaWithError::setMinMemoryRemaining(unsigned long long minMemoryRemaining) {}
 
     void CudaWithError::setMaxMemoryPerEvent(unsigned long long maxMemoryPerEvent) {}
+
+    void CudaWithError::setKernelSize(unsigned long kernelSize) {}
 #endif

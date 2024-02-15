@@ -11,7 +11,7 @@
 void display_scene();
         
 
-char* name = "Simulation Renderer";
+char name[] = "Simulation Renderer";
 
 unsigned int frameRate = 60;
 float frameTime = 1.f / frameRate;
@@ -72,7 +72,7 @@ void display_scene() {
     for(const auto& p : particles->GetArray()) {
         GLfloat color[] = {1.0, 1.0, 0.0, 1.0};
         float radius = p["r"].GetFloat();
-        if(p["r"].GetFloat() >= 0.1) {
+        if (p["r"].GetFloat() >= 0.1) {
             // radius = 0.01f;
             color[0] = 1.0;
             color[1] = 0.0;

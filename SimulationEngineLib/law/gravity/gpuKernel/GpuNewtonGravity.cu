@@ -14,7 +14,7 @@ GpuNewtonGravity::GpuNewtonGravity(float G) : GpuLaw("GpuNewtonGravity"), G(G) {
 	__global__
 	void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations, unsigned long long betweenParticlesTriangularCount, float G, unsigned long long vectorsProcessedTriangular) {
 		unsigned long long betweenParticlesTriangularIndex = threadIdx.x + blockIdx.x*blockDim.x;
-		if(betweenParticlesTriangularIndex < betweenParticlesTriangularCount) { 
+		if (betweenParticlesTriangularIndex < betweenParticlesTriangularCount) { 
 			radiusComponentKernelHelper(betweenParticlesTriangularIndex, particles, accelerations, betweenParticlesTriangularCount, G, vectorsProcessedTriangular);
 		} 
 	}
@@ -53,7 +53,7 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 		unsigned long long vector3DSize = sizeof(Vector3D<float>);
 		long long maxVectorsAllocatableStage1 = freeGpuMemory / vector3DSize;
 		long long maxVectorsAllocatable = std::min(maxVectorsAllocatableStage1, (long long)betweenParticlesCount);
-		if(maxVectorsAllocatable <= 0) {
+		if (maxVectorsAllocatable <= 0) {
 			throw std::runtime_error("Ran out of GPU memory");
 		}
 
@@ -66,30 +66,32 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 				getRowsFromRowsAndColsCountMinusIdentity(vectorsProcessed + maxVectorsAllocatable),
 				(unsigned long long)particleCount
 			) - (vectorsProcessed > 0 ? getRowsFromRowsAndColsCountMinusIdentity(vectorsProcessed) : 0);
-			if(particlesProcessable == 0) { 
+			if (particlesProcessable == 0) { 
 				std::cout << "GPU can not run these many particles in Gravity\n";
 				throw std::runtime_error("GPU can not run these many particles in Gravity");
 			}
 			unsigned long long vectorsProcessable = getRowsAndColsCountMinusIdentityFromRows(particlesProcessed + particlesProcessable) - getRowsAndColsCountMinusIdentityFromRows(particlesProcessed);
 			unsigned long long vectorsProcessableTriangular = vectorsProcessable / 2;
-			const unsigned int threadCount = 256;
-
-			radiusComponentKernel <<<1 + vectorsProcessableTriangular/threadCount, threadCount>>> (particles, accelerations, vectorsProcessableTriangular, G, vectorsProcessed / 2);
-			cudaWithError->peekAtLastError("radiusComponentKernel");
-
+			
+			cudaWithError->runKernel("radiusComponentKernel", [&](unsigned int kernelSize) {
+				radiusComponentKernel <<<1 + vectorsProcessableTriangular / kernelSize, kernelSize>>> (particles, accelerations, vectorsProcessableTriangular, G, vectorsProcessed / 2);
+			});
 			for(int particleIndex = 0; particleIndex < particlesProcessed; particleIndex++) {
-				addAccelerationsKernelUpper <<<1 + particlesProcessable / threadCount, threadCount>>> (
-					particles, accelerations, std::max((int)particlesProcessed - particleIndex - 1, 0), particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
-				);
-				cudaWithError->peekAtLastError("addAccelerationsKernelUpper");
+				cudaWithError->runKernel("addAccelerationsKernelUpper", [&](unsigned int kernelSize) {
+					addAccelerationsKernelUpper <<<1 + particlesProcessable / kernelSize, kernelSize>>> (
+						particles, accelerations, std::max((int)particlesProcessed - particleIndex - 1, 0), particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
+					);				
+				});
 			}
 			for(int particleIndex = particlesProcessed; particleIndex < particlesProcessable + particlesProcessed; particleIndex++) {
-				addAccelerationsKernelLower <<<1 + particleIndex/threadCount, threadCount>>> (particles, accelerations, particleIndex, vectorsProcessed / 2);
-				cudaWithError->peekAtLastError("addAccelerationsKernelLower");
-				addAccelerationsKernelUpper <<<1 + particlesProcessable / threadCount, threadCount>>> (
-					particles, accelerations, 0, particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
-				);
-				cudaWithError->peekAtLastError("addAccelerationsKernelUpper");
+				cudaWithError->runKernel("addAccelerationsKernelLower", [&](unsigned int kernelSize) {
+					addAccelerationsKernelLower <<<1 + particleIndex / kernelSize, kernelSize>>> (particles, accelerations, particleIndex, vectorsProcessed / 2);				
+				});
+				cudaWithError->runKernel("addAccelerationsKernelUpper", [&](unsigned int kernelSize) {
+					addAccelerationsKernelUpper <<<1 + particlesProcessable / kernelSize, kernelSize>>> (
+						particles, accelerations, 0, particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
+					);				
+				});
 			}
 
 			particlesProcessed += particlesProcessable;

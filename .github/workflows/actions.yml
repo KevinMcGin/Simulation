@@ -4,7 +4,7 @@ on: [push]
 
 env:
   BUILD_TYPE: Release
-  SONAR_SCANNER_VERSION: 4.4.0.2170
+  SONAR_SCANNER_VERSION: 5.0.1.3006
   SONAR_SERVER_URL: "https://sonarcloud.io"
   BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory  # Directory where build-wrapper output will be placed
 
@@ -18,18 +18,18 @@ jobs:
           - os: ubuntu-20.04
             INSTALL_SHELL: bash
             INSTALL_SCRIPT: ubuntu.sh
-            cuda: "11.5"
+            cuda: "12.3"
             build_params: ""
           # - os: macos-latest
           #   INSTALL_SHELL: bash
           #   INSTALL_SCRIPT: macos.sh
-          #   cuda: "11.5"
+          #   cuda: "12.3"
           #   build_params: ""
           - os: windows-2019
             INSTALL_SHELL: powershell
             INSTALL_SCRIPT: windows.ps1
-            build_params: "-g \"Visual Studio 16 2019\" -a x64 -t 14.25"
-            cuda: "11.5.0"
+            build_params: "-g \"Visual Studio 16 2019\" -a x64"
+            cuda: "12.3.2"
     defaults:
       run:
         shell: ${{ matrix.INSTALL_SHELL }}
@@ -76,7 +76,7 @@ jobs:
 
     - name: Install CUDA
       env:
-        cuda: "11.2"
+        cuda: "12.3"
       shell: bash
       run: |
         source ./scripts/installation/install_cuda_ubuntu.sh
@@ -86,10 +86,10 @@ jobs:
       run: |
         source ./scripts/installation/install_open_gl_ubuntu.sh
 
-    - name: Set up JDK 11
+    - name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: 17
 
     - name: Download and set up sonar-scanner
       env:

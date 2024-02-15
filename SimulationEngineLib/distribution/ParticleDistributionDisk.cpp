@@ -29,7 +29,7 @@ Particle* ParticleDistributionDisk::getParticle() {
     Vector3D<float> difference = position - meanPosition;
     float differenceMagnitude = difference.magnitude();
     Vector3D<float> velocity;
-    if(differenceMagnitude != 0) {
+    if (differenceMagnitude != 0) {
         float speed = sqrt( (G * centralMass) / differenceMagnitude);
         velocity = (clockwise ? -1 : 1) * speed * Vector3D<float>(0, 0, 1).crossProduct(difference).unit();
     } else {
