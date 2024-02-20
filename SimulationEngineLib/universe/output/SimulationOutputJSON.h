@@ -6,15 +6,10 @@
 #include <fstream>
 
 
-class SimulationOutputJSON : public SimulationOutput {
+class SimulationOutputJSON : public SimulationOutputFile {
 public:
 	SimulationOutputJSON(const char* outputFile);
 	~SimulationOutputJSON();
 
 	void output(std::vector<Particle*> particles, unsigned long time) override;
-
-private:
-	std::ofstream myfile;
-	std::string buffer = "{\n";
-	const size_t maxBufferLength = 10000;
 };
