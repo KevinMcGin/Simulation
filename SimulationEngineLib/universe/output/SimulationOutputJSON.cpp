@@ -34,4 +34,6 @@ void SimulationOutputJSON::output(std::vector<Particle*> particles, unsigned lon
 		}
 	}
 	appendToBuffer("]");
+
+	writeToBufferMaybe();
 }
