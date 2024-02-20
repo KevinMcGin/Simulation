@@ -2,11 +2,11 @@
 
 #include "universe/output/SimulationOutputFile.h"
 
-SimulationOutputFile::SimulationOutputCsv(const char* outputFile) : SimulationOutput() {
+SimulationOutputFile::SimulationOutputFile(const char* outputFile) : SimulationOutput() {
     myfile.open(outputFile);
 }
 
-SimulationOutputFile::~SimulationOutputCsv() {
+SimulationOutputFile::~SimulationOutputFile() {
     myfile << buffer << std::endl;
 	myfile.close();
 }
