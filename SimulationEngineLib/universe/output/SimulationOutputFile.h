@@ -13,10 +13,8 @@ public:
 
 	virtual void output(std::vector<Particle*> particles, unsigned long time) override = 0;
 
-    void writeToBufferMaybe();
-
 protected:
-    void writeBuffer();
+    void writeToBufferMaybe();
     void appendToBuffer(std::string stringToAppend);
 
 private:
