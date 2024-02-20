@@ -11,7 +11,7 @@ SimulationOutputFile::~SimulationOutputFile() {
 	myfile.close();
 }
 
-void SimulationOutputFile::writeBuffer() {
+void SimulationOutputFile::writeToBufferMaybe() {
 	auto bufferLength = buffer.length();
 	if (bufferLength >= maxBufferLength) {
 		myfile << buffer;
