@@ -10,7 +10,7 @@ SimulationOutputCsv::~SimulationOutputCsv() = default;
 
 void SimulationOutputCsv::output(std::vector<Particle*> particles, unsigned long time) {
 	for (const auto& p : particles) {
-		appendToBuffer(std::to_string(time))
+	appendToBuffer(std::to_string(time));
         appendToBuffer(",");
         appendToBuffer(std::to_string(p->radius));
         appendToBuffer(",");
