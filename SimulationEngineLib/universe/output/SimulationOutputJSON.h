@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "universe/output/SimulationOutput.h"
+#include "universe/output/SimulationOutputFile.h"
 
 #include <vector>
 #include <iostream>
