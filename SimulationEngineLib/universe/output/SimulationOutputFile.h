@@ -8,7 +8,7 @@
 
 class SimulationOutputFile : public SimulationOutput {
 public:
-	virtual SimulationOutputFile(const char* outputFile);
+	SimulationOutputFile(const char* outputFile);
 	virtual ~SimulationOutputFile();
 
 	virtual void output(std::vector<Particle*> particles, unsigned long time) override = 0;
