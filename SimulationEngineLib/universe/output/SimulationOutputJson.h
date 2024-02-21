@@ -6,10 +6,10 @@
 #include <fstream>
 
 
-class SimulationOutputJSON : public SimulationOutputFile {
+class SimulationOutputJson : public SimulationOutputFile {
 public:
-	SimulationOutputJSON(const char* outputFile);
-	~SimulationOutputJSON();
+	SimulationOutputJson(const char* outputFile);
+	~SimulationOutputJson();
 
 	void output(std::vector<Particle*> particles, unsigned long time) override;
 };
