@@ -1,14 +1,14 @@
 #include <string>
 
-#include "universe/output/SimulationOutputJSON.h"
+#include "universe/output/SimulationOutputJson.h"
 
-SimulationOutputJSON::SimulationOutputJSON(const char* outputFile) : SimulationOutputFile(outputFile) {}
+SimulationOutputJson::SimulationOutputJson(const char* outputFile) : SimulationOutputFile(outputFile) {}
 
-SimulationOutputJSON::~SimulationOutputJSON() {
+SimulationOutputJson::~SimulationOutputJson() {
 	appendToBuffer("}");
 }
 
-void SimulationOutputJSON::output(std::vector<Particle*> particles, unsigned long time) {
+void SimulationOutputJson::output(std::vector<Particle*> particles, unsigned long time) {
 	if (time > 0) {
 		appendToBuffer(",\n");
 	}
