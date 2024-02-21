@@ -2,7 +2,9 @@
 
 #include "universe/output/SimulationOutputJson.h"
 
-SimulationOutputJson::SimulationOutputJson(const char* outputFile) : SimulationOutputFile(outputFile) {}
+SimulationOutputJson::SimulationOutputJson(const char* outputFile) : SimulationOutputFile(outputFile) {
+	appendToBuffer("{\n");
+}
 
 SimulationOutputJson::~SimulationOutputJson() {
 	appendToBuffer("}");

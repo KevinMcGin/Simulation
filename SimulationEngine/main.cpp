@@ -1,5 +1,5 @@
 #include "universe/input/SimulationInputRandomSimple.h"
-#include "universe/output/SimulationOutputJSON.h"
+#include "universe/output/SimulationOutputJson.h"
 #include "universe/UniverseImplSimple.h"
 #include "distribution/DistributionValue.h"
 #include "distribution/DistributionCircle.h"
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
 		std::vector<unsigned long> { particleCount - 1, 1 }, 
 		std::vector<std::shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
 	);
-	auto output = std::make_shared<SimulationOutputJSON>(outputFile);
+	auto output = std::make_shared<SimulationOutputJson>(outputFile);
 
 	auto universe = std::make_unique<UniverseImplSimple>(input, output, endTime);
 	universe->run();

@@ -1,4 +1,4 @@
-#include "InputJSON.h"
+#include "InputJson.h"
 #include "constant/OperatingSystemConstants.h"
 
 #include <iostream>
@@ -12,7 +12,7 @@
 #include <rapidjson/ostreamwrapper.h>
 #include "rapidjson/filereadstream.h"
 
-InputJSON::InputJSON(const char* fileName): 
+InputJson::InputJson(const char* fileName): 
 	time(0),
 	originalTime(0)
 {
@@ -40,15 +40,15 @@ InputJSON::InputJSON(const char* fileName):
 	
 }
 
-InputJSON::~InputJSON() { }
+InputJson::~InputJson() { }
 
-Value* InputJSON::input(int elapsedFrames) {
+Value* InputJson::input(int elapsedFrames) {
 	originalTime = time;
 	time += elapsedFrames;
 	return getFrame();
 }
 
-Value* InputJSON::getFrame() {
+Value* InputJson::getFrame() {
 	const size_t bufferSize = 11;
 	const auto bufferSizeInt = (int)bufferSize;
 	char timeString[bufferSizeInt];
@@ -65,7 +65,7 @@ Value* InputJSON::getFrame() {
 	}
 }
 
-Value* InputJSON::getLastFrame() {
+Value* InputJson::getLastFrame() {
 	const size_t bufferSize = 11;
 	const auto bufferSizeInt = (int)bufferSize;
 	char timeString[bufferSizeInt];

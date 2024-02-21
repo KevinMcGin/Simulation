@@ -1,4 +1,5 @@
 simulation_output/*.json
+simulation_output/*.csv
 builds/*
 !builds/.gitkeep
 config/**/*.config

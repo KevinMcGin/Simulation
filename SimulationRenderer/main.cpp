@@ -5,7 +5,7 @@
 #include <chrono>
 #include <memory>
 
-#include "InputJSON.h"
+#include "InputJson.h"
 #include "util/Timing.h"
 
 void display_scene();
@@ -16,7 +16,7 @@ char name[] = "Simulation Renderer";
 unsigned int frameRate = 60;
 float frameTime = 1.f / frameRate;
 
-std::unique_ptr<InputJSON> input;
+std::unique_ptr<InputJson> input;
 Timing timing = Timing();
 float slackTime = 0.f;
 
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 
     const char* inputFile = argc > 1 ? argv[1] : "simulation_output/simulation_output.json";
 
-    input = std::make_unique<InputJSON>(inputFile);
+    input = std::make_unique<InputJson>(inputFile);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

@@ -1,5 +1,5 @@
 #include  "gtest/gtest.h"
-#include "InputJSON.h"
+#include "InputJson.h"
 
 #include <iostream>
 #include <fstream>
@@ -40,18 +40,18 @@ TEST(InputJsonTest, JsonRead) {
     "}";
     file.close();
 
-	InputJSON inputJSON(fileName.c_str());
+	InputJson inputJson(fileName.c_str());
 
-    testJsonReadPosition0(inputJSON.input(0));
-    testJsonReadPosition1(inputJSON.input(1));
-    testJsonReadPosition1(inputJSON.input(10));
-    testJsonReadPosition0(inputJSON.input(-1));
-    testJsonReadPosition1(inputJSON.input(10));
+    testJsonReadPosition0(inputJson.input(0));
+    testJsonReadPosition1(inputJson.input(1));
+    testJsonReadPosition1(inputJson.input(10));
+    testJsonReadPosition0(inputJson.input(-1));
+    testJsonReadPosition1(inputJson.input(10));
 }
 
 TEST(InputJsonTest, FileNoFound) {
 	 try {
-        InputJSON inputJSON("file_not_exist");
+        InputJson inputJson("file_not_exist");
         FAIL() << "No error thrown: Could not open file for reading!";
     } catch(std::runtime_error const &err) {
         EXPECT_EQ(err.what(), std::string("Could not open file for reading!"));

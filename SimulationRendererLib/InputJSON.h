@@ -12,10 +12,10 @@ using namespace rapidjson;
 // #include "particle/Particle.cuh"
 
 
-class InputJSON {
+class InputJson {
 public:
-    InputJSON(const char* fileName);
-	~InputJSON();
+    InputJson(const char* fileName);
+	~InputJson();
 	Value* input(int elapsedFrames);
 
 private:
