@@ -27,15 +27,15 @@ void UniverseImpl::run() {
 	std::cout << "Simulation running" << std::endl;
 	std::cout << particles.size() << " particles" << std::endl;
 	std::cout << "Frames: " << endTime << std::endl;
-	output->output(particles, 0);
 	int lawsRan = 0;
 	bool particleDeleted = false;
+	output->output(particles, 0);
+	universeTiming.start();
+	universeTiming.printPercentComplete(0, true);
 	if (useGpu == TRUE) {
 		gpuDataController->putParticlesOnDevice(particles, true);
 		universeTiming.updateSectionsTiming("Data to GPU");
 	}
-	universeTiming.start();
-	universeTiming.printPercentComplete(0, true);
 	for (unsigned long i = 0; i < endTime; i += deltaTime) {
 		universeTiming.printPercentComplete(i, false);
 		if (useGpu == TRUE) {
