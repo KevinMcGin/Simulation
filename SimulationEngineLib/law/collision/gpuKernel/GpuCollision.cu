@@ -84,11 +84,11 @@ void GpuCollision::run(Particle** particles, int particleCount) {
 		unsigned long long betweenParticlesPairsCount = ((unsigned long long)particleCount-1)*particleCount;
 		unsigned long long betweenParticlesCount = betweenParticlesPairsCount/2;
 
-		long long freeGpuMemory = cudaWithError->getFreeGpuMemory();
-		long long particlesCollidedSize = particleCount * sizeof(bool);
-		long long maxIntsAllocatableStage1 = (freeGpuMemory - particlesCollidedSize - (long long)sizeof(unsigned long long)) / (long long)sizeof(int);
-		unsigned long long maxIntsAllocatableFactor = 200;
-		long long maxIntsAllocatable = std::min(maxIntsAllocatableStage1, (long long)(betweenParticlesPairsCount * maxIntsAllocatableFactor));
+		const long long freeGpuMemory = cudaWithError->getFreeGpuMemory();
+		const long long particlesCollidedSize = particleCount * sizeof(bool);
+		const long long maxIntsAllocatableStage1 = (freeGpuMemory - particlesCollidedSize - (long long)sizeof(unsigned long long)) / (long long)sizeof(int);
+		const unsigned long long maxIntsAllocatableFactor = 200;
+		const long long maxIntsAllocatable = std::min(maxIntsAllocatableStage1, (long long)(betweenParticlesPairsCount * maxIntsAllocatableFactor));
 		if (maxIntsAllocatable <= 0) {
 			throw std::runtime_error("Ran out of GPU memory");
 		}
