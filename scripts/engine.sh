@@ -27,7 +27,7 @@ print_usage() {
 while getopts 'b:f:o:nrv' flag; do
   case "${flag}" in
     b) build_folder="${OPTARG}" ;;
-    f) config_file="${OPTARG}" ;;
+    f) config_file="${OPTARG}.config" ;;
     n) no_compile='true' ;;
     o) output_file="${OPTARG}" ;;
     r) render='true' ;;
