@@ -49,10 +49,12 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 		unsigned long long betweenParticlesCount = ((unsigned long long)particleCount-1)*particleCount;
 		Vector3D<float>* accelerations = NULL;
 		
-		long long freeGpuMemory = cudaWithError->getFreeGpuMemory();
-		unsigned long long vector3DSize = sizeof(Vector3D<float>);
-		long long maxVectorsAllocatableStage1 = freeGpuMemory / vector3DSize;
-		long long maxVectorsAllocatable = std::min(maxVectorsAllocatableStage1, (long long)betweenParticlesCount);
+		const double maxFractionMemoryAllocatable = 0.5;
+		const long long freeGpuMemoryStage1 = cudaWithError->getFreeGpuMemory();
+		const long long freeGpuMemory = (long long)(freeGpuMemoryStage1 * maxFractionMemoryAllocatable);
+		const unsigned long long vector3DSize = sizeof(Vector3D<float>);
+		const long long maxVectorsAllocatableStage1 = freeGpuMemory / vector3DSize;
+		const long long maxVectorsAllocatable = std::min(maxVectorsAllocatableStage1, (long long)betweenParticlesCount);
 		if (maxVectorsAllocatable <= 0) {
 			throw std::runtime_error("Ran out of GPU memory");
 		}
