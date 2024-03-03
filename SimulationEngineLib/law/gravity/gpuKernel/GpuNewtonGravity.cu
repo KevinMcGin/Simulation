@@ -49,7 +49,7 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 		unsigned long long betweenParticlesCount = ((unsigned long long)particleCount-1)*particleCount;
 		Vector3D<float>* accelerations = NULL;
 		
-		const double maxFractionMemoryAllocatable = 0.5;
+		const double maxFractionMemoryAllocatable = 0.9;
 		const long long freeGpuMemoryStage1 = cudaWithError->getFreeGpuMemory();
 		const long long freeGpuMemory = (long long)(freeGpuMemoryStage1 * maxFractionMemoryAllocatable);
 		const unsigned long long vector3DSize = sizeof(Vector3D<float>);
