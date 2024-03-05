@@ -79,19 +79,36 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 				radiusComponentKernel <<<1 + vectorsProcessableTriangular / kernelSize, kernelSize>>> (particles, accelerations, vectorsProcessableTriangular, G, vectorsProcessed / 2);
 			});
 			for(int particleIndex = 0; particleIndex < particlesProcessed; particleIndex++) {
-				cudaWithError->runKernel("addAccelerationsKernelUpper", [&](unsigned int kernelSize) {
+				cudaWithError->runKernel("addAccelerationsKernelUpper1", [&](unsigned int kernelSize) {
 					addAccelerationsKernelUpper <<<1 + particlesProcessable / kernelSize, kernelSize>>> (
-						particles, accelerations, std::max((int)particlesProcessed - particleIndex - 1, 0), particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
+						particles, 
+						accelerations, 
+						std::max((int)particlesProcessed - particleIndex - 1, 0), 
+						particleIndex, 
+						particlesProcessed + particlesProcessable, 
+						vectorsProcessed / 2, 
+						vectorsProcessableTriangular
 					);				
 				});
 			}
 			for(int particleIndex = particlesProcessed; particleIndex < particlesProcessable + particlesProcessed; particleIndex++) {
 				cudaWithError->runKernel("addAccelerationsKernelLower", [&](unsigned int kernelSize) {
-					addAccelerationsKernelLower <<<1 + particleIndex / kernelSize, kernelSize>>> (particles, accelerations, particleIndex, vectorsProcessed / 2);				
+					addAccelerationsKernelLower <<<1 + particleIndex / kernelSize, kernelSize>>> (
+						particles, 
+						accelerations, 
+						particleIndex, 
+						vectorsProcessed / 2
+					);				
 				});
-				cudaWithError->runKernel("addAccelerationsKernelUpper", [&](unsigned int kernelSize) {
+				cudaWithError->runKernel("addAccelerationsKernelUpper2", [&](unsigned int kernelSize) {
 					addAccelerationsKernelUpper <<<1 + particlesProcessable / kernelSize, kernelSize>>> (
-						particles, accelerations, 0, particleIndex, particlesProcessed + particlesProcessable, vectorsProcessed / 2, vectorsProcessableTriangular
+						particles,
+						accelerations, 
+						0, 
+						particleIndex, 
+						particlesProcessed + particlesProcessable, 
+						vectorsProcessed / 2, 
+						vectorsProcessableTriangular
 					);				
 				});
 			}
