@@ -193,7 +193,7 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 		bool collisionsToResolve = false;
 		unsigned long long thisCollisionMarksIndexActual = 0;
 		int collidedParticleIndex = getNextParticleCollidedByIndex(collisionMarks, *collisionMarksIndex, &thisCollisionMarksIndexActual, particleIndex2, false);
-		while(collidedParticleIndex >= 0) {
+		while(!*limitReached && collidedParticleIndex >= 0) {
 			if (collidedParticleIndex > particleIndex1) {
 				return LOWER_COLLISION_FOUND;
 			} else if (collidedParticleIndex < particleIndex1) {
