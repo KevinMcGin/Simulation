@@ -24,10 +24,13 @@ ParticleDistributionDisk::~ParticleDistributionDisk() = default;
 Particle* ParticleDistributionDisk::getParticle() {
 	float mass, radius;
 	densityDistribution->getMassRadius(mass, radius);
-    DistributionCircle circle(meanPosition, outerRadius->getValue());
+    auto outerRadiusValue = outerRadius->getValue();
+    DistributionCircle circle(meanPosition, outerRadiusValue);
     auto innerRadiusValue = innerRadius->getValue();
     Vector3D<float> position = {0, 0, 0};
-    while (position.magnitude() <= innerRadiusValue) { 
+    while (position.magnitude() <= innerRadiusValue &&
+        !(innerRadiusValue == 0 && outerRadiusValue == 0)
+    ) { 
         position = circle.getValue(); 
     }
     Vector3D<float> difference = position - meanPosition;
