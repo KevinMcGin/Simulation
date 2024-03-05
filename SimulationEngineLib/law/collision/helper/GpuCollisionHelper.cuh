@@ -15,8 +15,28 @@
 #if defined(USE_GPU)
    __device__
 #endif
-void resolveCollidedParticlesHelper(int particleIndex, Particle** particles, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionResolver** collisionResolverGpu, int particleCount);
+void resolveCollidedParticlesHelper(
+   int particleIndex, 
+   Particle** particles, 
+   int* collisionMarks, 
+   unsigned long long* collisionMarksIndex, 
+   unsigned long long maxIntsAllocatable, 
+   bool* particlesCollided, 
+   CollisionResolver** collisionResolverGpu, 
+   int particleCount,		
+   unsigned long long betweenParticlesOffset,
+   unsigned long long thisBetweenParticleCount,
+		const long long maxCollisionMarksIndex
+);
 #if defined(USE_GPU)
    __device__
 #endif
-void getCollidedParticlesHelper(unsigned long long lowerTriangularIndex, Particle** particles, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionDetector** collisionDetectorGpu);
+void getCollidedParticlesHelper(
+   unsigned long long lowerTriangularIndex, 
+   Particle** particles, 
+   int* collisionMarks, 
+   unsigned long long* collisionMarksIndex, 
+   unsigned long long maxIntsAllocatable, 
+   bool* particlesCollided, CollisionDetector** collisionDetectorGpu,
+   const long long maxCollisionMarksIndex
+);

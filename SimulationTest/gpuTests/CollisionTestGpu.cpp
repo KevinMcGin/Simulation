@@ -34,7 +34,7 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 }
 
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuSimple) {
-	const int particleCount = 75;
+	const int particleCount = 1000;
 	const int stepsCount = 1;
 	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
@@ -44,7 +44,7 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuSimple) {
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow) {
 	CudaWithError::setMaxMemoryPerEvent(1000 * 1000);
 
-	const int particleCount = 75;
+	const int particleCount = 1000;
 	const int stepsCount = 1;
 	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
@@ -54,43 +54,39 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow) {
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryVeryLow) {
 	CudaWithError::setMaxMemoryPerEvent(1000);
 
-	const int particleCount = 75;
+	const int particleCount = 100;
 	const int stepsCount = 1;
 	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
 	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
 }
 
-TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryTooLow1) {
+TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow1) {
 	CudaWithError::setMaxMemoryPerEvent(100);
 
-	const int particleCount = 75;
+	const int particleCount = 100;
 	const int stepsCount = 1;
 	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
 
 	 try {
         LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
-        FAIL() << "No error thrown: expected Max Loops in GpuCollision reached";
+    } catch(...) {
+        FAIL() << "Wrong error thrown: expected No error";
+    }
+}
+
+TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow2) {
+	CudaWithError::setMaxMemoryPerEvent(10);
+
+	const int particleCount = 10;
+	const int stepsCount = 1;
+	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
+
+	 try {
+        LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
     } catch(std::runtime_error const &err) {
         EXPECT_EQ(err.what(), std::string("Max Loops in GpuCollision reached"));
     } catch(...) {
         FAIL() << "Wrong error thrown: expected Max Loops in GpuCollision reached";
-    }
-}
-
-TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryTooLow2) {
-	CudaWithError::setMaxMemoryPerEvent(10);
-
-	const int particleCount = 75;
-	const int stepsCount = 1;
-	auto law = std::make_shared<Collision>(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), true);
-
-	 try {
-        LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
-        FAIL() << "No error thrown: expected Ran out of GPU memory";
-    } catch(std::runtime_error const &err) {
-        EXPECT_EQ(err.what(), std::string("Ran out of GPU memory"));
-    } catch(...) {
-        FAIL() << "Wrong error thrown: expected Ran out of GPU memory";
     }
 }

@@ -24,6 +24,11 @@ CudaWithError::CudaWithError(std::string className): className(className) { }
         throwErrorMaybe(cudaStatus, "cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
     }
 
+    void CudaWithError::resetDevice() {
+        cudaError_t cudaStatus = cudaDeviceReset();
+        throwErrorMaybe(cudaStatus, "cudaDeviceReset failed!  Do you have a CUDA-capable GPU installed?");
+    }
+
     void CudaWithError::malloc(void** devPtr, size_t size) {
         cudaError_t cudaStatus = cudaMalloc(devPtr, size);
         throwErrorMaybe(cudaStatus, "cudaMalloc failed!");
@@ -84,6 +89,8 @@ CudaWithError::CudaWithError(std::string className): className(className) { }
     void CudaWithError::throwErrorMaybe(cudaError_t cudaStatus, std::string error) {}
 
     void CudaWithError::setDevice(int device) {}
+
+    void CudaWithError::resetDevice() {}
 
     void CudaWithError::malloc(void** devPtr, size_t size) {}
 

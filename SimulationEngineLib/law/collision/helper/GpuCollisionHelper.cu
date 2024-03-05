@@ -11,17 +11,39 @@
 #include <cmath>
 #include <typeinfo>
 
+// revisit these limits; stop all processes if limit is reached so that maxCollisionMarksIndex can be reduced
 const int MAX_MERGE_COLLISION_RUNS = 5;
 const int MAX_COLLISIONS_PER_PARTICLE = 100;
 
 #if defined(USE_GPU) 
 	__device__
 #endif
-MergeStatus mergeCollisionsRows(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int particleIndex1, int particleIndex2, int particleCount, int runCount = 0);
+MergeStatus mergeCollisionsRows(
+	int* collisionMarks, 
+	unsigned long long* collisionMarksIndex, 
+	unsigned long long maxIntsAllocatable, 
+	bool* particlesCollided, 
+	int particleIndex1, 
+	int particleIndex2, 
+	int particleCount,
+	const long long maxCollisionMarksIndex,
+	int runCount = 0
+);
 #if defined(USE_GPU) 
 	__device__
 #endif
-MergeStatus mergeCollisionsColumns(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable,  bool* particlesCollided, int particleIndex1, int particleIndex2, int particleCount, int runCount = 0);
+MergeStatus mergeCollisionsColumns(
+	int* collisionMarks, 
+	unsigned long long* 
+	collisionMarksIndex,
+	unsigned long long maxIntsAllocatable,  
+	bool* particlesCollided, 
+	int particleIndex1, 
+	int particleIndex2, 
+	int particleCount,
+	const long long maxCollisionMarksIndex,
+	int runCount = 0
+);
 
 #if defined(USE_GPU) 
 	__device__
@@ -77,13 +99,33 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 
 #if defined(USE_GPU) 
 	__device__
-	MergeStatus mergeCollisionsRows(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int particleIndex1, int particleIndex2, int particleCount, int runCount) {  
+	MergeStatus mergeCollisionsRows(
+		int* collisionMarks, 
+		unsigned long long* collisionMarksIndex, 
+		unsigned long long maxIntsAllocatable, 
+		bool* particlesCollided, 
+		int particleIndex1, 
+		int particleIndex2, 
+		int particleCount,
+		const long long maxCollisionMarksIndex, 
+		int runCount
+	) {
 		int collisionsFound = 0;
 		if (!particlesCollided[particleIndex2] || (runCount > 0 && particleIndex1 == particleIndex2) || runCount >= MAX_MERGE_COLLISION_RUNS) {
 			return NO_COLLISION_FOUND;
 		}
 		bool collisionsToResolve = false;
-		MergeStatus mergeStatus = mergeCollisionsColumns(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, particleIndex1, particleIndex2, particleCount, runCount + 1);
+		MergeStatus mergeStatus = mergeCollisionsColumns(
+			collisionMarks, 
+			collisionMarksIndex, 
+			maxIntsAllocatable, 
+			particlesCollided, 
+			particleIndex1, 
+			particleIndex2, 
+			particleCount,
+			maxCollisionMarksIndex, 
+			runCount + 1
+		);
 		switch(mergeStatus) {
 			case LOWER_COLLISION_FOUND: return LOWER_COLLISION_FOUND;
 			case COLLISION_FOUND: collisionsToResolve = true; break;
@@ -96,14 +138,24 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 				if (++collisionsFound >= MAX_COLLISIONS_PER_PARTICLE) {
 					return COLLISION_FOUND;
 				}
-				if (runCount > 0 && particleIndex1 != collidedParticleIndex) {
+				if (*collisionMarksIndex < maxCollisionMarksIndex && runCount > 0 && particleIndex1 != collidedParticleIndex) {
 					bool collisionMarked = markCollision(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, particleIndex1, collidedParticleIndex);
 					if (!collisionMarked) {
 						return NO_COLLISION_FOUND;
 					}
 				}
 				collisionsToResolve = true;
-				mergeStatus = mergeCollisionsRows(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, particleIndex1, collidedParticleIndex, particleCount, runCount + 1);
+				mergeStatus = mergeCollisionsRows(
+					collisionMarks, 
+					collisionMarksIndex,
+					maxIntsAllocatable, 
+					particlesCollided, 
+					particleIndex1, 
+					collidedParticleIndex, 
+					particleCount, 
+					maxCollisionMarksIndex,
+					runCount + 1
+				);
 				switch(mergeStatus) {
 					case LOWER_COLLISION_FOUND: return LOWER_COLLISION_FOUND;
 				}
@@ -116,7 +168,17 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 
 #if defined(USE_GPU) 
 	__device__
-	MergeStatus mergeCollisionsColumns(int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, int particleIndex1, int particleIndex2, int particleCount, int runCount) {
+	MergeStatus mergeCollisionsColumns(
+		int* collisionMarks, 
+		unsigned long long* collisionMarksIndex, 
+		unsigned long long maxIntsAllocatable, 
+		bool* particlesCollided, 
+		int particleIndex1, 
+		int particleIndex2, 
+		int particleCount,
+		const long long maxCollisionMarksIndex, 
+		int runCount
+	) {
 		int collisionsFound = 0;
 		if (runCount >= MAX_MERGE_COLLISION_RUNS) {
 			return NO_COLLISION_FOUND;
@@ -137,7 +199,17 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 						return NO_COLLISION_FOUND;
 					}
 					collisionsToResolve = true;
-					MergeStatus mergeStatus = mergeCollisionsRows(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, particleIndex1, collidedParticleIndex, particleCount, runCount + 1);
+					MergeStatus mergeStatus = mergeCollisionsRows(
+						collisionMarks, 
+						collisionMarksIndex, 
+						maxIntsAllocatable, 
+						particlesCollided, 
+						particleIndex1, 
+						collidedParticleIndex, 
+						particleCount, 
+						maxCollisionMarksIndex,
+						runCount + 1
+					);
 					switch(mergeStatus) {
 						case LOWER_COLLISION_FOUND: return LOWER_COLLISION_FOUND;
 					}
@@ -153,14 +225,36 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 	__device__
 #endif
 
-void resolveCollidedParticlesHelper(int particleIndex, Particle** particles, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionResolver** collisionResolverGpu, int particleCount) {
+void resolveCollidedParticlesHelper(
+	int particleIndex, 
+	Particle** particles, 
+	int* collisionMarks, 
+	unsigned long long* collisionMarksIndex, 
+	unsigned long long maxIntsAllocatable, 
+	bool* particlesCollided, 
+	CollisionResolver** collisionResolverGpu, 
+	int particleCount,		
+	unsigned long long betweenParticlesOffset,
+	unsigned long long thisBetweenParticleCount,
+	const long long maxCollisionMarksIndex	
+) {
 	if (particlesCollided[particleIndex]) {
-		auto collisionsToResolve = mergeCollisionsRows(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, particleIndex, particleIndex, particleCount) == COLLISION_FOUND; 
+		// printf(" collisionMarksIndex '%llu' ", *collisionMarksIndex);
+		auto collisionsToResolve = mergeCollisionsRows(
+			collisionMarks, 
+			collisionMarksIndex, 
+			maxIntsAllocatable, 
+			particlesCollided, 
+			particleIndex, 
+			particleIndex,
+			particleCount,
+			maxCollisionMarksIndex
+		) == COLLISION_FOUND; 
 		if (collisionsToResolve) {
 			auto p1 = particles[particleIndex];
-			for(unsigned long long i = 0; i < *collisionMarksIndex; i += 2) {
-				if (collisionMarks[i] == particleIndex) {
-					int particleCollidedIndex = collisionMarks[i + 1];
+			for(unsigned long long i = 0; i < thisBetweenParticleCount; i += 2) {
+				if (collisionMarks[betweenParticlesOffset + i] == particleIndex) {
+					int particleCollidedIndex = collisionMarks[betweenParticlesOffset + i + 1];
 					auto p2 = particles[particleCollidedIndex];
 					if (p1->particlesExist(p2)) {
 						(*collisionResolverGpu)->resolve(p1, p2);
@@ -173,16 +267,37 @@ void resolveCollidedParticlesHelper(int particleIndex, Particle** particles, int
 
 #if defined(USE_GPU) 
 	__device__
-	void getCollidedParticlesHelper(unsigned long long lowerTriangularIndex, Particle** particles, int* collisionMarks, unsigned long long* collisionMarksIndex, unsigned long long maxIntsAllocatable, bool* particlesCollided, CollisionDetector** collisionDetectorGpu) {
+	void getCollidedParticlesHelper(
+		unsigned long long lowerTriangularIndex, 
+		Particle** particles, 
+		int* collisionMarks, 
+		unsigned long long* collisionMarksIndex, 
+		unsigned long long maxIntsAllocatable, 
+		bool* particlesCollided, 
+		CollisionDetector** collisionDetectorGpu,
+		const long long maxCollisionMarksIndex
+	) {
 		unsigned long long x, y;
 		MatrixMaths::getLowerTriangularCoordinates(lowerTriangularIndex, &x, &y);
 		auto p1 = particles[x];
 		auto p2 = particles[y];	
-		if (p1->particlesExist(p2) && (*collisionDetectorGpu)->isCollision(p1, p2)) {		
-			bool collisionMarked = markCollision(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, (int)y, (int)x);
-			if (!collisionMarked) {
-				printf("getCollidedParticlesHelper: collisionMarks overflow\n");
-			}
+		auto actualCollisionMarksIndex = *collisionMarksIndex;
+		if (
+			actualCollisionMarksIndex < maxCollisionMarksIndex && 
+			p1->particlesExist(p2) && 
+			(*collisionDetectorGpu)->isCollision(p1, p2)
+		) {		
+			bool collisionMarked = markCollision(
+				collisionMarks, 
+				collisionMarksIndex,
+				maxIntsAllocatable, 
+				particlesCollided, 
+				(int)y, 
+				(int)x
+			);
+			// if (!collisionMarked) {
+			// 	printf("getCollidedParticlesHelper: collisionMarks overflow\n");
+			// }
 		}
 	}
 #endif
