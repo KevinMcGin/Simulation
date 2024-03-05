@@ -13,7 +13,7 @@
 
 // revisit these limits; stop all processes if limit is reached so that maxCollisionMarksIndex can be reduced
 const int MAX_MERGE_COLLISION_RUNS = 5;
-const int MAX_COLLISIONS_PER_PARTICLE = 100;
+const int MAX_COLLISIONS_PER_PARTICLE = 5;
 
 #if defined(USE_GPU) 
 	__device__
@@ -27,6 +27,7 @@ MergeStatus mergeCollisionsRows(
 	int particleIndex2, 
 	int particleCount,
 	const long long maxCollisionMarksIndex,
+	bool* limitReached,
 	int runCount = 0
 );
 #if defined(USE_GPU) 
@@ -42,6 +43,7 @@ MergeStatus mergeCollisionsColumns(
 	int particleIndex2, 
 	int particleCount,
 	const long long maxCollisionMarksIndex,
+	bool* limitReached,
 	int runCount = 0
 );
 
@@ -108,10 +110,11 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 		int particleIndex2, 
 		int particleCount,
 		const long long maxCollisionMarksIndex, 
+		bool* limitReached,
 		int runCount
 	) {
 		int collisionsFound = 0;
-		if (!particlesCollided[particleIndex2] || (runCount > 0 && particleIndex1 == particleIndex2) || runCount >= MAX_MERGE_COLLISION_RUNS) {
+		if (*limitReached || !particlesCollided[particleIndex2] || (runCount > 0 && particleIndex1 == particleIndex2) || runCount >= MAX_MERGE_COLLISION_RUNS) {
 			return NO_COLLISION_FOUND;
 		}
 		bool collisionsToResolve = false;
@@ -124,6 +127,7 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 			particleIndex2, 
 			particleCount,
 			maxCollisionMarksIndex, 
+			limitReached,
 			runCount + 1
 		);
 		switch(mergeStatus) {
@@ -136,7 +140,8 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 		while(collidedParticleIndex >= 0) {
 			if (runCount == 0 || !getParticlesCollidedByIndex(collisionMarks, *collisionMarksIndex, particleIndex1, collidedParticleIndex)) {
 				if (++collisionsFound >= MAX_COLLISIONS_PER_PARTICLE) {
-					return COLLISION_FOUND;
+					*limitReached = true;
+					return NO_COLLISION_FOUND;
 				}
 				if (*collisionMarksIndex < maxCollisionMarksIndex && runCount > 0 && particleIndex1 != collidedParticleIndex) {
 					bool collisionMarked = markCollision(collisionMarks, collisionMarksIndex, maxIntsAllocatable, particlesCollided, particleIndex1, collidedParticleIndex);
@@ -154,6 +159,7 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 					collidedParticleIndex, 
 					particleCount, 
 					maxCollisionMarksIndex,
+					limitReached,
 					runCount + 1
 				);
 				switch(mergeStatus) {
@@ -177,10 +183,11 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 		int particleIndex2, 
 		int particleCount,
 		const long long maxCollisionMarksIndex, 
+		bool* limitReached,
 		int runCount
 	) {
 		int collisionsFound = 0;
-		if (runCount >= MAX_MERGE_COLLISION_RUNS) {
+		if (*limitReached || runCount >= MAX_MERGE_COLLISION_RUNS) {
 			return NO_COLLISION_FOUND;
 		}
 		bool collisionsToResolve = false;
@@ -208,6 +215,7 @@ bool getParticlesCollidedByIndex(int* collisionMarks, unsigned long long collisi
 						collidedParticleIndex, 
 						particleCount, 
 						maxCollisionMarksIndex,
+						limitReached,
 						runCount + 1
 					);
 					switch(mergeStatus) {
@@ -236,7 +244,8 @@ void resolveCollidedParticlesHelper(
 	int particleCount,		
 	unsigned long long betweenParticlesOffset,
 	unsigned long long thisBetweenParticleCount,
-	const long long maxCollisionMarksIndex	
+	const long long maxCollisionMarksIndex,	
+	bool* limitReached
 ) {
 	if (particlesCollided[particleIndex]) {
 		// printf(" collisionMarksIndex '%llu' ", *collisionMarksIndex);
@@ -248,7 +257,8 @@ void resolveCollidedParticlesHelper(
 			particleIndex, 
 			particleIndex,
 			particleCount,
-			maxCollisionMarksIndex
+			maxCollisionMarksIndex,
+			limitReached
 		) == COLLISION_FOUND; 
 		if (collisionsToResolve) {
 			auto p1 = particles[particleIndex];

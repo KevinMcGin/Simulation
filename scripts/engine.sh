@@ -66,6 +66,8 @@ if [ $? -ne 0 ]; then echo -e "\nengine failed"; exit 1; fi
 if [ $render = 'true' ]
 then
    cd scripts
+   echo "Press a key for render"
+   read -s -n 1
    ./render.sh -n -b $build_folder -i $output_file 
    if [ $? -ne 0 ]; then exit 1; fi
 fi

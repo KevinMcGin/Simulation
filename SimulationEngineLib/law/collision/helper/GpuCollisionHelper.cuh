@@ -26,7 +26,8 @@ void resolveCollidedParticlesHelper(
    int particleCount,		
    unsigned long long betweenParticlesOffset,
    unsigned long long thisBetweenParticleCount,
-		const long long maxCollisionMarksIndex
+   const long long maxCollisionMarksIndex,	
+	bool* limitReached
 );
 #if defined(USE_GPU)
    __device__
