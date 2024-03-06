@@ -8,6 +8,7 @@ SimulationOutputJson::SimulationOutputJson(const char* outputFile) : SimulationO
 
 SimulationOutputJson::~SimulationOutputJson() {
 	appendToBuffer("}");
+	writeToBuffer();
 }
 
 void SimulationOutputJson::output(std::vector<Particle*> particles, unsigned long time) {

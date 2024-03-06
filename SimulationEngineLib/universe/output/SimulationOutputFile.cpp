@@ -14,9 +14,13 @@ SimulationOutputFile::~SimulationOutputFile() {
 void SimulationOutputFile::writeToBufferMaybe() {
 	auto bufferLength = buffer.length();
 	if (bufferLength >= maxBufferLength) {
-		myfile << buffer;
-		buffer = "";
+		writeToBuffer();
 	}
+}
+
+void SimulationOutputFile::writeToBuffer() {
+	myfile << buffer;
+	buffer = "";
 }
 
 void SimulationOutputFile::appendToBuffer(std::string stringToAppend) {
