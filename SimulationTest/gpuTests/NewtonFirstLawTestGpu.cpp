@@ -1,6 +1,6 @@
 #include  <gtest/gtest.h>
 #include "NewtonFirstLawTestHelper.h"
-#include "law/newtonFirstLaw/NewtonFirstLaw.h"
+#include "cpp/law/newtonFirstLaw/NewtonFirstLaw.h"
 #include "LawHelper.h"
 
 TEST(NewtonFirstLawTest, ParticleMoveGpu) {

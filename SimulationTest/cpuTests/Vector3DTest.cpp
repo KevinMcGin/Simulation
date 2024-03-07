@@ -1,5 +1,5 @@
 #include  "gtest/gtest.h"
-#include "particle/model/Vector3D.cuh"
+#include "shared/particle/model/Vector3D.cuh"
 #include <cmath>
 #include <sstream>
 

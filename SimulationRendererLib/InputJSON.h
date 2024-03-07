@@ -9,7 +9,7 @@
 
 using namespace rapidjson;
 
-// #include "particle/Particle.cuh"
+// #include "shared/particle/Particle.cuh"
 
 
 class InputJson {

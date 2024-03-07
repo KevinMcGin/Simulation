@@ -1,6 +1,6 @@
 #include  <gtest/gtest.h>
 #include "LawHelper.h"
-#include "particle/helper/ParticlesHelper.h"
+#include "cpp/particle/helper/ParticlesHelper.h"
 #include "ParticleTestHelper.h"
 
 #include <math.h>

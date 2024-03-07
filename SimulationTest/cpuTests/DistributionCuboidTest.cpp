@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "distribution/DistributionCuboid.h"
+#include "cpp/distribution/DistributionCuboid.h"
 
 TEST(DistributionCuboidTest, ParticleInCuboid) {
 	Vector3D<float> mean = { 1,-1,1, };

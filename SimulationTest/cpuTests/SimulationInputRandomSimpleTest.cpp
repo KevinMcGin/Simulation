@@ -1,10 +1,10 @@
 #include  <gtest/gtest.h>
-#include "universe/input/SimulationInputRandomSimple.h"
-#include "distribution/ParticleDistribution.h"
-#include "distribution/ParticleDistributionSimple.h"
-#include "distribution/DistributionMassDensity.h"
-#include "distribution/DistributionValue.h"
-#include "distribution/DistributionSphere.h"
+#include "cpp/universe/input/SimulationInputRandomSimple.h"
+#include "cpp/distribution/ParticleDistribution.h"
+#include "cpp/distribution/ParticleDistributionSimple.h"
+#include "cpp/distribution/DistributionMassDensity.h"
+#include "cpp/distribution/DistributionValue.h"
+#include "cpp/distribution/DistributionSphere.h"
 
 TEST(SimulationInputRandomSimpleTest, input) {
     std::vector<unsigned long> particleCounts = { 10 };

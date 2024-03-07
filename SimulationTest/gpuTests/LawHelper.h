@@ -1,7 +1,7 @@
 #pragma once
-#include "gpuHelper/GpuDataController.cuh"
-#include "particle/ParticleSimple.h"
-#include "law/Law.h"
+#include "cuda/gpuHelper/GpuDataController.cuh"
+#include "cpp/particle/ParticleSimple.h"
+#include "cpp/law/Law.h"
 
 class LawHelper {
 public:

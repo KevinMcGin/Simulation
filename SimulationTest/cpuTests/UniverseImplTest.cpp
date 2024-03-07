@@ -1,9 +1,9 @@
 #include  <gtest/gtest.h>
-#include "universe/UniverseImpl.h"
-#include "law/newtonFirstLaw/NewtonFirstLaw.h"
-#include "law/gravity/NewtonGravity.h"
-#include "universe/input/SimulationInputSimple.h"
-#include "universe/output/SimulationOutputPrint.h"
+#include "cpp/universe/UniverseImpl.h"
+#include "cpp/law/newtonFirstLaw/NewtonFirstLaw.h"
+#include "cpp/law/gravity/NewtonGravity.h"
+#include "cpp/universe/input/SimulationInputSimple.h"
+#include "cpp/universe/output/SimulationOutputPrint.h"
 
 TEST(UniverseImplTest, UniverseRuns) {
 	auto input = std::make_shared<SimulationInputSimple>();

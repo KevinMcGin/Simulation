@@ -1,6 +1,6 @@
 #include  <gtest/gtest.h>
-#include "law/collision/detector/CollisionDetectorSimple.cuh"
-#include "particle/ParticleSimple.h"
+#include "shared/law/collision/detector/CollisionDetectorSimple.cuh"
+#include "cpp/particle/ParticleSimple.h"
 
 #include <vector>
 

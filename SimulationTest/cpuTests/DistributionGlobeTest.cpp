@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "distribution/DistributionGlobe.h"
+#include "cpp/distribution/DistributionGlobe.h"
 
 TEST(DistributionGlobeTest, ParticleInGlobe) {
 	//TODO transform test from testing a cuboid to a globe

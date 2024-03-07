@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "distribution/Distribution.h"
+#include "cpp/distribution/Distribution.h"
 
 TEST(DistributionTest, RandomTest) {
 	auto value = Distribution::random(0.0, 1.0);

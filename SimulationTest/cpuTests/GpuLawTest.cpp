@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "law/GpuLaw.h"
+#include "cpp/law/GpuLaw.h"
 
 TEST(GpuLawTest, GpuLaw) {
     auto gpuLaw = GpuLaw();

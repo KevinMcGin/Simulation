@@ -1,6 +1,6 @@
 #include  "gtest/gtest.h"
-#include "universe/output/SimulationOutputCsv.h"
-#include "particle/ParticleSimple.h"
+#include "cpp/universe/output/SimulationOutputCsv.h"
+#include "cpp/particle/ParticleSimple.h"
 
 TEST(SimulationOutputCsvTest, SimulationOutputtedToCsv) {
 	SimulationOutputCsv simulationOutputCsv("simulation_output/SimulationOutputCsvTest_SimulationOutputtedToCsv.json");
