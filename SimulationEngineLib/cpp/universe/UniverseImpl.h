@@ -1,8 +1,14 @@
 ﻿#pragma once
 #include "cpp/universe/Universe.h"
 #include "cpp/universe/input/SimulationInput.h"
-#include "cuda/gpuHelper/GpuDataController.cuh"
 #include "cpp/universe/UniverseTiming.h"
+#include "shared/particle/Particle.cuh"
+
+#if defined(USE_GPU)
+	#include "cuda/gpuHelper/GpuDataController.cuh"
+#else
+	#include "gpuMock/gpuHelper/GpuDataController.cuh"
+#endif
 
 #include <vector>
 

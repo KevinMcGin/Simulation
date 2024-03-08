@@ -7,7 +7,15 @@
 
 class Law {
 public:
-	Law(std::shared_ptr<CpuLaw> cpuLaw, std::shared_ptr<GpuLaw> gpuLaw);
+	Law(
+		std::string className,
+		std::shared_ptr<CpuLaw> cpuLaw, 
+		std::shared_ptr<GpuLaw> gpuLaw
+	);
 	std::shared_ptr<CpuLaw> cpuLaw;
 	std::shared_ptr<GpuLaw> gpuLaw;
+
+	std::string getClassName() { return className; }
+private:
+	std::string className = "Law";
 };

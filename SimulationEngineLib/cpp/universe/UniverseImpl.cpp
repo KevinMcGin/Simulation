@@ -51,7 +51,7 @@ void UniverseImpl::run() {
 			} else {
 				l->cpuLaw->run(particles);
 			}
-			universeTiming.updateSectionsTiming(l->gpuLaw->getClassName());
+			universeTiming.updateSectionsTiming(l->getClassName());
 			universeTiming.updateSectionsTiming("Printing");
 			lawsRan++;
 		}

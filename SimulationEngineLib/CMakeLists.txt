@@ -1,16 +1,21 @@
-﻿file(GLOB_RECURSE  cpp_headers CONFIGURE_DEPENDS "*.h")
-file(GLOB_RECURSE  cpp_source CONFIGURE_DEPENDS "*.cpp")
-file(GLOB_RECURSE  cu_headers CONFIGURE_DEPENDS "*.cuh")
-file(GLOB_RECURSE  cu_source CONFIGURE_DEPENDS "*.cu")
+﻿file(GLOB_RECURSE  cpp_headers CONFIGURE_DEPENDS "cpp/*/*.h")
+file(GLOB_RECURSE  cpp_source CONFIGURE_DEPENDS "cpp/*/*.cpp")
+file(GLOB_RECURSE  cu_shared_headers CONFIGURE_DEPENDS "shared/*/*.cuh")
+file(GLOB_RECURSE  cu_shared_source CONFIGURE_DEPENDS "shared/*/*.cu")
+file(GLOB_RECURSE  cu_headers CONFIGURE_DEPENDS "cuda/*/*.cuh")
+file(GLOB_RECURSE  cu_source CONFIGURE_DEPENDS "cuda/*/*.cu")
+file(GLOB_RECURSE  gpu_mock_headers CONFIGURE_DEPENDS "gpuMock/*/*.cuh")
+file(GLOB_RECURSE  gpu_mock_source CONFIGURE_DEPENDS "gpuMock/*/*.cu")
 
-if (NOT USE_GPU)
-  set_source_files_properties(${cu_headers} PROPERTIES LANGUAGE CXX)
-  set_source_files_properties(${cu_source} PROPERTIES LANGUAGE CXX)
+
+if (USE_GPU)
+  add_library(SimulationEngineLib STATIC ${cpp_source} ${cu_shared_source} ${cu_source} ${cpp_headers} ${cu_shared_headers} ${cu_headers})
+else()
+  add_library(SimulationEngineLib STATIC ${cpp_source} ${cu_shared_source}  ${gpu_mock_source} ${cpp_headers} ${cu_shared_headers} ${gpu_mock_headers}) 
+  set_source_files_properties(${cu_shared_headers} ${gpu_mock_headers} PROPERTIES LANGUAGE CXX)
+  set_source_files_properties(${cu_shared_source} ${gpu_mock_source} PROPERTIES LANGUAGE CXX)
   add_definitions("-xc++")
 endif()
-
-
-add_library(SimulationEngineLib STATIC ${cpp_source} ${cu_source} ${cpp_headers} ${cu_headers})
 
 target_include_directories(SimulationEngineLib
   PUBLIC

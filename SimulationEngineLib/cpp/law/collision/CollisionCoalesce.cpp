@@ -4,4 +4,8 @@
 
 
 CollisionCoalesce::CollisionCoalesce(bool useGpu) :
-	Collision(std::make_shared<CollisionDetectorSimple>(), std::make_shared<CollisionResolverCoalesce>(), useGpu) { }
+	Collision(
+		std::make_shared<CollisionDetectorSimple>(), 
+		std::make_shared<CollisionResolverCoalesce>(), 
+		useGpu
+	) {}

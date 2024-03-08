@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "shared/particle/Particle.cuh"
 
-
 class CollisionDetector {
 public:
 #if defined(USE_GPU)

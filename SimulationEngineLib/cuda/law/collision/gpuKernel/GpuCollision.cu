@@ -44,9 +44,9 @@
 
 GpuCollision::GpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver) : 
 	GpuLaw("Collision") {
-	cudaWithError->malloc((void**)&collisionDetectorGpu, sizeof(*collisionDetector));
-	cudaWithError->malloc((void**)&collisionResolverGpu, sizeof(*collisionResolver));
 	#if defined(USE_GPU) 
+		cudaWithError->malloc((void**)&collisionDetectorGpu, sizeof(*collisionDetector));
+		cudaWithError->malloc((void**)&collisionResolverGpu, sizeof(*collisionResolver));
 		cudaWithError->runKernel("setCollisionDetector", [&](unsigned int kernelSize) {
 			setCollisionDetector <<<1, 1>>> (collisionDetectorGpu, collisionDetector->getIndex());
 			setCollisionResolver <<<1, 1>>> (collisionResolverGpu, collisionResolver->getIndex());
@@ -55,8 +55,10 @@ GpuCollision::GpuCollision(std::shared_ptr<CollisionDetector> collisionDetector,
 }
 
 GpuCollision::~GpuCollision() {
-	cudaWithError->free(collisionDetectorGpu);
-	cudaWithError->free(collisionResolverGpu);
+	#if defined(USE_GPU) 
+		cudaWithError->free(collisionDetectorGpu);
+		cudaWithError->free(collisionResolverGpu);
+	#endif 
 }
 
 #if defined(USE_GPU) 
