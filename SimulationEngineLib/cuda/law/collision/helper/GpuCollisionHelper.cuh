@@ -1,7 +1,5 @@
 #pragma once
-#if defined(USE_GPU)
-    #include "cuda_runtime.h"
-#endif
+#include "cuda_runtime.h"
 #include "shared/particle/Particle.cuh"
 #include "cuda/law/collision/helper/GpuCollisionHelper.cuh"
 #include "shared/law/collision/resolver/CollisionResolver.cuh"
@@ -12,9 +10,7 @@
    enum MergeStatus { LOWER_COLLISION_FOUND, COLLISION_FOUND, NO_COLLISION_FOUND };
 #endif
  
-#if defined(USE_GPU)
-   __device__
-#endif
+__device__
 void resolveCollidedParticlesHelper(
    int particleIndex, 
    Particle** particles, 
@@ -29,9 +25,8 @@ void resolveCollidedParticlesHelper(
    const long long maxCollisionMarksIndex,	
 	bool* limitReached
 );
-#if defined(USE_GPU)
-   __device__
-#endif
+
+__device__
 void getCollidedParticlesHelper(
    unsigned long long lowerTriangularIndex, 
    Particle** particles, 

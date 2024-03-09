@@ -6,9 +6,7 @@
 
 #include <cmath>
 
-#if defined(USE_GPU) 
-	__device__
-#endif
+__device__
 void radiusComponentKernelHelper(unsigned long long betweenParticlesTriangularIndex, Particle** particles, Vector3D<float>* accelerations, unsigned long long betweenParticlesTriangularCount, float G, unsigned long long vectorsProcessedTriangular) {
 	unsigned long long particleIndex1, particleIndex2;
 	MatrixMaths::getLowerTriangularCoordinates(betweenParticlesTriangularIndex + vectorsProcessedTriangular, &particleIndex1, &particleIndex2);
@@ -19,9 +17,7 @@ void radiusComponentKernelHelper(unsigned long long betweenParticlesTriangularIn
 	 }
 }
 
-#if defined(USE_GPU) 
-	__device__
-#endif
+__device__
 void addAccelerationsKernelLowerHelper(unsigned long long particleIndex1, Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular) {
 	if (particleIndex1 < particleIndex2) {
 		if (particles[particleIndex1]->particlesExist(particles[particleIndex2])) {
@@ -31,9 +27,7 @@ void addAccelerationsKernelLowerHelper(unsigned long long particleIndex1, Partic
 	}
 }
 
-#if defined(USE_GPU) 
-	__device__
-#endif
+__device__
 void addAccelerationsKernelUpperHelper(unsigned long long particleIndex1Local, Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount) {
 	unsigned long long particleIndex1 = particleIndex1Local + particleIndex2 + 1 + xOffset;
 	if (particleIndex1 < particleCount) {
