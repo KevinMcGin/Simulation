@@ -22,6 +22,10 @@ InputJson::InputJson(const char* fileName):
 		char modeArray[] = "rb";
 		char* mode = modeArray;
 		fopen_s(&fp, fileName, mode);
+	#elif defined(APPLE)
+		char modeArray[] = "rb";
+		char* mode = modeArray;
+		fp = fopen(fileName, mode);
 	#else
 		char modeArray[] = "r";
 		char* mode = modeArray;
