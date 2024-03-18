@@ -32,7 +32,10 @@ ParticleInput::ParticleInput(std::vector<std::string> headers) :
 }
 
 void ParticleInput::set(Particle* particle, std::vector<std::string> values) {
-    for (int i = 0; i < inputsInUse.size(); i++) {
+    if (values.size() > inputsInUse.size()) {
+        throw std::invalid_argument("ParticleInput: Too many values for headers");
+    }
+    for (int i = 0; i < values.size(); i++) {
         inputsInUse[i]->set(particle, values[i]);
     }
 }
