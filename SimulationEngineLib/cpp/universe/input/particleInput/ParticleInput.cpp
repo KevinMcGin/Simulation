@@ -22,16 +22,12 @@ ParticleInput::ParticleInput(std::vector<std::string> headers) :
     inputsInUse({}) {
 
     for (const auto& header : headers) {
-        std::cout << header << std::endl;
         ParticleInputField* input = findInputField(header);
         if (input != nullptr) {
             inputsInUse.push_back(input);
         } else {
             throw std::invalid_argument("ParticleInput: Header not found");
         }
-    }
-    for (const auto& input : inputsInUse) {
-        std::cout << input->getHeader() << std::endl;
     }
 }
 
