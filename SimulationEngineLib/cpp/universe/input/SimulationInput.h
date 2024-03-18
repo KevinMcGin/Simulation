@@ -4,6 +4,6 @@
 #include <vector>
 
 class SimulationInput {
-	public:
-		virtual std::vector<Particle*> input() = 0;
+public:
+	virtual std::vector<Particle*> input() = 0;
 };
