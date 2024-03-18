@@ -2,5 +2,5 @@
 
 class PhysicalConstants {
 public:
-    static constexpr float GRAVITATIONAL_CONSTANT = 0.00000000006673f;
+    static constexpr float GRAVITATIONAL_CONSTANT = 6.6743e-11;
 };
