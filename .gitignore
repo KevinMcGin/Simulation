@@ -4,4 +4,3 @@ builds/*
 !builds/.gitkeep
 config/**/*.config
 
-.vscode/
