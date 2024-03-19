@@ -84,7 +84,7 @@ void display_scene() {
     int i = 0;
     for(const auto& p : particles->GetArray()) {
         GLfloat scale = 1.0 / 1.0;
-        GLfloat pScale = 1.0 / 500000000000.0;
+        GLfloat pScale = 1.0 / 700000000000.0;
         GLfloat pR = p["r"].GetFloat();
         float radius;
         if (i == 0)
