@@ -21,7 +21,7 @@ public:
 	#if defined(USE_GPU)
 	__device__ __host__
 	#endif
-	void advance();
+	void advance(unsigned int deltaTime);
 		#if defined(USE_GPU)
 			__device__ 
 		#endif

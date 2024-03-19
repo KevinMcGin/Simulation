@@ -3,8 +3,10 @@
 #if defined(USE_GPU)
    __device__ __host__
 #endif
-void Particle::advance() {
-	position = position + velocity;
+void Particle::advance(
+	unsigned int deltaTime
+) {
+	position = position + velocity * deltaTime;
 }
 
 

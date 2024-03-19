@@ -7,6 +7,7 @@ generator_param=''
 toolset_version=''
 ignore_output='true'
 gpu_flag='-DUSE_GPU=OFF'
+opengl_renderer_flag='-DUSE_OPENGL_RENDERER=OFF'
 
 print_usage() {
   printf "Usage: $0 [-f <specify folder to build to> -d <delete build folder before build> -v <verbose output>]"
@@ -52,11 +53,17 @@ else
   gpu_flag='-DUSE_GPU=OFF'
 fi
 
+if [ $USE_OPENGL_RENDERER = 'true' ]; then 
+  opengl_renderer_flag='-DUSE_OPENGL_RENDERER=ON'
+else
+  opengl_renderer_flag='-DUSE_OPENGL_RENDERER=OFF'
+fi
+
 echo -e "\ncompiling";
 if [ $ignore_output = 'true' ]; then 
-  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" "$gpu_flag" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON  > /dev/null 2>&1
+  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" "$gpu_flag" "$opengl_renderer_flag" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON  > /dev/null 2>&1
 else
-  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" "$gpu_flag" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+  cmake -S. -B$build_folder "$architecture_param" "$generator_param" "$toolset_version" "$gpu_flag" "$opengl_renderer_flag" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 fi
 
 if [ $? -ne 0 ]; then echo -e "\ncompile failed"; exit 1; fi

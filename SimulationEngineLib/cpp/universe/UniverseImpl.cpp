@@ -36,7 +36,7 @@ void UniverseImpl::run() {
 		gpuDataController->putParticlesOnDevice(particles, true);
 		universeTiming.updateSectionsTiming("Data to GPU");
 	}
-	for (unsigned long i = 0; i < endTime; i += deltaTime) {
+	for (unsigned long i = 0; i < endTime; i += 1) {
 		universeTiming.printPercentComplete(i, false);
 		if (useGpu == TRUE) {
 			if (particleDeleted) {
@@ -47,9 +47,16 @@ void UniverseImpl::run() {
 		particleDeleted = false;
 		for (const auto& l : laws) {
 			if (useGpu == TRUE) {
-				l->gpuLaw->run(gpuDataController->get_td_par(), gpuDataController->getParticleCount());
+				l->gpuLaw->run(
+					gpuDataController->get_td_par(), 
+					gpuDataController->getParticleCount(),
+					deltaTime
+				);
 			} else {
-				l->cpuLaw->run(particles);
+				l->cpuLaw->run(
+					particles,
+					deltaTime
+				);
 			}
 			universeTiming.updateSectionsTiming(l->getClassName());
 			universeTiming.updateSectionsTiming("Printing");

@@ -114,7 +114,11 @@ void resolveCollidedParticles(
 	} 
 }
 
-void GpuCollision::run(Particle** particles, int particleCount) {
+void GpuCollision::run(
+	Particle** particles, 
+	int particleCount,
+	unsigned int deltaTime
+) {
 	unsigned long long betweenParticlesPairsCount = ((unsigned long long)particleCount-1)*particleCount;
 	unsigned long long betweenParticlesCount = betweenParticlesPairsCount/2;
 

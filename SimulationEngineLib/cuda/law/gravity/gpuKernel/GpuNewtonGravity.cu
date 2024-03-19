@@ -19,15 +19,15 @@ void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations,
 }
 
 __global__
-void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular) {
+void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, unsigned int deltaTime) {
 	unsigned long long particleIndex1 = threadIdx.x + blockIdx.x*blockDim.x;
-	addAccelerationsKernelLowerHelper(particleIndex1, particles, accelerations, particleIndex2, vectorsProcessedTriangular);
+	addAccelerationsKernelLowerHelper(particleIndex1, particles, accelerations, particleIndex2, vectorsProcessedTriangular, deltaTime);
 } 
 
 __global__
-void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount) {
+void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, unsigned int deltaTime) {
 	unsigned long long particleIndex1 = threadIdx.x + blockIdx.x*blockDim.x;
-	addAccelerationsKernelUpperHelper(particleIndex1, particles, accelerations, xOffset, particleIndex2, particleCount, vectorsProcessedTriangular, betweenParticlesTriangularCount);
+	addAccelerationsKernelUpperHelper(particleIndex1, particles, accelerations, xOffset, particleIndex2, particleCount, vectorsProcessedTriangular, betweenParticlesTriangularCount, deltaTime);
 }
 
 unsigned long long getRowsFromRowsAndColsCountMinusIdentity(unsigned long long rowsAndColsCount) {
@@ -38,7 +38,11 @@ unsigned long long getRowsAndColsCountMinusIdentityFromRows(unsigned long long r
 	return (rowsAndColsCountMinusIdentityowsAndColsCount - 1) * rowsAndColsCountMinusIdentityowsAndColsCount;
 }
 
-void GpuNewtonGravity::run(Particle** particles, int particleCount) {
+void GpuNewtonGravity::run(
+	Particle** particles, 
+	int particleCount,
+	unsigned int deltaTime
+) {
 	unsigned long long betweenParticlesCount = ((unsigned long long)particleCount-1)*particleCount;
 	Vector3D<float>* accelerations = NULL;
 	
@@ -80,7 +84,8 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 					particleIndex, 
 					particlesProcessed + particlesProcessable, 
 					vectorsProcessed / 2, 
-					vectorsProcessableTriangular
+					vectorsProcessableTriangular,
+					deltaTime
 				);				
 			});
 		}
@@ -90,7 +95,8 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 					particles, 
 					accelerations, 
 					particleIndex, 
-					vectorsProcessed / 2
+					vectorsProcessed / 2,
+					deltaTime
 				);				
 			});
 			cudaWithError->runKernel("addAccelerationsKernelUpper2", [&](unsigned int kernelSize) {
@@ -101,7 +107,8 @@ void GpuNewtonGravity::run(Particle** particles, int particleCount) {
 					particleIndex, 
 					particlesProcessed + particlesProcessable, 
 					vectorsProcessed / 2, 
-					vectorsProcessableTriangular
+					vectorsProcessableTriangular,
+					deltaTime
 				);				
 			});
 		}

@@ -1,7 +1,7 @@
 #!/bin/bash
 build_folder='build'
 config_file='engine.config'
-output_file='simulation_output.csv'
+output_file='simulation_output.json'
 no_compile='false'
 render='false'
 verbose=''

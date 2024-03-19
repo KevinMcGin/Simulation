@@ -7,12 +7,13 @@ UniverseImplSimple::UniverseImplSimple(
 	std::shared_ptr<SimulationInput> input, 
 	std::shared_ptr<SimulationOutput> output, 
 	unsigned long endTime,  
+	unsigned int deltaTime,
 	Usage useGpu
 ) : UniverseImpl(
 	{}, 
 	input, 
 	output, 
-	1, 
+	deltaTime, 
 	endTime, 
 	useGpu
 ) {

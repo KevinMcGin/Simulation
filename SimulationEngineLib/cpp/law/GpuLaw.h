@@ -13,7 +13,11 @@ class GpuLaw {
 public:
 	GpuLaw(std::string className);
 	~GpuLaw();
-	virtual void run(Particle** td_par, int particleCount) {};
+	virtual void run(
+		Particle** td_par, 
+		int particleCount,
+		unsigned int deltaTime = 1
+	) {};
 	protected:
 		std::shared_ptr<CudaWithError> cudaWithError;
 };

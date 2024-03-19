@@ -3,5 +3,9 @@
 
 GpuNewtonFirstLaw::GpuNewtonFirstLaw() : GpuLaw("NewtonFirstLaw") { }
 
-void GpuNewtonFirstLaw::run(Particle** particles, int particleCount) {}
+void GpuNewtonFirstLaw::run(
+    Particle** particles, 
+    int particleCount,
+	unsigned int deltaTime
+) {}
  

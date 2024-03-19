@@ -7,7 +7,10 @@ CpuCollision::CpuCollision(std::shared_ptr<CollisionDetector> collisionDetector,
 	collisionDetector(collisionDetector),
 	collisionResolver(collisionResolver) { }
 
-void CpuCollision::run(std::vector<Particle*>& particles) {
+void CpuCollision::run(
+	std::vector<Particle*>& particles,
+	unsigned int deltaTime
+) {
 	// get particles that collided
 	std::vector<std::set<Particle*>*> particlesCollidedVector;
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {

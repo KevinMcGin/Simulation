@@ -8,5 +8,8 @@
 class CpuNewtonFirstLaw: public CpuLaw {
 public:
 	CpuNewtonFirstLaw();
-	virtual void run(std::vector<Particle*>& particles);
+	virtual void run(
+		std::vector<Particle*>& particles,
+		unsigned int deltaTime
+	);
 };

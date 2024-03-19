@@ -8,5 +8,9 @@
 class GpuNewtonGravity: public GpuLaw {
 public:
 	GpuNewtonGravity(float G);
-	void run(Particle** particles, int particleCount) override;
+	void run(
+		Particle** particles, 
+		int particleCount,
+		unsigned int deltaTime
+	) override;
 };

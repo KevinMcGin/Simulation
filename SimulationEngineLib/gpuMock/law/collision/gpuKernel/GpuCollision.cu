@@ -5,4 +5,8 @@ GpuCollision::GpuCollision(std::shared_ptr<CollisionDetector> collisionDetector,
 
 GpuCollision::~GpuCollision() {}
 
-void GpuCollision::run(Particle** particles, int particleCount) {}
+void GpuCollision::run(
+	Particle** particles, 
+	int particleCount,
+	unsigned int deltaTime
+) {}

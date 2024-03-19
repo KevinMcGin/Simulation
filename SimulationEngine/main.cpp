@@ -1,5 +1,5 @@
 #include "cpp/universe/input/SimulationInputCsv.h"
-#include "cpp/universe/output/SimulationOutputCsv.h"
+#include "cpp/universe/output/SimulationOutputJson.h"
 #include "cpp/universe/UniverseImplSimple.h"
 #include "cpp/distribution/DistributionValue.h"
 #include "cpp/distribution/DistributionCircle.h"
@@ -124,9 +124,16 @@ int main(int argc, char *argv[]) {
 	auto input = std::make_shared<SimulationInputCsv>(
 		"config/input/particlesInput.csv"
 	);
-	auto output = std::make_shared<SimulationOutputCsv>(outputFile);
+	auto output = std::make_shared<SimulationOutputJson>(outputFile);
 
-	auto universe = std::make_unique<UniverseImplSimple>(input, output, endTime);
+	unsigned int deltaTime = 60 * 60 * 24 * 1;
+
+	auto universe = std::make_unique<UniverseImplSimple>(
+		input,
+		output, 
+		endTime,
+		deltaTime
+	);
 	universe->run();
 	return 0;
 }

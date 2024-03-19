@@ -29,8 +29,8 @@ int main(int argc, char** argv) {
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(800, 800);
-    glutInitWindowPosition(350, 200);
+    glutInitWindowSize(1920, 1080);
+    glutInitWindowPosition(0, 0);
     glutCreateWindow(name);
     timing.setTime();
     glClearColor(0., 0., 0., 1.);
@@ -38,19 +38,19 @@ int main(int argc, char** argv) {
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
-    GLfloat lightZeroPosition[] = {10.0f, 4.0f, 10.0f, 1.0f};
+    GLfloat lightZeroPosition[] = {0.0f, 0.0f, 10000.0f, 1.0f};
     GLfloat lightZeroColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
     glLightfv(GL_LIGHT0, GL_POSITION, lightZeroPosition);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor);
-    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.01f);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.008f);
+    // glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.01f);
+    // glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.008f);
     glEnable(GL_LIGHT0);
     glutDisplayFunc(display_scene);
     glutIdleFunc(display_scene);
     glMatrixMode(GL_PROJECTION);
-    gluPerspective(100., 1., 1., 40.);
+    gluPerspective(100., 1920.0/1080.0, 1., 40.);
     glMatrixMode(GL_MODELVIEW);
-    gluLookAt(0, 0, 10,
+    gluLookAt(0, 0, 5,
               0, 0, 0,
               0, 1, 0);
     glPushMatrix();
@@ -69,22 +69,34 @@ void display_scene() {
     timing.setTime();
     
     auto particles = input->input(elapsedFrames);
+    GLfloat color[][10] = {
+        {1.0, 1.0 , 1.0, 1.0},
+        {0.15, 0.15, 0.15, 1.0},
+        {0.7, 0.7, 0.7, 1.0},
+        {0.1875, 0.4180, 0.4141, 1.0},
+        {0.6016, 0.2422, 0.0039, 1.0},
+        {0.6914, 0.50, 0.2109, 1.0},
+        {0.6914, 0.5625, 0.2148, 1.0},
+        {0.3359, 0.5039, 0.6680, 1.0},
+        {0.2148, 0.4102, 0.5898, 1.0},
+        {1.0, 0.62 , 0.0, 1.0},
+    };
+    int i = 0;
     for(const auto& p : particles->GetArray()) {
-        GLfloat color[] = {1.0, 1.0, 0.0, 1.0};
-        float radius = p["r"].GetFloat();
-        if (p["r"].GetFloat() >= 0.1) {
-            // radius = 0.01f;
-            color[0] = 1.0;
-            color[1] = 0.0;
-            color[2] = 0.0;
-        }
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
+        GLfloat scale = 1.0 / 1.0;
+        GLfloat pScale = 1.0 / 500000000000.0;
+        GLfloat pR = p["r"].GetFloat();
+        float radius;
+        if (i == 0)
+            radius = pR * 0.03 / 696340000.0;
+        else 
+           radius = pR * 0.05 / 6371000.0;
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, color[i++]);
         glPushMatrix();
-        glTranslatef(p["pos"][0].GetFloat(), p["pos"][1].GetFloat(), p["pos"][2].GetFloat());
+        glTranslatef(p["pos"][0].GetFloat() * pScale, p["pos"][1].GetFloat() * pScale, p["pos"][2].GetFloat() * pScale);
         glColor3f(1, 1, 1);
-        GLfloat scale = 1.0;
         glScalef(scale,scale, scale);
-        glutSolidSphere(radius, 10, 10);
+        glutSolidSphere(radius, 50, 50);
         glPopMatrix();
     }
 
