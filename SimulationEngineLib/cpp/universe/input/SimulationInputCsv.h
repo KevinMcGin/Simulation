@@ -8,6 +8,7 @@
 class SimulationInputCsv: public SimulationInputFile {
 	public:
 		SimulationInputCsv(const char* fileName);
+		~SimulationInputCsv();
 		std::vector<Particle*> input();
 	private:
 		ParticleInput* particleInput;

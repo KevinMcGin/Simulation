@@ -20,11 +20,17 @@ SimulationInputCsv::SimulationInputCsv(const char* fileName) :
 		std::string line;
     	if (file.is_open()) {
 			std::getline(file, line, '\n');
-        	// file.close();
 		}
 		std::vector<std::string> headers = split(line, ',');
 		particleInput = new ParticleInput(headers);
 	}
+
+SimulationInputCsv::~SimulationInputCsv() {
+	if (file.is_open()) {
+		file.close();
+	}
+}
+
 
 std::vector<Particle*> SimulationInputCsv::input() {
 	std::vector<Particle*> particles;
