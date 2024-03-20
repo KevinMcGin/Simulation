@@ -26,11 +26,15 @@ const struct cag_option options[] = {
 		"s",
 		"seconds",
 		"Seconds of render"},	
+	{'d',
+		"d",
+		"delta-time",
+		"Delta time per frame of render, in seconds"},	
 	{'m',
 		"m",
 		"mean-mass",
 		"Mean mass of particles"},	
-		{'u',
+	{'u',
 		"u",
 		"mean-density",
 		"Mean density of particles"},	
@@ -63,6 +67,7 @@ int main(int argc, char *argv[]) {
 	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
 	unsigned int seconds = 10;
+	unsigned int deltaTime = 1;
 	float meanMass = 0.01f;	
 	float starMass = 50;
 	float outerRadius = 15;
@@ -84,6 +89,9 @@ int main(int argc, char *argv[]) {
 			case 's':
 				seconds = atoi(cag_option_get_value(&context));
 				break;
+			case 'd':
+				deltaTime = atoi(cag_option_get_value(&context));
+				break;			
 			case 'm':
 				meanMass = atof(cag_option_get_value(&context));
 				break;
@@ -105,7 +113,12 @@ int main(int argc, char *argv[]) {
 				return printUsage(EXIT_FAILURE);
 		}
 	}
-	unsigned int endTime = seconds * frameRate;
+	unsigned int deltaFrameRate = deltaTime / frameRate;
+	float frameRateTime = (float)frameRate / (float)deltaTime;
+	std::cout << seconds << " seconds" << std::endl;
+	std::cout << frameRate << " frame rate" << std::endl;
+	std::cout << deltaTime << " delta time" << std::endl;
+	unsigned int endTime = seconds * frameRateTime;
 
 	Vector3D<float> meanPosition = { 0, 0, 0 };
 	// auto massDistribution = std::make_shared<DistributionSimple>(meanMass, meanMass*0.9);
@@ -126,13 +139,11 @@ int main(int argc, char *argv[]) {
 	);
 	auto output = std::make_shared<SimulationOutputJson>(outputFile);
 
-	unsigned int deltaTime = 60 * 60 * 24 * 1;
-
 	auto universe = std::make_unique<UniverseImplSimple>(
 		input,
 		output, 
 		endTime,
-		deltaTime
+		deltaFrameRate
 	);
 	universe->run();
 	return 0;
