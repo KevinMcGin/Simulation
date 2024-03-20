@@ -30,7 +30,7 @@ add_dependencies(SimulationRendererLib rapidjson)
 target_include_directories(SimulationRendererLib
   PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}
-  "${CMAKE_CURRENT_BINARY_DIR}/vendor/rapidjson/src/rapidjson/include" 
+  ${CMAKE_CURRENT_BINARY_DIR}/vendor/rapidjson/src/rapidjson/include
 )
 
 target_link_libraries(SimulationRendererLib
