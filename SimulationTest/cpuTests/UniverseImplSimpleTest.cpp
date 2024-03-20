@@ -8,11 +8,10 @@
 TEST(UniverseImplSimpleTest, UniverseRuns) {
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
-	//TODO: change delta time to non 1 value with required implementation and change in expects
-	UniverseImplSimple universe(input, output, 10, FALSE);
+	UniverseImplSimple universe(input, output, 100, 10, FALSE);
 	universe.run();
 	Vector3D<float> position1 = universe.particles.front()->position;
 	Vector3D<float> position2 = universe.particles.back()->position;
-	EXPECT_EQ(Vector3D<float>(10.99970817565918, 0.00042869150638580322, 0), position1);
-	EXPECT_EQ(Vector3D<float>(3.744336027011741e-06, 19.999950408935547, 0), position2);
+	EXPECT_EQ(Vector3D<float>(1001, 3.3596782600398001e-07, 0), position1);
+	EXPECT_EQ(Vector3D<float>(2.1543971051585231e-09, 1010, 0), position2);
 }
