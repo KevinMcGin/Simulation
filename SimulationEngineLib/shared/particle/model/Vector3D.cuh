@@ -12,16 +12,16 @@ class Vector3D {
 public:
 #if defined(USE_GPU)
    __device__ __host__
-#endif 
-Vector3D<T>(T x, T y, T z) :
+#endif
+inline Vector3D<T>(T x, T y, T z) :
 		x(x),
 		y(y),
 		z(z) { }
 #if defined(USE_GPU)
    __device__ __host__
 #endif 
-Vector3D<T>() { }
-	T x,y,z;
+inline Vector3D<T>() { }
+T x,y,z;
 
 #if defined(USE_GPU)
    __device__ __host__
