@@ -1,2 +1,3 @@
 USE_GPU=false
+USE_OPENGL_RENDERER=true
 BUILD_PATH_END=/bin/Debug
