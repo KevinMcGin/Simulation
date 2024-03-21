@@ -1,6 +1,6 @@
 #include  <gtest/gtest.h>
-#include "particle/helper/ParticlesHelper.h"
-#include "particle/ParticleSimple.h"
+#include "cpp/particle/helper/ParticlesHelper.h"
+#include "cpp/particle/ParticleSimple.h"
 
 TEST(ParticlesHelperTest, removeDeletedParticles) {
     std::vector<Particle*> particles = {

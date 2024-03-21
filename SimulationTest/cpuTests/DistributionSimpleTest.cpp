@@ -1,5 +1,5 @@
 #include  <gtest/gtest.h>
-#include "distribution/DistributionSimple.h"
+#include "cpp/distribution/DistributionSimple.h"
 
 TEST(DistributionSimpleTest, DistributionSimpleTest) {
 	DistributionSimple distribution(2, 1);

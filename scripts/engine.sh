@@ -27,7 +27,7 @@ print_usage() {
 while getopts 'b:f:o:nrv' flag; do
   case "${flag}" in
     b) build_folder="${OPTARG}" ;;
-    f) config_file="${OPTARG}" ;;
+    f) config_file="${OPTARG}.config" ;;
     n) no_compile='true' ;;
     o) output_file="${OPTARG}" ;;
     r) render='true' ;;
@@ -61,11 +61,14 @@ get_output_path $output_file
    --mean-density=${MEAN_DENSITY:-1000} \
    --star-mass=${STAR_MASS:-50} \
    --radius=${RADIUS:-15} \
-   --frame-rate=${FRAME_RATE:-60}
+   --frame-rate=${FRAME_RATE:-60} \
+   --delta-time=${DELTA_TIME:-1}
 if [ $? -ne 0 ]; then echo -e "\nengine failed"; exit 1; fi
 if [ $render = 'true' ]
 then
    cd scripts
+   echo "Press a key for render"
+   read -s -n 1
    ./render.sh -n -b $build_folder -i $output_file 
    if [ $? -ne 0 ]; then exit 1; fi
 fi

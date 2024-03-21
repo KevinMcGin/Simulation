@@ -1,6 +1,6 @@
 #include  <gtest/gtest.h>
-#include "law/gravity/NewtonGravity.h"
-#include "particle/ParticleSimple.h"
+#include "cpp/law/gravity/NewtonGravity.h"
+#include "cpp/particle/ParticleSimple.h"
 #include "NewtonGravityTestHelper.h"
 
 #include <vector>

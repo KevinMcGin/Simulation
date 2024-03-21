@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "SimulationEngine",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/build/bin/Debug/SimulationEngine.exe",
+            "args": ["--particle-count=20000 --frame-rate=1 --seconds=3 --mean-mass=0.01 --star-mass=500"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
+        },
+        {
+            "name": "SimulationTest",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/build/bin/Debug/SimulationTestCpu.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
+        },
+        {
+            "name": "SimulationRenderer",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/build/bin/Debug/SimulationRenderer.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
+        }
+    ]
+}

@@ -1,11 +1,11 @@
-#include "universe/input/SimulationInputRandomSimple.h"
-#include "universe/output/SimulationOutputJSON.h"
-#include "universe/UniverseImplSimple.h"
-#include "distribution/DistributionValue.h"
-#include "distribution/DistributionCircle.h"
-#include "distribution/DistributionMassDensity.h"
-#include "distribution/ParticleDistributionSimple.h"
-#include "distribution/ParticleDistributionDisk.h"
+#include "cpp/universe/input/SimulationInputCsv.h"
+#include "cpp/universe/output/SimulationOutputJson.h"
+#include "cpp/universe/UniverseImplSimple.h"
+#include "cpp/distribution/DistributionValue.h"
+#include "cpp/distribution/DistributionCircle.h"
+#include "cpp/distribution/DistributionMassDensity.h"
+#include "cpp/distribution/ParticleDistributionSimple.h"
+#include "cpp/distribution/ParticleDistributionDisk.h"
 #include "util/Timing.h"
 
 #include <cargs.h>
@@ -26,11 +26,15 @@ const struct cag_option options[] = {
 		"s",
 		"seconds",
 		"Seconds of render"},	
+	{'d',
+		"d",
+		"delta-time",
+		"Delta time per frame of render, in seconds"},	
 	{'m',
 		"m",
 		"mean-mass",
 		"Mean mass of particles"},	
-		{'u',
+	{'u',
 		"u",
 		"mean-density",
 		"Mean density of particles"},	
@@ -63,6 +67,7 @@ int main(int argc, char *argv[]) {
 	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
 	unsigned int seconds = 10;
+	unsigned int deltaTime = 1;
 	float meanMass = 0.01f;	
 	float starMass = 50;
 	float outerRadius = 15;
@@ -84,6 +89,9 @@ int main(int argc, char *argv[]) {
 			case 's':
 				seconds = atoi(cag_option_get_value(&context));
 				break;
+			case 'd':
+				deltaTime = atoi(cag_option_get_value(&context));
+				break;			
 			case 'm':
 				meanMass = atof(cag_option_get_value(&context));
 				break;
@@ -105,29 +113,38 @@ int main(int argc, char *argv[]) {
 				return printUsage(EXIT_FAILURE);
 		}
 	}
-	unsigned int endTime = seconds * frameRate;
+	unsigned int deltaFrameRate = deltaTime / frameRate;
+	float frameRateTime = (float)frameRate / (float)deltaTime;
+	std::cout << seconds << " seconds" << std::endl;
+	std::cout << frameRate << " frame rate" << std::endl;
+	std::cout << deltaTime << " delta time" << std::endl;
+	unsigned int endTime = seconds * frameRateTime;
 
 	Vector3D<float> meanPosition = { 0, 0, 0 };
-	auto massDistribution = std::make_shared<DistributionSimple>(meanMass, meanMass*0.9);
-	auto density = std::make_shared<DistributionValue>(meanDensity);
-	auto densityDistribution = std::make_shared<DistributionMassDensity>(massDistribution, density);
-	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(std::make_shared<DistributionValue>(starMass), density);
-	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
-	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
-	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D<float>(0, 0, 0), 0);
-	auto innerRadiusDistribution = std::make_shared<DistributionValue>(0);
-	auto outerRadiusDistribution = std::make_shared<DistributionValue>(outerRadius);
-	auto eccentricityDistribution = std::make_shared<DistributionValue>(1);
-	auto particleDistributionDisk = std::make_shared<ParticleDistributionDisk>(densityDistribution, starMass, meanPosition, 0, 0, false, innerRadiusDistribution, outerRadiusDistribution, eccentricityDistribution/*, angularVelocityDistribution*/);	
-	auto particleDistributionStar = std::make_shared<ParticleDistributionSimple>(distributionDensityStar, positionDistribution, velocityDistribution/*, angularVelocityDistribution*/);
+	// auto massDistribution = std::make_shared<DistributionSimple>(meanMass, meanMass*0.9);
+	// auto density = std::make_shared<DistributionValue>(meanDensity);
+	// auto densityDistribution = std::make_shared<DistributionMassDensity>(massDistribution, density);
+	// auto distributionDensityStar = std::make_shared<DistributionMassDensity>(std::make_shared<DistributionValue>(starMass), density);
+	// auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
+	// auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
+	// // auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D<float>(0, 0, 0), 0);
+	// auto innerRadiusDistribution = std::make_shared<DistributionValue>(0.5f);
+	// auto outerRadiusDistribution = std::make_shared<DistributionValue>(outerRadius);
+	// auto eccentricityDistribution = std::make_shared<DistributionValue>(1);
+	// auto particleDistributionDisk = std::make_shared<ParticleDistributionDisk>(densityDistribution, starMass, meanPosition, 0, 0, false, innerRadiusDistribution, outerRadiusDistribution, eccentricityDistribution/*, angularVelocityDistribution*/);	
+	// auto particleDistributionStar = std::make_shared<ParticleDistributionSimple>(distributionDensityStar, positionDistribution, velocityDistribution/*, angularVelocityDistribution*/);
 	
-	auto input = std::make_shared<SimulationInputRandomSimple>(
-		std::vector<unsigned long> { particleCount - 1, 1 }, 
-		std::vector<std::shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
+	auto input = std::make_shared<SimulationInputCsv>(
+		"config/input/particlesInput.csv"
 	);
-	auto output = std::make_shared<SimulationOutputJSON>(outputFile);
+	auto output = std::make_shared<SimulationOutputJson>(outputFile);
 
-	auto universe = std::make_unique<UniverseImplSimple>(input, output, endTime);
+	auto universe = std::make_unique<UniverseImplSimple>(
+		input,
+		output, 
+		endTime,
+		deltaFrameRate
+	);
 	universe->run();
 	return 0;
 }

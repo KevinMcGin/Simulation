@@ -1,6 +1,6 @@
 ﻿#include  <gtest/gtest.h>
-#include "law/newtonFirstLaw/NewtonFirstLaw.h"
-#include "particle/ParticleSimple.h"
+#include "cpp/law/newtonFirstLaw/NewtonFirstLaw.h"
+#include "cpp/particle/ParticleSimple.h"
 #include "NewtonFirstLawTestHelper.h"
 
 #include <vector>
