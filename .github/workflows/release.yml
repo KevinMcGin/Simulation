@@ -35,7 +35,7 @@ jobs:
             INSTALL_SCRIPT: windows.ps1
             build_params: "-A x64"
             asset_name: "simulation-windows.zip"
-            cuda: "12.3.0"
+            cuda: "12.3.2"
     defaults:
       run:
         shell: ${{ matrix.INSTALL_SHELL }}
