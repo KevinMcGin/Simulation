@@ -33,7 +33,7 @@ jobs:
           - os: windows-2019
             INSTALL_SHELL: powershell
             INSTALL_SCRIPT: windows.ps1
-            build_params: "-A x64"
+            build_params: "-g \"Visual Studio 16 2019\" -a x64"
             asset_name: "simulation-windows.zip"
             cuda: "12.3.2"
     defaults:
