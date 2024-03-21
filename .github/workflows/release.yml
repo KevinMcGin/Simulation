@@ -61,7 +61,7 @@ jobs:
       shell: bash
       run: | 
         cd scripts
-        ./compile.sh -v -p "${{ matrix.build_params }}"
+        ./compile.sh -v "${{ matrix.build_params }}"
 
     - name: Test CPU
       shell: bash
