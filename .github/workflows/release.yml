@@ -18,20 +18,24 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu--20.04
+          - os: ubuntu-20.04
             INSTALL_SHELL: bash
             INSTALL_SCRIPT: ubuntu.sh
-            cuda: "11.2"
+            cuda: "12.3"
             build_params: ""
             asset_name: "simulation-ubuntu.zip"
-          # - os: macos-latest
-          #   INSTALL_SHELL: bash
-          - os: windows-2016
+          - os: macos-latest
+            INSTALL_SHELL: bash
+            INSTALL_SCRIPT: macos.sh
+            build_params: ""
+            asset_name: "simulation-macos.zip"
+            cuda: "12.3"
+          - os: windows-2019
             INSTALL_SHELL: powershell
             INSTALL_SCRIPT: windows.ps1
             build_params: "-A x64"
             asset_name: "simulation-windows.zip"
-            cuda: "11.2.0"
+            cuda: "12.3.0"
     defaults:
       run:
         shell: ${{ matrix.INSTALL_SHELL }}
@@ -48,7 +52,7 @@ jobs:
 
     - name: Windows Pre Build
       shell: bash
-      if: matrix.os == 'windows-2016'
+      if: matrix.os == 'windows-2019'
       run: |
         rm config/project.config.example
         mv config/mvsc_project.config.example config/project.config.example
@@ -74,6 +78,13 @@ jobs:
     - name: Zip Build (Ubuntu)
       shell: bash
       if: matrix.os == 'ubuntu-20.04'
+      run: |
+        cd builds
+        zip -r ../build.zip build 
+
+    - name: Zip Build (Ubuntu)
+      shell: bash
+      if: matrix.os == 'macos-latest'
       run: |
         cd builds
         zip -r ../build.zip build 
