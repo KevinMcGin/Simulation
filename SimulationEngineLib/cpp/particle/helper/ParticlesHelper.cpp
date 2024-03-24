@@ -8,8 +8,9 @@ bool ParticlesHelper::removeDeletedParticles(std::vector<Particle*>& particles) 
             it = particles.erase(it);
             particleDeleted = true;
         }
-        else
+        else {
             ++it;
+        }
     }
     return particleDeleted;
 }

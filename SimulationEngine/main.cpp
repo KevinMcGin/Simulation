@@ -66,8 +66,8 @@ int printUsage(int exitStatus) {
 int main(int argc, char *argv[]) {
 	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
-	unsigned int seconds = 10;
-	unsigned int deltaTime = 1;
+	unsigned long seconds = 10;
+	unsigned long deltaTime = 1;
 	float meanMass = 0.01f;	
 	float starMass = 50;
 	float outerRadius = 15;
@@ -87,10 +87,10 @@ int main(int argc, char *argv[]) {
 				frameRate = atoi(cag_option_get_value(&context));
 				break;
 			case 's':
-				seconds = atoi(cag_option_get_value(&context));
+				seconds = atol(cag_option_get_value(&context));
 				break;
 			case 'd':
-				deltaTime = atoi(cag_option_get_value(&context));
+				deltaTime = atol(cag_option_get_value(&context));
 				break;			
 			case 'm':
 				meanMass = atof(cag_option_get_value(&context));
@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
 				return printUsage(EXIT_FAILURE);
 		}
 	}
-	unsigned int deltaFrameRate = deltaTime / frameRate;
+	unsigned long deltaFrameRate = deltaTime / frameRate;
 	float frameRateTime = (float)frameRate / (float)deltaTime;
 	std::cout << seconds << " seconds" << std::endl;
 	std::cout << frameRate << " frame rate" << std::endl;
