@@ -10,6 +10,8 @@ void CollisionResolverCoalesce::resolve(Particle* p1, Particle* p2) {
 	// p1->angularVelocity = getCoalesced(p1->mass, p2->mass, p1->angularVelocity, p2->angularVelocity);
 	p1->mass = p1->mass + p2->mass;
 	p2->deleted = true;
+	p2->radius = 0;
+	p2->mass = 0;
 }
 
 #if defined(USE_GPU)
