@@ -60,6 +60,7 @@ int main(int argc, char** argv) {
 }
 
 void display_scene() {
+    auto planets = false;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     float elapsedSeconds = timing.getTimeSeconds();
@@ -69,7 +70,7 @@ void display_scene() {
     timing.setTime();
     
     auto particles = input->input(elapsedFrames);
-    GLfloat color[][10] = {
+    GLfloat colors[][10] = {
         {1.0, 1.0 , 1.0, 1.0},
         {0.15, 0.15, 0.15, 1.0},
         {0.7, 0.7, 0.7, 1.0},
@@ -84,14 +85,23 @@ void display_scene() {
     int i = 0;
     for(const auto& p : particles->GetArray()) {
         GLfloat scale = 1.0 / 1.0;
-        GLfloat pScale = 1.0 / 700000000000.0;
+        GLfloat pScale = 1.0;
+        if (planets) {
+            pScale = 1.0 / 700000000000.0;
+        }
         GLfloat pR = p["r"].GetFloat();
-        float radius;
-        if (i == 0)
-            radius = pR * 0.03 / 696340000.0;
-        else 
-           radius = pR * 0.05 / 6371000.0;
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, color[i++]);
+        float radius = pR;
+        if (planets) {
+            if (i == 0)
+                radius = pR * 0.03 / 696340000.0;
+            else 
+                radius = pR * 0.05 / 6371000.0;
+        }
+        if (planets) {
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, colors[i++]);
+        } else {
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, colors[3]);
+        }
         glPushMatrix();
         glTranslatef(p["pos"][0].GetFloat() * pScale, p["pos"][1].GetFloat() * pScale, p["pos"][2].GetFloat() * pScale);
         glColor3f(1, 1, 1);
