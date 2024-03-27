@@ -44,6 +44,35 @@ void GpuDataController::getParticlesFromDevice(std::vector<Particle*>& particles
 	}
 }
 
+__global__
+static void deleteParticle(
+	Particle** particles,
+	int* particleCount
+) {
+	int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
+	if (particleIndex < *particleCount) { 
+		if (particles[particleIndex]->deleted) {
+			if (particleIndex + 1 < *particleCount) {
+				particles[particleIndex] = particles[*particleCount - 1];
+			}
+			particles[*particleCount] = nullptr;
+			(*particleCount)--;
+		}
+	} 
+}
+
+void GpuDataController::deleteParticlesOnDevice(
+	 Particle** particles,
+	 int particleCount
+) {
+	int blockSize = 1;
+	int numBlocks = (particleCount + blockSize - 1) / blockSize;
+	deleteParticle<<<numBlocks, blockSize>>>(particles, &particleCount);
+	cudaWithError->runKernel("advanceParticles", [&](unsigned int kernelSize) {
+		deleteParticle<<<numBlocks, blockSize>>>(particles, &particleCount);
+	});
+	
+}
 
 Particle** GpuDataController::get_td_par() { return td_par; }
 int GpuDataController::getParticleCount() { return particleCount; }

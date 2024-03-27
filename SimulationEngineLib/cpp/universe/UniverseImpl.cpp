@@ -42,6 +42,10 @@ void UniverseImpl::run() {
 			if (particleDeleted) {
 				gpuDataController->putParticlesOnDevice(particles);
 				universeTiming.updateSectionsTiming("Data to GPU");
+				gpuDataController->deleteParticlesOnDevice(
+					gpuDataController->get_td_par(),
+					gpuDataController->getParticleCount()
+				);
 			}
 		}
 		particleDeleted = false;

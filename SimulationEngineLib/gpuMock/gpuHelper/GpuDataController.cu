@@ -7,6 +7,11 @@
 
 	void GpuDataController::getParticlesFromDevice(std::vector<Particle*>& particles) {}
 
+	void GpuDataController::deleteParticlesOnDevice(
+		Particle** particles,
+	 	int particleCount
+	) {}
+
 	Particle** GpuDataController::get_td_par() { return nullptr; }
 	int GpuDataController::getParticleCount() { return NULL; }
 
