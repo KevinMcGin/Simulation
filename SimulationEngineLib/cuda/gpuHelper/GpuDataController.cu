@@ -38,9 +38,12 @@ void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, b
 }
 
 void GpuDataController::getParticlesFromDevice(std::vector<Particle*>& particles) {
-	cudaWithError.deviceSynchronize();
+	cudaWithError.deviceSynchronize("getParticlesFromDevice");
 	for(int i = 0; i < particleCount; i++) {
 		cudaWithError.memcpy(particles[i], d_par[i], sizeof(*particles[i]), cudaMemcpyDeviceToHost);
+	}
+	if (particleCount < particles.size()) {
+		particles.erase (particles.begin() + particleCount, particles.end());
 	}
 }
 
@@ -50,28 +53,36 @@ static void deleteParticle(
 	int* particleCount
 ) {
 	int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
+	printf("particleCount: %d", *particleCount);
 	if (particleIndex < *particleCount) { 
 		if (particles[particleIndex]->deleted) {
-			if (particleIndex + 1 < *particleCount) {
-				particles[particleIndex] = particles[*particleCount - 1];
+			int lastParticleIndex = *particleCount - 1;
+			printf("lastParticleIndex: %d", lastParticleIndex);
+			if (particleIndex < lastParticleIndex) {
+				// particles[particleIndex] = particles[lastParticleIndex];
 			}
-			particles[*particleCount] = nullptr;
+			// particles[lastParticleIndex] = nullptr;
 			(*particleCount)--;
 		}
 	} 
 }
 
-void GpuDataController::deleteParticlesOnDevice(
-	 Particle** particles,
-	 int particleCount
-) {
+void GpuDataController::deleteParticlesOnDevice() {
+	int* gpuParticleCount = NULL;
+	cudaWithError.malloc((void**)&gpuParticleCount, sizeof(particleCount));
+	cudaWithError.memcpy(gpuParticleCount, &particleCount, sizeof(particleCount), cudaMemcpyHostToDevice);
+
 	int blockSize = 1;
-	int numBlocks = (particleCount + blockSize - 1) / blockSize;
-	deleteParticle<<<numBlocks, blockSize>>>(particles, &particleCount);
-	cudaWithError.runKernel("advanceParticles", [&](unsigned int kernelSize) {
-		deleteParticle<<<numBlocks, blockSize>>>(particles, &particleCount);
+	int numBlocks = particleCount;
+
+	std::cout << "cpu: particleCount: " << particleCount;
+	cudaWithError.runKernel("deleteParticlesOnDevice", [&](unsigned int kernelSize) {
+		deleteParticle<<<numBlocks, blockSize>>>(td_par, gpuParticleCount);
 	});
 	
+	cudaWithError.memcpy(&particleCount, gpuParticleCount, sizeof(particleCount), cudaMemcpyDeviceToHost);
+	
+	cudaWithError.free(gpuParticleCount);
 }
 
 Particle** GpuDataController::get_td_par() { return td_par; }
