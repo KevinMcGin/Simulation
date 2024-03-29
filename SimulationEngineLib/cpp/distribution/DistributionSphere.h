@@ -3,8 +3,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath> 
 
-
-
 class DistributionSphere : public Distribution3D {
 public:
 	DistributionSphere(Vector3D<float> mean, float delta);

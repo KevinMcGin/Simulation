@@ -68,7 +68,7 @@ void GpuDataController::deleteParticlesOnDevice(
 	int blockSize = 1;
 	int numBlocks = (particleCount + blockSize - 1) / blockSize;
 	deleteParticle<<<numBlocks, blockSize>>>(particles, &particleCount);
-	cudaWithError->runKernel("advanceParticles", [&](unsigned int kernelSize) {
+	cudaWithError.runKernel("advanceParticles", [&](unsigned int kernelSize) {
 		deleteParticle<<<numBlocks, blockSize>>>(particles, &particleCount);
 	});
 	
