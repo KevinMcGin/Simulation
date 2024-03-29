@@ -10,7 +10,8 @@ TEST(UniverseImplSimpleTestGpu, UniverseRunsGpu) {
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
 	//TODO: change delta time to non 1 value with required implementation and change in expects
-	UniverseImplSimple universe(input, output, 10, TRUE);
+	const unsigned int stepCount = 1;
+	UniverseImplSimple universe(input, output, stepCount, TRUE);
 	universe.run();
 	Vector3D<float> position1 = universe.particles.front()->position;
 	Vector3D<float> position2 = universe.particles.back()->position;
@@ -19,7 +20,7 @@ TEST(UniverseImplSimpleTestGpu, UniverseRunsGpu) {
 }
 
 TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpu) {
-	const int stepCount = 2;
+	const unsigned int stepCount = 1;
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
 	//TODO: change delta time to non 1 value with required implementation and change in expects

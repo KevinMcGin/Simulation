@@ -20,6 +20,6 @@ UniverseImplSimple::UniverseImplSimple(
 	this->laws = { 
 		std::make_shared<CollisionCoalesce>(this->useGpu == TRUE),
 		std::make_shared<NewtonGravity>(),
-		std::make_shared<NewtonFirstLaw>()
+		std::make_shared<NewtonFirstLaw>(),
 	};
  }
