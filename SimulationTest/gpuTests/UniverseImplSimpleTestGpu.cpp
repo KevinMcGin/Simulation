@@ -6,7 +6,7 @@
 #include "cpp/universe/output/SimulationOutputPrint.h"
 #include "ParticleTestHelper.h"
 
-TEST(UniverseImplSimpleTest, UniverseRunsGpu) {
+TEST(UniverseImplSimpleTestGpu, UniverseRunsGpu) {
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
 	//TODO: change delta time to non 1 value with required implementation and change in expects
@@ -18,7 +18,7 @@ TEST(UniverseImplSimpleTest, UniverseRunsGpu) {
 	EXPECT_EQ(Vector3D<float>(3.744336027011741e-06, 19.999950408935547, 0), position2);
 }
 
-TEST(UniverseImplSimpleTest, UniverseCpuLikeGpu) {
+TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpu) {
 	const int stepCount = 2;
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
