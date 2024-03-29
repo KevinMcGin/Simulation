@@ -22,8 +22,8 @@ void GpuNewtonFirstLaw::run(
 ) {
 	cudaWithError->runKernel("advanceParticles", [&](unsigned int kernelSize) {
 		advanceParticles <<<1 + particleCount/kernelSize, kernelSize>>> (
-			particles, 
-			particleCount, 
+			particles,
+			particleCount,
 			deltaTime
 		);
 	});
