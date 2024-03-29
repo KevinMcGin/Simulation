@@ -9,23 +9,23 @@
 TEST(UniverseImplSimpleTestGpu, UniverseRunsGpu) {
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
-	//TODO: change delta time to non 1 value with required implementation and change in expects
 	const unsigned int stepCount = 1;
-	UniverseImplSimple universe(input, output, stepCount, TRUE);
+	const unsigned int deltaTime = 1;
+	UniverseImplSimple universe(input, output, stepCount, deltaTime, TRUE);
 	universe.run();
 	Vector3D<float> position1 = universe.particles.front()->position;
 	Vector3D<float> position2 = universe.particles.back()->position;
-	EXPECT_EQ(Vector3D<float>(10.99970817565918, 0.00042869150638580322, 0), position1);
-	EXPECT_EQ(Vector3D<float>(3.744336027011741e-06, 19.999950408935547, 0), position2);
+	EXPECT_EQ(Vector3D<float>(2, 3.0830178687768495e-11, 0), position1);
+	EXPECT_EQ(Vector3D<float>(6.5754225794713989e-14, 11, 0), position2);
 }
 
 TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpu) {
-	const unsigned int stepCount = 1;
+	const unsigned int stepCount = 2;
+	const unsigned int deltaTime = 2;
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
-	//TODO: change delta time to non 1 value with required implementation and change in expects
-	UniverseImplSimple universeCpu(input, output, stepCount, FALSE);
-	UniverseImplSimple universeGpu(input, output, stepCount, TRUE);
+	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE);
+	UniverseImplSimple universeGpu(input, output, stepCount, deltaTime, TRUE);
 	universeCpu.run();
 	universeGpu.run();
 	ParticleTestHelper::expectParticlesEqual(universeCpu.particles, universeGpu.particles);
