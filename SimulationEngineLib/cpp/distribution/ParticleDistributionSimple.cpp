@@ -2,6 +2,8 @@
 
 #include "cpp/distribution/ParticleDistributionSimple.h"
 #include "cpp/particle/ParticleSimple.h"
+#include "cpp/particle/ParticleRelativistic.h"
+
 
 ParticleDistributionSimple::ParticleDistributionSimple(
 		std::shared_ptr<DistributionDensity> densityDistribution,
@@ -25,7 +27,7 @@ Particle* ParticleDistributionSimple::getParticle()
 	Vector3D<float> velocity = velocityDistribution->getValue();
 	// Vector3D<float> angularVelocity = angularVelocityDistribution->getValue();
 
-	return new ParticleSimple(
+	return new ParticleRelativistic(
 		mass, 
 		radius, 
 		position,

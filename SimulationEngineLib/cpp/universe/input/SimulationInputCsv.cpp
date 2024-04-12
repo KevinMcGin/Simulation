@@ -1,4 +1,6 @@
 #include "cpp/universe/input/SimulationInputCsv.h"
+#include "cpp/particle/ParticleRelativistic.h"
+
 #include <sstream>
 
 std::vector<std::string> split(const std::string& s, char delimiter)                                                                                                                          
@@ -38,7 +40,7 @@ std::vector<Particle*> SimulationInputCsv::input() {
 	while (!file.eof()) {
 		std::getline(file, line, '\n');
 		//Todo: Particle type created depends on headers available
-		ParticleSimple* particle = new ParticleSimple(
+		auto particle = new ParticleRelativistic(
 			0, 0, { 0, 0, 0, }, { 0, 0, 0, }
 		);
 		std::vector<std::string> values = split(line, ',');
