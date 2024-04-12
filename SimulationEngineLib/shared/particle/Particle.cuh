@@ -23,13 +23,21 @@ public:
 		radius(0.0), 
 		position({0.0, 0.0, 0.0}), 
 		velocity({0.0, 0.0, 0.0}) {}
+
 	#if defined(USE_GPU)
 	__device__ __host__
 	#endif
 	void advance(unsigned int deltaTime);
-		#if defined(USE_GPU)
-			__device__ 
-		#endif
-		bool particlesExist(Particle* p2);
-		// virtual float getTemperature() = 0;
+
+	#if defined(USE_GPU)
+	__device__ __host__
+	#endif
+	void updateMomentum(Vector3D<float> acceleration, unsigned int deltaTime);
+
+	#if defined(USE_GPU)
+		__device__ 
+	#endif
+	bool particlesExist(Particle* p2);
+
+	// virtual float getTemperature() = 0;
 	}; 
