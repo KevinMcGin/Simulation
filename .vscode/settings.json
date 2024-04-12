@@ -98,6 +98,8 @@
         "string_view": "cpp",
         "variant": "cpp",
         "__nullptr": "cpp",
-        "__string": "cpp"
+        "__string": "cpp",
+        "memory_resource": "cpp",
+        "filesystem": "cpp"
     }
 }

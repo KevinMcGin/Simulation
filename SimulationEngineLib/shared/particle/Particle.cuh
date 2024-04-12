@@ -32,7 +32,7 @@ public:
 	#if defined(USE_GPU)
 	__device__ __host__
 	#endif
-	void updateMomentum(Vector3D<float> acceleration, unsigned int deltaTime);
+	virtual void addMomentum(Vector3D<float> acceleration, unsigned int deltaTime);
 
 	#if defined(USE_GPU)
 		__device__ 

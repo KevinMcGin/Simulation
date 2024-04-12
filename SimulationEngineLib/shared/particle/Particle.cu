@@ -12,7 +12,7 @@ void Particle::advance(
 #if defined(USE_GPU)
    __device__ __host__
 #endif
-void Particle::updateMomentum(Vector3D<float> acceleration, unsigned int deltaTime) {
+void Particle::addMomentum(Vector3D<float> acceleration, unsigned int deltaTime) {
 	velocity = velocity + acceleration * deltaTime;
 }
 
