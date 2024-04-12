@@ -35,6 +35,16 @@ public:
 	virtual void addMomentum(Vector3D<float> acceleration, unsigned int deltaTime);
 
 	#if defined(USE_GPU)
+	__device__ __host__
+	#endif
+	virtual Vector3D<float> getMomentum();
+
+	#if defined(USE_GPU)
+	__device__ __host__
+	#endif
+	virtual Vector3D<float> mergeVelocity(Particle* p);
+
+	#if defined(USE_GPU)
 		__device__ 
 	#endif
 	bool particlesExist(Particle* p2);

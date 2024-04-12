@@ -15,4 +15,12 @@ class ParticleRelativistic: public Particle {
 		Vector3D<float> acceleration, 
 		unsigned int deltaTime
 	) override;
+
+	Vector3D<float> mergeVelocity(Particle* p) override;
+
+	Vector3D<float> getMomentum() override;
+
+private:
+	float getGamma();
+
 };

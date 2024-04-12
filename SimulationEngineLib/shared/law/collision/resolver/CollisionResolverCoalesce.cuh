@@ -19,4 +19,8 @@ private:
    __device__ __host__
 #endif
 Vector3D<float> getCoalesced(float mass1, float mass2, Vector3D<float> vec1, Vector3D<float> vec2);
+Vector3D<float> getCoalescedVelocity(
+	Particle* p1, Particle* p2
+);
+
 };
