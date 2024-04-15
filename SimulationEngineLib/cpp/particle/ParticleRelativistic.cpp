@@ -1,6 +1,7 @@
 #include "cpp/particle/ParticleRelativistic.h"
 
-const static float speedLightSquared = 299792458 * 299792458;
+const static double speedLight = 299792458.0;
+const static double speedLightSquared = speedLight * speedLight;
 
 float ParticleRelativistic::getGamma() {
     return 1 / sqrt(1 - velocity.magnitudeSquared() / speedLightSquared);
@@ -22,5 +23,5 @@ Vector3D<float> ParticleRelativistic::getMomentum() {
 Vector3D<float> ParticleRelativistic::mergeVelocity(Particle* p) {
 	auto u = (getMomentum() + p->getMomentum()) / 
 		(mass + p->mass);
-    return u * sqrt(1 + u.magnitudeSquared() / speedLightSquared);
+    return speedLight * u / sqrt(speedLightSquared + u.magnitudeSquared());
 }
