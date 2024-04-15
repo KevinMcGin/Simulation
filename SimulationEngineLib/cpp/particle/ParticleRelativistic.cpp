@@ -1,6 +1,7 @@
 #include "cpp/particle/ParticleRelativistic.h"
+#include "cpp/constant/PhysicalConstants.h"	
 
-const static double speedLight = 299792458.0;
+const static double speedLight = PhysicalConstants::SPEED_OF_LIGHT;
 const static double speedLightSquared = speedLight * speedLight;
 
 float ParticleRelativistic::getGamma() {
