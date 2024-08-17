@@ -16,13 +16,16 @@ public:
 		float mass,
 		float radius,
 		Vector3D<float>  position,
-		Vector3D<float>  velocity
-	) : mass(mass), radius(radius), position(position), velocity(velocity) {}
+		Vector3D<float>  velocity,
+		bool deleted = false
+	);
 
-	Particle() : mass(0.0), 
-		radius(0.0), 
-		position({0.0, 0.0, 0.0}), 
-		velocity({0.0, 0.0, 0.0}) {}
+	Particle();
+
+	#if defined(USE_GPU)
+		__device__ __host__
+	#endif
+	Particle(Particle* p);
 
 	#if defined(USE_GPU)
 	__device__ __host__

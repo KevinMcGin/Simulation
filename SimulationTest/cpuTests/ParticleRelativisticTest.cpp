@@ -1,5 +1,5 @@
 #include  "gtest/gtest.h"
-#include "cpp/particle/ParticleRelativistic.h"
+#include "shared/particle/ParticleRelativistic.cuh"
 
 TEST(ParticleRelativisticTest, advance) {
 	auto p = ParticleRelativistic(1, 1, {1, 1, 1}, {1, 1, 1});

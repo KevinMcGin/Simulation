@@ -1,7 +1,7 @@
 #include "cpp/distribution/ParticleDistributionDisk.h"  
 #include "cpp/particle/ParticleSimple.h"
 #include "cpp/distribution/DistributionCircle.h"
-#include "cpp/particle/ParticleRelativistic.h"
+#include "shared/particle/ParticleRelativistic.cuh"
 
 	
 ParticleDistributionDisk::ParticleDistributionDisk(

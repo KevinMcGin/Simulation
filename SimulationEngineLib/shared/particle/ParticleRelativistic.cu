@@ -1,13 +1,32 @@
-#include "cpp/particle/ParticleRelativistic.h"
-#include "cpp/constant/PhysicalConstants.h"	
+#include "shared/particle/ParticleRelativistic.cuh"
 
-const static double speedLight = PhysicalConstants::SPEED_OF_LIGHT;
-const static double speedLightSquared = speedLight * speedLight;
 
+#if defined(USE_GPU)
+    __device__ __host__
+#endif
+ParticleRelativistic::ParticleRelativistic(Particle* p) : Particle(p) {}
+
+#if defined(USE_GPU)
+    __device__ __host__
+#endif
+ParticleRelativistic::ParticleRelativistic(
+    float			  mass,
+    float            radius,
+    Vector3D<float>  position,
+    Vector3D<float>  velocity,
+    bool             deleted
+) : Particle(mass, radius, position, velocity, deleted) {}
+
+#if defined(USE_GPU)
+__device__ __host__
+#endif
 float ParticleRelativistic::getGamma() {
     return 1 / sqrt(1 - velocity.magnitudeSquared() / speedLightSquared);
 }
 
+#if defined(USE_GPU)
+__device__ __host__
+#endif
 void ParticleRelativistic::addMomentum(
     Vector3D<float> acceleration, 
     unsigned int deltaTime
@@ -17,10 +36,16 @@ void ParticleRelativistic::addMomentum(
     Particle::addMomentum(realtivisticForce / mass, deltaTime);
 }
 
+#if defined(USE_GPU)
+__device__ __host__
+#endif
 Vector3D<float> ParticleRelativistic::getMomentum() {
 	return getGamma() * mass * velocity;
 }
 
+#if defined(USE_GPU)
+__device__ __host__
+#endif
 Vector3D<float> ParticleRelativistic::mergeVelocity(Particle* p) {
 	auto u = (getMomentum() + p->getMomentum()) / 
 		(mass + p->mass);

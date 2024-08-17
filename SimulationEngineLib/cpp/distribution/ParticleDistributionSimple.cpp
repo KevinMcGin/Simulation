@@ -2,7 +2,7 @@
 
 #include "cpp/distribution/ParticleDistributionSimple.h"
 #include "cpp/particle/ParticleSimple.h"
-#include "cpp/particle/ParticleRelativistic.h"
+#include "shared/particle/ParticleRelativistic.cuh"
 
 
 ParticleDistributionSimple::ParticleDistributionSimple(

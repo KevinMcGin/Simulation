@@ -1,5 +1,5 @@
 #include "cpp/universe/input/SimulationInputCsv.h"
-#include "cpp/particle/ParticleRelativistic.h"
+#include "shared/particle/ParticleRelativistic.cuh"
 
 #include <sstream>
 

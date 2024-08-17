@@ -1,6 +1,6 @@
 #include "cuda/gpuHelper/GpuDataController.cuh"
 #include "cpp/particle/ParticleSimple.h"
-
+#include "shared/particle/ParticleRelativistic.cuh"
 
 GpuDataController::GpuDataController() : cudaWithError(CudaWithError("GpuDataController")) {
 	cudaWithError.setDevice(0);
@@ -12,6 +12,17 @@ GpuDataController::~GpuDataController() {
 	}
 	cudaWithError.free(td_par);
 	delete d_par;
+}
+
+__global__
+static void initParticle(
+	Particle** particles,
+	int particleCount
+) {
+	int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
+	if (particleIndex < particleCount) { 
+		particles[particleIndex] = new ParticleRelativistic(particles[particleIndex]);
+	} 
 }
 
 void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, bool firstRun) {
@@ -35,6 +46,10 @@ void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, b
 	//Copy the d_par array itself to the device
 	cudaWithError.malloc((void**)&td_par, particleCount * sizeof(Particle*));
 	cudaWithError.memcpy(td_par, d_par, particleCount * sizeof(Particle*), cudaMemcpyHostToDevice);
+
+	cudaWithError.runKernel("putParticlesOnDevice", [&](unsigned int kernelSize) {
+		initParticle<<<1 + particleCount/kernelSize, kernelSize>>>(td_par, particleCount);
+	});
 }
 
 void GpuDataController::getParticlesFromDevice(std::vector<Particle*>& particles) {
@@ -53,7 +68,6 @@ static void deleteParticle(
 	int* particleCount
 ) {
 	int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
-	printf("particleCount: %d", *particleCount);
 	if (particleIndex < *particleCount) { 
 		if (particles[particleIndex]->deleted) {
 			int lastParticleIndex = *particleCount - 1;
@@ -75,7 +89,6 @@ void GpuDataController::deleteParticlesOnDevice() {
 	int blockSize = 1;
 	int numBlocks = particleCount;
 
-	std::cout << "cpu: particleCount: " << particleCount;
 	cudaWithError.runKernel("deleteParticlesOnDevice", [&](unsigned int kernelSize) {
 		deleteParticle<<<numBlocks, blockSize>>>(td_par, gpuParticleCount);
 	});
