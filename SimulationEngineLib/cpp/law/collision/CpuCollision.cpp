@@ -3,9 +3,14 @@
 
 #include <set>
 
-CpuCollision::CpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver) : CpuLaw(),
+CpuCollision::CpuCollision(
+	std::shared_ptr<CollisionDetector> collisionDetector, 
+	std::shared_ptr<CollisionResolver> collisionResolver,
+	std::shared_ptr<MomentumService> momentumService
+) : CpuLaw(),
 	collisionDetector(collisionDetector),
-	collisionResolver(collisionResolver) { }
+	collisionResolver(collisionResolver),
+	momentumService(momentumService) { }
 
 void CpuCollision::run(
 	std::vector<Particle*>& particles,
@@ -52,7 +57,11 @@ void CpuCollision::run(
 			auto p1 = *(particlesCollided1->begin());
 			particlesCollided1->erase(particlesCollided1->begin());
 			for(auto p2: *particlesCollided1) {
-				collisionResolver->resolve(p1, p2);
+				collisionResolver->resolve(
+					p1, 
+					p2,
+					momentumService.get()
+				);
 			}
 		}
 	}

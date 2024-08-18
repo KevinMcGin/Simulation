@@ -18,22 +18,22 @@ void radiusComponentKernelHelper(unsigned long long betweenParticlesTriangularIn
 }
 
 __device__
-void addAccelerationsKernelLowerHelper(unsigned long long particleIndex1, Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, unsigned int deltaTime) {
+void addAccelerationsKernelLowerHelper(unsigned long long particleIndex1, Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, unsigned int deltaTime, MomentumService* momentumServiceGpu) {
 	if (particleIndex1 < particleIndex2) {
 		if (particles[particleIndex1]->particlesExist(particles[particleIndex2])) {
 			unsigned long long radiusComponentIndex = MatrixMaths::getLowerTriangularIndex(particleIndex1, particleIndex2);
-			runOnParticle(particles[particleIndex1], accelerations[radiusComponentIndex - vectorsProcessedTriangular], deltaTime);
+			runOnParticle(particles[particleIndex1], accelerations[radiusComponentIndex - vectorsProcessedTriangular], deltaTime, momentumServiceGpu);
 		} 
 	}
 }
 
 __device__
-void addAccelerationsKernelUpperHelper(unsigned long long particleIndex1Local, Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, unsigned int deltaTime) {
+void addAccelerationsKernelUpperHelper(unsigned long long particleIndex1Local, Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, unsigned int deltaTime, MomentumService* momentumServiceGpu) {
 	unsigned long long particleIndex1 = particleIndex1Local + particleIndex2 + 1 + xOffset;
 	if (particleIndex1 < particleCount) {
 		if (particles[particleIndex1]->particlesExist(particles[particleIndex2])) {
 			unsigned long long radiusComponentIndex = MatrixMaths::getUpperTriangularIndex(particleIndex1, particleIndex2);
-			runOnParticle(particles[particleIndex1], accelerations[radiusComponentIndex - vectorsProcessedTriangular + betweenParticlesTriangularCount], deltaTime);
+			runOnParticle(particles[particleIndex1], accelerations[radiusComponentIndex - vectorsProcessedTriangular + betweenParticlesTriangularCount], deltaTime, momentumServiceGpu);
 		} 
 	}
 }

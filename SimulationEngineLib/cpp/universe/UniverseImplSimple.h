@@ -11,6 +11,7 @@ public:
 		std::shared_ptr<SimulationOutput> output, 
 		unsigned long endTime,
 		unsigned int deltaTime = 1,
-		Usage useGpu = UNDEFINED
+		Usage useGpu = UNDEFINED,
+		bool isEinsteinMomentum = false
 	);
 };

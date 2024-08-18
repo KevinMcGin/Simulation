@@ -8,9 +8,18 @@
 #endif
 
 
-NewtonGravity::NewtonGravity(float G) : Law(
+NewtonGravity::NewtonGravity(
+	std::shared_ptr<MomentumService> momentumService,
+	float G
+) : Law(
 	"NewtonGravity",
-	std::make_shared<CpuNewtonGravity>(G),
-	std::make_shared<GpuNewtonGravity>(G)
+	std::make_shared<CpuNewtonGravity>(
+		G,
+		momentumService
+	),
+	std::make_shared<GpuNewtonGravity>(
+		G,
+		momentumService
+	)
 ), 
 	G(G) { }

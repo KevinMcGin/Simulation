@@ -23,7 +23,8 @@ void resolveCollidedParticlesHelper(
    unsigned long long betweenParticlesOffset,
    unsigned long long thisBetweenParticleCount,
    const long long maxCollisionMarksIndex,	
-	bool* limitReached
+	bool* limitReached,
+   MomentumService* momentumService
 );
 
 __device__

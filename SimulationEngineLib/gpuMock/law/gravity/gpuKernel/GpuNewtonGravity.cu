@@ -1,6 +1,9 @@
 #include "gpuMock/law/gravity/gpuKernel/GpuNewtonGravity.cuh"
 
-GpuNewtonGravity::GpuNewtonGravity(float G) : GpuLaw("GpuNewtonGravity") { }
+GpuNewtonGravity::GpuNewtonGravity(
+    float G,
+    std::shared_ptr<MomentumService> momentumService
+) : GpuLaw("GpuNewtonGravity") { }
 
 
 void GpuNewtonGravity::run(

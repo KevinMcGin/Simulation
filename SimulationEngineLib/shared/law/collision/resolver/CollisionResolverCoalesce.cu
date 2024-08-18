@@ -1,9 +1,20 @@
 #include "shared/law/collision/resolver/CollisionResolverCoalesce.cuh"
 
 #if defined(USE_GPU)
+	__device__ __host__
+	#endif
+	CollisionResolverCoalesce::CollisionResolverCoalesce(
+		std::shared_ptr<MomentumService> momentumService
+	) : CollisionResolver(momentumService) {}
+
+#if defined(USE_GPU)
    __device__ __host__
 #endif
-void CollisionResolverCoalesce::resolve(Particle* p1, Particle* p2) {
+void CollisionResolverCoalesce::resolve(
+	Particle* p1, 
+	Particle* p2,
+	MomentumService* momentumService
+) {
 	p1->radius = pow(pow(p1->radius, 3) + pow(p2->radius, 3), 1 / 3.0);
 	p1->position = getCoalesced(p1->mass, p2->mass, p1->position, p2->position);
 	p1->velocity = getCoalescedVelocity(p1, p2);
@@ -33,8 +44,12 @@ Vector3D<float> CollisionResolverCoalesce::getCoalescedVelocity(
 	Particle* p1, 
 	Particle* p2
 ) {
-	//Todo: abstract service
-	return p1->mergeVelocity(p2);
+	return momentumService->mergeVelocity(
+		p1->mass, 
+		p1->velocity,
+		p2->mass, 
+		p2->velocity
+	);
 }
 
 

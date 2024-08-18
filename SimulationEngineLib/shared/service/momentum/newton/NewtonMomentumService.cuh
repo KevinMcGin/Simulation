@@ -1,0 +1,35 @@
+#pragma once
+#include "shared/service/momentum/MomentumService.cuh"
+
+class NewtonMomentumService : public MomentumService {
+public:
+	static const int INDEX = 0;
+    #if defined(USE_GPU)
+    __device__ __host__
+    #endif 
+    virtual Vector3D<float> addMomentum(
+        Vector3D<float> acceleration, 
+        unsigned int deltaTime,
+        float mass,
+        Vector3D<float> velocity
+    ) override;
+
+    #if defined(USE_GPU)
+    __device__ __host__
+    #endif 
+    virtual Vector3D<float> mergeVelocity(
+        float mass1, 
+        Vector3D<float> velocity1,
+        float mass2, 
+        Vector3D<float> velocity2
+    ) override;
+
+protected:
+    #if defined(USE_GPU)
+    __device__ __host__
+    #endif 
+    virtual Vector3D<float> getMomentum(
+        float mass, 
+        Vector3D<float> velocity
+    ) override;
+};

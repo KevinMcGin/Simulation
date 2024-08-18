@@ -12,14 +12,21 @@
 Collision::Collision(
 	std::shared_ptr<CollisionDetector> collisionDetector, 
 	std::shared_ptr<CollisionResolver> collisionResolver, 
+	std::shared_ptr<MomentumService> momentumService,
 	bool useGpu
 ) : Law(
 		"Collision",
-		std::make_shared<CpuCollision>(collisionDetector, collisionResolver),
+		std::make_shared<CpuCollision>(
+			collisionDetector, 
+			collisionResolver,
+			momentumService
+		),
 		useGpu ? std::make_shared<GpuCollision>(
 			collisionDetector, 
-			collisionResolver
+			collisionResolver,
+			momentumService
 		) : std::make_shared<GpuLaw>("Collision")
 	),
 	collisionDetector(collisionDetector),
-	collisionResolver(collisionResolver) { }
+	collisionResolver(collisionResolver),
+	momentumService(momentumService) { }

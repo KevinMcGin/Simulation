@@ -10,7 +10,11 @@
 
 class CpuCollision: public CpuLaw {
 public:
-	CpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver);
+	CpuCollision(
+        std::shared_ptr<CollisionDetector> collisionDetector, 
+        std::shared_ptr<CollisionResolver> collisionResolver,
+	    std::shared_ptr<MomentumService> momentumService
+    );
 	virtual void run(
         std::vector<Particle*>& particles,
 		unsigned int deltaTime
@@ -19,4 +23,5 @@ public:
 private:
     std::shared_ptr<CollisionDetector> collisionDetector;
     std::shared_ptr<CollisionResolver> collisionResolver;
+	    std::shared_ptr<MomentumService> momentumService;
 };

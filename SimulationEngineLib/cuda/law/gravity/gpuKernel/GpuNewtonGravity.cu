@@ -8,7 +8,30 @@
 #include <cmath>
 #include <algorithm>
 
-GpuNewtonGravity::GpuNewtonGravity(float G) : GpuLaw("GpuNewtonGravity"), G(G) { }
+__global__
+void setMomentumService(MomentumService** momentumServiceGpu, int momentumServiceIndex) {
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	if (idx < 1) {
+		if (momentumServiceIndex == NewtonMomentumService::INDEX) {
+			momentumServiceGpu[0] = new NewtonMomentumService();
+		} else if (momentumServiceIndex == EinsteinMomentumService::INDEX) {
+			momentumServiceGpu[0] = new EinsteinMomentumService();
+		} else {
+			printf("MomentumServiceGpu could not be initialised\n");
+			assert(false);
+		}
+	} 
+}
+
+GpuNewtonGravity::GpuNewtonGravity(
+	float G,
+	std::shared_ptr<MomentumService> momentumService
+) : GpuLaw("GpuNewtonGravity"), G(G), momentumService(momentumService) { 
+	cudaWithError->malloc((void**)&momentumServiceGpu, sizeof(*momentumService));
+	cudaWithError->runKernel("setGravity Objects on Gpu", [&](unsigned int kernelSize) {
+		setMomentumService <<<1, 1>>> (MomentumServiceGpu, momentumService->getIndex());
+	});
+}
 
 __global__
 void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations, unsigned long long betweenParticlesTriangularCount, float G, unsigned long long vectorsProcessedTriangular) {
@@ -19,15 +42,15 @@ void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations,
 }
 
 __global__
-void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, unsigned int deltaTime) {
+void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, unsigned int deltaTime, MomentumService* momentumServiceGpu) {
 	unsigned long long particleIndex1 = threadIdx.x + blockIdx.x*blockDim.x;
-	addAccelerationsKernelLowerHelper(particleIndex1, particles, accelerations, particleIndex2, vectorsProcessedTriangular, deltaTime);
+	addAccelerationsKernelLowerHelper(particleIndex1, particles, accelerations, particleIndex2, vectorsProcessedTriangular, deltaTime, momentumServiceGpu);
 } 
 
 __global__
-void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, unsigned int deltaTime) {
+void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, unsigned int deltaTime, MomentumService* momentumServiceGpu) {
 	unsigned long long particleIndex1 = threadIdx.x + blockIdx.x*blockDim.x;
-	addAccelerationsKernelUpperHelper(particleIndex1, particles, accelerations, xOffset, particleIndex2, particleCount, vectorsProcessedTriangular, betweenParticlesTriangularCount, deltaTime);
+	addAccelerationsKernelUpperHelper(particleIndex1, particles, accelerations, xOffset, particleIndex2, particleCount, vectorsProcessedTriangular, betweenParticlesTriangularCount, deltaTime, momentumServiceGpu);
 }
 
 unsigned long long getRowsFromRowsAndColsCountMinusIdentity(unsigned long long rowsAndColsCount) {
@@ -96,7 +119,8 @@ void GpuNewtonGravity::run(
 					accelerations, 
 					particleIndex, 
 					vectorsProcessed / 2,
-					deltaTime
+					deltaTime,
+					momentumServiceGpu
 				);				
 			});
 			cudaWithError->runKernel("addAccelerationsKernelUpper2", [&](unsigned int kernelSize) {
@@ -108,7 +132,8 @@ void GpuNewtonGravity::run(
 					particlesProcessed + particlesProcessable, 
 					vectorsProcessed / 2, 
 					vectorsProcessableTriangular,
-					deltaTime
+					deltaTime,
+					momentumServiceGpu
 				);				
 			});
 		}
