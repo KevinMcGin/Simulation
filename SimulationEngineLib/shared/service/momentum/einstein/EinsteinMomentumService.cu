@@ -35,13 +35,10 @@ Vector3D<float> EinsteinMomentumService::getVelocityPlusAcceleration(
     unsigned int deltaTime,
     Vector3D<float> velocity
 ) {
-    auto classicalAcceleration = acceleration * deltaTime;
-    auto realtivisticAcceleration =  classicalAcceleration; /// pow(getGamma(velocity), 3);
+    auto classicalMomentumChange = mass * acceleration * deltaTime;
+    auto relativisticMomentumChange = pow(getGamma(velocity), 3) * classicalMomentumChange;
     
-    auto p =  (
-        getMomentum(mass, velocity) + 
-        getMomentum(mass, realtivisticAcceleration)
-    );
+    auto p = getMomentum(mass, velocity) + relativisticMomentumChange;
     return getVelocityFromMomentum(mass, p);
 }
 

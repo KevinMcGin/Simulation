@@ -45,10 +45,10 @@ TEST(UniverseImplSimpleTest, UniverseRunsLargeVelocitiesEinsteinMomentum) {
 	universe.run();
 	Vector3D<float> position1 = universe.particles.front()->position;
 	Vector3D<float> position2 = universe.particles.back()->position;
-	EXPECT_EQ(Vector3D<float>(99999956992, 2.9064437967463164e-07, 0), position1);
-	EXPECT_EQ(Vector3D<float>(6.1988242316957098e-10, 99999965184, 0), position2);
+	EXPECT_EQ(Vector3D<float>(99999956992, 3.4689929861997371e-07, 0), position1);
+	EXPECT_EQ(Vector3D<float>(7.3986361481814811e-10, 99999965184, 0), position2);
 	Vector3D<float> velocity1 = universe.particles.front()->velocity;
 	Vector3D<float> velocity2 = universe.particles.back()->velocity;
-	EXPECT_EQ(Vector3D<float>(100000000, 2.9064453621607811e-10, 0), velocity1);
-	EXPECT_EQ(Vector3D<float>(6.1988315955968654e-13, 100000016, 0), velocity2);
+	EXPECT_EQ(Vector3D<float>(100000000, 3.4689956462941041e-10, 0), velocity1);
+	EXPECT_EQ(Vector3D<float>(7.3986319458138605e-13, 100000016, 0), velocity2);
 }
