@@ -14,17 +14,6 @@ GpuDataController::~GpuDataController() {
 	delete d_par;
 }
 
-__global__
-static void initParticle(
-	Particle** particles,
-	int particleCount
-) {
-	int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
-	if (particleIndex < particleCount) { 
-		particles[particleIndex] = new ParticleRelativistic(particles[particleIndex]);
-	} 
-}
-
 void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, bool firstRun) {
 	if (!firstRun) {
 		for(int i = 0; i < particleCount; i++) {
@@ -46,10 +35,6 @@ void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, b
 	//Copy the d_par array itself to the device
 	cudaWithError.malloc((void**)&td_par, particleCount * sizeof(Particle*));
 	cudaWithError.memcpy(td_par, d_par, particleCount * sizeof(Particle*), cudaMemcpyHostToDevice);
-
-	cudaWithError.runKernel("putParticlesOnDevice", [&](unsigned int kernelSize) {
-		initParticle<<<1 + particleCount/kernelSize, kernelSize>>>(td_par, particleCount);
-	});
 }
 
 void GpuDataController::getParticlesFromDevice(std::vector<Particle*>& particles) {

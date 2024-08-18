@@ -17,6 +17,7 @@ Vector3D<float> getAcceleration(float mass, Vector3D<float> radiusComponent) {
    __device__ __host__
 #endif
 void runOnParticle(Particle* p1, Vector3D<float> acceleration, unsigned int deltaTime) {
+	//Todo: abstract service
 	p1->addMomentum(acceleration, deltaTime);
 }
 

@@ -2,7 +2,6 @@
 
 #include "cpp/distribution/ParticleDistributionSimple.h"
 #include "cpp/particle/ParticleSimple.h"
-#include "shared/particle/ParticleRelativistic.cuh"
 
 
 ParticleDistributionSimple::ParticleDistributionSimple(
@@ -27,7 +26,7 @@ Particle* ParticleDistributionSimple::getParticle()
 	Vector3D<float> velocity = velocityDistribution->getValue();
 	// Vector3D<float> angularVelocity = angularVelocityDistribution->getValue();
 
-	return new ParticleRelativistic(
+	return new ParticleSimple(
 		mass, 
 		radius, 
 		position,

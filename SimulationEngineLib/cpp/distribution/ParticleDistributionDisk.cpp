@@ -1,7 +1,6 @@
 #include "cpp/distribution/ParticleDistributionDisk.h"  
 #include "cpp/particle/ParticleSimple.h"
 #include "cpp/distribution/DistributionCircle.h"
-#include "shared/particle/ParticleRelativistic.cuh"
 
 	
 ParticleDistributionDisk::ParticleDistributionDisk(
@@ -45,7 +44,7 @@ Particle* ParticleDistributionDisk::getParticle() {
         velocity = { 0.0, 0.0, 0.0 };
     }
 
-	return new ParticleRelativistic(
+	return new ParticleSimple(
         mass, 
         radius, 
         position, 

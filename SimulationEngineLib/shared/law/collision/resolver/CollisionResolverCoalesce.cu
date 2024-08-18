@@ -33,6 +33,7 @@ Vector3D<float> CollisionResolverCoalesce::getCoalescedVelocity(
 	Particle* p1, 
 	Particle* p2
 ) {
+	//Todo: abstract service
 	return p1->mergeVelocity(p2);
 }
 
