@@ -2,7 +2,7 @@
 #include "shared/particle/Particle.cuh"
 #include "shared/service/momentum/MomentumService.cuh"
 #include <vector>
-
+#include <memory>
 
 class CollisionResolver {
 public:
