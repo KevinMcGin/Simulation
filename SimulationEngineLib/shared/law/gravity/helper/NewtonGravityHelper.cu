@@ -20,10 +20,10 @@ void runOnParticle(
 	unsigned int deltaTime,
 	MomentumService* momentumService
 ) {
-	p1->velocity = momentumService->addMomentum(
+	p1->velocity = momentumService->getVelocityPlusAcceleration(
+		p1->mass,
 		acceleration, 
 		deltaTime, 
-		p1->mass, 
 		p1->velocity
 	);
 }

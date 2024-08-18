@@ -3,10 +3,10 @@
 #if defined(USE_GPU)
 __device__ __host__
 #endif 
-Vector3D<float> NewtonMomentumService::addMomentum(
+Vector3D<float> NewtonMomentumService::getVelocityPlusAcceleration(
+    float mass,
     Vector3D<float> acceleration, 
     unsigned int deltaTime,
-    float mass,
     Vector3D<float> velocity
 ) {
     return velocity + acceleration * deltaTime;

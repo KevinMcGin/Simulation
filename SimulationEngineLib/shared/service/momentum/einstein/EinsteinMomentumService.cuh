@@ -8,10 +8,10 @@ public:
     #if defined(USE_GPU)
     __device__ __host__
     #endif 
-    Vector3D<float> addMomentum(
+    Vector3D<float> getVelocityPlusAcceleration(
+        float mass,
         Vector3D<float> acceleration, 
         unsigned int deltaTime,
-        float mass,
         Vector3D<float> velocity
     ) override;
 
@@ -29,7 +29,7 @@ protected:
     #if defined(USE_GPU)
     __device__ __host__
     #endif 
-    Vector3D<float> getMomentum(
+    virtual Vector3D<float> getMomentum(
         float mass, 
         Vector3D<float> velocity
     ) override;
@@ -40,5 +40,10 @@ private:
 
     float getGamma(
         Vector3D<float> velocity
+    );
+
+    Vector3D<float> getVelocityFromMomentum(
+        float mass,
+        Vector3D<float> momentum
     );
 };
