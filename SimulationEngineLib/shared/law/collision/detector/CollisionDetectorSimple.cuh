@@ -11,5 +11,5 @@ public:
    __device__ __host__
 #endif
 bool isCollision(Particle* p1, Particle* p2) override;
-	int getIndex() override { return INDEX; };
+int getIndex() override { return INDEX; };
 };

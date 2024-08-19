@@ -230,7 +230,7 @@ void resolveCollidedParticlesHelper(
 	unsigned long long thisBetweenParticleCount,
 	const long long maxCollisionMarksIndex,	
 	bool* limitReached,
-	MomentumService* momentumService
+	MomentumService* momentumServiceGpu
 ) {
 	if (particlesCollided[particleIndex]) {
 		// printf(" collisionMarksIndex '%llu' ", *collisionMarksIndex);

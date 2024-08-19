@@ -26,6 +26,8 @@ public:
         Vector3D<float> velocity2
     ) = 0;
 
+    virtual int getIndex() = 0;
+
 protected:
     #if defined(USE_GPU)
     __device__ __host__

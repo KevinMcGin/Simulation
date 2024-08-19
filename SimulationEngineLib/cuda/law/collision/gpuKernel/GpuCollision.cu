@@ -41,7 +41,7 @@ void setCollisionResolver(CollisionResolver** collisionResolverGpu, int collisio
 } 
 
 __global__
-void setMomentumService(MomentumService** momentumServiceGpu, int momentumServiceIndex) {
+void setMomentumServiceForCollision(MomentumService** momentumServiceGpu, int momentumServiceIndex) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if (idx < 1) {
 		if (momentumServiceIndex == NewtonMomentumService::INDEX) {
@@ -66,7 +66,7 @@ GpuCollision::GpuCollision(
 	cudaWithError->runKernel("setCollision Objects on Gpu", [&](unsigned int kernelSize) {
 		setCollisionDetector <<<1, 1>>> (collisionDetectorGpu, collisionDetector->getIndex());
 		setCollisionResolver <<<1, 1>>> (collisionResolverGpu, collisionResolver->getIndex());
-		setMomentumService <<<1, 1>>> (momentumServiceGpu, momentumService->getIndex());
+		setMomentumServiceForCollision <<<1, 1>>> (momentumServiceGpu, momentumService->getIndex());
 	}); 
 }
 
@@ -116,7 +116,8 @@ void resolveCollidedParticles(
 	unsigned long long betweenParticlesOffset,
 	unsigned long long thisBetweenParticleCount,
 	const long long maxCollisionMarksIndex,
-	bool* limitedReached
+	bool* limitedReached,
+	MomentumService* momentumServiceGpu
 ) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if (idx < thisParticleCount) { 
@@ -133,7 +134,7 @@ void resolveCollidedParticles(
 			thisBetweenParticleCount,
 			maxCollisionMarksIndex,
 			limitedReached,
-			*MomentumServiceGpu
+			momentumServiceGpu
 		);
 	} 
 }
@@ -241,7 +242,8 @@ void GpuCollision::run(
 						betweenParticlesOffset,
 						thisBetweenParticleCount,
 						maxCollisionMarksIndex,
-						limitReached
+						limitReached,
+						*momentumServiceGpu
 					);
 				});
 			}

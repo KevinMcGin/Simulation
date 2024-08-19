@@ -24,6 +24,8 @@ public:
         Vector3D<float> velocity2
     ) override;
 
+    virtual int getIndex() override { return INDEX; };
+
 protected:
     #if defined(USE_GPU)
     __device__ __host__

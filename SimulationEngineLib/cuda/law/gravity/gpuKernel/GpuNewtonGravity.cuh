@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "cpp/law/GpuLaw.h"
+#include "shared/service/momentum/MomentumService.cuh"
 
 #include <vector>
 #include <stdio.h>

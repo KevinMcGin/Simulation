@@ -1,6 +1,5 @@
 #include "cuda/gpuHelper/GpuDataController.cuh"
 #include "cpp/particle/ParticleSimple.h"
-#include "shared/particle/ParticleRelativistic.cuh"
 
 GpuDataController::GpuDataController() : cudaWithError(CudaWithError("GpuDataController")) {
 	cudaWithError.setDevice(0);

@@ -52,7 +52,7 @@ TEST(CollisionTest, ParticlesCollide) {
 	auto momentumService = std::make_shared<NewtonMomentumService>();
 	Collision law(
 		std::make_shared<CollisionDetectorSimple>(), 
-		std::make_shared<CollisionResolverCoalesce>(momentumService),
+		std::make_shared<CollisionResolverCoalesce>(),
 		momentumService
 	);
 	std::vector<Particle*> particles = CollisionTestHelper::getParticlesCollideParticles();
@@ -64,7 +64,7 @@ TEST(CollisionTest, MultipleParticlesAllCollide) {
 	auto momentumService = std::make_shared<NewtonMomentumService>();
 	Collision law(
 		std::make_shared<CollisionDetectorSimple>(), 
-		std::make_shared<CollisionResolverCoalesce>(momentumService),
+		std::make_shared<CollisionResolverCoalesce>(),
 		momentumService
 	);	
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesAllCollide();
@@ -77,7 +77,7 @@ TEST(CollisionTest, MultipleParticlesPartialCollide) {
 	auto momentumService = std::make_shared<NewtonMomentumService>();
 	Collision law(
 		std::make_shared<CollisionDetectorSimple>(), 
-		std::make_shared<CollisionResolverCoalesce>(momentumService),
+		std::make_shared<CollisionResolverCoalesce>(),
 		momentumService
 	);	
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesPartialCollide();
@@ -90,7 +90,7 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 	auto momentumService = std::make_shared<NewtonMomentumService>();
 	Collision law(
 		std::make_shared<CollisionDetectorSimple>(), 
-		std::make_shared<CollisionResolverCoalesce>(momentumService),
+		std::make_shared<CollisionResolverCoalesce>(),
 		momentumService
 	);	
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesIndependentlyCollide();

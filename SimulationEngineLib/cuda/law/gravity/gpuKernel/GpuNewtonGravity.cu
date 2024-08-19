@@ -4,10 +4,14 @@
 #include "shared/util/MatrixMaths.cuh"
 #include "shared/law/gravity/helper/NewtonGravityHelper.cuh"
 #include "cuda/law/gravity/helper/GpuNewtonGravityHelper.cuh"
+#include "shared/service/momentum/newton/NewtonMomentumService.cuh"
+#include "shared/service/momentum/einstein/EinsteinMomentumService.cuh"
 
+#include <assert.h>
 #include <cmath>
 #include <algorithm>
 
+//Todo: generalise setting of polymp services
 __global__
 void setMomentumService(MomentumService** momentumServiceGpu, int momentumServiceIndex) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
@@ -29,7 +33,7 @@ GpuNewtonGravity::GpuNewtonGravity(
 ) : GpuLaw("GpuNewtonGravity"), G(G), momentumService(momentumService) { 
 	cudaWithError->malloc((void**)&momentumServiceGpu, sizeof(*momentumService));
 	cudaWithError->runKernel("setGravity Objects on Gpu", [&](unsigned int kernelSize) {
-		setMomentumService <<<1, 1>>> (MomentumServiceGpu, momentumService->getIndex());
+		setMomentumService <<<1, 1>>> (momentumServiceGpu, momentumService->getIndex());
 	});
 }
 
@@ -108,7 +112,8 @@ void GpuNewtonGravity::run(
 					particlesProcessed + particlesProcessable, 
 					vectorsProcessed / 2, 
 					vectorsProcessableTriangular,
-					deltaTime
+					deltaTime,
+					*momentumServiceGpu
 				);				
 			});
 		}
@@ -120,7 +125,7 @@ void GpuNewtonGravity::run(
 					particleIndex, 
 					vectorsProcessed / 2,
 					deltaTime,
-					momentumServiceGpu
+					*momentumServiceGpu
 				);				
 			});
 			cudaWithError->runKernel("addAccelerationsKernelUpper2", [&](unsigned int kernelSize) {
@@ -133,7 +138,7 @@ void GpuNewtonGravity::run(
 					vectorsProcessed / 2, 
 					vectorsProcessableTriangular,
 					deltaTime,
-					momentumServiceGpu
+					*momentumServiceGpu
 				);				
 			});
 		}

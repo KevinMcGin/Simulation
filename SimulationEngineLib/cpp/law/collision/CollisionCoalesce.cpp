@@ -9,7 +9,7 @@ CollisionCoalesce::CollisionCoalesce(
 ) :
 	Collision(
 		std::make_shared<CollisionDetectorSimple>(), 
-		std::make_shared<CollisionResolverCoalesce>(momentumService), 
+		std::make_shared<CollisionResolverCoalesce>(), 
 		momentumService,
 		useGpu
 	) {}

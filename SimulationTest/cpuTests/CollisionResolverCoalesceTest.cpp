@@ -7,9 +7,7 @@
 
 TEST(CollisionResolverCoalesceTest, ParticlesCoalesce) {
 	auto momentumService = std::make_shared<NewtonMomentumService>();
-	CollisionResolverCoalesce resolver(
-		momentumService
-	);
+	CollisionResolverCoalesce resolver;
 	Particle* p1 = new ParticleSimple(1, 1, { 2,1,0 }, { 1,-1,0 });
 	Particle* p2 = new ParticleSimple(1, 1, { 2,0,0 }, { 1,1,0 });
 	resolver.resolve(p1, p2, momentumService.get());
@@ -21,8 +19,7 @@ TEST(CollisionResolverCoalesceTest, ParticlesCoalesce) {
 }
 
 TEST(CollisionResolverCoalesceTest, GetIndex) {
-	auto momentumService = std::make_shared<NewtonMomentumService>();
-	CollisionResolverCoalesce resolver(momentumService);
+	CollisionResolverCoalesce resolver;
 	int index = resolver.getIndex();
 	EXPECT_EQ(0, index);
 }

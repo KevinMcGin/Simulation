@@ -2,9 +2,10 @@
 #include "cpp/law/gravity/NewtonGravity.h"
 #include "LawHelper.h"
 #include "NewtonGravityTestHelper.h"
+#include "shared/service/momentum/newton/NewtonMomentumService.cuh"
 
 TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
-	auto law = std::make_shared<NewtonGravity>(0.05);
+	auto law = std::make_shared<NewtonGravity>(std::make_shared<NewtonMomentumService>(), 0.05);
 	std::vector<Particle*> particles = NewtonGravityTestHelper::getParticlesAccelerate();
     LawHelper::runGpuLaw(law, particles);
 	NewtonGravityTestHelper::testParticlesAccelerate(particles);
@@ -12,7 +13,7 @@ TEST(NewtonGravityTest, ParticlesAccelerateGpu) {
 
 //Todo: sometimes this fails, github ticket: #192
 TEST(NewtonGravityTest, ManyParticlesAccelerateGpu) {
-	auto law = std::make_shared<NewtonGravity>(2000);
+	auto law = std::make_shared<NewtonGravity>(std::make_shared<NewtonMomentumService>(), 2000);
 	int particleCount = 30 * 1000;
 	std::vector<Particle*> particles = LawHelper::setupParticles(particleCount);
 
@@ -32,7 +33,7 @@ TEST(NewtonGravityTest, ManyParticlesAccelerateGpu) {
 TEST(NewtonGravityTest, ParticlesAccelerateGpuLikeCpuSimple) {
 	const int particleCount = 300;
 	const int stepsCount = 2;
-	auto law = std::make_shared<NewtonGravity>(0.05);
+	auto law = std::make_shared<NewtonGravity>(std::make_shared<NewtonMomentumService>(), 0.05);
 	
 	LawHelper::expectGpuLikeCpu(law, particleCount, stepsCount);
 }
@@ -42,7 +43,7 @@ TEST(NewtonGravityTest, ParticlesAccelerateGpuLikeCpuMemoryLow) {
 
 	const int particleCount = 20;
 	const int stepsCount = 1;
-	auto law = std::make_shared<NewtonGravity>(5);
+	auto law = std::make_shared<NewtonGravity>(std::make_shared<NewtonMomentumService>(), 5);
 
 	LawHelper::expectGpuLikeCpu(law, particleCount, stepsCount);
 }
@@ -52,7 +53,7 @@ TEST(NewtonGravityTest, ParticlesAccelerateGpuLikeCpuMemoryTooLowToContinue) {
 
 	const int particleCount = 30;
 	const int stepsCount = 2;
-	auto law = std::make_shared<NewtonGravity>(0.05);
+	auto law = std::make_shared<NewtonGravity>(std::make_shared<NewtonMomentumService>(), 0.05);
 
 	try {
 		LawHelper::expectGpuLikeCpu(law, particleCount, stepsCount);
@@ -69,7 +70,7 @@ TEST(NewtonGravityTest, ParticlesAccelerateGpuLikeCpuMemoryTooLowToAllocate) {
 	
 	const int particleCount = 30;
 	const int stepsCount = 2;
-	auto law = std::make_shared<NewtonGravity>(0.05);
+	auto law = std::make_shared<NewtonGravity>(std::make_shared<NewtonMomentumService>(), 0.05);
 
 	 try {
 		LawHelper::expectGpuLikeCpu(law, particleCount, stepsCount);
