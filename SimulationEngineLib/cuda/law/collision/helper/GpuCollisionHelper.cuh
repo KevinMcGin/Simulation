@@ -24,7 +24,7 @@ void resolveCollidedParticlesHelper(
    unsigned long long thisBetweenParticleCount,
    const long long maxCollisionMarksIndex,	
 	bool* limitReached,
-   MomentumService* momentumServiceGpu
+   MomentumService** momentumServiceGpu
 );
 
 __device__

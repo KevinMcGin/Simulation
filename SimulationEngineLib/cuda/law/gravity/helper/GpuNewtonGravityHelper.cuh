@@ -18,7 +18,7 @@ void addAccelerationsKernelLowerHelper(
     unsigned long long particleIndex2,
     unsigned long long vectorsProcessedTriangular,
     unsigned int deltaTime,
-    MomentumService* momentumServiceGpu
+    MomentumService** momentumServiceGpu
 );
 
 __device__
@@ -32,5 +32,5 @@ void addAccelerationsKernelUpperHelper(
     unsigned long long vectorsProcessedTriangular, 
     unsigned long long betweenParticlesTriangularCount, 
     unsigned int deltaTime,
-    MomentumService* momentumServiceGpu
+    MomentumService** momentumServiceGpu
 );

@@ -46,13 +46,13 @@ void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations,
 }
 
 __global__
-void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, unsigned int deltaTime, MomentumService* momentumServiceGpu) {
+void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, unsigned int deltaTime, MomentumService** momentumServiceGpu) {
 	unsigned long long particleIndex1 = threadIdx.x + blockIdx.x*blockDim.x;
 	addAccelerationsKernelLowerHelper(particleIndex1, particles, accelerations, particleIndex2, vectorsProcessedTriangular, deltaTime, momentumServiceGpu);
 } 
 
 __global__
-void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, unsigned int deltaTime, MomentumService* momentumServiceGpu) {
+void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, unsigned int deltaTime, MomentumService** momentumServiceGpu) {
 	unsigned long long particleIndex1 = threadIdx.x + blockIdx.x*blockDim.x;
 	addAccelerationsKernelUpperHelper(particleIndex1, particles, accelerations, xOffset, particleIndex2, particleCount, vectorsProcessedTriangular, betweenParticlesTriangularCount, deltaTime, momentumServiceGpu);
 }
@@ -113,7 +113,7 @@ void GpuNewtonGravity::run(
 					vectorsProcessed / 2, 
 					vectorsProcessableTriangular,
 					deltaTime,
-					*momentumServiceGpu
+					momentumServiceGpu
 				);				
 			});
 		}
@@ -125,7 +125,7 @@ void GpuNewtonGravity::run(
 					particleIndex, 
 					vectorsProcessed / 2,
 					deltaTime,
-					*momentumServiceGpu
+					momentumServiceGpu
 				);				
 			});
 			cudaWithError->runKernel("addAccelerationsKernelUpper2", [&](unsigned int kernelSize) {
@@ -138,7 +138,7 @@ void GpuNewtonGravity::run(
 					vectorsProcessed / 2, 
 					vectorsProcessableTriangular,
 					deltaTime,
-					*momentumServiceGpu
+					momentumServiceGpu
 				);				
 			});
 		}

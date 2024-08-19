@@ -117,7 +117,7 @@ void resolveCollidedParticles(
 	unsigned long long thisBetweenParticleCount,
 	const long long maxCollisionMarksIndex,
 	bool* limitedReached,
-	MomentumService* momentumServiceGpu
+	MomentumService** momentumServiceGpu
 ) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if (idx < thisParticleCount) { 
@@ -243,7 +243,7 @@ void GpuCollision::run(
 						thisBetweenParticleCount,
 						maxCollisionMarksIndex,
 						limitReached,
-						*momentumServiceGpu
+						momentumServiceGpu
 					);
 				});
 			}
