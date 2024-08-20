@@ -59,7 +59,7 @@ TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuLargeVelocitiesNewtonMomentum)
 	ParticleTestHelper::expectParticlesEqual(universeCpu.particles, universeGpu.particles);
 }
 
-TEST(UniverseImplSimpleTestGpu, UniverseRunsLargeVelocitiesEinsteinMomentum) {
+TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuLargeVelocitiesEinsteinMomentum) {
 	auto einsteinMomentum = true;
 	const unsigned int stepCount = 2;
 	const unsigned int deltaTime = 2;

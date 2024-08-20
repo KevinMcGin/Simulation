@@ -35,10 +35,14 @@ Vector3D<float> EinsteinMomentumService::getVelocityPlusAcceleration(
     unsigned int deltaTime,
     Vector3D<float> velocity
 ) {
+    // return velocity + acceleration * deltaTime;
+    if (acceleration == Vector3D<float>(0, 0, 0)) {
+        return velocity;
+    }
     auto classicalVelocityChange = acceleration * deltaTime;
     auto classicalVelocityChangeMagnitudeSquared = classicalVelocityChange.magnitudeSquared();
     if (classicalVelocityChangeMagnitudeSquared > speedLightSquared) {
-        //offset is due to float errors
+        //large offset is due to float errors
         float belowSpeedOfLight = (float)speedLight - 1000000.0f;
         classicalVelocityChange = belowSpeedOfLight * classicalVelocityChange.unit();
         mass *= classicalVelocityChangeMagnitudeSquared / belowSpeedOfLight;
@@ -74,6 +78,5 @@ Vector3D<float> EinsteinMomentumService::getMomentum(
     float mass, 
     Vector3D<float> velocity
 ) {
-    return getGamma(velocity) * 
-        NewtonMomentumService::getMomentum(mass, velocity);
+    return getGamma(velocity) * NewtonMomentumService::getMomentum(mass, velocity);
 }
