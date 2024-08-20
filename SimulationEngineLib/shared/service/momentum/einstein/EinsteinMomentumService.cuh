@@ -37,8 +37,8 @@ protected:
     ) override;
 
 private:
-    const long double speedLight = PhysicalConstants::SPEED_OF_LIGHT;
-	const long double speedLightSquared = speedLight * speedLight;
+    const double speedLight = PhysicalConstants::SPEED_OF_LIGHT;
+	const double speedLightSquared = speedLight * speedLight;
 
     float getGamma(
         Vector3D<float> velocity

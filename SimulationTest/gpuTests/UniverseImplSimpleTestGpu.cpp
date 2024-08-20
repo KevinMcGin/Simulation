@@ -4,6 +4,7 @@
 #include "cpp/law/gravity/NewtonGravity.h"
 #include "cpp/universe/input/SimulationInputSimple.h"
 #include "cpp/universe/output/SimulationOutputPrint.h"
+#include "cpp/universe/input/SimulationInputSimpleLargeVelocities.h"
 #include "ParticleTestHelper.h"
 
 TEST(UniverseImplSimpleTestGpu, UniverseRunsGpu) {
@@ -19,13 +20,53 @@ TEST(UniverseImplSimpleTestGpu, UniverseRunsGpu) {
 	EXPECT_EQ(Vector3D<float>(6.5754225794713989e-14, 11, 0), position2);
 }
 
-TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpu) {
+TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuNewtonMomentum) {
+	auto einsteinMomentum = false;
 	const unsigned int stepCount = 2;
 	const unsigned int deltaTime = 2;
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputPrint>();
-	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE);
-	UniverseImplSimple universeGpu(input, output, stepCount, deltaTime, TRUE);
+	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE, einsteinMomentum);
+	UniverseImplSimple universeGpu(input, output, stepCount, deltaTime, TRUE, einsteinMomentum);
+	universeCpu.run();
+	universeGpu.run();
+	ParticleTestHelper::expectParticlesEqual(universeCpu.particles, universeGpu.particles);
+}
+
+TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuEinsteinMomentum) {
+	auto einsteinMomentum = true;
+	const unsigned int stepCount = 2;
+	const unsigned int deltaTime = 2;
+	auto input = std::make_shared<SimulationInputSimple>();
+	auto output = std::make_shared<SimulationOutputPrint>();
+	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE, einsteinMomentum);
+	UniverseImplSimple universeGpu(input, output, stepCount, deltaTime, TRUE, einsteinMomentum);
+	universeCpu.run();
+	universeGpu.run();
+	ParticleTestHelper::expectParticlesEqual(universeCpu.particles, universeGpu.particles);
+}
+
+TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuLargeVelocitiesNewtonMomentum) {
+	auto einsteinMomentum = false;
+	const unsigned int stepCount = 2;
+	const unsigned int deltaTime = 2;
+	auto input = std::make_shared<SimulationInputSimpleLargeVelocities>();
+	auto output = std::make_shared<SimulationOutputPrint>();
+	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE, einsteinMomentum);
+	UniverseImplSimple universeGpu(input, output, stepCount, deltaTime, TRUE, einsteinMomentum);
+	universeCpu.run();
+	universeGpu.run();
+	ParticleTestHelper::expectParticlesEqual(universeCpu.particles, universeGpu.particles);
+}
+
+TEST(UniverseImplSimpleTestGpu, UniverseRunsLargeVelocitiesEinsteinMomentum) {
+	auto einsteinMomentum = true;
+	const unsigned int stepCount = 2;
+	const unsigned int deltaTime = 2;
+	auto input = std::make_shared<SimulationInputSimpleLargeVelocities>();
+	auto output = std::make_shared<SimulationOutputPrint>();
+	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE, einsteinMomentum);
+	UniverseImplSimple universeGpu(input, output, stepCount, deltaTime, TRUE, einsteinMomentum);
 	universeCpu.run();
 	universeGpu.run();
 	ParticleTestHelper::expectParticlesEqual(universeCpu.particles, universeGpu.particles);
