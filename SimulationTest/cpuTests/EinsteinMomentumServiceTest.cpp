@@ -11,7 +11,7 @@ TEST(EinsteinMomentumServiceTest, getVelocityPlusAcceleration) {
 		{100000000, 1, 1}
 	);
 	ASSERT_EQ(
-		Vector3D<float>(183783488, 1.8378348350524902, 1.8378348350524902), 
+		Vector3D<float>(173175104, 1.7317510843276978, 1.7317510843276978), 
 		velocity
 	);
 }
@@ -25,7 +25,21 @@ TEST(EinsteinMomentumServiceTest, getVelocityPlusAccelerationLarge) {
 		{200000000, 1, 1}
 	);
 	ASSERT_EQ(
-		Vector3D<float>(282679744, 1.4133986234664917, 1.4133986234664917), 
+		Vector3D<float>(261757904, 1.3087896108627319, 1.3087896108627319), 
+		velocity
+	);
+}
+
+TEST(EinsteinMomentumServiceTest, getVelocityPlusAccelerationXLarge) {
+	auto momentumService = EinsteinMomentumService();
+	auto velocity = momentumService.getVelocityPlusAcceleration(
+		1,
+		{1000000000, 1, 1}, 
+		1,
+		{200000000, 1, 1}
+	);
+	ASSERT_EQ(
+		Vector3D<float>(298923840.9, 0.38061398267745972, 0.38061398267745972), 
 		velocity
 	);
 }
