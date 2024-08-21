@@ -38,8 +38,9 @@ TEST(EinsteinMomentumServiceTest, getVelocityPlusAccelerationXLarge) {
 		1,
 		{200000000, 1, 1}
 	);
+	//Todo: improve accurarcy with double type
 	ASSERT_EQ(
-		Vector3D<float>(298923840.9, 0.38061398267745972, 0.38061398267745972), 
+		Vector3D<float>(299792480, 0.29979246854782104, 0.29979246854782104), 
 		velocity
 	);
 }

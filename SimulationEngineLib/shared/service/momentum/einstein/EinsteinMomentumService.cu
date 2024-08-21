@@ -35,19 +35,20 @@ Vector3D<float> EinsteinMomentumService::getVelocityPlusAcceleration(
     unsigned int deltaTime,
     Vector3D<float> velocity
 ) {
-    // return velocity + acceleration * deltaTime;
     if (acceleration == Vector3D<float>(0, 0, 0)) {
         return velocity;
     }
     auto classicalVelocityChange = acceleration * deltaTime;
     auto classicalVelocityChangeMagnitudeSquared = classicalVelocityChange.magnitudeSquared();
+    auto massMomentumChange = mass;
     if (classicalVelocityChangeMagnitudeSquared > speedLightSquared) {
         //large offset is due to float errors
         float belowSpeedOfLight = (float)speedLight - 1000000.0f;
         classicalVelocityChange = belowSpeedOfLight * classicalVelocityChange.unit();
-        mass *= classicalVelocityChangeMagnitudeSquared / belowSpeedOfLight;
+        massMomentumChange *= classicalVelocityChangeMagnitudeSquared / belowSpeedOfLight;
     }
-    auto relativisticMomentumChange = getMomentum(mass, classicalVelocityChange);
+    // Assumption: a small change in classical momentum is equal to a small change in relativistic
+    auto relativisticMomentumChange = getMomentum(massMomentumChange, classicalVelocityChange);
     auto currentMomentum = getMomentum(mass, velocity);
     auto newMomentum = currentMomentum + relativisticMomentumChange;
     
