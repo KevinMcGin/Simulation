@@ -35,12 +35,11 @@ Vector3D<float> EinsteinMomentumService::getVelocityPlusAcceleration(
     unsigned int deltaTime,
     Vector3D<float> velocity
 ) {
-    if (acceleration == Vector3D<float>(0, 0, 0)) {
-        return velocity;
-    }
     auto classicalVelocityChange = acceleration * deltaTime;
     auto classicalVelocityChangeMagnitudeSquared = classicalVelocityChange.magnitudeSquared();
     auto massMomentumChange = mass;
+    // Condition for completeness sake. 
+    // Condition rarely met. But if met, would otherwise create imaginary numbers in the gamma calculation.
     if (classicalVelocityChangeMagnitudeSquared > speedLightSquared) {
         //large offset is due to float errors
         float belowSpeedOfLight = (float)speedLight - 1000000.0f;
