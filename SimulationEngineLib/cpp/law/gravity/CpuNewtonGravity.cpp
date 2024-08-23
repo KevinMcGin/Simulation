@@ -3,7 +3,6 @@
 #include "cpp/particle/ParticleSimple.h"
 #include "shared/law/gravity/helper/NewtonGravityHelper.cuh"
 
-#include <memory>
 #include <cmath>
 
 CpuNewtonGravity::CpuNewtonGravity(

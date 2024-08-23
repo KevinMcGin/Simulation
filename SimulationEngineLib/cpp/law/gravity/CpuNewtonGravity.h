@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdio.h>
 #include <iostream>
+#include <memory>
 
 class CpuNewtonGravity: public CpuLaw {
 public:
