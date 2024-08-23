@@ -4,11 +4,11 @@
 #include "cpp/law/gravity/NewtonGravity.h"
 #include "cpp/universe/input/SimulationInputSimple.h"
 #include "cpp/universe/input/SimulationInputSimpleLargeVelocities.h"
-#include "cpp/universe/output/SimulationOutputPrint.h"
+#include "cpp/universe/output/SimulationOutputNothing.h"
 
 TEST(UniverseImplSimpleTest, UniverseRuns) {
 	auto input = std::make_shared<SimulationInputSimple>();
-	auto output = std::make_shared<SimulationOutputPrint>();
+	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universe(input, output, 100, 10, FALSE);
 	universe.run();
 	Vector3D<float> position1 = universe.particles.front()->position;
@@ -24,7 +24,7 @@ TEST(UniverseImplSimpleTest, UniverseRuns) {
 TEST(UniverseImplSimpleTest, UniverseRunsLargeVelocitiesNewtonMomentum) {
 	auto einsteinMomentum = false;
 	auto input = std::make_shared<SimulationInputSimpleLargeVelocities>();
-	auto output = std::make_shared<SimulationOutputPrint>();
+	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universe(input, output, 100, 10, FALSE, einsteinMomentum);
 	universe.run();
 	Vector3D<float> position1 = universe.particles.front()->position;
@@ -40,7 +40,7 @@ TEST(UniverseImplSimpleTest, UniverseRunsLargeVelocitiesNewtonMomentum) {
 TEST(UniverseImplSimpleTest, UniverseRunsLargeVelocitiesEinsteinMomentum) {
 	auto einsteinMomentum = true;
 	auto input = std::make_shared<SimulationInputSimpleLargeVelocities>();
-	auto output = std::make_shared<SimulationOutputPrint>();
+	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universe(input, output, 100, 10, FALSE, einsteinMomentum);
 	universe.run();
 	Vector3D<float> position1 = universe.particles.front()->position;

@@ -3,14 +3,14 @@
 #include "cpp/law/newtonFirstLaw/NewtonFirstLaw.h"
 #include "cpp/law/gravity/NewtonGravity.h"
 #include "cpp/universe/input/SimulationInputSimple.h"
-#include "cpp/universe/output/SimulationOutputPrint.h"
+#include "cpp/universe/output/SimulationOutputNothing.h"
 #include "shared/service/momentum/newton/NewtonMomentumService.cuh"
 
 
 TEST(UniverseImplTest, UniverseRuns) {
 	auto momentumService = std::make_shared<NewtonMomentumService>();
 	auto input = std::make_shared<SimulationInputSimple>();
-	auto output = std::make_shared<SimulationOutputPrint>();
+	auto output = std::make_shared<SimulationOutputNothing>();
 	auto law1 = std::make_shared<NewtonGravity>(momentumService, 0.05);
 	auto law2 = std::make_shared<NewtonFirstLaw>();
 	//TODO: change delta time to non 1 value with required implementation and change in expects
