@@ -61,7 +61,7 @@ jobs:
       shell: bash
       run: | 
         cd scripts
-        ./compile.sh -v "${{ matrix.build_params }}"
+        ./compile.sh -v ${{ matrix.build_params }}
 
     - name: Test CPU
       shell: bash
@@ -82,7 +82,7 @@ jobs:
         cd builds
         zip -r ../build.zip build 
 
-    - name: Zip Build (Ubuntu)
+    - name: Zip Build (Mac)
       shell: bash
       if: matrix.os == 'macos-latest'
       run: |
@@ -91,7 +91,7 @@ jobs:
 
     - name: Zip Build (Windows)
       shell: powershell
-      if: matrix.os == 'windows-2016'
+      if: matrix.os == 'windows-2019'
       run: Compress-Archive builds/build build.zip
 
     - name: Archive Build
