@@ -4,6 +4,9 @@
 #include "shared/law/collision/detector/CollisionDetectorSimple.cuh"
 #include "shared/law/collision/resolver/CollisionResolverCoalesce.cuh"
 #include "shared/util/MatrixMaths.cuh"
+#include "shared/service/momentum/newton/NewtonMomentumService.cuh"
+#include "shared/service/momentum/einstein/EinsteinMomentumService.cuh"
+
 
 #include <assert.h>
 #include <map>
@@ -37,13 +40,33 @@ void setCollisionResolver(CollisionResolver** collisionResolverGpu, int collisio
 	} 
 } 
 
-GpuCollision::GpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver) : 
-	GpuLaw("Collision") {
+__global__
+void setMomentumServiceForCollision(MomentumService** momentumServiceGpu, int momentumServiceIndex) {
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	if (idx < 1) {
+		if (momentumServiceIndex == NewtonMomentumService::INDEX) {
+			momentumServiceGpu[0] = new NewtonMomentumService();
+		} else if (momentumServiceIndex == EinsteinMomentumService::INDEX) {
+			momentumServiceGpu[0] = new EinsteinMomentumService();
+		} else {
+			printf("MomentumServiceGpu could not be initialised\n");
+			assert(false);
+		}
+	} 
+} 
+
+GpuCollision::GpuCollision(
+	std::shared_ptr<CollisionDetector> collisionDetector, 
+	std::shared_ptr<CollisionResolver> collisionResolver,
+	std::shared_ptr<MomentumService> momentumService
+) : GpuLaw("Collision") {
 	cudaWithError->malloc((void**)&collisionDetectorGpu, sizeof(*collisionDetector));
 	cudaWithError->malloc((void**)&collisionResolverGpu, sizeof(*collisionResolver));
-	cudaWithError->runKernel("setCollisionDetector", [&](unsigned int kernelSize) {
+	cudaWithError->malloc((void**)&momentumServiceGpu, sizeof(*momentumService));
+	cudaWithError->runKernel("setCollision Objects on Gpu", [&](unsigned int kernelSize) {
 		setCollisionDetector <<<1, 1>>> (collisionDetectorGpu, collisionDetector->getIndex());
 		setCollisionResolver <<<1, 1>>> (collisionResolverGpu, collisionResolver->getIndex());
+		setMomentumServiceForCollision <<<1, 1>>> (momentumServiceGpu, momentumService->getIndex());
 	}); 
 }
 
@@ -93,7 +116,8 @@ void resolveCollidedParticles(
 	unsigned long long betweenParticlesOffset,
 	unsigned long long thisBetweenParticleCount,
 	const long long maxCollisionMarksIndex,
-	bool* limitedReached
+	bool* limitedReached,
+	MomentumService** momentumServiceGpu
 ) {
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;
 	if (idx < thisParticleCount) { 
@@ -109,7 +133,8 @@ void resolveCollidedParticles(
 			betweenParticlesOffset,
 			thisBetweenParticleCount,
 			maxCollisionMarksIndex,
-			limitedReached
+			limitedReached,
+			momentumServiceGpu
 		);
 	} 
 }
@@ -217,7 +242,8 @@ void GpuCollision::run(
 						betweenParticlesOffset,
 						thisBetweenParticleCount,
 						maxCollisionMarksIndex,
-						limitReached
+						limitReached,
+						momentumServiceGpu
 					);
 				});
 			}

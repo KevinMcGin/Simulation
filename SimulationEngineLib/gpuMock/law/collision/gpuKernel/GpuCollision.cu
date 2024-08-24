@@ -1,6 +1,10 @@
 #include "gpuMock/law/collision/gpuKernel/GpuCollision.cuh"
 
-GpuCollision::GpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver) : 
+GpuCollision::GpuCollision(
+	std::shared_ptr<CollisionDetector> collisionDetector, 
+	std::shared_ptr<CollisionResolver> collisionResolver,	
+	std::shared_ptr<MomentumService> momentumService
+) : 
 	GpuLaw("Collision") {}
 
 GpuCollision::~GpuCollision() {}

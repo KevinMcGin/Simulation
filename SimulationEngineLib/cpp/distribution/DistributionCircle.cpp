@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include "cpp/distribution/DistributionCircle.h"
 #include "cpp/distribution/Distribution.h"
 

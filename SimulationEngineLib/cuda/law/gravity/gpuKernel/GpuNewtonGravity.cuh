@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "cpp/law/GpuLaw.h"
+#include "shared/service/momentum/MomentumService.cuh"
 
 #include <vector>
 #include <stdio.h>
@@ -7,7 +8,10 @@
 
 class GpuNewtonGravity: public GpuLaw {
 public:
-	GpuNewtonGravity(float G);
+	GpuNewtonGravity(
+		float G,
+		std::shared_ptr<MomentumService> momentumService
+	);
 	void run(
 		Particle** particles, 
 		int particleCount,
@@ -15,4 +19,8 @@ public:
 	) override;
 protected:
 	const float G;
+	std::shared_ptr<MomentumService> momentumService;
+
+private:
+    MomentumService** momentumServiceGpu = NULL;
 };

@@ -1,4 +1,3 @@
-#pragma once
 #include "shared/law/gravity/helper/NewtonGravityHelper.cuh"
 #include "cpp/particle/ParticleSimple.h"
 #include "shared/particle/Particle.cuh"
@@ -16,8 +15,17 @@ Vector3D<float> getAcceleration(float mass, Vector3D<float> radiusComponent) {
 #if defined(USE_GPU)
    __device__ __host__
 #endif
-void runOnParticle(Particle* p1, Vector3D<float> acceleration, unsigned int deltaTime) {
-	p1->velocity = p1->velocity + acceleration * deltaTime;
+void runOnParticle(
+	Particle* p1, Vector3D<float> acceleration, 
+	unsigned int deltaTime,
+	MomentumService* momentumService
+) {
+	p1->velocity = momentumService->getVelocityPlusAcceleration(
+		p1->mass,
+		acceleration, 
+		deltaTime, 
+		p1->velocity
+	);
 }
 
 #if defined(USE_GPU)

@@ -9,7 +9,11 @@
 
 class GpuCollision: public GpuLaw {
 public:
-	GpuCollision(std::shared_ptr<CollisionDetector> collisionDetector, std::shared_ptr<CollisionResolver> collisionResolver);
+	GpuCollision(
+		std::shared_ptr<CollisionDetector> collisionDetector, 
+		std::shared_ptr<CollisionResolver> collisionResolver,
+		std::shared_ptr<MomentumService> momentumService		
+	);
     ~GpuCollision();
 	void run(
 		Particle** particles, 

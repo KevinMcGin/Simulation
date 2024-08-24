@@ -25,7 +25,7 @@ T x,y,z;
 
 #if defined(USE_GPU)
    __device__ __host__
-#endif 
+#endif
 Vector3D unit() {
 		return Vector3D<T>(x,y,z) / magnitude();
 	}

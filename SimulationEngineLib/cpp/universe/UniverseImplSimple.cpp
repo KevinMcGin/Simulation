@@ -2,13 +2,26 @@
 #include "cpp/law/gravity/NewtonGravity.h"
 #include "cpp/law/newtonFirstLaw/NewtonFirstLaw.h"
 #include "cpp/law/collision/CollisionCoalesce.h"
+#include "shared/service/momentum/newton/NewtonMomentumService.cuh"
+#include "shared/service/momentum/einstein/EinsteinMomentumService.cuh"
+
+std::shared_ptr<MomentumService> getMomentumService(
+	bool isEinsteinMomentum
+) {
+	if (isEinsteinMomentum) {
+		return std::make_shared<EinsteinMomentumService>();
+	} else {
+		return std::make_shared<NewtonMomentumService>();
+	}
+}
 
 UniverseImplSimple::UniverseImplSimple(
 	std::shared_ptr<SimulationInput> input, 
 	std::shared_ptr<SimulationOutput> output, 
 	unsigned long endTime,  
 	unsigned int deltaTime,
-	Usage useGpu
+	Usage useGpu,
+	bool isEinsteinMomentum
 ) : UniverseImpl(
 	{}, 
 	input, 
@@ -17,9 +30,13 @@ UniverseImplSimple::UniverseImplSimple(
 	endTime, 
 	useGpu
 ) {
-	this->laws = { 
-		std::make_shared<CollisionCoalesce>(this->useGpu == TRUE),
-		std::make_shared<NewtonGravity>(),
-		std::make_shared<NewtonFirstLaw>()
+	auto momentumService = getMomentumService(isEinsteinMomentum);
+	this->laws = {
+		std::make_shared<CollisionCoalesce>(
+			momentumService,
+			this->useGpu == TRUE
+		),
+		std::make_shared<NewtonGravity>(momentumService),
+		std::make_shared<NewtonFirstLaw>(),
 	};
  }

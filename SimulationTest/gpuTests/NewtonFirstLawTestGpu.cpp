@@ -3,7 +3,7 @@
 #include "cpp/law/newtonFirstLaw/NewtonFirstLaw.h"
 #include "LawHelper.h"
 
-TEST(NewtonFirstLawTest, ParticleMoveGpu) {
+TEST(NewtonFirstLawTest, ParticleMoveGpu1) {
 	auto law = std::make_shared<NewtonFirstLaw>();
 	std::vector<Particle*> particles = NewtonFirstLawTestHelper::getParticleMove();
     LawHelper::runGpuLaw(law, particles);

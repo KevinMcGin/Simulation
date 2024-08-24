@@ -10,6 +10,7 @@ public:
     ~GpuDataController();
     void putParticlesOnDevice(std::vector<Particle*> particles, bool firstRun = false);
     void getParticlesFromDevice(std::vector<Particle*>& particles);
+    void deleteParticlesOnDevice();
     Particle** get_td_par();
     int getParticleCount();
 };
