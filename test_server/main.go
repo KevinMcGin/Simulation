@@ -48,20 +48,20 @@ func pullDownCode(commitId string) string {
 	folderName := strconv.FormatInt(time.Now().Unix(), 10)
 	err := os.Mkdir("test_area/" + folderName, os.ModePerm)
 	if err != nil {
-		fmt.Println("Error creating folder: %s", err)
+		fmt.Println("Error creating folder: ", err)
 		fmt.Println(err)
 	}
-	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + " && git clone https://github.com/KevinMcGin/Simulation.git").Output()
+	out, err := exec.Command("bash", "-c", "cd test_area/" + folderName + " && git clone https://github.com/KevinMcGin/Simulation.git").Output()
 	if err != nil {
-		fmt.Println("Error cloning repo: %s", err)
+		fmt.Println("Error cloning repo: ", out, err)
 	}	
-	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation && git checkout " + commitId).Output()
+	out, err = exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation && git checkout " + commitId).Output()
 	if err != nil {
-		fmt.Println("Error checking out commit: %s", err)
+		fmt.Println("Error checking out commit: ", out, err)
 	}
-	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation && rm config/project.config.example && mv config/gpu_project.config.example config/project.config.example").Output()
+	out, err = exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation && rm config/project.config.example && mv config/gpu_project.config.example config/project.config.example").Output()
 	if err != nil {
-		fmt.Println("Error renaming project.config: %s", err)
+		fmt.Println("Error renaming project.config: ", out, err)
 	}
 	return folderName
 }
@@ -70,7 +70,7 @@ func runTests(folderName string) TestResult {
 	out, err := exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation/scripts && ./test.sh").Output()
 	succeeded := err == nil
 	if !succeeded {
-		fmt.Println("Tests failed:\n ", err)
+		fmt.Println("Tests failed:\n ", err, out)
 	}
 	testMessage := string(out)
 	return TestResult {
@@ -80,9 +80,9 @@ func runTests(folderName string) TestResult {
 }
 
 func deleteFolder(folderName string) {
-	_, err := exec.Command("bash", "-c", "rm -rf test_area/" + folderName).Output()
+	out, err := exec.Command("bash", "-c", "rm -rf test_area/" + folderName).Output()
 	if err != nil {
-		fmt.Println("Error deleting folder: %s", err)
+		fmt.Println("Error deleting folder: ", out, err)
 	}
 }
 
