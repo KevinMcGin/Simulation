@@ -49,7 +49,10 @@ func pullDownCode(commitId string) string {
 }
 
 func deleteFolder(folderName string) {
-	exec.Command("bash", "-c", "rm -rf", "test_area/" + folderName).Output()
+	_, err := exec.Command("bash", "-c", "rm -rf", "test_area/" + folderName).Output()
+	if err != nil {
+		fmt.Println("Error deleting folder: %s", err)
+	}
 }
 
 type TestResult struct {
