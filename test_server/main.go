@@ -37,10 +37,14 @@ func pullDownCode(commitId string) string {
 		fmt.Println("Error creating folder: %s", err)
 		fmt.Println(err)
 	}
-	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + " && git clone https://github.com/KevinMcGin/Simulation.git && git checkout " + commitId).Output()
+	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + " && git clone https://github.com/KevinMcGin/Simulation.git").Output()
 	if err != nil {
 		fmt.Println("Error cloning repo: %s", err)
 	}	
+	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation && git checkout " + commitId).Output()
+	if err != nil {
+		fmt.Println("Error checking out commit: %s", err)
+	}
 	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation && rm config/project.config.example && mv config/gpu_project.config.example config/project.config.example").Output()
 	if err != nil {
 		fmt.Println("Error renaming project.config: %s", err)
