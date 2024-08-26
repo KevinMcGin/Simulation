@@ -17,7 +17,7 @@ func main() {
     http.HandleFunc("/api/test/{commitId}/commit", testFunc)
 
     // Start the server
-    log.Fatal(http.ListenAndServe(":9000", nil))
+    log.Fatal(http.ListenAndServe("127.0.0.1:9000", nil))
 }
 
 func testFunc(w http.ResponseWriter, r *http.Request) {
