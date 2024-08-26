@@ -17,7 +17,7 @@ func main() {
     http.HandleFunc("/api/test/{commitId}/commit", testFunc)
 
     // Start the server
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    log.Fatal(http.ListenAndServe(":9000", nil))
 }
 
 func testFunc(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +80,7 @@ func runTests(folderName string) TestResult {
 }
 
 func deleteFolder(folderName string) {
-	err := os.RemoveAll("test_area/" + folderName)
+	_, err := exec.Command("bash", "-c", "rm -rf test_area/" + folderName).Output()
 	if err != nil {
 		fmt.Println("Error deleting folder: %s", err)
 	}
