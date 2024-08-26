@@ -24,8 +24,13 @@ func testFunc(w http.ResponseWriter, r *http.Request) {
 	commitId := r.PathValue("commitId")
 	testResult := runTestsAndGetResult(commitId)
     w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(testResult)
+	jsonBytes, err := json.Marshal(testResult)
+	if err != nil {
+		fmt.Println("Error marshalling json: %s", err)
+	}
 	fmt.Println(testResult)
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonBytes)
 }
 
 func runTestsAndGetResult(commitId string) TestResult {
@@ -82,6 +87,6 @@ func deleteFolder(folderName string) {
 }
 
 type TestResult struct {
-    succeeded bool
-    message string
+    Succeeded bool `json:"succeeded"`
+    Message string `json:"message"`
 }
