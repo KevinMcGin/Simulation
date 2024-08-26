@@ -14,7 +14,7 @@ import(
 
 func main() {
 	// Define routes
-    http.HandleFunc("/test/{commitId}", testFunc)
+    http.HandleFunc("/api/test/{commitId}/commit", testFunc)
 
     // Start the server
     log.Fatal(http.ListenAndServe(":8080", nil))
