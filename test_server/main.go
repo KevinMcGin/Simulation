@@ -41,6 +41,10 @@ func pullDownCode(commitId string) string {
 	if err != nil {
 		fmt.Println("Error cloning repo: %s", err)
 	}	
+	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation && rm config/project.config.example && mv config/gpu_project.config.example config/project.config.example").Output()
+	if err != nil {
+		fmt.Println("Error renaming project.config: %s", err)
+	}
 	return folderName
 }
 
