@@ -14,14 +14,14 @@ import(
 
 func main() {
 	// Define routes
-    http.HandleFunc("/test", testFunc)
+    http.HandleFunc("/test/{commitId}", testFunc)
 
     // Start the server
     log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func testFunc(w http.ResponseWriter, r *http.Request) {
-	commitId := "518a9600b12fa01a2aa1b722441640ddfed6b7d5"
+	commitId := r.PathValue("commitId")
 	testResult := runTestsAndGetResult(commitId)
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(testResult)
