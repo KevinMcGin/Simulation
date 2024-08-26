@@ -17,18 +17,9 @@ func runTestsAndGetResult(commitId string) TestResult {
 
 	folderName := pullDownCode(commitId)
 
-	out, err := exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation/scripts && ./test.sh").Output()
-	succeeded := err == nil
-	if !succeeded {
-		fmt.Println("Tests failed:\n ", err)
-	}
-	testMessage := string(out)
-	exec.Command("bash", "-c", "cd ../..")
+	testResult := runTests(folderName)
 	deleteFolder(folderName)
-	return TestResult {
-		succeeded,
-		testMessage,
-	}
+	return testResult
 }
 
 func pullDownCode(commitId string) string {
@@ -54,8 +45,21 @@ func pullDownCode(commitId string) string {
 	return folderName
 }
 
+func runTests(folderName string) TestResult {
+	out, err := exec.Command("bash", "-c", "cd test_area/" + folderName + "/Simulation/scripts && ./test.sh").Output()
+	succeeded := err == nil
+	if !succeeded {
+		fmt.Println("Tests failed:\n ", err)
+	}
+	testMessage := string(out)
+	return TestResult {
+		succeeded,
+		testMessage,
+	}
+}
+
 func deleteFolder(folderName string) {
-	_, err := exec.Command("bash", "-c", "rm -rf test_area/" + folderName).Output()
+	err := os.RemoveAll("test_area/" + folderName)
 	if err != nil {
 		fmt.Println("Error deleting folder: %s", err)
 	}
