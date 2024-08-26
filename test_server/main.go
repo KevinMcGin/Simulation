@@ -31,13 +31,13 @@ func runTestsAndGetResult(commitId string) TestResult {
 
 func pullDownCode(commitId string) string {
 	// Todo: get the timestamp
-	folderName := "timestamp"
+	folderName := "timestamp2"
 	err := os.Mkdir("test_area/" + folderName, os.ModePerm)
 	if err != nil {
 		fmt.Println("Error creating folder: %s", err)
 		fmt.Println(err)
 	}
-	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + " && git clone https://github.com/KevinMcGin/Simulation.git").Output()
+	_, err = exec.Command("bash", "-c", "cd test_area/" + folderName + " && git clone https://github.com/KevinMcGin/Simulation.git && git checkout " + commitId).Output()
 	if err != nil {
 		fmt.Println("Error cloning repo: %s", err)
 	}	
