@@ -5,7 +5,7 @@ import "os"
 import "os/exec"
 
 func main() {
-	commitId := "605dcab514c0a471dd9d2ea57946d740fc44bbd9"
+	commitId := "7a829deae043a3304110168cb231d21d92618d1a"
 	testResult := runTestsAndGetResult(commitId)
 	fmt.Println(testResult)
 }
