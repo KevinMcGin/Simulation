@@ -3,6 +3,8 @@ package main
 import "fmt"
 import "os"
 import "os/exec"
+import "time"
+import "strconv"
 
 func main() {
 	commitId := "518a9600b12fa01a2aa1b722441640ddfed6b7d5"
@@ -31,7 +33,7 @@ func runTestsAndGetResult(commitId string) TestResult {
 
 func pullDownCode(commitId string) string {
 	// Todo: get the timestamp
-	folderName := "timestamp2"
+	folderName := strconv.FormatInt(time.Now().Unix(), 10)
 	err := os.Mkdir("test_area/" + folderName, os.ModePerm)
 	if err != nil {
 		fmt.Println("Error creating folder: %s", err)
@@ -53,7 +55,7 @@ func pullDownCode(commitId string) string {
 }
 
 func deleteFolder(folderName string) {
-	_, err := exec.Command("bash", "-c", "rm -rf", "test_area/" + folderName).Output()
+	_, err := exec.Command("bash", "-c", "rm -rf test_area/" + folderName).Output()
 	if err != nil {
 		fmt.Println("Error deleting folder: %s", err)
 	}
