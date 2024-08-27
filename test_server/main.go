@@ -13,6 +13,7 @@ import(
 
 
 func main() {
+	fmt.Println("Test server starting...")
 	// Define routes
     http.HandleFunc("/api/test/{commitId}/commit", testFunc)
 
