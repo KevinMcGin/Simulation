@@ -23,7 +23,18 @@ func main() {
 
 func testFunc(w http.ResponseWriter, r *http.Request) {
 	commitId := r.PathValue("commitId")
-	testResult := runTestsAndGetResult(commitId)
+	testResult := TestResult {
+		false,
+		"",
+	}
+	if validateCommmitId(commitId) {
+		testResult = runTestsAndGetResult(commitId)
+	} else {
+		testResult = TestResult {
+			false,
+			"Invalid commit id",
+		}
+	}
     w.Header().Set("Content-Type", "application/json")
 	jsonBytes, err := json.Marshal(testResult)
 	if err != nil {
@@ -35,13 +46,22 @@ func testFunc(w http.ResponseWriter, r *http.Request) {
 }
 
 func runTestsAndGetResult(commitId string) TestResult {
-	fmt.Println("Running tests for commit:", commitId)
+	fmt.Println("Running tests for commit id:", commitId)
 
 	folderName := pullDownCode(commitId)
 
 	testResult := runTests(folderName)
 	deleteFolder(folderName)
 	return testResult
+}
+
+func validateCommmitId(commitId string) bool {
+	out, err := exec.Command("bash", "-c", "git cat-file commit " + commitId).Output()
+	if err != nil {
+		fmt.Println("Error validating commit: ", commitId, " ", out, err)
+		fmt.Println(err)
+	}
+	return err == nil
 }
 
 func pullDownCode(commitId string) string {
