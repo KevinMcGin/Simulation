@@ -1,0 +1,1 @@
+bash sim_test_server.sh
