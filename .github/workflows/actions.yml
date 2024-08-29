@@ -91,7 +91,7 @@ jobs:
       shell: bash
       run: | 
         cd scripts
-        ./engine.sh -nz
+        ./engine.sh -n
   codeCoverage:
     runs-on: ubuntu-20.04
     steps:
