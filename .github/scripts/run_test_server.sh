@@ -1,17 +1,19 @@
 #!/bin/bash
-testResultId=$(curl https://api.fhionnghaile.ie/api/sim/test/${{ github.sha }}/commit -H "TEST-TOKEN:test");
+github_sha=$1
+test_token=$2
+testResultId=$(curl https://api.fhionnghaile.ie/api/sim/test/$github_sha/commit -H "TEST-TOKEN:$test_token");
 echo $testResultId;
 if [[ $testResultId == *"error"* ]]; then
   exit 1;
 fi
-testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "TEST-TOKEN:test");
+testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "TEST-TOKEN:$test_token");
 if [[ $testResult == *"error"* ]]; then
   exit 1;
 fi
 isReady=$(echo $testResult | jq -r '.isReady');
 while [ $isReady = "false" ]; do
     sleep 10;
-    testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "TEST-TOKEN:test");
+    testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "TEST-TOKEN:$test_token");
     if [[ $testResult == *"error"* ]]; then
         exit 1;
     fi
