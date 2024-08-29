@@ -3,23 +3,23 @@ testResultId=$(curl https://api.fhionnghaile.ie/api/sim/test/${{ github.sha }}/c
 echo $testResultId;
 if [[ $testResultId == *"error"* ]]; then
   exit 1;
-fi
+fi;
 testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "TEST-TOKEN:test");
 if [[ $testResult == *"error"* ]]; then
   exit 1;
-fi
+fi;
 isReady=$(echo $testResult | jq -r '.isReady');
 while [ $isReady = "false" ]; do
     sleep 10;
     testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "TEST-TOKEN:test");
     if [[ $testResult == *"error"* ]]; then
         exit 1;
-    fi
+    fi;
     isReady=$(echo $testResult | jq -r '.isReady');
 done
 echo $(echo $testResult | jq -r '.message');
 isSuccess=$(echo $testResult | jq -r '.isSuccess');
 if [ $isSuccess = "false" ]; then
     exit 1;
-fi
+fi;
 exit 0;
