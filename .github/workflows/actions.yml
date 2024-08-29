@@ -1,4 +1,4 @@
-name: CPU Build & Test
+name: Build & Test
 
 on: [push]
 
