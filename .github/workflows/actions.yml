@@ -9,7 +9,31 @@ env:
   BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory  # Directory where build-wrapper output will be placed
 
 jobs:
-  build:
+  gpuTests:
+    runs-on: "ubuntu-latest"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Gpu Test
+      env:
+        # TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+        TEST_TOKEN: "test"
+      run: testResultId=$(curl https://api.fhionnghaile.ie/api/sim/test/${{ github.sha }}/commit -H "TEST-TOKEN:$TEST_TOKEN")
+        echo $testResultId
+        testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "TEST-TOKEN:$TEST_TOKEN")
+        isReady=$(echo $testResult | jq -r '.isReady')
+        while [ $isReady == "false" ]; do
+          sleep 10
+          testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "TEST-TOKEN:$TEST_TOKEN")
+          isReady=$(echo $testResult | jq -r '.isReady')
+        done
+        echo $(echo $testResult | jq -r '.message')
+        isSuccess=$(echo $testResult | jq -r '.isSuccess')
+        if [ $isSuccess == "false" ]; then
+          exit 1
+        fi
+        exit 0
+
+  cpuTests:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -67,9 +91,8 @@ jobs:
       shell: bash
       run: | 
         cd scripts
-        ./engine.sh -n
-
-  sonar:
+        ./engine.sh -nz
+  codeCoverage:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
@@ -134,3 +157,4 @@ jobs:
       shell: bash
       run: |
         sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
+
