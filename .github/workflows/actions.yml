@@ -17,9 +17,7 @@ jobs:
       env:
         # TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
         TEST_TOKEN: "test"
-      run: |
-        echo "Running GPU Tests"
-        ./.github/scripts/run_test_server.sh ${{ github.sha }} $TEST_TOKEN
+      run: ./.github/scripts/run_test_server.sh ${{ github.sha }} $TEST_TOKEN
 
   cpuTests:
     runs-on: ${{ matrix.os }}
