@@ -15,8 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Gpu Test
       env:
-        # TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
-        TEST_TOKEN: "test"
+        TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
       run: ./.github/scripts/run_test_server.sh ${{ github.sha }} $TEST_TOKEN
 
   cpuTests:
