@@ -13,10 +13,10 @@ isReady=$(echo $testResult | jq -r '.isReady');
 while [ $isReady = "false" ]; do
     sleep 10;
     testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
-    echo "testResult: $testResult";
+    printf "test result status: $testResult\n";
     isReady=$(echo $testResult | jq -r '.isReady');
 done
-printf "final test result message: $testResult\n";
+printf "final test result message: \n";
 printf $(echo $testResult | jq -r '.message');
 isSuccess=$(echo $testResult | jq -r '.isSuccess');
 if [ $isSuccess = "true" ]; then
