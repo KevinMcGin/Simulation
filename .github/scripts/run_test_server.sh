@@ -19,7 +19,7 @@ done
 printf "final test result message: \n";
 printf $(echo $testResult | jq -r '.message');
 isSuccess=$(echo $testResult | jq -r '.isSuccess');
-if [ $isSuccess = "true" ]; then
+if [[ $isSuccess = "true" ]]; then
     exit 0;
 fi
 exit 1;
