@@ -8,7 +8,7 @@ if [[ $testResultId = *"error"* ]]; then
 fi
 sleep 10;
 testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
-echo "testResult: $testResult";
+echo -e "test result status: $testResult\n";
 isReady=$(echo $testResult | jq -r '.isReady');
 while [ $isReady = "false" ]; do
     sleep 10;
@@ -16,7 +16,8 @@ while [ $isReady = "false" ]; do
     echo "testResult: $testResult";
     isReady=$(echo $testResult | jq -r '.isReady');
 done
-echo $(echo $testResult | jq -r '.message');
+echo -e "final test result message: $testResult\n";
+echo -e $(echo $testResult | jq -r '.message');
 isSuccess=$(echo $testResult | jq -r '.isSuccess');
 if [ $isSuccess = "true" ]; then
     exit 0;
