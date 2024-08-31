@@ -9,7 +9,7 @@ fi
 sleep 10;
 testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
 printf "test result status: $testResult\n";
-isReady=$(testResult | jq '.isReady');
+isReady=$($testResult | jq '.isReady');
 while [[ $isReady = false ]]; do
     sleep 10;
     testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
