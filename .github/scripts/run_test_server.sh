@@ -11,11 +11,13 @@ testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result 
 printf "test result status: $testResult\n";
 
 isReady=$( jq -r  '.isReady' <<< "${testResult}" )
+printf "isReady: $isReady";
 while [[ $isReady = false ]]; do
     sleep 10;
     testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
     printf "test result status: $testResult\n";
     isReady=$( jq -r  '.isReady' <<< "${testResult}" )
+printf "isReady: $isReady";
 done
 printf "final test result: \n";
 printf $testResult;
