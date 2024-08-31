@@ -12,7 +12,7 @@ printf "test result status: $testResult\n";
 
 isReady=$( jq -r  '.isReady' <<< "${testResult}" )
 printf "isReady: $isReady";
-while [[ $isReady eq false ]]; do
+while [[ "$isReady" = false ]]; do
     sleep 10;
     testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
     printf "test result status: $testResult\n";
@@ -22,7 +22,7 @@ done
 printf "final test result: \n";
 printf $testResult;
 isSuccess=$( jq -r  '.isSuccess' <<< "${testResult}" )
-if [[ $isSuccess = true ]]; then
+if [[ "$isSuccess" = true ]]; then
     exit 0;
 fi
 exit 1;
