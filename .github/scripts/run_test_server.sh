@@ -16,8 +16,8 @@ while [[ $isReady = "false" ]]; do
     printf "test result status: $testResult\n";
     isReady=$(echo $testResult | jq -r '.isReady');
 done
-printf "final test result message: \n";
-printf $(echo $testResult | jq -r '.message');
+printf "final test result: \n";
+printf $testResult;
 isSuccess=$(echo $testResult | jq -r '.isSuccess');
 if [[ $isSuccess = "true" ]]; then
     exit 0;
