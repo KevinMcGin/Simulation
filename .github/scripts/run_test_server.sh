@@ -10,7 +10,7 @@ sleep 10;
 testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
 printf "test result status: $testResult\n";
 isReady=$(echo $testResult | jq -r '.isReady');
-while [[ $isReady = "false" ]]; do
+while [[ $isReady = false ]]; do
     sleep 10;
     testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
     printf "test result status: $testResult\n";
