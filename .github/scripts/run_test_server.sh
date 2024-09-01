@@ -20,7 +20,7 @@ get_test_result() {
 }
 
 while [[ $testStatus = *"RUNNING"* ]]; do
-  get_test_result();
+  get_test_result;
 done
 printf "final test result: \n";
 printf $testResult;
