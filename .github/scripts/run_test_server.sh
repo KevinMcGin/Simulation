@@ -8,18 +8,19 @@ printf "testResultId: $testResultId";
 if [[ $testResultId = *"error"* ]]; then
   exit 1;
 fi
-sleep 10;
-testResult=$(curl $test_endpoint/$testResultId/result -H $tester_token_header);
-printf "test result status: $testResult\n";
 
-testStatus=$( jq -r  '.testStatus' <<< "${testResult}" )
-printf "testStatus: $testStatus\n";
-while [[ $testStatus = *"RUNNING"* ]]; do
+testResult="";
+testStatus="RUNNING";
+get_test_result() {
   sleep 10;
   testResult=$(curl $test_endpoint/$testResultId/result -H $tester_token_header);
   printf "test result status: $testResult\n";
-  testStatus=$( jq -r  '.testStatus' <<< "${testResult}" )
+  testStatus=$( jq -r  '.testStatus' <<< "${testResult}" );
   printf "testStatus: $testStatus\n";
+}
+
+while [[ $testStatus = *"RUNNING"* ]]; do
+  get_test_result();
 done
 printf "final test result: \n";
 printf $testResult;
