@@ -1,20 +1,22 @@
 #!/bin/bash
 github_sha=$1
 test_token=$2
-testResultId=$(curl https://api.fhionnghaile.ie/api/sim/test/$github_sha/commit -H "tester-token:$test_token");
+test_endpoint="https://api.fhionnghaile.ie/api/sim/test"
+tester_token_header="tester-token:$test_token"
+testResultId=$(curl $test_endpoint/$github_sha/commit -H $tester_token_header);
 printf "testResultId: $testResultId";
 if [[ $testResultId = *"error"* ]]; then
   exit 1;
 fi
 sleep 10;
-testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
+testResult=$(curl $test_endpoint/$testResultId/result -H $tester_token_header);
 printf "test result status: $testResult\n";
 
 testStatus=$( jq -r  '.testStatus' <<< "${testResult}" )
 printf "testStatus: $testStatus\n";
 while [[ $testStatus = *"RUNNING"* ]]; do
   sleep 10;
-  testResult=$(curl https://api.fhionnghaile.ie/api/sim/test/$testResultId/result -H "tester-token:$test_token");
+  testResult=$(curl $test_endpoint/$testResultId/result -H $tester_token_header);
   printf "test result status: $testResult\n";
   testStatus=$( jq -r  '.testStatus' <<< "${testResult}" )
   printf "testStatus: $testStatus\n";
