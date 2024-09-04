@@ -3,16 +3,17 @@ github_sha=$1
 test_token=$2
 test_endpoint="https://api.fhionnghaile.ie/api/sim/test"
 tester_token_header="tester-token:$test_token"
+test_result="";
+test_status="RUNNING";
+tries=0;
+max_tries=5;
+
 test_result_id=$(curl $test_endpoint/$github_sha/commit -H $tester_token_header);
 printf "test_result_id: $test_result_id\n";
 if [[ "$test_result_id" = *"error"* ]]; then
   exit 1;
 fi
 
-test_result="";
-test_status="RUNNING";
-tries=0;
-max_tries=50;
 get_test_result() {
   sleep 10;
   tries=$((tries + 1));
