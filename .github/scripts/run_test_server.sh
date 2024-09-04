@@ -18,7 +18,6 @@ get_test_result() {
   tries=$((tries + 1));
   printf "call $tries of $max_tries\n";
   test_result=$(curl $test_endpoint/$test_result_id/result -H $tester_token_header);
-  printf "test result status: $test_result\n";
   test_status=$( jq -r  '.testStatus' <<< "${test_result}" );
   printf "test_status: $test_status\n";
 }
