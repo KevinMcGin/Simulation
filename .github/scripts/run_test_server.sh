@@ -4,7 +4,7 @@ test_token=$2
 test_endpoint="https://api.fhionnghaile.ie/api/sim/test"
 tester_token_header="tester-token:$test_token"
 test_result_id=$(curl $test_endpoint/$github_sha/commit -H $tester_token_header);
-printf "test_result_id: $test_result_id";
+printf "test_result_id: $test_result_id\n";
 if [[ "$test_result_id" = *"error"* ]]; then
   exit 1;
 fi
@@ -22,11 +22,10 @@ get_test_result() {
   tries=$((tries + 1));
 }
 
-while [[ "$test_status" = *"RUNNING"* && tries < max_tries ]]; do
+while [[ ("$test_status" = *"RUNNING"*) && ((tries < max_tries)) ]]; do
   get_test_result;
 done
-printf "final test result: \n";
-printf $test_result;
+printf "final test result: \n$test_result\n";
 if [[ "$test_status" = *"SUCCESS"* ]]; then
     exit 0;
 fi
