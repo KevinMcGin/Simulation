@@ -6,7 +6,7 @@ tester_token_header="tester-token:$test_token"
 test_result="";
 test_status="RUNNING";
 tries=0;
-max_tries=5;
+max_tries=60;
 
 test_result_id=$(curl $test_endpoint/$github_sha/commit -H $tester_token_header);
 printf "test_result_id: $test_result_id\n";
