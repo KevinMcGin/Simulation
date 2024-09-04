@@ -14,9 +14,9 @@ test_status="RUNNING";
 tries=0;
 max_tries=50;
 get_test_result() {
+  sleep 10;
   tries=$((tries + 1));
   printf "call $tries of $max_tries\n";
-  sleep 10;
   test_result=$(curl $test_endpoint/$test_result_id/result -H $tester_token_header);
   printf "test result status: $test_result\n";
   test_status=$( jq -r  '.testStatus' <<< "${test_result}" );
