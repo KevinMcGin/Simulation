@@ -16,7 +16,7 @@ InputJson::InputJson(const char* fileName):
 	time(0),
 	originalTime(0)
 {
-	std::cout << "Parsing simulation: " << fileName << std::endl;
+	std::cout << "Parsing simulation: " << fileName << '\n';
 	FILE* fp;
 	#if defined(WINDOWS)
 		char modeArray[] = "rb";

@@ -51,5 +51,5 @@ void UniverseTiming::printSectionsTiming() {
 	for (auto const& it : progresses) {
 		sections += it.first + ": " + Timing::getTimeWithUnit(it.second) + ", ";
 	}
-	std::cout << std::endl << sections << std::endl;
+	std::cout << '\n' << sections << '\n';
 }

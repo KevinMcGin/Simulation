@@ -24,9 +24,9 @@ UniverseImpl::UniverseImpl(
 UniverseImpl::~UniverseImpl() = default;
 
 void UniverseImpl::run() {
-	std::cout << "Simulation running" << std::endl;
-	std::cout << particles.size() << " particles" << std::endl;
-	std::cout << "Frames: " << endTime << std::endl;
+	std::cout << "Simulation running\n";
+	std::cout << particles.size() << " particles\n";
+	std::cout << "Frames: " << endTime << "\n";
 	int lawsRan = 0;
 	bool particleDeleted = false;
 	output->output(particles, 0);
@@ -77,5 +77,5 @@ void UniverseImpl::run() {
 	}
 	universeTiming.printPercentComplete(endTime, true);
 	universeTiming.printSectionsTiming();
-	std::cout << std::endl << "Simulation complete" << std::endl;
+	std::cout << "\nSimulation complete\n";
 }

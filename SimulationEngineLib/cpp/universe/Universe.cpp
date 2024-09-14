@@ -33,11 +33,11 @@ Universe::~Universe() = default;
 
 void Universe::printUseGpu() {
     if (this->useGpu == TRUE) {
-        std::cout << std::endl << "Running on GPU" << std::endl;
+        std::cout << "\nRunning on GPU\n";
     } else if (this->useGpu == FALSE) {
-        std::cout << std::endl << "Running on CPU" << std::endl;
+        std::cout << "\nRunning on CPU\n";
     } else {
-        std::cout << std::endl << "Running on UNDEFINED" << std::endl;
+        std::cout << "\nRunning on UNDEFINED\n";
     }
     
 }

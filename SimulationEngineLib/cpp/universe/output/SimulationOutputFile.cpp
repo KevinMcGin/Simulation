@@ -7,7 +7,7 @@ SimulationOutputFile::SimulationOutputFile(const char* outputFile) : SimulationO
 }
 
 SimulationOutputFile::~SimulationOutputFile() {
-    myfile << buffer << std::endl;
+    myfile << buffer << '\n';
 	myfile.close();
 }
 
