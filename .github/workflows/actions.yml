@@ -120,9 +120,7 @@ jobs:
     - name: Rename cuda files to cpp files
       shell: bash
       run: |
-          for file in **/*.cu; do
-            mv -- "$file" "${file%.cu}.cpp"
-          done
+        find . -name "*.cu" -exec bash -c 'mv "$1" "${1%.cu}.cpp"' _ {} \;
     - name: Run build-wrapper
       shell: bash
       run: |
