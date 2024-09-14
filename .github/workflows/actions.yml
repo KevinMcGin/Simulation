@@ -116,7 +116,8 @@ jobs:
       run: |
         curl -sSLo $HOME/.sonar/build-wrapper-linux-x86.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }}
         unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
-    
+        echo "$HOME/.sonar/build-wrapper-linux-x86" >> $GITHUB_PATH
+
     - name: Rename cuda files to cpp files
       shell: bash
       run: |
