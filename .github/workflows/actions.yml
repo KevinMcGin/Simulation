@@ -120,7 +120,9 @@ jobs:
     - name: Rename cuda files to cpp files
       shell: bash
       run: |
+        cd SimulationEngineLib/shared
         find . -type f -name "*.cu" -exec rename 's/\.cu$/.cpp/' '{}' \;
+
     - name: Run build-wrapper
       shell: bash
       run: |
