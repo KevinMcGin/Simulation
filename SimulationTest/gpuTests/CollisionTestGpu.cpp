@@ -58,14 +58,18 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuSimple) {
 	const int particleCount = 1000;
 	const int stepsCount = 1;
-	auto law = std::make_shared<Collision>(
+	auto law = std::make_unique<Collision>(
 		std::make_shared<CollisionDetectorSimple>(), 
 		std::make_shared<CollisionResolverCoalesce>(), 
 		std::make_shared<NewtonMomentumService>(), 
 		true
 	);
 
-	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+	LawHelper::expectGpuLikeCpuRounded(
+		std::move(law),
+		particleCount,
+		stepsCount
+	);
 }
 
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow) {
@@ -73,14 +77,18 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow) {
 
 	const int particleCount = 1000;
 	const int stepsCount = 1;
-	auto law = std::make_shared<Collision>(
+	auto law = std::make_unique<Collision>(
 		std::make_shared<CollisionDetectorSimple>(), 
 		std::make_shared<CollisionResolverCoalesce>(), 
 		std::make_shared<NewtonMomentumService>(), 
 		true
 	);	
 
-	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+	LawHelper::expectGpuLikeCpuRounded(
+		std::move(law),
+		particleCount,
+		stepsCount
+	);
 }
 
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryVeryLow) {
@@ -88,14 +96,18 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryVeryLow) {
 
 	const int particleCount = 100;
 	const int stepsCount = 1;
-	auto law = std::make_shared<Collision>(
+	auto law = std::make_unique<Collision>(
 		std::make_shared<CollisionDetectorSimple>(), 
 		std::make_shared<CollisionResolverCoalesce>(), 
 		std::make_shared<NewtonMomentumService>(), 
 		true
 	);	
 
-	LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+	LawHelper::expectGpuLikeCpuRounded(
+		std::move(law),
+		particleCount,
+		stepsCount
+	);
 }
 
 TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow1) {
@@ -103,7 +115,7 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow1) {
 
 	const int particleCount = 100;
 	const int stepsCount = 1;
-	auto law = std::make_shared<Collision>(
+	auto law = std::make_unique<Collision>(
 		std::make_shared<CollisionDetectorSimple>(), 
 		std::make_shared<CollisionResolverCoalesce>(), 
 		std::make_shared<NewtonMomentumService>(), 
@@ -111,7 +123,11 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow1) {
 	);	
 	
 	 try {
-        LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
+		LawHelper::expectGpuLikeCpuRounded(
+			std::move(law),
+			particleCount,
+			stepsCount
+		);
     } catch(...) {
         FAIL() << "Wrong error thrown: expected No error";
     }
@@ -122,7 +138,7 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow2) {
 
 	const int particleCount = 10;
 	const int stepsCount = 1;
-	auto law = std::make_shared<Collision>(
+	auto law = std::make_unique<Collision>(
 		std::make_shared<CollisionDetectorSimple>(), 
 		std::make_shared<CollisionResolverCoalesce>(), 
 		std::make_shared<NewtonMomentumService>(), 
@@ -130,8 +146,12 @@ TEST(CollisionTest, ParticlesCollideGpuLikeCpuMemoryLow2) {
 	);	
 	
 	 try {
-        LawHelper::expectGpuLikeCpuRounded(law, particleCount, stepsCount);
-    } catch(std::runtime_error const &err) {
+		LawHelper::expectGpuLikeCpuRounded(
+			std::move(law),
+			particleCount,
+			stepsCount
+		);
+	} catch(std::runtime_error const &err) {
         EXPECT_EQ(err.what(), std::string("Max Loops in GpuCollision reached"));
     } catch(...) {
         FAIL() << "Wrong error thrown: expected Max Loops in GpuCollision reached";

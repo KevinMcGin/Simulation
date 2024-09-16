@@ -43,14 +43,19 @@ float roundTo3Places(float value) {
 }
 
 void LawHelper::expectGpuLikeCpuRounded(
-	std::shared_ptr<Law> law, 
+	std::unique_ptr<Law> law, 
 	const int particleCount, 
 	const int stepsCount,
 	const bool doAsserts
 ) {
     std::vector<Particle*> particlesCpu = LawHelper::setupParticles(particleCount);
 	std::vector<Particle*> particlesGpu = LawHelper::setupParticles(particleCount);
-	runGpuAndCpu(law, particlesCpu, particlesGpu, stepsCount);
+	runGpuAndCpu(
+		stdd::move(law),
+		particlesCpu,
+		particlesGpu,
+		stepsCount
+	);
     ASSERT_EQ(particlesCpu.size(), particlesGpu.size());
 
 	if (doAsserts) {

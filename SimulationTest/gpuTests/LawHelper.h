@@ -9,7 +9,7 @@ public:
     static void runGpuLaw(std::shared_ptr<Law> law, std::vector<Particle*>& particles, const int stepsCount = 1);
     static void expectGpuLikeCpu(std::shared_ptr<Law> law, const int particleCount = 1, const int stepsCount = 1);
     static void expectGpuLikeCpuRounded(
-        std::shared_ptr<Law> law, 
+        std::unique_ptr<Law> law, 
         const int particleCount = 1, 
         const int stepsCount = 1, 
         const bool doAsserts = false
