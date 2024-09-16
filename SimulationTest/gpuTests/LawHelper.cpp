@@ -51,7 +51,7 @@ void LawHelper::expectGpuLikeCpuRounded(
     std::vector<Particle*> particlesCpu = LawHelper::setupParticles(particleCount);
 	std::vector<Particle*> particlesGpu = LawHelper::setupParticles(particleCount);
 	runGpuAndCpu(
-		stdd::move(law),
+		std::move(law),
 		particlesCpu,
 		particlesGpu,
 		stepsCount
