@@ -13,10 +13,5 @@ public:
         std::shared_ptr<MomentumService> momentumService,
         bool useGpu = false
     );
-
-private:
-    std::shared_ptr<CollisionDetector> collisionDetector;
-    std::shared_ptr<CollisionResolver> collisionResolver;
-	std::shared_ptr<MomentumService> momentumService;
 };
 

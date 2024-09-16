@@ -26,7 +26,4 @@ Collision::Collision(
 			collisionResolver,
 			momentumService
 		) : std::make_unique<GpuLaw>("Collision")
-	),
-	collisionDetector(collisionDetector),
-	collisionResolver(collisionResolver),
-	momentumService(momentumService) { }
+	) {}
