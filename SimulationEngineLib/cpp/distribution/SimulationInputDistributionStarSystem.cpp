@@ -18,7 +18,7 @@ SimulationInputDistributionStarSystem::SimulationInputDistributionStarSystem(
     outerRadius(outerRadius), 
     particleCount(particleCount) {}
 
-std::shared_ptr<SimulationInputRandomSimple> SimulationInputDistributionStarSystem::getStarSystemDistribution() {
+std::unique_ptr<SimulationInputRandomSimple> SimulationInputDistributionStarSystem::getStarSystemDistribution() {
     Vector3D<float> meanPosition = { 0, 0, 0 };
 	auto massDistribution = std::make_shared<DistributionSimple>(meanMass, meanMass*0.9);
 	auto density = std::make_shared<DistributionValue>(meanDensity);
@@ -33,7 +33,7 @@ std::shared_ptr<SimulationInputRandomSimple> SimulationInputDistributionStarSyst
 	auto particleDistributionDisk = std::make_shared<ParticleDistributionDisk>(densityDistribution, starMass, meanPosition, 0, 0, false, innerRadiusDistribution, outerRadiusDistribution, eccentricityDistribution/*, angularVelocityDistribution*/);	
 	auto particleDistributionStar = std::make_shared<ParticleDistributionSimple>(distributionDensityStar, positionDistribution, velocityDistribution/*, angularVelocityDistribution*/);
 	
-	return std::make_shared<SimulationInputRandomSimple>(
+	return std::make_unique<SimulationInputRandomSimple>(
 		std::vector<unsigned long> { particleCount - 1, 1 }, 
 		std::vector<std::shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
 	);

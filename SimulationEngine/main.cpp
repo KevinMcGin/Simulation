@@ -129,11 +129,11 @@ int main(int argc, char *argv[]) {
 	// auto input = std::make_shared<SimulationInputCsv>(
 	// 	"config/input/particlesInput.csv"
 	// );
-	auto output = std::make_shared<SimulationOutputJson>(outputFile);
+	auto output = std::make_unique<SimulationOutputJson>(outputFile);
 
 	auto universe = std::make_unique<UniverseImplSimple>(
-		input,
-		output, 
+		std::move(input),
+		std::move(output), 
 		endTime,
 		deltaFrameRate
 	);
