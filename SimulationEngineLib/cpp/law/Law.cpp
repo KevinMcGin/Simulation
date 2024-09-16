@@ -2,8 +2,9 @@
 
 Law::Law(
     std::string className,
-    std::shared_ptr<CpuLaw> cpuLaw, 
-    std::shared_ptr<GpuLaw> gpuLaw
-) : className(className),
-    cpuLaw(cpuLaw), 
-    gpuLaw(gpuLaw) {}
+    std::unique_ptr<CpuLaw> cpuLaw, 
+    std::unique_ptr<GpuLaw> gpuLaw
+) : className(className) {
+    this->cpuLaw = std::move(cpuLaw);
+    this->gpuLaw = std::move(gpuLaw);
+}

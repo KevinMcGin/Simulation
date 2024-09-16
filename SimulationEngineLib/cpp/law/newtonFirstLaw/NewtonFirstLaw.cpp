@@ -8,9 +8,8 @@
     #include "gpuMock/law/newtonFirstLaw/gpuKernel/GpuNewtonFirstLaw.cuh"
 #endif
 
-NewtonFirstLaw::NewtonFirstLaw() : 
-    Law(
+NewtonFirstLaw::NewtonFirstLaw() : Law(
 	    "NewtonFirstLaw",
-        std::make_shared<CpuNewtonFirstLaw>(),
-        std::make_shared<GpuNewtonFirstLaw>()
+        std::make_unique<CpuNewtonFirstLaw>(),
+        std::make_unique<GpuNewtonFirstLaw>()
     ) {}

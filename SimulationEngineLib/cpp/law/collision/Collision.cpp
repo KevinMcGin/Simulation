@@ -16,16 +16,16 @@ Collision::Collision(
 	bool useGpu
 ) : Law(
 		"Collision",
-		std::make_shared<CpuCollision>(
+		std::make_unique<CpuCollision>(
 			collisionDetector, 
 			collisionResolver,
 			momentumService
 		),
-		useGpu ? std::make_shared<GpuCollision>(
+		useGpu ? std::make_unique<GpuCollision>(
 			collisionDetector, 
 			collisionResolver,
 			momentumService
-		) : std::make_shared<GpuLaw>("Collision")
+		) : std::make_unique<GpuLaw>("Collision")
 	),
 	collisionDetector(collisionDetector),
 	collisionResolver(collisionResolver),
