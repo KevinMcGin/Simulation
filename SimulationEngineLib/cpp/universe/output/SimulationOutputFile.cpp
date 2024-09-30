@@ -7,6 +7,11 @@ SimulationOutputFile::SimulationOutputFile(const char* outputFile) : SimulationO
 }
 
 SimulationOutputFile::~SimulationOutputFile() {
+	if (myfile.is_open()) {
+		this->close();
+	}
+}
+void SimulationOutputFile::close() {
     myfile << buffer << '\n';
 	myfile.close();
 }
