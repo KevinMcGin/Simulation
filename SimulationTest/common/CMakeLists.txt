@@ -1,4 +1,7 @@
-﻿include(FetchContent)
+﻿set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error")
+
+include(FetchContent)
 FetchContent_Declare(gtest
   QUIET
   URL https://github.com/google/googletest/archive/release-1.10.0.tar.gz
