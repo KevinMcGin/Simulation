@@ -12,7 +12,7 @@ CudaWithError::CudaWithError(std::string className): className(className) { }
 void CudaWithError::throwErrorMaybe(cudaError_t cudaStatus, std::string error) {
     if (cudaStatus != cudaSuccess) {
         std::string totalError = className + ": " + error + "\n" + cudaGetErrorString(cudaStatus);
-        std::cerr << std::endl << totalError << std::endl;
+        std::cerr << '\n' << totalError << '\n';
         throw std::runtime_error(totalError);
     }
 }

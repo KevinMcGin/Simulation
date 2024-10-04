@@ -12,6 +12,7 @@ public:
 	virtual ~SimulationOutputFile();
 
 	virtual void output(std::vector<Particle*> particles, unsigned long time) override = 0;
+    void close();
 
 protected:
     void writeToBuffer();

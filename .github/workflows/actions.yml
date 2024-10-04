@@ -77,6 +77,13 @@ jobs:
       run: | 
         cd scripts
         ./engine.sh -n
+
+    - name: Run CPU Server
+      shell: bash
+      run: | 
+        cd scripts
+        ./server.sh -n & 
+
   codeCoverage:
     runs-on: ubuntu-20.04
     steps:
@@ -117,6 +124,12 @@ jobs:
         curl -sSLo $HOME/.sonar/build-wrapper-linux-x86.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }}
         unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
         echo "$HOME/.sonar/build-wrapper-linux-x86" >> $GITHUB_PATH
+
+    - name: Rename cuda files to cpp files
+      shell: bash
+      run: |
+        cd SimulationEngineLib/shared
+        find . -name "*.cu" -exec bash -c 'mv "$1" "${1%.cu}.cpp"' _ {} \;
 
     - name: Run build-wrapper
       shell: bash

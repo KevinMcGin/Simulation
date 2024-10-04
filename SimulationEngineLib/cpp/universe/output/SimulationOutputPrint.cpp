@@ -6,9 +6,9 @@ void SimulationOutputPrint::output(std::vector<Particle*> particles, unsigned lo
 {
 	unsigned int i = 0;
 	for (const auto& p : particles) {
-		std::cout << "particle[" << i++ << "] position: " << std::endl;
-		std::cout << p->position.x << std::endl;
-		std::cout << p->position.y << std::endl;
-		std::cout << p->position.z << std::endl;
+		std::cout << "particle[" << i++ << "] position: \n";
+		std::cout << p->position.x << '\n';
+		std::cout << p->position.y << '\n';
+		std::cout << p->position.z << '\n';
 	}
 }

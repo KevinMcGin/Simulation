@@ -111,9 +111,9 @@ int main(int argc, char *argv[]) {
 	}
 	unsigned long deltaFrameRate = deltaTime / frameRate;
 	float frameRateTime = (float)frameRate / (float)deltaTime;
-	std::cout << seconds << " seconds" << std::endl;
-	std::cout << frameRate << " frame rate" << std::endl;
-	std::cout << deltaTime << " delta time" << std::endl;
+	std::cout << seconds << " seconds\n";
+	std::cout << frameRate << " frame rate\n";
+	std::cout << deltaTime << " delta time\n";
 	unsigned int endTime = seconds * frameRateTime;
 
 	auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(
@@ -129,11 +129,11 @@ int main(int argc, char *argv[]) {
 	// auto input = std::make_shared<SimulationInputCsv>(
 	// 	"config/input/particlesInput.csv"
 	// );
-	auto output = std::make_shared<SimulationOutputJson>(outputFile);
+	auto output = std::make_unique<SimulationOutputJson>(outputFile);
 
 	auto universe = std::make_unique<UniverseImplSimple>(
-		input,
-		output, 
+		std::move(input),
+		std::move(output), 
 		endTime,
 		deltaFrameRate
 	);

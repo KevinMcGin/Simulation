@@ -33,6 +33,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(SimulationEngineLib)
 add_subdirectory(SimulationEngine)
+add_subdirectory(SimulationEngineServer)
 if(USE_OPENGL_RENDERER)
   add_subdirectory(SimulationRenderer)
 endif()

@@ -13,11 +13,11 @@ NewtonGravity::NewtonGravity(
 	float G
 ) : Law(
 	"NewtonGravity",
-	std::make_shared<CpuNewtonGravity>(
+	std::make_unique<CpuNewtonGravity>(
 		G,
 		momentumService
 	),
-	std::make_shared<GpuNewtonGravity>(
+	std::make_unique<GpuNewtonGravity>(
 		G,
 		momentumService
 	)

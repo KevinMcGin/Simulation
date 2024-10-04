@@ -181,12 +181,12 @@ void GpuCollision::run(
 	const unsigned int maxLoops = 20000;
 	unsigned int indexLoops = 0;
 	bool limitReachedCpu = false;
-	// std::cout << std::endl << "maxThreads: " << maxThreads << std::endl;
+	// std::cout << '\n' << "maxThreads: " << maxThreads << '\n';
 	do {
 		limitReachedCpu = false;
-		// std::cout << std::endl << "indexLoops: " << indexLoops << std::endl;
+		// std::cout << '\n' << "indexLoops: " << indexLoops << '\n';
 		if (++indexLoops > maxLoops) {
-			std::cout << "Max Loops in GpuCollision reached" << std::endl;
+			std::cout << "Max Loops in GpuCollision reached\n";
 			throw std::runtime_error("Max Loops in GpuCollision reached");
 		}
 		collisionMarksIndexCpu = 0;		
@@ -253,13 +253,13 @@ void GpuCollision::run(
 		cudaWithError->memcpy(&limitReachedCpu, limitReached, sizeof(limitReachedCpu), cudaMemcpyDeviceToHost);
 		if (limitReachedCpu) {
 			maxCollisionMarksIndex /= 2;
-			// std::cout << std::endl << "maxCollisionMarksIndex reduced" << std::endl;
+			// std::cout << "\nmaxCollisionMarksIndex reduced\n";
 			if (maxCollisionMarksIndex < minMaxCollisionMarksIndex) {
-				std::cout << std::endl << "maxCollisionMarksIndex < minMaxCollisionMarksIndex" << std::endl;
+				std::cout << "\nmaxCollisionMarksIndex < minMaxCollisionMarksIndex\n";
 				// throw err;
 			}
 		}
-		// std::cout << std::endl << "collisionMarksIndexCpu: " << collisionMarksIndexCpu << std::endl;
+		// std::cout << "\ncollisionMarksIndexCpu: " << collisionMarksIndexCpu;
 	} while (
 		limitReachedCpu ||
 		collisionMarksIndexCpu >= maxIntsAllocatable - 1 ||

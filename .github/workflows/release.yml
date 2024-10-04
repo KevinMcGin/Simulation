@@ -75,6 +75,12 @@ jobs:
         cd scripts
         ./engine.sh -n
 
+    - name: Run CPU Server
+      shell: bash
+      run: | 
+        cd scripts
+        ./server.sh -n & 
+
     - name: Zip Build (Ubuntu)
       shell: bash
       if: matrix.os == 'ubuntu-20.04'

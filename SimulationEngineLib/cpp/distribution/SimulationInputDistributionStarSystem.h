@@ -13,7 +13,7 @@ public:
         unsigned long particleCount
     );
 
-    std::shared_ptr<SimulationInputRandomSimple> getStarSystemDistribution();
+    std::unique_ptr<SimulationInputRandomSimple> getStarSystemDistribution();
 
 private: 
     float meanMass;

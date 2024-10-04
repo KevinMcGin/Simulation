@@ -9,7 +9,7 @@ tries=0;
 max_tries=60;
 
 test_result_id=$(curl $test_endpoint/$github_sha/commit -H $tester_token_header);
-printf "test_result_id: $test_result_id\n";
+printf "test_result_id: $test_result_id \n";
 if [[ "$test_result_id" = *"error"* ]]; then
   exit 1;
 fi
@@ -17,17 +17,20 @@ fi
 get_test_result() {
   sleep 10;
   tries=$((tries + 1));
-  printf "call $tries of $max_tries\n";
+  printf "call $tries of $max_tries \n";
   test_result=$(curl $test_endpoint/$test_result_id/result -H $tester_token_header);
   test_status=$( jq -r  '.testStatus' <<< "${test_result}" );
-  printf "test_status: $test_status\n";
+  printf "test_status: $test_status \n";
 }
 
-while [[ "$test_status" = *"RUNNING"* && tries -lt max_tries ]]; do
+while [[ "$test_status" = "RUNNING" && tries -lt max_tries ]]; do
   get_test_result;
 done
-printf "final test result: \n$test_result\n";
-if [[ "$test_status" = *"SUCCESS"* ]]; then
+echo "final test result:"
+printf "\n";
+echo "$test_result";
+printf "\n";
+if [[ "$test_status" = "SUCCESS" ]]; then
     exit 0;
 fi
 exit 1;
