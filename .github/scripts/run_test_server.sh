@@ -23,11 +23,11 @@ get_test_result() {
   printf "test_status: $test_status \n";
 }
 
-while [[ "$test_status" = *"RUNNING"* && tries -lt max_tries ]]; do
+while [[ "$test_status" = "RUNNING" && tries -lt max_tries ]]; do
   get_test_result;
 done
 printf "final test result: \n $test_result \n";
-if [[ "$test_status" = *"SUCCESS"* ]]; then
+if [[ "$test_status" = "SUCCESS" ]]; then
     exit 0;
 fi
 exit 1;
