@@ -28,7 +28,7 @@ while [[ "$test_status" = "RUNNING" && tries -lt max_tries ]]; do
 done
 echo "final test result:"
 printf "\n";
-echo $test_result;
+echo "$test_result";
 printf "\n";
 if [[ "$test_status" = "SUCCESS" ]]; then
     exit 0;
