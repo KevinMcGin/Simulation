@@ -77,6 +77,13 @@ jobs:
       run: | 
         cd scripts
         ./engine.sh -n
+
+    - name: Run CPU Server
+      shell: bash
+      run: | 
+        cd scripts
+        ./server.sh -n & 
+
   codeCoverage:
     runs-on: ubuntu-20.04
     steps:
