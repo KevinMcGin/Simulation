@@ -26,7 +26,7 @@ get_test_result() {
 while [[ "$test_status" = "RUNNING" && tries -lt max_tries ]]; do
   get_test_result;
 done
-printf "final test result: \n $test_result \n";
+echo -e "final test result: \n $test_result \n";
 if [[ "$test_status" = "SUCCESS" ]]; then
     exit 0;
 fi
