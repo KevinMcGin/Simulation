@@ -29,7 +29,7 @@ option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
+set(CMAKE_COMPILE_WARNING_AS_ERROR OFF)
 
 add_subdirectory(SimulationEngineLib)
 add_subdirectory(SimulationEngine)
