@@ -8,7 +8,8 @@
 #include <stdlib.h>
 #include <memory>
 
-// #define CPPHTTPLIB_OPENSSL_SUPPORT
+// #define CPPHTTPLIB_OPENSSL_SUPPOR
+#include "cpp/util/FileUtil.h"
 #include "httplib.h"
 
 int main(int argc, char *argv[]) {
@@ -65,13 +66,7 @@ int main(int argc, char *argv[]) {
 		);
 		universe->run();
 		output->close();
-		std::ifstream file(outputFile);
-		std::string outputJson(
-			(std::istreambuf_iterator<char>(file)), 
-			std::istreambuf_iterator<char>()
-		);
-		file.close();
-
+		auto outputJson = FileUtil::fileToString(outputFile);
 		res.set_content(outputJson, "text/csv");
 	});
 
