@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <memory>
+#include <filesystem>
 
 // #define CPPHTTPLIB_OPENSSL_SUPPOR
 #include "cpp/util/FileUtil.h"
@@ -22,6 +23,11 @@ int main(int argc, char *argv[]) {
 	float outerRadius = 15;
 	float meanDensity = 1000;
 	const char* outputFile = "simulation_output/simulation_output.csv";
+
+
+	if (!std::filesystem::is_directory("simulation_output") || !std::filesystem::exists("simulation_output")) { 
+		std::filesystem::create_directory("simulation_output"); 
+	}
 
 	// HTTP
 	httplib::Server svr;
