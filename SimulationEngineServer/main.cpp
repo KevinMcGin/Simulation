@@ -36,12 +36,12 @@ int main(int argc, char *argv[]) {
 	// httplib::SSLServer svr;
 
 	svr.Get("/api", [](const httplib::Request &req, httplib::Response &res) {
-		std::cout << "GET API\n";
-		res.set_content("Hello there", "text/plain");
+		std::cout << "Sim GET /api\n";
+		res.set_content("General Kenobi!", "text/plain");
 	});
 
 	svr.Post("/api/simulation", [&](const httplib::Request &req, httplib::Response &res) {
-		std::cout << "POST API\n";
+		std::cout << "Sim POST /api/simulation\n";
 		unsigned long deltaFrameRate = deltaTime / frameRate;
 		float frameRateTime = (float)frameRate / (float)deltaTime;
 		std::cout << seconds << " seconds\n";
