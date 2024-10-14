@@ -14,14 +14,14 @@
 #include "httplib.h"
 
 int main(int argc, char *argv[]) {
-	unsigned long particleCount = 50;
-	unsigned int frameRate = 60;
-	unsigned long seconds = 10;
-	unsigned long deltaTime = 1;
+	unsigned long particleCount = 100;
+	unsigned int frameRate = 1000;
+	unsigned long seconds = 864000;
+	unsigned long deltaTime = 864000;
 	float meanMass = 0.01f;	
 	float starMass = 50;
 	float outerRadius = 15;
-	float meanDensity = 1000;
+	float meanDensity = 100;
 	const char* outputFile = "simulation_output/simulation_output.csv";
 
 
