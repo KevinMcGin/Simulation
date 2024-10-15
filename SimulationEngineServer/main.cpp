@@ -14,7 +14,7 @@
 #include "httplib.h"
 
 int main(int argc, char *argv[]) {
-	unsigned long particleCount = 100;
+	unsigned long particleCount = 10;
 	unsigned int frameRate = 1000;
 	unsigned long seconds = 864000;
 	unsigned long deltaTime = 864000;
