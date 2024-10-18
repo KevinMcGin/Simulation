@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 		float meanMass = 0.01f;	
 		float starMass = 50;
 		float outerRadius = 15;
-		float meanDensity = 100;
+		float meanDensity = 1000;
 
 		if (req.has_param("particleCount")) {
 			particleCount = atoi(req.get_param_value("particleCount").c_str());
