@@ -12,6 +12,7 @@
 // #define CPPHTTPLIB_OPENSSL_SUPPOR
 #include "cpp/util/FileUtil.h"
 #include "httplib.h"
+#include <cpp/constant/PhysicalConstants.h>
 
 int main(int argc, char *argv[]) {
 	const char* outputFile = "simulation_output/simulation_output.csv";
@@ -72,6 +73,8 @@ int main(int argc, char *argv[]) {
 		float frameRateTime = (float)frameRate / (float)deltaTime;
 		unsigned int endTime = seconds * frameRateTime;
 		
+		std::cout << PhysicalConstants::GRAVITATIONAL_CONSTANT << " GRAVITATIONAL_CONSTANT\n";
+		std::cout << PhysicalConstants::SPEED_OF_LIGHT << " SPEED_OF_LIGHT\n";
 		std::cout << particleCount << " particle count\n";
 		std::cout << seconds << " seconds\n";
 		std::cout << frameRate << " frame rate\n";
