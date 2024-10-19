@@ -70,12 +70,19 @@ int main(int argc, char *argv[]) {
 
 		unsigned long deltaFrameRate = deltaTime / frameRate;
 		float frameRateTime = (float)frameRate / (float)deltaTime;
+		unsigned int endTime = seconds * frameRateTime;
 		
 		std::cout << particleCount << " particle count\n";
 		std::cout << seconds << " seconds\n";
 		std::cout << frameRate << " frame rate\n";
 		std::cout << deltaTime << " delta time\n";
-		unsigned int endTime = seconds * frameRateTime;
+		std::cout << deltaFrameRate << " delta frame rate\n";
+		std::cout << frameRateTime << " frame rate time\n";
+		std::cout << endTime << " end time\n";
+		std::cout << meanMass << " mean mass\n";
+		std::cout << meanDensity << " mean density\n";
+		std::cout << starMass << " star mass\n";
+		std::cout << outerRadius << " outer radius\n";
 
 		auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(
 			meanMass,
