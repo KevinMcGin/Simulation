@@ -1,1 +1,1 @@
-./scripts/installation/install_cuda_ubuntu_x86.sh "x86_64"
+./scripts/installation/install_cuda_ubuntu.sh "x86_64"
