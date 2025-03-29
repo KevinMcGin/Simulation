@@ -12,6 +12,7 @@
 // #define CPPHTTPLIB_OPENSSL_SUPPOR
 #include "cpp/util/FileUtil.h"
 #include "httplib.h"
+#include <cpp/constant/PhysicalConstants.h>
 
 int main(int argc, char *argv[]) {
 	const char* outputFile = "simulation_output/simulation_output.csv";
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]) {
 		float meanMass = 0.01f;	
 		float starMass = 50;
 		float outerRadius = 15;
-		float meanDensity = 100;
+		float meanDensity = 1000;
 
 		if (req.has_param("particleCount")) {
 			particleCount = atoi(req.get_param_value("particleCount").c_str());
@@ -70,12 +71,21 @@ int main(int argc, char *argv[]) {
 
 		unsigned long deltaFrameRate = deltaTime / frameRate;
 		float frameRateTime = (float)frameRate / (float)deltaTime;
+		unsigned int endTime = seconds * frameRateTime;
 		
+		std::cout << PhysicalConstants::GRAVITATIONAL_CONSTANT << " GRAVITATIONAL_CONSTANT\n";
+		std::cout << PhysicalConstants::SPEED_OF_LIGHT << " SPEED_OF_LIGHT\n";
 		std::cout << particleCount << " particle count\n";
 		std::cout << seconds << " seconds\n";
 		std::cout << frameRate << " frame rate\n";
 		std::cout << deltaTime << " delta time\n";
-		unsigned int endTime = seconds * frameRateTime;
+		std::cout << deltaFrameRate << " delta frame rate\n";
+		std::cout << frameRateTime << " frame rate time\n";
+		std::cout << endTime << " end time\n";
+		std::cout << meanMass << " mean mass\n";
+		std::cout << meanDensity << " mean density\n";
+		std::cout << starMass << " star mass\n";
+		std::cout << outerRadius << " outer radius\n";
 
 		auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(
 			meanMass,

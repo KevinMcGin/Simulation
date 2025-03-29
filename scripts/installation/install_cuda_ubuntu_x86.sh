@@ -1,0 +1,1 @@
+./scripts/installation/install_cuda_ubuntu.sh "x86_64"

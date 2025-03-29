@@ -20,10 +20,16 @@ jobs:
         include:
           - os: ubuntu-20.04
             INSTALL_SHELL: bash
-            INSTALL_SCRIPT: ubuntu.sh
+            INSTALL_SCRIPT: ubuntu_x86.sh
             cuda: "12.3"
             build_params: ""
             asset_name: "simulation-ubuntu.zip"
+          - os: ubuntu-24.04-arm
+            INSTALL_SHELL: bash
+            INSTALL_SCRIPT: ubuntu_arm64.sh
+            cuda: "12.3"
+            build_params: ""
+            asset_name: "simulation-ubuntu-arm.zip"
           - os: macos-latest
             INSTALL_SHELL: bash
             INSTALL_SCRIPT: macos.sh
@@ -87,6 +93,13 @@ jobs:
       run: |
         cd builds
         zip -r ../build.zip build 
+
+    - name: Zip Build (Ubuntu ARM)
+      shell: bash
+      if: matrix.os == 'ubuntu-24.04-arm'
+      run: |
+        cd builds
+        zip -r ../build.zip build
 
     - name: Zip Build (Mac)
       shell: bash
