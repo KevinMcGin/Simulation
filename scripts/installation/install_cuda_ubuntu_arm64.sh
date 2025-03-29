@@ -1,1 +1,1 @@
-./install_cuda_ubuntu.sh "sbsa"
+./scripts/installation/install_cuda_ubuntu.sh "sbsa"

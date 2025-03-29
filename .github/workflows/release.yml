@@ -51,10 +51,10 @@ jobs:
     - name: Install CUDA
       env:
         cuda: ${{ matrix.cuda }}
-      run: cd ./scripts/installation && ./install_cuda_${{ matrix.INSTALL_SCRIPT }}
+      run: ./scripts/installation/install_cuda_${{ matrix.INSTALL_SCRIPT }}
   
     - name: Install OpenGL
-      run: cd ./scripts/installation && ./install_open_gl_${{ matrix.INSTALL_SCRIPT }}
+      run: ./scripts/installation/install_open_gl_${{ matrix.INSTALL_SCRIPT }}
 
     - name: Windows Pre Build
       shell: bash
