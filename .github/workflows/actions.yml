@@ -29,6 +29,11 @@ jobs:
             INSTALL_SCRIPT: ubuntu.sh
             cuda: "12.3"
             build_params: ""
+          - os: ubuntu-24.04-arm
+            INSTALL_SHELL: bash
+            INSTALL_SCRIPT: ubuntu.sh
+            cuda: "12.3"
+            build_params: ""
           - os: macos-latest
             INSTALL_SHELL: bash
             INSTALL_SCRIPT: macos.sh
