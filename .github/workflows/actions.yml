@@ -26,12 +26,12 @@ jobs:
         include:
           - os: ubuntu-20.04
             INSTALL_SHELL: bash
-            INSTALL_SCRIPT: ubuntu.sh
+            INSTALL_SCRIPT: ubuntu_x86.sh
             cuda: "12.3"
             build_params: ""
           - os: ubuntu-24.04-arm
             INSTALL_SHELL: bash
-            INSTALL_SCRIPT: ubuntu.sh
+            INSTALL_SCRIPT: ubuntu_arm64.sh
             cuda: "12.3"
             build_params: ""
           - os: macos-latest
@@ -53,10 +53,10 @@ jobs:
     - name: Install CUDA
       env:
         cuda: ${{ matrix.cuda }}
-      run: ./scripts/installation/install_cuda_${{ matrix.INSTALL_SCRIPT }}
+      run: cd ./scripts/installation && ./install_cuda_${{ matrix.INSTALL_SCRIPT }}
   
     - name: Install OpenGL
-      run: ./scripts/installation/install_open_gl_${{ matrix.INSTALL_SCRIPT }}
+      run: cd ./scripts/installation && ./install_open_gl_${{ matrix.INSTALL_SCRIPT }}
 
     - name: Windows Pre Build
       shell: bash

@@ -116,7 +116,7 @@ echo "CUDA_PACKAGES ${CUDA_PACKAGES}"
 ## -----------------
 ## Prepare to install
 ## -----------------
-CPU_ARCH="x86_64"
+CPU_ARCH=$1
 PIN_FILENAME="cuda-ubuntu${UBUNTU_VERSION}.pin"
 PIN_URL="https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU_VERSION}/${CPU_ARCH}/${PIN_FILENAME}"
 # apt keyring package now available https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
