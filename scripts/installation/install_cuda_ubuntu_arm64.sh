@@ -1,1 +1,0 @@
-./scripts/installation/install_cuda_ubuntu.sh "sbsa"
