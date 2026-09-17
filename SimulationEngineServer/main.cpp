@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
 		float starMass = 50;
 		float outerRadius = 15;
 		float meanDensity = 1000;
+		bool isEinsteinMomentum = false;
 
 		if (req.has_param("particleCount")) {
 			particleCount = atol(req.get_param_value("particleCount").c_str());
@@ -74,6 +75,9 @@ int main(int argc, char *argv[]) {
 		}
 		if (req.has_param("outerRadius")) {
 			outerRadius = atof(req.get_param_value("outerRadius").c_str());
+		}
+		if (req.has_param("isEinsteinMomentum")) {
+			isEinsteinMomentum = req.get_param_value("isEinsteinMomentum") == "true";
 		}
 
 		// frameRate and deltaTime are divisors just below (and particleCount
@@ -137,6 +141,7 @@ int main(int argc, char *argv[]) {
 		std::cout << meanDensity << " mean density\n";
 		std::cout << starMass << " star mass\n";
 		std::cout << outerRadius << " outer radius\n";
+		std::cout << isEinsteinMomentum << " is einstein momentum\n";
 
 		// Everything above is just parsing/validating request parameters;
 		// everything below actually drives the simulation engine and does
@@ -166,7 +171,9 @@ int main(int argc, char *argv[]) {
 				std::move(input),
 				output,
 				endTime,
-				deltaFrameRate
+				deltaFrameRate,
+				UNDEFINED,
+				isEinsteinMomentum
 			);
 			universe->run();
 			output->close();
