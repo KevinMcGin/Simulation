@@ -1,4 +1,5 @@
-﻿#pragma once
+#pragma once
+#include "cpp/law/LawConfig.h"
 #include "cpp/universe/UniverseImpl.h"
 #include "cpp/universe/input/SimulationInput.h"
 
@@ -12,6 +13,6 @@ public:
 		unsigned long endTime,
 		unsigned int deltaTime = 1,
 		Usage useGpu = UNDEFINED,
-		bool isEinsteinMomentum = false
+		const LawConfig& lawConfig = LawConfig()
 	);
 };

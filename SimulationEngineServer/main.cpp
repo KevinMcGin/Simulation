@@ -13,7 +13,14 @@
 #include "cpp/util/FileUtil.h"
 #include "httplib.h"
 #include <cpp/constant/PhysicalConstants.h>
+#include <cpp/law/LawConfig.h>
 
+// Start this through scripts/server.sh rather than running the binary
+// directly: the script exports SIMULATION_USE_GPU from
+// config/project.config, and left unset Universe::Universe reads it as
+// true. On a CPU-only build that runs the do-nothing mocks in gpuMock, so
+// every request still answers 200 with frames in which nothing has moved.
+// The "Running on CPU"/"Running on GPU" line below says which it picked.
 int main(int argc, char *argv[]) {
 	const char* outputFile = "simulation_output/simulation_output.csv";
 
@@ -50,7 +57,10 @@ int main(int argc, char *argv[]) {
 		float starMass = 50;
 		float outerRadius = 15;
 		float meanDensity = 1000;
-		bool isEinsteinMomentum = false;
+		// Starts as the full set of laws, so a caller that sends none of the
+		// parameters below gets the same universe this endpoint ran before
+		// any of it was configurable.
+		LawConfig lawConfig;
 
 		if (req.has_param("particleCount")) {
 			particleCount = atol(req.get_param_value("particleCount").c_str());
@@ -76,8 +86,29 @@ int main(int argc, char *argv[]) {
 		if (req.has_param("outerRadius")) {
 			outerRadius = atof(req.get_param_value("outerRadius").c_str());
 		}
-		if (req.has_param("isEinsteinMomentum")) {
-			isEinsteinMomentum = req.get_param_value("isEinsteinMomentum") == "true";
+		if (req.has_param("laws")) {
+			auto error = lawConfig.setLaws(req.get_param_value("laws"));
+			if (!error.empty()) {
+				res.status = 400;
+				res.set_content(error, "text/plain");
+				return;
+			}
+		}
+		if (req.has_param("momentum")) {
+			auto error = lawConfig.setMomentum(req.get_param_value("momentum"));
+			if (!error.empty()) {
+				res.status = 400;
+				res.set_content(error, "text/plain");
+				return;
+			}
+		}
+		if (req.has_param("gravitationalConstant")) {
+			auto error = lawConfig.setGravitationalConstant(req.get_param_value("gravitationalConstant"));
+			if (!error.empty()) {
+				res.status = 400;
+				res.set_content(error, "text/plain");
+				return;
+			}
 		}
 
 		// frameRate and deltaTime are divisors just below (and particleCount
@@ -141,7 +172,11 @@ int main(int argc, char *argv[]) {
 		std::cout << meanDensity << " mean density\n";
 		std::cout << starMass << " star mass\n";
 		std::cout << outerRadius << " outer radius\n";
-		std::cout << isEinsteinMomentum << " is einstein momentum\n";
+		std::cout << lawConfig.isCollisionCoalesceEnabled << " collision coalesce enabled\n";
+		std::cout << lawConfig.isNewtonGravityEnabled << " newton gravity enabled\n";
+		std::cout << lawConfig.isNewtonFirstLawEnabled << " newton first law enabled\n";
+		std::cout << (lawConfig.momentum == MOMENTUM_EINSTEIN) << " is einstein momentum\n";
+		std::cout << lawConfig.gravitationalConstant << " gravitational constant\n";
 
 		// Everything above is just parsing/validating request parameters;
 		// everything below actually drives the simulation engine and does
@@ -173,7 +208,7 @@ int main(int argc, char *argv[]) {
 				endTime,
 				deltaFrameRate,
 				UNDEFINED,
-				isEinsteinMomentum
+				lawConfig
 			);
 			universe->run();
 			output->close();
