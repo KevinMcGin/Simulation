@@ -13,7 +13,14 @@
 #include "cpp/util/FileUtil.h"
 #include "httplib.h"
 #include <cpp/constant/PhysicalConstants.h>
+#include <cpp/law/LawConfig.h>
 
+// Start this through scripts/server.sh rather than running the binary
+// directly: the script exports SIMULATION_USE_GPU from
+// config/project.config, and left unset Universe::Universe reads it as
+// true. On a CPU-only build that runs the do-nothing mocks in gpuMock, so
+// every request still answers 200 with frames in which nothing has moved.
+// The "Running on CPU"/"Running on GPU" line below says which it picked.
 int main(int argc, char *argv[]) {
 	const char* outputFile = "simulation_output/simulation_output.csv";
 
@@ -35,23 +42,34 @@ int main(int argc, char *argv[]) {
 
 	svr.Post("/api/simulation", [&](const httplib::Request &req, httplib::Response &res) {
 		std::cout << "Sim POST /api/simulation\n";
-		unsigned long particleCount = 10;
-		unsigned int frameRate = 1000;
-		unsigned long seconds = 864000;
-		unsigned long deltaTime = 864000;
-		float meanMass = 0.01f;	
+
+		// A hard ceiling independent of whatever the caller (normally the Go
+		// backend, which enforces its own cap — but this engine is directly
+		// reachable on its own port too) asked for, so a huge particleCount
+		// can't single-handedly exhaust memory/CPU here.
+		const unsigned long maxParticleCount = 30000;
+
+		long particleCount = 10;
+		long frameRate = 1000;
+		long seconds = 864000;
+		long deltaTime = 864000;
+		float meanMass = 0.01f;
 		float starMass = 50;
 		float outerRadius = 15;
 		float meanDensity = 1000;
+		// Starts as the full set of laws, so a caller that sends none of the
+		// parameters below gets the same universe this endpoint ran before
+		// any of it was configurable.
+		LawConfig lawConfig;
 
 		if (req.has_param("particleCount")) {
-			particleCount = atoi(req.get_param_value("particleCount").c_str());
+			particleCount = atol(req.get_param_value("particleCount").c_str());
 		}
 		if (req.has_param("seconds")) {
-			seconds = atoi(req.get_param_value("seconds").c_str());
+			seconds = atol(req.get_param_value("seconds").c_str());
 		}
 		if (req.has_param("frameRate")) {
-			frameRate = atoi(req.get_param_value("frameRate").c_str());
+			frameRate = atol(req.get_param_value("frameRate").c_str());
 		}
 		if (req.has_param("deltaTime")) {
 			deltaTime = atol(req.get_param_value("deltaTime").c_str());
@@ -68,11 +86,79 @@ int main(int argc, char *argv[]) {
 		if (req.has_param("outerRadius")) {
 			outerRadius = atof(req.get_param_value("outerRadius").c_str());
 		}
+		if (req.has_param("laws")) {
+			auto error = lawConfig.setLaws(req.get_param_value("laws"));
+			if (!error.empty()) {
+				res.status = 400;
+				res.set_content(error, "text/plain");
+				return;
+			}
+		}
+		if (req.has_param("momentum")) {
+			auto error = lawConfig.setMomentum(req.get_param_value("momentum"));
+			if (!error.empty()) {
+				res.status = 400;
+				res.set_content(error, "text/plain");
+				return;
+			}
+		}
+		if (req.has_param("gravitationalConstant")) {
+			auto error = lawConfig.setGravitationalConstant(req.get_param_value("gravitationalConstant"));
+			if (!error.empty()) {
+				res.status = 400;
+				res.set_content(error, "text/plain");
+				return;
+			}
+		}
 
-		unsigned long deltaFrameRate = deltaTime / frameRate;
+		// frameRate and deltaTime are divisors just below (and particleCount
+		// drives allocation size / loop counts further down in the engine) —
+		// a zero, negative, or unparsable ("abc" -> atol gives 0) value here
+		// previously fell straight through into that division, which is a
+		// crash (integer division by zero) rather than a normal error, and
+		// would have taken the whole server — every in-flight and future
+		// simulation, not just this request — down with it.
+		if (particleCount <= 0) {
+			res.status = 400;
+			res.set_content("particleCount must be greater than 0", "text/plain");
+			return;
+		}
+		if ((unsigned long)particleCount > maxParticleCount) {
+			res.status = 400;
+			res.set_content("particleCount must be less than " + std::to_string(maxParticleCount), "text/plain");
+			return;
+		}
+		if (seconds <= 0) {
+			res.status = 400;
+			res.set_content("seconds must be greater than 0", "text/plain");
+			return;
+		}
+		if (frameRate <= 0) {
+			res.status = 400;
+			res.set_content("frameRate must be greater than 0", "text/plain");
+			return;
+		}
+		if (deltaTime <= 0) {
+			res.status = 400;
+			res.set_content("deltaTime must be greater than 0", "text/plain");
+			return;
+		}
+		if (meanMass <= 0 || meanDensity <= 0 || starMass <= 0 || outerRadius <= 0) {
+			res.status = 400;
+			res.set_content("meanMass, meanDensity, starMass and outerRadius must all be greater than 0", "text/plain");
+			return;
+		}
+
+		unsigned long deltaFrameRate = (unsigned long)deltaTime / (unsigned long)frameRate;
 		float frameRateTime = (float)frameRate / (float)deltaTime;
-		unsigned int endTime = seconds * frameRateTime;
-		
+		unsigned int endTime = (unsigned int)((unsigned long)seconds * frameRateTime);
+
+		if (deltaFrameRate == 0) {
+			res.status = 400;
+			res.set_content("frameRate must not be greater than deltaTime", "text/plain");
+			return;
+		}
+
 		std::cout << PhysicalConstants::GRAVITATIONAL_CONSTANT << " GRAVITATIONAL_CONSTANT\n";
 		std::cout << PhysicalConstants::SPEED_OF_LIGHT << " SPEED_OF_LIGHT\n";
 		std::cout << particleCount << " particle count\n";
@@ -86,32 +172,64 @@ int main(int argc, char *argv[]) {
 		std::cout << meanDensity << " mean density\n";
 		std::cout << starMass << " star mass\n";
 		std::cout << outerRadius << " outer radius\n";
+		std::cout << lawConfig.isCollisionCoalesceEnabled << " collision coalesce enabled\n";
+		std::cout << lawConfig.isNewtonGravityEnabled << " newton gravity enabled\n";
+		std::cout << lawConfig.isNewtonFirstLawEnabled << " newton first law enabled\n";
+		std::cout << (lawConfig.momentum == MOMENTUM_EINSTEIN) << " is einstein momentum\n";
+		std::cout << lawConfig.gravitationalConstant << " gravitational constant\n";
 
-		auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(
-			meanMass,
-			meanDensity,
-			starMass,
-			outerRadius,
-			particleCount
-		);
+		// Everything above is just parsing/validating request parameters;
+		// everything below actually drives the simulation engine and does
+		// file I/O, either of which can throw (or, for the file, silently
+		// produce nothing) for reasons that have nothing to do with the
+		// request itself (disk full, engine hitting a bad internal state,
+		// etc) — caught here so that failure comes back as a normal 500
+		// response instead of an unhandled exception taking the process,
+		// and every other in-flight simulation, down with it.
+		try {
+			auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(
+				meanMass,
+				meanDensity,
+				starMass,
+				outerRadius,
+				(unsigned long)particleCount
+			);
 
-		auto input = simulationInputDistributionStarSystem->getStarSystemDistribution();
+			auto input = simulationInputDistributionStarSystem->getStarSystemDistribution();
 
-		// auto input = std::make_shared<SimulationInputCsv>(
-		// 	"config/input/particlesInput.csv"
-		// );
-		auto output = std::make_shared<SimulationOutputCsv>(outputFile);
+			// auto input = std::make_shared<SimulationInputCsv>(
+			// 	"config/input/particlesInput.csv"
+			// );
+			auto output = std::make_shared<SimulationOutputCsv>(outputFile);
 
-		auto universe = std::make_unique<UniverseImplSimple>(
-			std::move(input),
-			output, 
-			endTime,
-			deltaFrameRate
-		);
-		universe->run();
-		output->close();
-		auto outputJson = FileUtil::fileToString(outputFile);
-		res.set_content(outputJson, "text/csv");
+			auto universe = std::make_unique<UniverseImplSimple>(
+				std::move(input),
+				output,
+				endTime,
+				deltaFrameRate,
+				UNDEFINED,
+				lawConfig
+			);
+			universe->run();
+			output->close();
+			auto outputJson = FileUtil::fileToString(outputFile);
+			if (outputJson.empty()) {
+				std::cerr << "Simulation produced no output for " << outputFile << "\n";
+				res.status = 500;
+				res.set_content("Simulation did not produce any output", "text/plain");
+				return;
+			}
+			res.status = 200;
+			res.set_content(outputJson, "text/csv");
+		} catch (const std::exception &e) {
+			std::cerr << "Simulation failed: " << e.what() << "\n";
+			res.status = 500;
+			res.set_content(std::string("Simulation failed: ") + e.what(), "text/plain");
+		} catch (...) {
+			std::cerr << "Simulation failed with an unknown error\n";
+			res.status = 500;
+			res.set_content("Simulation failed with an unknown error", "text/plain");
+		}
 	});
 
 	std::cout << "Simulation server running\n";

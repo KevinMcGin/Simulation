@@ -5,13 +5,41 @@
 #include "shared/service/momentum/newton/NewtonMomentumService.cuh"
 #include "shared/service/momentum/einstein/EinsteinMomentumService.cuh"
 
-std::shared_ptr<MomentumService> getMomentumService(
-	bool isEinsteinMomentum
-) {
-	if (isEinsteinMomentum) {
-		return std::make_shared<EinsteinMomentumService>();
-	} else {
-		return std::make_shared<NewtonMomentumService>();
+namespace {
+	std::shared_ptr<MomentumService> getMomentumService(
+		MomentumModel momentum
+	) {
+		if (momentum == MOMENTUM_EINSTEIN) {
+			return std::make_shared<EinsteinMomentumService>();
+		} else {
+			return std::make_shared<NewtonMomentumService>();
+		}
+	}
+
+	// One momentum service shared by every law that needs one, so a run
+	// cannot end up resolving collisions relativistically while accelerating
+	// under gravity classically.
+	//
+	// The order is the engine's, not the caller's: collisions are resolved
+	// on the positions the last frame ended at, gravity then accelerates
+	// what survived, and the first law finally moves everything. Enabling a
+	// law only inserts it into that fixed sequence.
+	std::vector<std::shared_ptr<Law>> buildLaws(
+		const LawConfig& lawConfig,
+		bool useGpu
+	) {
+		auto momentumService = getMomentumService(lawConfig.momentum);
+		std::vector<std::shared_ptr<Law>> laws;
+		if (lawConfig.isCollisionCoalesceEnabled) {
+			laws.push_back(std::make_shared<CollisionCoalesce>(momentumService, useGpu));
+		}
+		if (lawConfig.isNewtonGravityEnabled) {
+			laws.push_back(std::make_shared<NewtonGravity>(momentumService, lawConfig.gravitationalConstant));
+		}
+		if (lawConfig.isNewtonFirstLawEnabled) {
+			laws.push_back(std::make_shared<NewtonFirstLaw>());
+		}
+		return laws;
 	}
 }
 
@@ -21,7 +49,7 @@ UniverseImplSimple::UniverseImplSimple(
 	unsigned long endTime,  
 	unsigned int deltaTime,
 	Usage useGpu,
-	bool isEinsteinMomentum
+	const LawConfig& lawConfig
 ) : UniverseImpl(
 	{}, 
 	input, 
@@ -30,13 +58,5 @@ UniverseImplSimple::UniverseImplSimple(
 	endTime, 
 	useGpu
 ) {
-	auto momentumService = getMomentumService(isEinsteinMomentum);
-	this->laws = {
-		std::make_shared<CollisionCoalesce>(
-			momentumService,
-			this->useGpu == TRUE
-		),
-		std::make_shared<NewtonGravity>(momentumService),
-		std::make_shared<NewtonFirstLaw>(),
-	};
- }
+	this->laws = buildLaws(lawConfig, this->useGpu == TRUE);
+}
