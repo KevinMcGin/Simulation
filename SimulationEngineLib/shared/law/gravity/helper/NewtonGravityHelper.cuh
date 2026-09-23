@@ -13,7 +13,7 @@ Vector3D<float> getAcceleration(float mass, Vector3D<float> radiusComponent);
 void runOnParticle(
    Particle* p1, 
    Vector3D<float> acceleration, 
-   unsigned int deltaTime,
+   float deltaTime,
    MomentumService* momentumService
 );	
 

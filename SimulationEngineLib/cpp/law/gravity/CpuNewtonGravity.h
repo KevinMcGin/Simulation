@@ -15,7 +15,7 @@ public:
 	);
 	void run(
 		std::vector<Particle*>& particles,
-		unsigned int deltaTime
+		float deltaTime
 	) override;
 protected:
 	const float G;

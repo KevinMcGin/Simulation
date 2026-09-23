@@ -10,6 +10,6 @@ public:
 	CpuNewtonFirstLaw();
 	virtual void run(
 		std::vector<Particle*>& particles,
-		unsigned int deltaTime
+		float deltaTime
 	);
 };

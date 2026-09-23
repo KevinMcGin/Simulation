@@ -12,5 +12,5 @@ GpuCollision::~GpuCollision() {}
 void GpuCollision::run(
 	Particle** particles, 
 	int particleCount,
-	unsigned int deltaTime
+	float deltaTime
 ) {}

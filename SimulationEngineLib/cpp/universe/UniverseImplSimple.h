@@ -11,7 +11,7 @@ public:
 		std::shared_ptr<SimulationInput> input, 
 		std::shared_ptr<SimulationOutput> output, 
 		unsigned long endTime,
-		unsigned int deltaTime = 1,
+		float deltaTime = 1.0f,
 		Usage useGpu = UNDEFINED,
 		const LawConfig& lawConfig = LawConfig()
 	);

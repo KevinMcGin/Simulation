@@ -25,7 +25,7 @@ Particle::Particle(Particle* p) : Particle(p->mass, p->radius, p->position, p->v
    __device__ __host__
 #endif
 void Particle::advance(
-	unsigned int deltaTime
+	float deltaTime
 ) {
 	position = position + velocity * deltaTime;
 }

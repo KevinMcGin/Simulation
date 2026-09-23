@@ -60,14 +60,16 @@ int printUsage(int exitStatus) {
 }
 
 int main(int argc, char *argv[]) {
-	unsigned long particleCount = 50;
 	unsigned int frameRate = 60;
 	unsigned long seconds = 10;
-	unsigned long deltaTime = 1;
-	float meanMass = 0.01f;	
-	float starMass = 50;
-	float outerRadius = 15;
-	float meanDensity = 1000;
+	// Simulated seconds per second of playback; the step it divides into
+	// (deltaTime / frameRate) is a fraction of a second at any real frame
+	// rate, so it is a float rather than a whole number of seconds.
+	float deltaTime = 1;
+	// Everything about the star system the run starts from, on its defaults
+	// except for what the options below set.
+	StarSystemConfig starSystem;
+	starSystem.particleCount = 50;
 	const char* outputFile = "simulation_output/simulation_output.json";
 
 	char identifier;
@@ -77,7 +79,7 @@ int main(int argc, char *argv[]) {
 		identifier = cag_option_get(&context);
 		switch (identifier) {
 			case 'p':
-				particleCount = atol(cag_option_get_value(&context));
+				starSystem.particleCount = atol(cag_option_get_value(&context));
 				break;
 			case 'f':
 				frameRate = atoi(cag_option_get_value(&context));
@@ -86,19 +88,19 @@ int main(int argc, char *argv[]) {
 				seconds = atol(cag_option_get_value(&context));
 				break;
 			case 'd':
-				deltaTime = atol(cag_option_get_value(&context));
+				deltaTime = atof(cag_option_get_value(&context));
 				break;			
 			case 'm':
-				meanMass = atof(cag_option_get_value(&context));
+				starSystem.meanMass = atof(cag_option_get_value(&context));
 				break;
 			case 'u':
-				meanDensity = atof(cag_option_get_value(&context));
+				starSystem.meanDensity = atof(cag_option_get_value(&context));
 				break;
 			case 'c':
-				starMass = atof(cag_option_get_value(&context));
+				starSystem.starMass = atof(cag_option_get_value(&context));
 				break;
 			case 'r':
-				outerRadius = atof(cag_option_get_value(&context));
+				starSystem.outerRadius = atof(cag_option_get_value(&context));
 				break;
 			case 'o':
 				outputFile = cag_option_get_value(&context);
@@ -109,20 +111,19 @@ int main(int argc, char *argv[]) {
 				return printUsage(EXIT_FAILURE);
 		}
 	}
-	unsigned long deltaFrameRate = deltaTime / frameRate;
-	float frameRateTime = (float)frameRate / (float)deltaTime;
+	float simSecondsPerFrame = deltaTime / (float)frameRate;
 	std::cout << seconds << " seconds\n";
 	std::cout << frameRate << " frame rate\n";
 	std::cout << deltaTime << " delta time\n";
-	unsigned int endTime = seconds * frameRateTime;
+	std::cout << simSecondsPerFrame << " simulated seconds per frame\n";
+	unsigned int endTime = (unsigned int)((float)seconds * ((float)frameRate / deltaTime));
 
-	auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(
-		meanMass,
-		meanDensity,
-		starMass,
-		outerRadius,
-		particleCount
-	);
+	// The star mass the disk orbits is the star's own unless a run says
+	// otherwise, which this command line has no option for yet.
+	starSystem.diskCentralMass = starSystem.starMass;
+	starSystem.starDensity = starSystem.meanDensity;
+
+	auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(starSystem);
 
 	auto input = simulationInputDistributionStarSystem->getStarSystemDistribution();
 
@@ -135,7 +136,7 @@ int main(int argc, char *argv[]) {
 		std::move(input),
 		std::move(output), 
 		endTime,
-		deltaFrameRate
+		simSecondsPerFrame
 	);
 	universe->run();
 	return 0;

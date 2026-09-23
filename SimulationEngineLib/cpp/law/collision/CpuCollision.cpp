@@ -14,7 +14,7 @@ CpuCollision::CpuCollision(
 
 void CpuCollision::run(
 	std::vector<Particle*>& particles,
-	unsigned int deltaTime
+	float deltaTime
 ) {
 	// get particles that collided
 	std::vector<std::set<Particle*>*> particlesCollidedVector;

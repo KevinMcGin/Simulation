@@ -32,7 +32,7 @@ __device__ __host__
 Vector3D<float> EinsteinMomentumService::getVelocityPlusAcceleration(
     float mass,
     Vector3D<float> acceleration, 
-    unsigned int deltaTime,
+    float deltaTime,
     Vector3D<float> velocity
 ) {
     auto classicalVelocityChange = acceleration * deltaTime;

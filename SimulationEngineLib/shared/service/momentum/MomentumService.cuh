@@ -12,7 +12,7 @@ public:
     virtual Vector3D<float> getVelocityPlusAcceleration(
         float mass,
         Vector3D<float> acceleration, 
-        unsigned int deltaTime,
+        float deltaTime,
         Vector3D<float> velocity
     ) = 0;
 

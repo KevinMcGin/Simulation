@@ -14,13 +14,13 @@ void runOnParticles(
 	Particle* p1,
 	Particle* p2, 
 	float G, 
-	unsigned int deltaTime,
+	float deltaTime,
 	MomentumService* momentumService
 );
 
 void CpuNewtonGravity::run(
 	std::vector<Particle*>& particles,
-	unsigned int deltaTime
+	float deltaTime
 ) {
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
 		auto p1 = *it1;
@@ -41,7 +41,7 @@ void runOnParticles(
 	Particle* p1, 
 	Particle* p2, 
 	float G, 
-	unsigned int deltaTime,
+	float deltaTime,
 	MomentumService* momentumService
 ) {	
 	Vector3D<float> radiusComponent = getRadiusComponent(p1, p2, G);

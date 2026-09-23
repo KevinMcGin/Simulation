@@ -9,6 +9,6 @@ GpuNewtonGravity::GpuNewtonGravity(
 void GpuNewtonGravity::run(
     Particle** particles, 
     int particleCount,
-	unsigned int deltaTime
+	float deltaTime
 ) {}
 

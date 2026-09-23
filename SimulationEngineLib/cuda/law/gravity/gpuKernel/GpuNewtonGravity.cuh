@@ -15,7 +15,7 @@ public:
 	void run(
 		Particle** particles, 
 		int particleCount,
-		unsigned int deltaTime
+		float deltaTime
 	) override;
 protected:
 	const float G;

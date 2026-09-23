@@ -6,6 +6,6 @@ GpuNewtonFirstLaw::GpuNewtonFirstLaw() : GpuLaw("NewtonFirstLaw") { }
 void GpuNewtonFirstLaw::run(
     Particle** particles, 
     int particleCount,
-	unsigned int deltaTime
+	float deltaTime
 ) {}
  

@@ -7,6 +7,6 @@ class CpuLaw {
 public:
 	virtual void run(
 		std::vector<Particle*>& particles,
-		unsigned int deltaTime = 1
+		float deltaTime = 1.0f
 	) = 0;
 };

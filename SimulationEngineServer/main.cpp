@@ -6,6 +6,8 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdexcept>
+#include <string>
 #include <memory>
 #include <filesystem>
 
@@ -52,40 +54,88 @@ int main(int argc, char *argv[]) {
 		long particleCount = 10;
 		long frameRate = 1000;
 		long seconds = 864000;
-		long deltaTime = 864000;
-		float meanMass = 0.01f;
-		float starMass = 50;
-		float outerRadius = 15;
-		float meanDensity = 1000;
-		// Starts as the full set of laws, so a caller that sends none of the
-		// parameters below gets the same universe this endpoint ran before
-		// any of it was configurable.
+		// Simulated seconds per second of playback, and a float: the step it
+		// divides into (deltaTime / frameRate) is a fraction of a second for
+		// any run watched at a reasonable frame rate.
+		float deltaTime = 864000;
+		// Starts as the full set of laws and the star system this endpoint
+		// has always generated, so a caller that sends none of the
+		// parameters below gets the same universe it ran before any of it
+		// was configurable.
+		StarSystemConfig starSystem;
 		LawConfig lawConfig;
 
-		if (req.has_param("particleCount")) {
-			particleCount = atol(req.get_param_value("particleCount").c_str());
+		// Unreadable input is reported rather than absorbed. atof/atol answer
+		// a value they can't parse with 0, or with however much of it they
+		// did understand — "1e+07" arriving with its plus decoded as a space
+		// reads as 1, which is not an error anywhere and just runs a
+		// different simulation than the one that was asked for.
+		std::string parseError;
+		auto noteParseError = [&parseError](const char* name, const char* expected) {
+			if (parseError.empty()) {
+				parseError = std::string(name) + " must be " + expected;
+			}
+		};
+		auto longParam = [&](const char* name, long fallback) -> long {
+			if (!req.has_param(name)) {
+				return fallback;
+			}
+			const std::string raw = req.get_param_value(name);
+			try {
+				size_t consumed = 0;
+				const long value = std::stol(raw, &consumed);
+				if (consumed != raw.size()) {
+					throw std::invalid_argument("trailing characters");
+				}
+				return value;
+			} catch (const std::exception &) {
+				noteParseError(name, "a whole number");
+				return fallback;
+			}
+		};
+		auto floatParam = [&](const char* name, float fallback) -> float {
+			if (!req.has_param(name)) {
+				return fallback;
+			}
+			const std::string raw = req.get_param_value(name);
+			try {
+				size_t consumed = 0;
+				const float value = std::stof(raw, &consumed);
+				if (consumed != raw.size()) {
+					throw std::invalid_argument("trailing characters");
+				}
+				return value;
+			} catch (const std::exception &) {
+				noteParseError(name, "a number");
+				return fallback;
+			}
+		};
+
+		particleCount = longParam("particleCount", particleCount);
+		seconds = longParam("seconds", seconds);
+		frameRate = longParam("frameRate", frameRate);
+		deltaTime = floatParam("deltaTime", deltaTime);
+
+		starSystem.meanMass = floatParam("meanMass", starSystem.meanMass);
+		starSystem.massSpread = floatParam("massSpread", starSystem.massSpread);
+		starSystem.meanDensity = floatParam("meanDensity", starSystem.meanDensity);
+		starSystem.densitySpread = floatParam("densitySpread", starSystem.densitySpread);
+		starSystem.starMass = floatParam("starMass", starSystem.starMass);
+		// Both fall back to what they were fixed to before they could be set
+		// on their own: the star took the disk's density, and the disk
+		// orbited the star's actual mass.
+		starSystem.starDensity = floatParam("starDensity", starSystem.meanDensity);
+		starSystem.diskCentralMass = floatParam("diskCentralMass", starSystem.starMass);
+		starSystem.innerRadius = floatParam("innerRadius", starSystem.innerRadius);
+		starSystem.outerRadius = floatParam("outerRadius", starSystem.outerRadius);
+		starSystem.positionBias = floatParam("positionBias", starSystem.positionBias);
+
+		if (!parseError.empty()) {
+			res.status = 400;
+			res.set_content(parseError, "text/plain");
+			return;
 		}
-		if (req.has_param("seconds")) {
-			seconds = atol(req.get_param_value("seconds").c_str());
-		}
-		if (req.has_param("frameRate")) {
-			frameRate = atol(req.get_param_value("frameRate").c_str());
-		}
-		if (req.has_param("deltaTime")) {
-			deltaTime = atol(req.get_param_value("deltaTime").c_str());
-		}
-		if (req.has_param("meanMass")) {
-			meanMass = atof(req.get_param_value("meanMass").c_str());
-		}
-		if (req.has_param("meanDensity")) {
-			meanDensity = atof(req.get_param_value("meanDensity").c_str());
-		}
-		if (req.has_param("starMass")) {
-			starMass = atof(req.get_param_value("starMass").c_str());
-		}
-		if (req.has_param("outerRadius")) {
-			outerRadius = atof(req.get_param_value("outerRadius").c_str());
-		}
+
 		if (req.has_param("laws")) {
 			auto error = lawConfig.setLaws(req.get_param_value("laws"));
 			if (!error.empty()) {
@@ -114,10 +164,12 @@ int main(int argc, char *argv[]) {
 		// frameRate and deltaTime are divisors just below (and particleCount
 		// drives allocation size / loop counts further down in the engine) —
 		// a zero, negative, or unparsable ("abc" -> atol gives 0) value here
-		// previously fell straight through into that division, which is a
+		// previously fell straight through into that division, which was a
 		// crash (integer division by zero) rather than a normal error, and
 		// would have taken the whole server — every in-flight and future
-		// simulation, not just this request — down with it.
+		// simulation, not just this request — down with it. The step is a
+		// float now, so a zero there divides to infinity instead, which is
+		// no better: it casts to a meaningless frame count.
 		if (particleCount <= 0) {
 			res.status = 400;
 			res.set_content("particleCount must be greater than 0", "text/plain");
@@ -143,21 +195,45 @@ int main(int argc, char *argv[]) {
 			res.set_content("deltaTime must be greater than 0", "text/plain");
 			return;
 		}
-		if (meanMass <= 0 || meanDensity <= 0 || starMass <= 0 || outerRadius <= 0) {
+		if (starSystem.meanMass <= 0 || starSystem.meanDensity <= 0 || starSystem.starMass <= 0 ||
+			starSystem.starDensity <= 0 || starSystem.diskCentralMass <= 0 || starSystem.outerRadius <= 0) {
 			res.status = 400;
-			res.set_content("meanMass, meanDensity, starMass and outerRadius must all be greater than 0", "text/plain");
+			res.set_content("meanMass, meanDensity, starMass, starDensity, diskCentralMass and outerRadius must all be greater than 0", "text/plain");
+			return;
+		}
+		// A spread of 1 or more takes the low end of the range to zero or
+		// past it, which is a particle with no mass or a negative density.
+		if (starSystem.massSpread < 0 || starSystem.massSpread >= 1 ||
+			starSystem.densitySpread < 0 || starSystem.densitySpread >= 1) {
+			res.status = 400;
+			res.set_content("massSpread and densitySpread must be at least 0 and less than 1", "text/plain");
+			return;
+		}
+		// Either end is allowed: it collapses the disk onto one of its radii,
+		// which is a coherent thing to ask for rather than a bias at all.
+		if (starSystem.positionBias < 0 || starSystem.positionBias > 1) {
+			res.status = 400;
+			res.set_content("positionBias must be at least 0 and at most 1", "text/plain");
+			return;
+		}
+		if (starSystem.innerRadius < 0 || starSystem.innerRadius >= starSystem.outerRadius) {
+			res.status = 400;
+			res.set_content("innerRadius must be at least 0 and less than outerRadius", "text/plain");
 			return;
 		}
 
-		unsigned long deltaFrameRate = (unsigned long)deltaTime / (unsigned long)frameRate;
-		float frameRateTime = (float)frameRate / (float)deltaTime;
-		unsigned int endTime = (unsigned int)((unsigned long)seconds * frameRateTime);
+		// How much simulated time one frame covers, which is what the engine
+		// steps by, and how many frames that leaves for the run.
+		float simSecondsPerFrame = deltaTime / (float)frameRate;
+		unsigned int endTime = (unsigned int)((float)seconds * ((float)frameRate / deltaTime));
 
-		if (deltaFrameRate == 0) {
+		if (endTime == 0) {
 			res.status = 400;
-			res.set_content("frameRate must not be greater than deltaTime", "text/plain");
+			res.set_content("the run is too short to produce a single frame: raise seconds or frameRate, or lower deltaTime", "text/plain");
 			return;
 		}
+
+		starSystem.particleCount = (unsigned long)particleCount;
 
 		std::cout << PhysicalConstants::GRAVITATIONAL_CONSTANT << " GRAVITATIONAL_CONSTANT\n";
 		std::cout << PhysicalConstants::SPEED_OF_LIGHT << " SPEED_OF_LIGHT\n";
@@ -165,13 +241,18 @@ int main(int argc, char *argv[]) {
 		std::cout << seconds << " seconds\n";
 		std::cout << frameRate << " frame rate\n";
 		std::cout << deltaTime << " delta time\n";
-		std::cout << deltaFrameRate << " delta frame rate\n";
-		std::cout << frameRateTime << " frame rate time\n";
+		std::cout << simSecondsPerFrame << " simulated seconds per frame\n";
 		std::cout << endTime << " end time\n";
-		std::cout << meanMass << " mean mass\n";
-		std::cout << meanDensity << " mean density\n";
-		std::cout << starMass << " star mass\n";
-		std::cout << outerRadius << " outer radius\n";
+		std::cout << starSystem.meanMass << " mean mass\n";
+		std::cout << starSystem.massSpread << " mass spread\n";
+		std::cout << starSystem.meanDensity << " mean density\n";
+		std::cout << starSystem.densitySpread << " density spread\n";
+		std::cout << starSystem.starMass << " star mass\n";
+		std::cout << starSystem.starDensity << " star density\n";
+		std::cout << starSystem.diskCentralMass << " disk central mass\n";
+		std::cout << starSystem.innerRadius << " inner radius\n";
+		std::cout << starSystem.outerRadius << " outer radius\n";
+		std::cout << starSystem.positionBias << " position bias\n";
 		std::cout << lawConfig.isCollisionCoalesceEnabled << " collision coalesce enabled\n";
 		std::cout << lawConfig.isNewtonGravityEnabled << " newton gravity enabled\n";
 		std::cout << lawConfig.isNewtonFirstLawEnabled << " newton first law enabled\n";
@@ -187,13 +268,7 @@ int main(int argc, char *argv[]) {
 		// response instead of an unhandled exception taking the process,
 		// and every other in-flight simulation, down with it.
 		try {
-			auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(
-				meanMass,
-				meanDensity,
-				starMass,
-				outerRadius,
-				(unsigned long)particleCount
-			);
+			auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(starSystem);
 
 			auto input = simulationInputDistributionStarSystem->getStarSystemDistribution();
 
@@ -206,7 +281,7 @@ int main(int argc, char *argv[]) {
 				std::move(input),
 				output,
 				endTime,
-				deltaFrameRate,
+				simSecondsPerFrame,
 				UNDEFINED,
 				lawConfig
 			);

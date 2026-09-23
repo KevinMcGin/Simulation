@@ -16,7 +16,7 @@ public:
 	virtual void run(
 		Particle** td_par, 
 		int particleCount,
-		unsigned int deltaTime = 1
+		float deltaTime = 1.0f
 	) {};
 	protected:
 		std::shared_ptr<CudaWithError> cudaWithError;

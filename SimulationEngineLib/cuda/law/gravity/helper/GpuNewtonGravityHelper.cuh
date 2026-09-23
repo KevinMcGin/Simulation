@@ -17,7 +17,7 @@ void addAccelerationsKernelLowerHelper(
     Vector3D<float>* accelerations, 
     unsigned long long particleIndex2,
     unsigned long long vectorsProcessedTriangular,
-    unsigned int deltaTime,
+    float deltaTime,
     MomentumService** momentumServiceGpu
 );
 
@@ -31,6 +31,6 @@ void addAccelerationsKernelUpperHelper(
     unsigned long long particleCount,
     unsigned long long vectorsProcessedTriangular, 
     unsigned long long betweenParticlesTriangularCount, 
-    unsigned int deltaTime,
+    float deltaTime,
     MomentumService** momentumServiceGpu
 );
