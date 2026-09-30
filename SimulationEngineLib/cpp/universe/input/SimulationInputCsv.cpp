@@ -24,7 +24,7 @@ SimulationInputCsv::SimulationInputCsv(const char* fileName) :
 			std::getline(file, line, '\n');
 		}
 		std::vector<std::string> headers = split(line, ',');
-		particleInput = new ParticleInput(headers);
+		particleInput = std::make_unique<ParticleInput>(headers);
 	}
 
 SimulationInputCsv::~SimulationInputCsv() {

@@ -2,6 +2,7 @@
 #include "cpp/universe/output/SimulationOutputCsv.h"
 #include "cpp/particle/ParticleSimple.h"
 #include "cpp/util/FileUtil.h"
+#include "ParticleTestHelper.h"
 
 TEST(SimulationOutputCsvTest, SimulationOutputtedToCsv) {
 	SimulationOutputCsv simulationOutputCsv("simulation_output/SimulationOutputCsvTest_SimulationOutputtedToCsv.json");
@@ -11,6 +12,7 @@ TEST(SimulationOutputCsvTest, SimulationOutputtedToCsv) {
     };
 	simulationOutputCsv.output(particles, 0);
 	simulationOutputCsv.output(particles, 1);
+	ParticleTestHelper::deleteParticles(particles);
 }
 
 // The values here are all exactly representable as a float, so the only
@@ -36,5 +38,6 @@ TEST(SimulationOutputCsvTest, TrailingZerosAreTrimmed) {
 		"0,2.5,-2,0,10.125\n"
 		"\n";
 	EXPECT_EQ(expected, FileUtil::fileToString(outputFile));
+	ParticleTestHelper::deleteParticles(particles);
 }
 

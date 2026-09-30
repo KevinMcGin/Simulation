@@ -2,6 +2,7 @@
 #include "cpp/law/gravity/NewtonGravity.h"
 #include "cpp/particle/ParticleSimple.h"
 #include "NewtonGravityTestHelper.h"
+#include "ParticleTestHelper.h"
 #include "shared/service/momentum/newton/NewtonMomentumService.cuh"
 
 #include <vector>
@@ -12,4 +13,5 @@ TEST(NewtonGravityTest, ParticlesAccelerate) {
 	std::vector<Particle*> particles = NewtonGravityTestHelper::getParticlesAccelerate();
 	law->cpuLaw->run(particles);
 	NewtonGravityTestHelper::testParticlesAccelerate(particles);
+	ParticleTestHelper::deleteParticles(particles);
 }

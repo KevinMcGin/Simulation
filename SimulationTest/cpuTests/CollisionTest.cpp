@@ -4,6 +4,7 @@
 #include "shared/law/collision/resolver/CollisionResolverCoalesce.cuh"
 #include "cpp/particle/ParticleSimple.h"
 #include "CollisionTestHelper.h"
+#include "ParticleTestHelper.h"
 #include "shared/service/momentum/newton/NewtonMomentumService.cuh"
 
 #include <algorithm>
@@ -58,6 +59,7 @@ TEST(CollisionTest, ParticlesCollide) {
 	std::vector<Particle*> particles = CollisionTestHelper::getParticlesCollideParticles();
 	law.cpuLaw->run(particles);
 	CollisionTestHelper::testParticlesCollide(particles);
+	ParticleTestHelper::deleteParticles(particles);
 }
 
 TEST(CollisionTest, MultipleParticlesAllCollide) {
@@ -71,6 +73,7 @@ TEST(CollisionTest, MultipleParticlesAllCollide) {
 	law.cpuLaw->run(particles);
 	std::sort(particles.begin(), particles.end(), sortParticles);
 	CollisionTestHelper::testMultipleParticlesAllCollide(particles);
+	ParticleTestHelper::deleteParticles(particles);
 }
 
 TEST(CollisionTest, MultipleParticlesPartialCollide) {
@@ -84,6 +87,7 @@ TEST(CollisionTest, MultipleParticlesPartialCollide) {
 	law.cpuLaw->run(particles);
 	std::sort(particles.begin(), particles.end(), sortParticles);
 	CollisionTestHelper::testMultipleParticlesPartialCollide(particles);
+	ParticleTestHelper::deleteParticles(particles);
 }
 
 TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
@@ -96,4 +100,5 @@ TEST(CollisionTest, MultipleParticlesIndependentlyCollide) {
 	std::vector<Particle*> particles = CollisionTestHelper::getMultipleParticlesIndependentlyCollide();
 	law.cpuLaw->run(particles);
 	CollisionTestHelper::testMultipleParticlesIndependentlyCollide(particles);
+	ParticleTestHelper::deleteParticles(particles);
 }

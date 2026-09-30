@@ -1,6 +1,7 @@
 #include  <gtest/gtest.h>
 #include "cpp/particle/helper/ParticlesHelper.h"
 #include "cpp/particle/ParticleSimple.h"
+#include "ParticleTestHelper.h"
 
 TEST(ParticlesHelperTest, removeDeletedParticles) {
     std::vector<Particle*> particles = {
@@ -25,4 +26,5 @@ TEST(ParticlesHelperTest, removeDeletedParticles) {
     EXPECT_FLOAT_EQ(10, p->radius);
     EXPECT_EQ(Vector3D<float>(-10.0f, -10.0f, -10.0f), p->position);
     EXPECT_EQ(Vector3D<float>(10.0f, 10.0f, 10.0f), p->velocity);
+    ParticleTestHelper::deleteParticles(particles);
 }

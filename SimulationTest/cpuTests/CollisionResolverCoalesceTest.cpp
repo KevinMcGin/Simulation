@@ -16,6 +16,8 @@ TEST(CollisionResolverCoalesceTest, ParticlesCoalesce) {
 	EXPECT_FLOAT_EQ(1.2599210498948732, p1->radius);
 	EXPECT_EQ(Vector3D<float>(2,0.5,0), p1->position);
 	EXPECT_EQ(Vector3D<float>(1,0,0), p1->velocity);
+	delete p1;
+	delete p2;
 }
 
 TEST(CollisionResolverCoalesceTest, GetIndex) {

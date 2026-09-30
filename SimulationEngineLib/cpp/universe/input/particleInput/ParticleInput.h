@@ -2,6 +2,7 @@
 #include "shared/particle/Particle.cuh"
 #include "cpp/universe/input/particleInput/field/ParticleInputField.h"
 
+#include <memory>
 #include <vector>
 
 class ParticleInput {
@@ -12,6 +13,9 @@ public:
 private:
     ParticleInputField* findInputField(std::string header);
 
+    // inputsAvailable owns every field; inputsInUse just points at the
+    // subset the file's headers asked for, so the two must not both free
+    // them.
     std::vector<ParticleInputField*> inputsInUse;
-    std::vector<ParticleInputField*> inputsAvailable;
+    std::vector<std::unique_ptr<ParticleInputField>> inputsAvailable;
 };

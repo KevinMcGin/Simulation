@@ -21,4 +21,5 @@ TEST(ParticleDistributionSimpleTest, ParticleMade) {
 	EXPECT_TRUE(p->position.x <= 1 && p->position.x >= -1);
 	EXPECT_TRUE(p->position.y <= 1 && p->position.y >= -1);
 	EXPECT_TRUE(p->position.z <= 1 && p->position.z >= -1);
+	delete p;
 }

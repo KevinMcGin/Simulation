@@ -5,5 +5,6 @@
 
 class SimulationInput {
 public:
+	virtual ~SimulationInput() = default;
 	virtual std::vector<Particle*> input() = 0;
 };

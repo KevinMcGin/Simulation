@@ -15,8 +15,8 @@ public:
     int getParticleCount();
 
 private:
-    Particle** d_par;
-    Particle** td_par;
+    Particle** d_par = NULL;
+    Particle** td_par = NULL;
     int particleCount = 0;
     CudaWithError cudaWithError;
 };

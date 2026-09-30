@@ -55,6 +55,23 @@ void setMomentumServiceForCollision(MomentumService** momentumServiceGpu, int mo
 	} 
 } 
 
+// Counterparts to the three kernels above: each of those objects was new'd
+// on the device, so freeing the pointer arrays alone would leave all three
+// on the device heap.
+__global__
+void deleteCollisionObjects(
+	CollisionDetector** collisionDetectorGpu,
+	CollisionResolver** collisionResolverGpu,
+	MomentumService** momentumServiceGpu
+) {
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	if (idx < 1) {
+		delete collisionDetectorGpu[0];
+		delete collisionResolverGpu[0];
+		delete momentumServiceGpu[0];
+	}
+}
+
 GpuCollision::GpuCollision(
 	std::shared_ptr<CollisionDetector> collisionDetector, 
 	std::shared_ptr<CollisionResolver> collisionResolver,
@@ -71,8 +88,12 @@ GpuCollision::GpuCollision(
 }
 
 GpuCollision::~GpuCollision() {
+	cudaWithError->runKernel("deleteCollision Objects on Gpu", [&](unsigned int kernelSize) {
+		deleteCollisionObjects <<<1, 1>>> (collisionDetectorGpu, collisionResolverGpu, momentumServiceGpu);
+	});
 	cudaWithError->free(collisionDetectorGpu);
 	cudaWithError->free(collisionResolverGpu);
+	cudaWithError->free(momentumServiceGpu);
 }
 
 __global__
@@ -164,6 +185,9 @@ void GpuCollision::run(
 	const unsigned long long maxIntsAllocatableFactor = 200;
 	const long long maxIntsAllocatable = std::min(maxIntsAllocatableStage1, (long long)(betweenParticlesPairsCount * maxIntsAllocatableFactor));
 	if (maxIntsAllocatable <= 0) {
+		cudaWithError->free(collisionMarksIndex);
+		cudaWithError->free(limitReached);
+		cudaWithError->free(particlesCollided);
 		throw std::runtime_error("Ran out of GPU memory");
 	}
 
@@ -187,6 +211,10 @@ void GpuCollision::run(
 		// std::cout << '\n' << "indexLoops: " << indexLoops << '\n';
 		if (++indexLoops > maxLoops) {
 			std::cout << "Max Loops in GpuCollision reached\n";
+			cudaWithError->free(collisionMarks);
+			cudaWithError->free(collisionMarksIndex);
+			cudaWithError->free(limitReached);
+			cudaWithError->free(particlesCollided);
 			throw std::runtime_error("Max Loops in GpuCollision reached");
 		}
 		collisionMarksIndexCpu = 0;		
@@ -268,5 +296,6 @@ void GpuCollision::run(
 
 	cudaWithError->free(collisionMarks);
 	cudaWithError->free(collisionMarksIndex);
+	cudaWithError->free(limitReached);
 	cudaWithError->free(particlesCollided);
 }

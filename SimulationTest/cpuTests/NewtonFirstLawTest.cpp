@@ -2,6 +2,7 @@
 #include "cpp/law/newtonFirstLaw/NewtonFirstLaw.h"
 #include "cpp/particle/ParticleSimple.h"
 #include "NewtonFirstLawTestHelper.h"
+#include "ParticleTestHelper.h"
 
 #include <vector>
 
@@ -10,4 +11,5 @@ TEST(NewtonFirstLawTest, ParticleMove) {
 	std::vector<Particle*> particles = NewtonFirstLawTestHelper::getParticleMove();
 	law->cpuLaw->run(particles);
 	NewtonFirstLawTestHelper::testParticleMove(particles);
+	ParticleTestHelper::deleteParticles(particles);
 }

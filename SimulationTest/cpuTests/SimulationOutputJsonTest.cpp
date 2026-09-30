@@ -1,6 +1,7 @@
 #include  "gtest/gtest.h"
 #include "cpp/universe/output/SimulationOutputJson.h"
 #include "cpp/particle/ParticleSimple.h"
+#include "ParticleTestHelper.h"
 
 TEST(SimulationOutputJsonTest, SimulationOutputtedToJson) {
 	SimulationOutputJson simulationOutputJson("simulation_output/SimulationOutputJsonTest_SimulationOutputtedToJson.json");
@@ -10,5 +11,6 @@ TEST(SimulationOutputJsonTest, SimulationOutputtedToJson) {
     };
 	simulationOutputJson.output(particles, 0);
 	simulationOutputJson.output(particles, 1);
+	ParticleTestHelper::deleteParticles(particles);
 }
 

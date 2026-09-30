@@ -12,6 +12,7 @@ public:
 		float G,
 		std::shared_ptr<MomentumService> momentumService
 	);
+	~GpuNewtonGravity();
 	void run(
 		Particle** particles, 
 		int particleCount,

@@ -10,7 +10,7 @@ GpuDataController::~GpuDataController() {
 		cudaWithError.free(d_par[i]);
 	}
 	cudaWithError.free(td_par);
-	delete d_par;
+	delete[] d_par;
 }
 
 void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, bool firstRun) {
@@ -19,7 +19,7 @@ void GpuDataController::putParticlesOnDevice(std::vector<Particle*> particles, b
 			cudaWithError.free(d_par[i]);
 		}
 		cudaWithError.free(td_par);
-		delete d_par;
+		delete[] d_par;
 	}
 	
 	particleCount = (int)particles.size();

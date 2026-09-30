@@ -29,7 +29,16 @@ Universe::Universe(
     printUseGpu();
 }
 
-Universe::~Universe() = default;
+// The particles are this universe's to free: they are handed over as raw
+// pointers by the input, and laws delete the ones they merge away mid-run
+// (see ParticlesHelper::removeDeletedParticles), so whatever survives to
+// the end has nobody else left to clean it up.
+Universe::~Universe() {
+	for (auto particle : particles) {
+		delete particle;
+	}
+	particles.clear();
+}
 
 void Universe::printUseGpu() {
     if (this->useGpu == TRUE) {

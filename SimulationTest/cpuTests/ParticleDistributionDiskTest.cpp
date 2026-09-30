@@ -45,6 +45,7 @@ TEST(ParticleDistributionDiskTest, Disk) {
 	EXPECT_TRUE(particle->velocity.x >= -1 && particle->velocity.x <= 1);
 	EXPECT_TRUE(particle->velocity.y >= -1 && particle->velocity.y <= 1);
 	EXPECT_TRUE(particle->velocity.z >= 0 && particle->velocity.z <= 0);
+	delete particle;
 }
 
 TEST(ParticleDistributionDiskTest, DiskZeroRadius) {
@@ -85,4 +86,5 @@ TEST(ParticleDistributionDiskTest, DiskZeroRadius) {
 	EXPECT_TRUE(particle->velocity.x >= -1 && particle->velocity.x <= 1);
 	EXPECT_TRUE(particle->velocity.y >= -1 && particle->velocity.y <= 1);
 	EXPECT_TRUE(particle->velocity.z >= 0 && particle->velocity.z <= 0);
+	delete particle;
 }

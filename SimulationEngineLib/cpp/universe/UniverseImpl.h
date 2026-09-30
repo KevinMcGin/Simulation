@@ -10,6 +10,7 @@
 	#include "gpuMock/gpuHelper/GpuDataController.cuh"
 #endif
 
+#include <memory>
 #include <vector>
 
 class UniverseImpl: public Universe {
@@ -26,6 +27,6 @@ public:
 	void run() override;
 	
 private:
-	GpuDataController* gpuDataController;
+	std::unique_ptr<GpuDataController> gpuDataController;
 	UniverseTiming universeTiming;
 };

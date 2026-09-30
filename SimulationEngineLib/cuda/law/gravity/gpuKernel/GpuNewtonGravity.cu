@@ -38,6 +38,21 @@ GpuNewtonGravity::GpuNewtonGravity(
 }
 
 __global__
+void deleteMomentumService(MomentumService** momentumServiceGpu) {
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;
+	if (idx < 1) {
+		delete momentumServiceGpu[0];
+	}
+}
+
+GpuNewtonGravity::~GpuNewtonGravity() {
+	cudaWithError->runKernel("deleteGravity Objects on Gpu", [&](unsigned int kernelSize) {
+		deleteMomentumService <<<1, 1>>> (momentumServiceGpu);
+	});
+	cudaWithError->free(momentumServiceGpu);
+}
+
+__global__
 void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations, unsigned long long betweenParticlesTriangularCount, float G, unsigned long long vectorsProcessedTriangular) {
 	unsigned long long betweenParticlesTriangularIndex = threadIdx.x + blockIdx.x*blockDim.x;
 	if (betweenParticlesTriangularIndex < betweenParticlesTriangularCount) { 
@@ -94,6 +109,7 @@ void GpuNewtonGravity::run(
 		) - (vectorsProcessed > 0 ? getRowsFromRowsAndColsCountMinusIdentity(vectorsProcessed) : 0);
 		if (particlesProcessable == 0) { 
 			std::cout << "GPU can not run these many particles in Gravity\n";
+			cudaWithError->free(accelerations);
 			throw std::runtime_error("GPU can not run these many particles in Gravity");
 		}
 		unsigned long long vectorsProcessable = getRowsAndColsCountMinusIdentityFromRows(particlesProcessed + particlesProcessable) - getRowsAndColsCountMinusIdentityFromRows(particlesProcessed);

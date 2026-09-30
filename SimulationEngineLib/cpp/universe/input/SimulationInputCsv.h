@@ -3,6 +3,7 @@
 #include "cpp/particle/ParticleSimple.h"
 #include "cpp/universe/input/particleInput/ParticleInput.h"
 
+#include <memory>
 #include <vector>
 
 class SimulationInputCsv: public SimulationInputFile {
@@ -11,5 +12,5 @@ class SimulationInputCsv: public SimulationInputFile {
 		~SimulationInputCsv();
 		std::vector<Particle*> input();
 	private:
-		ParticleInput* particleInput;
+		std::unique_ptr<ParticleInput> particleInput;
 };

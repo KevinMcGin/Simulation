@@ -17,7 +17,7 @@ void CpuCollision::run(
 	float deltaTime
 ) {
 	// get particles that collided
-	std::vector<std::set<Particle*>*> particlesCollidedVector;
+	std::vector<std::set<Particle*>> particlesCollidedVector;
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
 		auto p1 = *it1;
     	std::set<Particle*> particlesCollidedSet = {};
@@ -29,34 +29,34 @@ void CpuCollision::run(
 			}
 		}
 		if (particlesCollidedSet.size() > 0)
-			particlesCollidedVector.push_back(new std::set<Particle*>(particlesCollidedSet));
+			particlesCollidedVector.push_back(particlesCollidedSet);
 	}
 	// merge sets of particles that collided
 	for (auto it1 = particlesCollidedVector.begin(); it1 != particlesCollidedVector.end(); it1++) {
-		auto particlesCollided1 = *it1;
+		auto& particlesCollided1 = *it1;
 		for (auto it2 = it1+1; it2 < particlesCollidedVector.end(); it2++) {
-			auto particlesCollided2 = *it2;
+			auto& particlesCollided2 = *it2;
 			if ([&]() {
-				for(auto p: *particlesCollided2) {
-					if (particlesCollided1->find(p) != particlesCollided1->end()) {
+				for(auto p: particlesCollided2) {
+					if (particlesCollided1.find(p) != particlesCollided1.end()) {
 						return true;
 					}
 				}
 				return false;
 			}()) {
-				for(auto p: *particlesCollided2) {
-					particlesCollided1->insert(p);
+				for(auto p: particlesCollided2) {
+					particlesCollided1.insert(p);
 				}
-				particlesCollided2->clear();
+				particlesCollided2.clear();
 			}
 		}
 	}
 	//resolve particles
-	for (auto particlesCollided1: particlesCollidedVector) {
-		if (particlesCollided1->size() > 0) {
-			auto p1 = *(particlesCollided1->begin());
-			particlesCollided1->erase(particlesCollided1->begin());
-			for(auto p2: *particlesCollided1) {
+	for (auto& particlesCollided1: particlesCollidedVector) {
+		if (particlesCollided1.size() > 0) {
+			auto p1 = *(particlesCollided1.begin());
+			particlesCollided1.erase(particlesCollided1.begin());
+			for(auto p2: particlesCollided1) {
 				collisionResolver->resolve(
 					p1, 
 					p2,

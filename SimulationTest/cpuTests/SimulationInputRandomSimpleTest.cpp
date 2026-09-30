@@ -5,6 +5,7 @@
 #include "cpp/distribution/DistributionMassDensity.h"
 #include "cpp/distribution/DistributionValue.h"
 #include "cpp/distribution/DistributionSphere.h"
+#include "ParticleTestHelper.h"
 
 TEST(SimulationInputRandomSimpleTest, input) {
     std::vector<unsigned long> particleCounts = { 10 };
@@ -34,4 +35,5 @@ TEST(SimulationInputRandomSimpleTest, input) {
         EXPECT_EQ(Vector3D<float>(-1.0f, -1.0f, -1.0f), p->position);
         EXPECT_EQ(Vector3D<float>(1.0f, 1.0f, 1.0f), p->velocity);
     }
+    ParticleTestHelper::deleteParticles(particles);
 }

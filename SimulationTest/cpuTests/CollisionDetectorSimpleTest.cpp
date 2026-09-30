@@ -10,6 +10,8 @@ TEST(CollisionDetectorSimpleTest, particlesNotIntersect) {
 	Particle* p2 = new ParticleSimple(1, 1, { 0,0,0 }, { 1,-1,0 });
 	bool didCollide = detector.isCollision(p1, p2);
 	EXPECT_TRUE(!didCollide);
+	delete p1;
+	delete p2;
 }
 
 TEST(CollisionDetectorSimpleTest, particlesIntersectByZero) {
@@ -18,6 +20,8 @@ TEST(CollisionDetectorSimpleTest, particlesIntersectByZero) {
 	Particle* p2 = new ParticleSimple(1, 1, { 1,0,0 }, { 1,-1,0 });
 	bool didCollide = detector.isCollision(p1, p2);
 	EXPECT_TRUE(!didCollide);
+	delete p1;
+	delete p2;
 }
 
 TEST(CollisionDetectorSimpleTest, particlesIntersect) {
@@ -26,6 +30,8 @@ TEST(CollisionDetectorSimpleTest, particlesIntersect) {
 	Particle* p2 = new ParticleSimple(1, 1, { 0,0,0 }, { 1,-1,0 });
 	bool didCollide = detector.isCollision(p1, p2);
 	EXPECT_TRUE(didCollide);
+	delete p1;
+	delete p2;
 }
 
 TEST(CollisionDetectorSimpleTest, GetIndex) {

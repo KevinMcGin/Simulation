@@ -1,5 +1,6 @@
 #include  <gtest/gtest.h>
 #include "cpp/distribution/SimulationInputDistributionStarSystem.h"
+#include "ParticleTestHelper.h"
 
 TEST(SimulationInputDistributionStarSystemTest, getStarSystemDistribution) {
 	StarSystemConfig config;
@@ -14,6 +15,7 @@ TEST(SimulationInputDistributionStarSystemTest, getStarSystemDistribution) {
 	auto particles = distributionBuilder.getStarSystemDistribution()
 		->input();
 	EXPECT_EQ(10, particles.size());
+	ParticleTestHelper::deleteParticles(particles);
 }
 
 // The config's defaults are what the engine generated before any of it was
@@ -29,6 +31,7 @@ TEST(SimulationInputDistributionStarSystemTest, defaultsProduceAStarSystem) {
 		EXPECT_GT(particle->mass, 0);
 		EXPECT_GT(particle->radius, 0);
 	}
+	ParticleTestHelper::deleteParticles(particles);
 }
 
 // Every particle but the star sits in the ring between the two radii: the
@@ -56,6 +59,7 @@ TEST(SimulationInputDistributionStarSystemTest, disksStayWithinTheirRadii) {
 		EXPECT_LE(radius, 6.01f);
 	}
 	EXPECT_EQ(1, atCentre) << "the star, and only the star, sits at the centre";
+	ParticleTestHelper::deleteParticles(particles);
 }
 
 // The star's density is its own: at the same mass, a denser star is a
@@ -70,7 +74,9 @@ TEST(SimulationInputDistributionStarSystemTest, starDensityIsSeparateFromTheDisk
 			.getStarSystemDistribution()
 			->input();
 		// The star is the last particle: the disk is generated first.
-		return particles.back()->radius;
+		const float radius = particles.back()->radius;
+		ParticleTestHelper::deleteParticles(particles);
+		return radius;
 	};
 
 	EXPECT_LT(starRadius(8000.0f), starRadius(1000.0f));

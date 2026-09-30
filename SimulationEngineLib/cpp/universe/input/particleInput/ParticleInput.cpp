@@ -9,17 +9,16 @@
 #include "cpp/universe/input/particleInput/field/ParticleInputFieldVelocityZ.h"
 
 ParticleInput::ParticleInput(std::vector<std::string> headers) :
-    inputsAvailable({
-        new ParticleInputFieldMass(),
-        new ParticleInputFieldRadius(),
-        new ParticleInputFieldPositionX(),
-        new ParticleInputFieldPositionY(),
-        new ParticleInputFieldPositionZ(),
-        new ParticleInputFieldVelocityX(),
-        new ParticleInputFieldVelocityY(),
-        new ParticleInputFieldVelocityZ(),
-    }),
     inputsInUse({}) {
+
+    inputsAvailable.push_back(std::make_unique<ParticleInputFieldMass>());
+    inputsAvailable.push_back(std::make_unique<ParticleInputFieldRadius>());
+    inputsAvailable.push_back(std::make_unique<ParticleInputFieldPositionX>());
+    inputsAvailable.push_back(std::make_unique<ParticleInputFieldPositionY>());
+    inputsAvailable.push_back(std::make_unique<ParticleInputFieldPositionZ>());
+    inputsAvailable.push_back(std::make_unique<ParticleInputFieldVelocityX>());
+    inputsAvailable.push_back(std::make_unique<ParticleInputFieldVelocityY>());
+    inputsAvailable.push_back(std::make_unique<ParticleInputFieldVelocityZ>());
 
     for (const auto& header : headers) {
         ParticleInputField* input = findInputField(header);
@@ -43,7 +42,7 @@ void ParticleInput::set(Particle* particle, std::vector<std::string> values) {
 ParticleInputField* ParticleInput::findInputField(std::string header) {
     for (const auto& input : inputsAvailable) {
         if (input->getHeader() == header) {
-            return input;
+            return input.get();
         }
     }
     return nullptr;

@@ -12,7 +12,8 @@
 class GpuLaw {
 public:
 	GpuLaw(std::string className);
-	~GpuLaw();
+	// Deleted through this base by Law — see CpuLaw.
+	virtual ~GpuLaw();
 	virtual void run(
 		Particle** td_par, 
 		int particleCount,

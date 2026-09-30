@@ -17,7 +17,7 @@ UniverseImpl::UniverseImpl(
 	universeTiming(UniverseTiming(endTime)) {
 	;
 	if (this->useGpu == TRUE) {
-		gpuDataController = new GpuDataController();
+		gpuDataController = std::make_unique<GpuDataController>();
 	}
 }
 

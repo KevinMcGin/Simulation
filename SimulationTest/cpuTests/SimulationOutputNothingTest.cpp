@@ -1,6 +1,7 @@
 #include  "gtest/gtest.h"
 #include "cpp/universe/output/SimulationOutputNothing.h"
 #include "cpp/particle/ParticleSimple.h"
+#include "ParticleTestHelper.h"
 
 TEST(SimulationOutputNothingTest, SimulationOutputsNothing) {
 	SimulationOutputNothing simulationOutputNothing;
@@ -10,5 +11,6 @@ TEST(SimulationOutputNothingTest, SimulationOutputsNothing) {
     };
 	simulationOutputNothing.output(particles, 0);
 	simulationOutputNothing.output(particles, 1);
+	ParticleTestHelper::deleteParticles(particles);
 }
 

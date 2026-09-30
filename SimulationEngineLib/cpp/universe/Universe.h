@@ -25,7 +25,9 @@ public:
 		unsigned long endTime,
 		Usage useGpu = UNDEFINED
 	);
-	~Universe();
+	// Virtual so that deleting a universe through this base pointer still
+	// runs the derived destructor, which owns the GPU data controller.
+	virtual ~Universe();
 	std::vector<Particle*> particles;
 	virtual void run() = 0;
 
