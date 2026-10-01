@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
+#include "shared/precision/Real.cuh"
 
 template <typename T>
 class Vector3D {

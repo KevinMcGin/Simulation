@@ -5,17 +5,17 @@
 	
 ParticleDistributionDisk::ParticleDistributionDisk(
     std::shared_ptr<DistributionDensity> densityDistribution,
-    float centralMass,
-    Vector3D<float> meanPosition,
-    float thetaPosition,
-    float phiPosition,
+    Real centralMass,
+    Vector3D<Real> meanPosition,
+    Real thetaPosition,
+    Real phiPosition,
     bool clockwise,
     std::shared_ptr<Distribution> innerRadius,
     std::shared_ptr<Distribution> outerRadius, 
     std::shared_ptr<Distribution> eccentricity,
     // std::shared_ptr<Distribution3D> angularVelocityDistribution,
-    float positionBias,
-    float G
+    Real positionBias,
+    Real G
 ) : densityDistribution(densityDistribution), centralMass(centralMass), meanPosition(meanPosition), thetaPosition(thetaPosition), phiPosition(phiPosition),
     clockwise(clockwise), innerRadius(innerRadius), outerRadius(outerRadius), eccentricity(eccentricity), 
     // angularVelocityDistribution(angularVelocityDistribution),
@@ -24,7 +24,7 @@ ParticleDistributionDisk::ParticleDistributionDisk(
 ParticleDistributionDisk::~ParticleDistributionDisk() = default;
 
 Particle* ParticleDistributionDisk::getParticle() {
-	float mass, radius;
+	Real mass, radius;
 	densityDistribution->getMassRadius(mass, radius);
     auto outerRadiusValue = outerRadius->getValue();
     auto innerRadiusValue = innerRadius->getValue();
@@ -33,13 +33,13 @@ Particle* ParticleDistributionDisk::getParticle() {
     // only ever produce an even spread, and it never terminates at all once
     // the inner radius reaches the outer one.
     DistributionAnnulus annulus(meanPosition, innerRadiusValue, outerRadiusValue, positionBias);
-    Vector3D<float> position = annulus.getValue();
-    Vector3D<float> difference = position - meanPosition;
-    float differenceMagnitude = difference.magnitude();
-    Vector3D<float> velocity;
+    Vector3D<Real> position = annulus.getValue();
+    Vector3D<Real> difference = position - meanPosition;
+    Real differenceMagnitude = difference.magnitude();
+    Vector3D<Real> velocity;
     if (differenceMagnitude != 0) {
-        float speed = sqrt( (G * centralMass) / differenceMagnitude);
-        velocity = (clockwise ? -1 : 1) * speed * Vector3D<float>(0, 0, 1).crossProduct(difference).unit();
+        Real speed = sqrt( (G * centralMass) / differenceMagnitude);
+        velocity = (clockwise ? -1 : 1) * speed * Vector3D<Real>(0, 0, 1).crossProduct(difference).unit();
     } else {
         velocity = { 0.0, 0.0, 0.0 };
     }

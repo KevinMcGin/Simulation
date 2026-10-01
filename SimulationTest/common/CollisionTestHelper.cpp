@@ -1,7 +1,7 @@
 #include "CollisionTestHelper.h"
 
 template <typename T>
-bool CollisionTestHelper::sortVector(T const &lhs, T const &rhs, std::vector<float*> compareLhs, std::vector<float*> compareRhs) {
+bool CollisionTestHelper::sortVector(T const &lhs, T const &rhs, std::vector<Real*> compareLhs, std::vector<Real*> compareRhs) {
     if (*(compareLhs.back()) < *(compareRhs.back())) {
         return true; 
     } else if (*(compareRhs.back()) < *(compareLhs.back())) {
@@ -17,7 +17,7 @@ bool CollisionTestHelper::sortVector(T const &lhs, T const &rhs, std::vector<flo
 }
 
 bool CollisionTestHelper::sortParticles(Particle* const &lhs, Particle* const &rhs) {
-    auto compareLhs = std::vector<float*> {
+    auto compareLhs = std::vector<Real*> {
         &(lhs->velocity.z),
         &(lhs->velocity.y),
         &(lhs->velocity.x),
@@ -27,7 +27,7 @@ bool CollisionTestHelper::sortParticles(Particle* const &lhs, Particle* const &r
         &(lhs->radius),
         &(lhs->mass)
     };
-    auto compareRhs = std::vector<float*> {
+    auto compareRhs = std::vector<Real*> {
         &(rhs->velocity.z),
         &(rhs->velocity.y),
         &(rhs->velocity.x),
@@ -52,9 +52,9 @@ void CollisionTestHelper::testParticlesCollide(std::vector<Particle*> particles)
     std::sort(particles.begin(), particles.end(), CollisionTestHelper::sortParticles);
     EXPECT_EQ(2, particles.size());
     EXPECT_EQ(2, particles[1]->mass);
-    EXPECT_FLOAT_EQ(1.2599210498948732, particles[1]->radius);
-    EXPECT_EQ(Vector3D<float>(2,0.5,0), particles[1]->position);
-    EXPECT_EQ(Vector3D<float>(1,0,0), particles[1]->velocity);
+    EXPECT_DOUBLE_EQ(1.2599210498948732, particles[1]->radius);
+    EXPECT_EQ(Vector3D<Real>(2,0.5,0), particles[1]->position);
+    EXPECT_EQ(Vector3D<Real>(1,0,0), particles[1]->velocity);
 }
 
 std::vector<Particle*> CollisionTestHelper::getMultipleParticlesAllCollide() {
@@ -70,9 +70,9 @@ void CollisionTestHelper::testMultipleParticlesAllCollide(std::vector<Particle*>
     std::sort(particles.begin(), particles.end(), CollisionTestHelper::sortParticles);
     EXPECT_EQ(2, particles.size());
     EXPECT_EQ(3, particles[1]->mass);
-    EXPECT_FLOAT_EQ(1.4422495703074083, particles[1]->radius);
-    EXPECT_EQ(Vector3D<float>(2,1/3.0,0), particles[1]->position);
-    EXPECT_EQ(Vector3D<float>(1,1/3.0,0), particles[1]->velocity);
+    EXPECT_DOUBLE_EQ(1.4422495703074083, particles[1]->radius);
+    EXPECT_EQ(Vector3D<Real>(2,1/3.0,0), particles[1]->position);
+    EXPECT_EQ(Vector3D<Real>(1,1/3.0,0), particles[1]->velocity);
 }
 
 std::vector<Particle*> CollisionTestHelper::getMultipleParticlesPartialCollide() {
@@ -91,9 +91,9 @@ void CollisionTestHelper::testMultipleParticlesPartialCollide(std::vector<Partic
     EXPECT_EQ(1, particles[0]->mass);
     EXPECT_EQ(1, particles[1]->mass);
     EXPECT_EQ(3, particles[2]->mass);
-    EXPECT_FLOAT_EQ(1.4422495703074083, particles[2]->radius);
-    EXPECT_EQ(Vector3D<float>(0.5,0.0,0), particles[2]->position);
-    EXPECT_EQ(Vector3D<float>(1,1/3.0,0), particles[2]->velocity);
+    EXPECT_DOUBLE_EQ(1.4422495703074083, particles[2]->radius);
+    EXPECT_EQ(Vector3D<Real>(0.5,0.0,0), particles[2]->position);
+    EXPECT_EQ(Vector3D<Real>(1,1/3.0,0), particles[2]->velocity);
 }
 
 std::vector<Particle*> CollisionTestHelper::getMultipleParticlesIndependentlyCollide() {
@@ -112,7 +112,7 @@ void CollisionTestHelper::testMultipleParticlesIndependentlyCollide(std::vector<
     EXPECT_EQ(2, particles[1]->mass);
     EXPECT_EQ(2.5, particles[2]->mass);
     EXPECT_EQ(1, particles[0]->mass);
-    EXPECT_FLOAT_EQ(1.2599210498948732, particles[1]->radius);
-    EXPECT_EQ(Vector3D<float>(0.25,0.0,0), particles[1]->position);
-    EXPECT_EQ(Vector3D<float>(1,0,0), particles[1]->velocity);
+    EXPECT_DOUBLE_EQ(1.2599210498948732, particles[1]->radius);
+    EXPECT_EQ(Vector3D<Real>(0.25,0.0,0), particles[1]->position);
+    EXPECT_EQ(Vector3D<Real>(1,0,0), particles[1]->velocity);
 }

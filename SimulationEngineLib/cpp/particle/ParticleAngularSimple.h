@@ -1,18 +1,19 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "shared/particle/Particle.cuh"
 
 class ParticleAngularSimple: public Particle {
 	public:
-		Vector3D<float>  angle;
-		Vector3D<float>  angularVelocity;
+		Vector3D<Real>  angle;
+		Vector3D<Real>  angularVelocity;
 		
 		ParticleAngularSimple(
-			float  mass,
-			float radius,
-			Vector3D<float>  position,
-			Vector3D<float>  velocity,
-			Vector3D<float>  angle,
-			Vector3D<float>  angularVelocity
+			Real  mass,
+			Real radius,
+			Vector3D<Real>  position,
+			Vector3D<Real>  velocity,
+			Vector3D<Real>  angle,
+			Vector3D<Real>  angularVelocity
 		) : Particle(mass, radius, position, velocity), 
 			angle(angle),
 			angularVelocity(angularVelocity) {}

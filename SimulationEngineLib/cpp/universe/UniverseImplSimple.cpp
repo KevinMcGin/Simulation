@@ -47,7 +47,7 @@ UniverseImplSimple::UniverseImplSimple(
 	std::shared_ptr<SimulationInput> input, 
 	std::shared_ptr<SimulationOutput> output, 
 	unsigned long endTime,  
-	float deltaTime,
+	Real deltaTime,
 	Usage useGpu,
 	const LawConfig& lawConfig
 ) : UniverseImpl(

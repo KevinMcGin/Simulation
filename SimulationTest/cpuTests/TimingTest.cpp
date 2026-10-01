@@ -9,11 +9,11 @@ TEST(TimingTest, TimeInSeconds) {
 }
 
 TEST(TimingTest, TimeInMins) {
-    std::string time = Timing::getTimeWithUnit(3599.f);
+    std::string time = Timing::getTimeWithUnit(3599.0);
 	EXPECT_EQ("mins", time.substr(time.size() - 4));
 }
 
 TEST(TimingTest, TimeInHrs) {
-    std::string time = Timing::getTimeWithUnit(3600.f);
+    std::string time = Timing::getTimeWithUnit(3600.0);
 	EXPECT_EQ("hrs", time.substr(time.size() - 3));
 }

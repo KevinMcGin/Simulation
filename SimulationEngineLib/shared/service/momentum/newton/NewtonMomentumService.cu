@@ -3,11 +3,11 @@
 #if defined(USE_GPU)
 __device__ __host__
 #endif 
-Vector3D<float> NewtonMomentumService::getVelocityPlusAcceleration(
-    float mass,
-    Vector3D<float> acceleration, 
-    float deltaTime,
-    Vector3D<float> velocity
+Vector3D<Real> NewtonMomentumService::getVelocityPlusAcceleration(
+    Real mass,
+    Vector3D<Real> acceleration, 
+    Real deltaTime,
+    Vector3D<Real> velocity
 ) {
     return velocity + acceleration * deltaTime;
 }
@@ -15,11 +15,11 @@ Vector3D<float> NewtonMomentumService::getVelocityPlusAcceleration(
 #if defined(USE_GPU)
 __device__ __host__
 #endif 
-Vector3D<float> NewtonMomentumService::mergeVelocity(
-    float mass1, 
-    Vector3D<float> velocity1,
-    float mass2, 
-    Vector3D<float> velocity2
+Vector3D<Real> NewtonMomentumService::mergeVelocity(
+    Real mass1, 
+    Vector3D<Real> velocity1,
+    Real mass2, 
+    Vector3D<Real> velocity2
 ) {
     return (
         getMomentum(mass1, velocity1) + 
@@ -31,9 +31,9 @@ Vector3D<float> NewtonMomentumService::mergeVelocity(
 #if defined(USE_GPU)
 __device__ __host__
 #endif 
-Vector3D<float> NewtonMomentumService::getMomentum(
-    float mass, 
-    Vector3D<float> velocity
+Vector3D<Real> NewtonMomentumService::getMomentum(
+    Real mass, 
+    Vector3D<Real> velocity
 ) {
     return mass * velocity;
 }

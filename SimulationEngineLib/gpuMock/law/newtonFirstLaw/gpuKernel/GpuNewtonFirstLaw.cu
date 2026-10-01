@@ -7,6 +7,6 @@ GpuNewtonFirstLaw::GpuNewtonFirstLaw() : GpuLaw("NewtonFirstLaw") { }
 void GpuNewtonFirstLaw::run(
     Particle** particles, 
     int particleCount,
-	float deltaTime
+	Real deltaTime
 ) { gpuMockUnreachable("GpuNewtonFirstLaw::run"); }
  

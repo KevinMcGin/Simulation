@@ -1,17 +1,18 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/distribution/Distribution.h"
 
 class DistributionSimple: public Distribution {
 public:
-	DistributionSimple(float mean, float delta) : Distribution(),
+	DistributionSimple(Real mean, Real delta) : Distribution(),
 		mean(mean),
 		delta(delta) {};
 
 
-	float getValue() override;
+	Real getValue() override;
 
 private:
-	const float mean;
-	const float delta;
+	const Real mean;
+	const Real delta;
 
 };

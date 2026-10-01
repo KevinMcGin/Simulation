@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/law/CpuLaw.h"
 
 #include <vector>
@@ -10,6 +11,6 @@ public:
 	CpuNewtonFirstLaw();
 	virtual void run(
 		std::vector<Particle*>& particles,
-		float deltaTime
+		Real deltaTime
 	);
 };

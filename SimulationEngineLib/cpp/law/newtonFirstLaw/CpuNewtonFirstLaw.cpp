@@ -5,7 +5,7 @@ CpuNewtonFirstLaw::CpuNewtonFirstLaw() : CpuLaw() { }
 
 void CpuNewtonFirstLaw::run(
 	std::vector<Particle*>& particles,
-	float deltaTime
+	Real deltaTime
 ) {
 	for (const auto& p : particles)
 		p->advance(deltaTime);

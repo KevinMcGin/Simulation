@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "shared/particle/Particle.cuh"
 
 #include <vector>
@@ -11,6 +12,6 @@ public:
 	virtual ~CpuLaw() = default;
 	virtual void run(
 		std::vector<Particle*>& particles,
-		float deltaTime = 1.0f
+		Real deltaTime = 1.0
 	) = 0;
 };

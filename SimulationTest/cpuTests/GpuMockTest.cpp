@@ -50,20 +50,20 @@ TEST(GpuMockTest, GpuLawsThrow) {
 	Particle** particles = nullptr;
 
 	GpuNewtonFirstLaw newtonFirstLaw = GpuNewtonFirstLaw();
-	EXPECT_THROW(newtonFirstLaw.run(particles, 0, 1.0f), std::runtime_error);
+	EXPECT_THROW(newtonFirstLaw.run(particles, 0, 1.0), std::runtime_error);
 
-	GpuNewtonGravity newtonGravity = GpuNewtonGravity(1.0f, momentumService);
-	EXPECT_THROW(newtonGravity.run(particles, 0, 1.0f), std::runtime_error);
+	GpuNewtonGravity newtonGravity = GpuNewtonGravity(1.0, momentumService);
+	EXPECT_THROW(newtonGravity.run(particles, 0, 1.0), std::runtime_error);
 
 	GpuCollision collision = GpuCollision(nullptr, nullptr, momentumService);
-	EXPECT_THROW(collision.run(particles, 0, 1.0f), std::runtime_error);
+	EXPECT_THROW(collision.run(particles, 0, 1.0), std::runtime_error);
 }
 
 // Building the laws is not itself the misconfiguration: a CPU-only run
 // still constructs a GpuLaw for every Law it holds, and never runs them.
 TEST(GpuMockTest, ConstructingAGpuLawDoesNotThrow) {
 	EXPECT_NO_THROW(GpuNewtonFirstLaw());
-	EXPECT_NO_THROW(GpuNewtonGravity(1.0f, std::make_shared<NewtonMomentumService>()));
+	EXPECT_NO_THROW(GpuNewtonGravity(1.0, std::make_shared<NewtonMomentumService>()));
 }
 
 #endif

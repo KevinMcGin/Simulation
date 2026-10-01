@@ -55,7 +55,7 @@ void CudaWithError::peekAtLastError(std::string message) {
 unsigned long long CudaWithError::getFreeGpuMemory() {
     size_t free_t, total_t;
     cudaMemGetInfo(&free_t, &total_t);
-    float factor = 1.0485760;
+    Real factor = 1.0485760;
     auto freeMemory = (unsigned long long)(free_t / factor) - CudaWithError::minMemoryRemaining;
     return std::min(freeMemory, maxMemoryPerEvent); 
 }

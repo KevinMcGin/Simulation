@@ -11,19 +11,19 @@ TEST(UniverseImplSimpleTestGpu, UniverseRunsGpu) {
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputNothing>();
 	const unsigned int stepCount = 1;
-	const float deltaTime = 1;
+	const Real deltaTime = 1;
 	UniverseImplSimple universe(input, output, stepCount, deltaTime, TRUE);
 	universe.run();
-	Vector3D<float> position1 = universe.particles.front()->position;
-	Vector3D<float> position2 = universe.particles.back()->position;
-	EXPECT_EQ(Vector3D<float>(2, 3.0830178687768495e-11, 0), position1);
-	EXPECT_EQ(Vector3D<float>(6.5754225794713989e-14, 11, 0), position2);
+	Vector3D<Real> position1 = universe.particles.front()->position;
+	Vector3D<Real> position2 = universe.particles.back()->position;
+	EXPECT_EQ(Vector3D<Real>(2, 3.0830178687768495e-11, 0), position1);
+	EXPECT_EQ(Vector3D<Real>(6.5754225794713989e-14, 11, 0), position2);
 }
 
 TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuNewtonMomentum) {
 	auto einsteinMomentum = false;
 	const unsigned int stepCount = 2;
-	const float deltaTime = 2;
+	const Real deltaTime = 2;
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE, einsteinMomentum);
@@ -36,7 +36,7 @@ TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuNewtonMomentum) {
 TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuEinsteinMomentum) {
 	auto einsteinMomentum = true;
 	const unsigned int stepCount = 2;
-	const float deltaTime = 2;
+	const Real deltaTime = 2;
 	auto input = std::make_shared<SimulationInputSimple>();
 	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE, einsteinMomentum);
@@ -49,7 +49,7 @@ TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuEinsteinMomentum) {
 TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuLargeVelocitiesNewtonMomentum) {
 	auto einsteinMomentum = false;
 	const unsigned int stepCount = 2;
-	const float deltaTime = 2;
+	const Real deltaTime = 2;
 	auto input = std::make_shared<SimulationInputSimpleLargeVelocities>();
 	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE, einsteinMomentum);
@@ -62,7 +62,7 @@ TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuLargeVelocitiesNewtonMomentum)
 TEST(UniverseImplSimpleTestGpu, UniverseCpuLikeGpuLargeVelocitiesEinsteinMomentum) {
 	auto einsteinMomentum = true;
 	const unsigned int stepCount = 2;
-	const float deltaTime = 2;
+	const Real deltaTime = 2;
 	auto input = std::make_shared<SimulationInputSimpleLargeVelocities>();
 	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universeCpu(input, output, stepCount, deltaTime, FALSE, einsteinMomentum);

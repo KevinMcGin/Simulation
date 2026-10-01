@@ -26,11 +26,11 @@ void CollisionResolverCoalesce::resolve(
 #if defined(USE_GPU)
    __device__ __host__
 #endif
-Vector3D<float> CollisionResolverCoalesce::getCoalesced(
-	float mass1, 
-	float mass2, 
-	Vector3D<float> vec1, 
-	Vector3D<float> vec2
+Vector3D<Real> CollisionResolverCoalesce::getCoalesced(
+	Real mass1, 
+	Real mass2, 
+	Vector3D<Real> vec1, 
+	Vector3D<Real> vec2
 ) {
 	return (mass1 * vec1 + mass2 * vec2) / (mass1 + mass2);
 }
@@ -38,7 +38,7 @@ Vector3D<float> CollisionResolverCoalesce::getCoalesced(
 #if defined(USE_GPU)
    __device__ __host__
 #endif
-Vector3D<float> CollisionResolverCoalesce::getCoalescedVelocity(
+Vector3D<Real> CollisionResolverCoalesce::getCoalescedVelocity(
 	Particle* p1, 
 	Particle* p2,
 	MomentumService* momentumService

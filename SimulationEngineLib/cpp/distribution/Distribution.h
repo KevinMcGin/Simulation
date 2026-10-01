@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include <stdlib.h>   
 #include <time.h>
 
@@ -7,8 +8,8 @@ public:
 	Distribution() { srand( (unsigned int)time(nullptr) ); };
 	virtual ~Distribution() = default;
 
-	virtual float getValue() = 0;
+	virtual Real getValue() = 0;
 	
-	static float random(float mean, float delta);
-	static float random(float delta);
+	static Real random(Real mean, Real delta);
+	static Real random(Real delta);
 };

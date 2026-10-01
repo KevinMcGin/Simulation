@@ -10,7 +10,7 @@
 
 NewtonGravity::NewtonGravity(
 	std::shared_ptr<MomentumService> momentumService,
-	float G
+	Real G
 ) : Law(
 	"NewtonGravity",
 	std::make_unique<CpuNewtonGravity>(

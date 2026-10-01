@@ -7,7 +7,7 @@ __global__
 static void advanceParticles(
 	Particle** particles,
 	int particleCount,
-	float deltaTime
+	Real deltaTime
 ) {
 	int particleIndex = threadIdx.x + blockIdx.x*blockDim.x;
 	if (particleIndex < particleCount) { 
@@ -18,7 +18,7 @@ static void advanceParticles(
 void GpuNewtonFirstLaw::run(
 	Particle** particles, 
 	int particleCount,
-	float deltaTime
+	Real deltaTime
 ) {
 	cudaWithError->runKernel("advanceParticles", [&](unsigned int kernelSize) {
 		advanceParticles <<<1 + particleCount/kernelSize, kernelSize>>> (

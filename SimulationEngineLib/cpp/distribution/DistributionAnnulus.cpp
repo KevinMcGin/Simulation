@@ -7,10 +7,10 @@
 #include <limits>
 
 DistributionAnnulus::DistributionAnnulus(
-	Vector3D<float> mean,
-	float innerRadius,
-	float outerRadius,
-	float bias
+	Vector3D<Real> mean,
+	Real innerRadius,
+	Real outerRadius,
+	Real bias
 ) : Distribution3D(),
 	mean(mean),
 	// An inner radius past the outer one describes no ring at all; clamped
@@ -18,7 +18,7 @@ DistributionAnnulus::DistributionAnnulus(
 	// radius instead of sampling an inverted range forever.
 	innerRadius(std::min(innerRadius, outerRadius)),
 	outerRadius(outerRadius),
-	bias(std::clamp(bias, 0.0f, 1.0f))
+	bias(std::clamp(bias, 0.0, 1.0))
 {
 }
 
@@ -33,24 +33,24 @@ DistributionAnnulus::DistributionAnnulus(
 // infinity is returned as itself rather than arrived at by dividing by
 // zero, and getValue reads it rather than feeding it to pow — an optimiser
 // told it may assume finite arithmetic is free to get that wrong.
-float DistributionAnnulus::biasExponent(float bias) {
-	const float clamped = std::clamp(bias, 0.0f, 1.0f);
-	if (clamped == 0.0f) {
-		return std::numeric_limits<float>::infinity();
+Real DistributionAnnulus::biasExponent(Real bias) {
+	const Real clamped = std::clamp(bias, 0.0, 1.0);
+	if (clamped == 0.0) {
+		return std::numeric_limits<Real>::infinity();
 	}
-	return (1.0f - clamped) / clamped;
+	return (1.0 - clamped) / clamped;
 }
 
-Vector3D<float> DistributionAnnulus::getValue() {
-	const float theta = Distribution::random(M_PI, M_PI);
-	const float unitRadius = Distribution::random(1.0f);
-	const float exponent = biasExponent(bias);
+Vector3D<Real> DistributionAnnulus::getValue() {
+	const Real theta = Distribution::random(M_PI, M_PI);
+	const Real unitRadius = Distribution::random(1.0);
+	const Real exponent = biasExponent(bias);
 	// An infinite exponent is the whole ring collapsing onto its inner edge.
 	// Taken as a case of its own so that it doesn't depend on pow answering
 	// an infinite power the way IEEE says it should — including for the
 	// unitRadius of exactly 1 the sampler can return, where it wouldn't.
-	const float acrossRing = std::isinf(exponent) ? 0.0f : std::pow(unitRadius, exponent);
-	const float magnitude = innerRadius + (outerRadius - innerRadius) * acrossRing;
+	const Real acrossRing = std::isinf(exponent) ? 0.0 : std::pow(unitRadius, exponent);
+	const Real magnitude = innerRadius + (outerRadius - innerRadius) * acrossRing;
 
 	return {
 		mean.x + magnitude * std::cos(theta),

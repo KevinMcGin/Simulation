@@ -8,23 +8,23 @@ TEST(ParticlesHelperTest, removeDeletedParticles) {
         new ParticleSimple(
             1,
             1,
-            { -1.0f, -1.0f, -1.0f },
-            { 1.0f, 1.0f, 1.0f }
+            { -1.0, -1.0, -1.0 },
+            { 1.0, 1.0, 1.0 }
         ),
         new ParticleSimple(
             10,
             10,
-            { -10.0f, -10.0f, -10.0f },
-            { 10.0f, 10.0f, 10.0f }
+            { -10.0, -10.0, -10.0 },
+            { 10.0, 10.0, 10.0 }
         )
     };
     particles.front()->deleted = true;
     ParticlesHelper::removeDeletedParticles(particles);
     EXPECT_EQ(1, particles.size());
     auto p = particles.front();
-    EXPECT_FLOAT_EQ(10, p->mass);
-    EXPECT_FLOAT_EQ(10, p->radius);
-    EXPECT_EQ(Vector3D<float>(-10.0f, -10.0f, -10.0f), p->position);
-    EXPECT_EQ(Vector3D<float>(10.0f, 10.0f, 10.0f), p->velocity);
+    EXPECT_DOUBLE_EQ(10, p->mass);
+    EXPECT_DOUBLE_EQ(10, p->radius);
+    EXPECT_EQ(Vector3D<Real>(-10.0, -10.0, -10.0), p->position);
+    EXPECT_EQ(Vector3D<Real>(10.0, 10.0, 10.0), p->velocity);
     ParticleTestHelper::deleteParticles(particles);
 }

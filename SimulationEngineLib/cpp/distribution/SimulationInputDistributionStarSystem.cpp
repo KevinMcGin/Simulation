@@ -12,7 +12,7 @@ SimulationInputDistributionStarSystem::SimulationInputDistributionStarSystem(
 ) : config(config) {}
 
 std::unique_ptr<SimulationInputRandomSimple> SimulationInputDistributionStarSystem::getStarSystemDistribution() {
-    Vector3D<float> meanPosition = { 0, 0, 0 };
+    Vector3D<Real> meanPosition = { 0, 0, 0 };
 	// The spreads arrive as fractions of the mean rather than absolute
 	// amounts, so a disk stays as varied as it was when its mean mass or
 	// density is changed by orders of magnitude.
@@ -23,7 +23,7 @@ std::unique_ptr<SimulationInputRandomSimple> SimulationInputDistributionStarSyst
 	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(std::make_shared<DistributionValue>(config.starMass), starDensity);
 	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
-	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D<float>(0, 0, 0), 0);
+	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D<Real>(0, 0, 0), 0);
 	auto innerRadiusDistribution = std::make_shared<DistributionValue>(config.innerRadius);
 	auto outerRadiusDistribution = std::make_shared<DistributionValue>(config.outerRadius);
 	auto eccentricityDistribution = std::make_shared<DistributionValue>(1);

@@ -1,4 +1,5 @@
 #pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/constant/PhysicalConstants.h"
 
 #include <string>
@@ -28,7 +29,7 @@ struct LawConfig {
 	bool isNewtonGravityEnabled = true;
 	bool isNewtonFirstLawEnabled = true;
 	MomentumModel momentum = MOMENTUM_NEWTON;
-	float gravitationalConstant = (float)PhysicalConstants::GRAVITATIONAL_CONSTANT;
+	Real gravitationalConstant = (Real)PhysicalConstants::GRAVITATIONAL_CONSTANT;
 
 	// The law names setLaws accepts, in the order the laws run.
 	static const std::vector<std::string>& lawNames();

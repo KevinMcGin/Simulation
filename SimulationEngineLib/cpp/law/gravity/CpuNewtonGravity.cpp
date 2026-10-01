@@ -6,21 +6,21 @@
 #include <cmath>
 
 CpuNewtonGravity::CpuNewtonGravity(
-	float G,
+	Real G,
 	std::shared_ptr<MomentumService> momentumService
 ) : CpuLaw(), G(G), momentumService(momentumService) { }
 
 void runOnParticles(
 	Particle* p1,
 	Particle* p2, 
-	float G, 
-	float deltaTime,
+	Real G, 
+	Real deltaTime,
 	MomentumService* momentumService
 );
 
 void CpuNewtonGravity::run(
 	std::vector<Particle*>& particles,
-	float deltaTime
+	Real deltaTime
 ) {
 	for (auto it1 = particles.begin(); it1 != particles.end(); it1++) {
 		auto p1 = *it1;
@@ -40,11 +40,11 @@ void CpuNewtonGravity::run(
 void runOnParticles(
 	Particle* p1, 
 	Particle* p2, 
-	float G, 
-	float deltaTime,
+	Real G, 
+	Real deltaTime,
 	MomentumService* momentumService
 ) {	
-	Vector3D<float> radiusComponent = getRadiusComponent(p1, p2, G);
+	Vector3D<Real> radiusComponent = getRadiusComponent(p1, p2, G);
 	runOnParticle(
 		p1, 
 		-getAcceleration(p2->mass, radiusComponent), 

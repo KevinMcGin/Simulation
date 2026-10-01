@@ -1,4 +1,5 @@
 #pragma once
+#include "shared/precision/Real.cuh"
 #include <memory>
 
 #include "cpp/distribution/ParticleDistribution.h"
@@ -8,10 +9,10 @@ class ParticleDistributionDisk : public ParticleDistribution {
 public:
 	ParticleDistributionDisk(
 		std::shared_ptr<DistributionDensity> densityDistribution,
-		float centralMass,
-		Vector3D<float> meanPosition,
-		float thetaPosition,
-		float phiPosition,
+		Real centralMass,
+		Vector3D<Real> meanPosition,
+		Real thetaPosition,
+		Real phiPosition,
     	bool clockwise,
 		std::shared_ptr<Distribution> innerRadius,
 		std::shared_ptr<Distribution> outerRadius, 
@@ -19,8 +20,8 @@ public:
 		// std::shared_ptr<Distribution3D> angularVelocityDistribution,
 		// Where between the inner and outer radius the particles gather, on
 		// a 0..1 scale. 0.5 spreads them evenly across the disk.
-		float positionBias = 0.5f,
-		float G = PhysicalConstants::GRAVITATIONAL_CONSTANT
+		Real positionBias = 0.5,
+		Real G = PhysicalConstants::GRAVITATIONAL_CONSTANT
 	);
 	~ParticleDistributionDisk();
 
@@ -28,15 +29,15 @@ public:
 
 private:
 	std::shared_ptr<DistributionDensity> densityDistribution;
-	float centralMass;
-	Vector3D<float> meanPosition;
-	float thetaPosition;
-	float phiPosition;
+	Real centralMass;
+	Vector3D<Real> meanPosition;
+	Real thetaPosition;
+	Real phiPosition;
     bool clockwise;
 	std::shared_ptr<Distribution> innerRadius;
 	std::shared_ptr<Distribution> outerRadius; 
 	std::shared_ptr<Distribution> eccentricity;
 	// std::shared_ptr<Distribution3D> angularVelocityDistribution;
-	float positionBias;
-	float G;
+	Real positionBias;
+	Real G;
 };

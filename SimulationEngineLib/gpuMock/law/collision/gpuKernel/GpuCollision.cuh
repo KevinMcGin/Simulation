@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/law/GpuLaw.h"
 #include "shared/law/collision/detector/CollisionDetector.cuh"
 #include "shared/law/collision/resolver/CollisionResolver.cuh"
@@ -18,6 +19,6 @@ public:
 	void run(
 		Particle** particles, 
 		int particleCount,
-		float deltaTime
+		Real deltaTime
 	) override;
 };

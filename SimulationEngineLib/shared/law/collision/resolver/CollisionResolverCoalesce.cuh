@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "shared/law/collision/resolver/CollisionResolver.cuh"
 
 #include <vector>
@@ -26,8 +27,8 @@ private:
 	#if defined(USE_GPU)
 	__device__ __host__
 	#endif
-	Vector3D<float> getCoalesced(float mass1, float mass2, Vector3D<float> vec1, Vector3D<float> vec2);
-	Vector3D<float> getCoalescedVelocity(
+	Vector3D<Real> getCoalesced(Real mass1, Real mass2, Vector3D<Real> vec1, Vector3D<Real> vec2);
+	Vector3D<Real> getCoalescedVelocity(
 		Particle* p1, Particle* p2, MomentumService* momentumService
 	);
 

@@ -3,8 +3,8 @@
 #if defined(USE_GPU)
 __device__ __host__
 #endif
-float EinsteinMomentumService::getGamma(
-    Vector3D<float> velocity
+Real EinsteinMomentumService::getGamma(
+    Vector3D<Real> velocity
 ) {
     return 1 / 
         sqrt(
@@ -15,9 +15,9 @@ float EinsteinMomentumService::getGamma(
 #if defined(USE_GPU)
 __device__ __host__
 #endif
-Vector3D<float> EinsteinMomentumService::getVelocityFromMomentum(
-    float mass,
-    Vector3D<float> momentum
+Vector3D<Real> EinsteinMomentumService::getVelocityFromMomentum(
+    Real mass,
+    Vector3D<Real> momentum
 ) {
     return momentum / (
         sqrt(
@@ -29,11 +29,11 @@ Vector3D<float> EinsteinMomentumService::getVelocityFromMomentum(
 #if defined(USE_GPU)
 __device__ __host__
 #endif 
-Vector3D<float> EinsteinMomentumService::getVelocityPlusAcceleration(
-    float mass,
-    Vector3D<float> acceleration, 
-    float deltaTime,
-    Vector3D<float> velocity
+Vector3D<Real> EinsteinMomentumService::getVelocityPlusAcceleration(
+    Real mass,
+    Vector3D<Real> acceleration, 
+    Real deltaTime,
+    Vector3D<Real> velocity
 ) {
     auto classicalVelocityChange = acceleration * deltaTime;
     auto classicalVelocityChangeMagnitudeSquared = classicalVelocityChange.magnitudeSquared();
@@ -41,8 +41,8 @@ Vector3D<float> EinsteinMomentumService::getVelocityPlusAcceleration(
     // Condition for completeness sake. 
     // Condition rarely met. But if met, would otherwise create imaginary numbers in the gamma calculation.
     if (classicalVelocityChangeMagnitudeSquared > speedLightSquared) {
-        //large offset is due to float errors
-        float belowSpeedOfLight = (float)speedLight - 1000000.0f;
+        //large offset is due to Real errors
+        Real belowSpeedOfLight = (Real)speedLight - 1000000.0;
         classicalVelocityChange = belowSpeedOfLight * classicalVelocityChange.unit();
         massMomentumChange *= classicalVelocityChangeMagnitudeSquared / belowSpeedOfLight;
     }
@@ -57,11 +57,11 @@ Vector3D<float> EinsteinMomentumService::getVelocityPlusAcceleration(
 #if defined(USE_GPU)
 __device__ __host__
 #endif 
-Vector3D<float> EinsteinMomentumService::mergeVelocity(
-    float mass1, 
-    Vector3D<float> velocity1,
-    float mass2, 
-    Vector3D<float> velocity2
+Vector3D<Real> EinsteinMomentumService::mergeVelocity(
+    Real mass1, 
+    Vector3D<Real> velocity1,
+    Real mass2, 
+    Vector3D<Real> velocity2
 ) {
     auto p =  (
         getMomentum(mass1, velocity1) + 
@@ -74,9 +74,9 @@ Vector3D<float> EinsteinMomentumService::mergeVelocity(
 #if defined(USE_GPU)
 __device__ __host__
 #endif 
-Vector3D<float> EinsteinMomentumService::getMomentum(
-    float mass, 
-    Vector3D<float> velocity
+Vector3D<Real> EinsteinMomentumService::getMomentum(
+    Real mass, 
+    Vector3D<Real> velocity
 ) {
     return getGamma(velocity) * NewtonMomentumService::getMomentum(mass, velocity);
 }

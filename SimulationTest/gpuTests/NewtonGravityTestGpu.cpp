@@ -19,15 +19,15 @@ TEST(NewtonGravityTest, ManyParticlesAccelerateGpu) {
 
 	auto p11 = particles[2 * 1000];
 	auto p12 = particles[29 * 1000];
-	EXPECT_EQ(Vector3D<float>(-2000, 4000, -4000), p11->velocity);
-	EXPECT_EQ(Vector3D<float>(-29000, 58000, -58000), p12->velocity);
+	EXPECT_EQ(Vector3D<Real>(-2000, 4000, -4000), p11->velocity);
+	EXPECT_EQ(Vector3D<Real>(-29000, 58000, -58000), p12->velocity);
 
     LawHelper::runGpuLaw(law, particles);
 
 	auto p21 = particles[2 * 1000];
 	auto p22 = particles[29 * 1000];
-	EXPECT_EQ(Vector3D<float>(-1278.722412109375, 3278.724853515625, -3278.724853515625), p21->velocity);
-	EXPECT_EQ(Vector3D<float>(-29020.396484375, 58019.4453125, -58019.4453125), p22->velocity);
+	EXPECT_EQ(Vector3D<Real>(-1278.722412109375, 3278.724853515625, -3278.724853515625), p21->velocity);
+	EXPECT_EQ(Vector3D<Real>(-29020.396484375, 58019.4453125, -58019.4453125), p22->velocity);
 }
 
 TEST(NewtonGravityTest, ParticlesAccelerateGpuLikeCpuSimple) {

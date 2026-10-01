@@ -5,6 +5,6 @@
 #include <sstream>
 #include <string>
 
-float ParticleInputField::parseValue(std::string value) {
-    return std::stof(value);
+Real ParticleInputField::parseValue(std::string value) {
+    return std::stod(value);
 }

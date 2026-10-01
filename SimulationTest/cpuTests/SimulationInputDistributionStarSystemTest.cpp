@@ -4,12 +4,12 @@
 
 TEST(SimulationInputDistributionStarSystemTest, getStarSystemDistribution) {
 	StarSystemConfig config;
-	config.meanMass = 1.0f;
-	config.meanDensity = 1.0f;
-	config.starMass = 10.0f;
-	config.starDensity = 2.0f;
-	config.diskCentralMass = 10.0f;
-	config.outerRadius = 12.0f;
+	config.meanMass = 1.0;
+	config.meanDensity = 1.0;
+	config.starMass = 10.0;
+	config.starDensity = 2.0;
+	config.diskCentralMass = 10.0;
+	config.outerRadius = 12.0;
 	config.particleCount = 10L;
 	auto distributionBuilder = SimulationInputDistributionStarSystem(config);
 	auto particles = distributionBuilder.getStarSystemDistribution()
@@ -40,23 +40,23 @@ TEST(SimulationInputDistributionStarSystemTest, defaultsProduceAStarSystem) {
 TEST(SimulationInputDistributionStarSystemTest, disksStayWithinTheirRadii) {
 	StarSystemConfig config;
 	config.particleCount = 50L;
-	config.innerRadius = 4.0f;
-	config.outerRadius = 6.0f;
+	config.innerRadius = 4.0;
+	config.outerRadius = 6.0;
 	auto particles = SimulationInputDistributionStarSystem(config)
 		.getStarSystemDistribution()
 		->input();
 
 	unsigned int atCentre = 0;
 	for (const auto& particle : particles) {
-		const float radius = particle->position.magnitude();
+		const Real radius = particle->position.magnitude();
 		if (radius == 0) {
 			atCentre++;
 			continue;
 		}
 		// A hair of slack either side: the radius is rebuilt out of a sine
 		// and a cosine, so an edge sample lands a rounding error outside.
-		EXPECT_GE(radius, 3.99f);
-		EXPECT_LE(radius, 6.01f);
+		EXPECT_GE(radius, 3.99);
+		EXPECT_LE(radius, 6.01);
 	}
 	EXPECT_EQ(1, atCentre) << "the star, and only the star, sits at the centre";
 	ParticleTestHelper::deleteParticles(particles);
@@ -65,21 +65,21 @@ TEST(SimulationInputDistributionStarSystemTest, disksStayWithinTheirRadii) {
 // The star's density is its own: at the same mass, a denser star is a
 // smaller one.
 TEST(SimulationInputDistributionStarSystemTest, starDensityIsSeparateFromTheDisk) {
-	auto starRadius = [](float starDensity) {
+	auto starRadius = [](Real starDensity) {
 		StarSystemConfig config;
 		config.particleCount = 2L;
-		config.starMass = 100.0f;
+		config.starMass = 100.0;
 		config.starDensity = starDensity;
 		auto particles = SimulationInputDistributionStarSystem(config)
 			.getStarSystemDistribution()
 			->input();
 		// The star is the last particle: the disk is generated first.
-		const float radius = particles.back()->radius;
+		const Real radius = particles.back()->radius;
 		ParticleTestHelper::deleteParticles(particles);
 		return radius;
 	};
 
-	EXPECT_LT(starRadius(8000.0f), starRadius(1000.0f));
+	EXPECT_LT(starRadius(8000.0), starRadius(1000.0));
 }
 
 // particleCount is unsigned, so a system of none used to underflow into a
@@ -101,7 +101,7 @@ TEST(SimulationInputDistributionStarSystemTest, zeroParticlesProducesNothing) {
 TEST(SimulationInputDistributionStarSystemTest, zeroStarMassLeavesOutTheStar) {
 	StarSystemConfig config;
 	config.particleCount = 5L;
-	config.starMass = 0.0f;
+	config.starMass = 0.0;
 	auto particles = SimulationInputDistributionStarSystem(config)
 		.getStarSystemDistribution()
 		->input();

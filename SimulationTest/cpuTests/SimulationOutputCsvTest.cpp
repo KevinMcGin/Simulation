@@ -15,7 +15,7 @@ TEST(SimulationOutputCsvTest, SimulationOutputtedToCsv) {
 	ParticleTestHelper::deleteParticles(particles);
 }
 
-// The values here are all exactly representable as a float, so the only
+// The values here are all exactly representable as a Real, so the only
 // difference between what goes in and what comes out is the padding the
 // fixed precision would otherwise add.
 TEST(SimulationOutputCsvTest, TrailingZerosAreTrimmed) {

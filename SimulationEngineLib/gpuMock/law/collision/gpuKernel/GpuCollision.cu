@@ -13,5 +13,5 @@ GpuCollision::~GpuCollision() {}
 void GpuCollision::run(
 	Particle** particles, 
 	int particleCount,
-	float deltaTime
+	Real deltaTime
 ) { gpuMockUnreachable("GpuCollision::run"); }

@@ -2,7 +2,7 @@
 #include "gpuMock/gpuHelper/GpuMockUnreachable.cuh"
 
 GpuNewtonGravity::GpuNewtonGravity(
-    float G,
+    Real G,
     std::shared_ptr<MomentumService> momentumService
 ) : GpuLaw("GpuNewtonGravity") { }
 
@@ -10,6 +10,6 @@ GpuNewtonGravity::GpuNewtonGravity(
 void GpuNewtonGravity::run(
     Particle** particles, 
     int particleCount,
-	float deltaTime
+	Real deltaTime
 ) { gpuMockUnreachable("GpuNewtonGravity::run"); }
 

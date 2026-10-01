@@ -10,7 +10,7 @@
 #include <algorithm>
 
 template <typename T>
-bool sortVector(T const &lhs, T const &rhs, std::vector<float*> compareLhs, std::vector<float*> compareRhs) {
+bool sortVector(T const &lhs, T const &rhs, std::vector<Real*> compareLhs, std::vector<Real*> compareRhs) {
 	if (*(compareLhs.back()) < *(compareRhs.back())) {
       	return true; 
 	} else if (*(compareRhs.back()) < *(compareLhs.back())) {
@@ -26,7 +26,7 @@ bool sortVector(T const &lhs, T const &rhs, std::vector<float*> compareLhs, std:
 }
 
 bool sortParticles(Particle* const &lhs, Particle* const &rhs) {
-	auto compareLhs = std::vector<float*> {
+	auto compareLhs = std::vector<Real*> {
 		&(lhs->velocity.z),
 		&(lhs->velocity.y),
 		&(lhs->velocity.x),
@@ -36,7 +36,7 @@ bool sortParticles(Particle* const &lhs, Particle* const &rhs) {
 		&(lhs->radius),
 		&(lhs->mass)
 	};
-	auto compareRhs = std::vector<float*> {
+	auto compareRhs = std::vector<Real*> {
 		&(rhs->velocity.z),
 		&(rhs->velocity.y),
 		&(rhs->velocity.x),

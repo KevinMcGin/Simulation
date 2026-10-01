@@ -1,4 +1,5 @@
 #pragma once
+#include "shared/precision/Real.cuh"
 #define _USE_MATH_DEFINES
 #include <memory>
 
@@ -10,7 +11,7 @@ class DistributionMassDensity :
 {
 public:
 	DistributionMassDensity(std::shared_ptr<Distribution> massDistribution, std::shared_ptr<Distribution> densityDistribution);
-	void getMassRadius(float& mass, float& radius) override;
+	void getMassRadius(Real& mass, Real& radius) override;
 
 private:
 	std::shared_ptr<Distribution> massDistribution;

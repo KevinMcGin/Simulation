@@ -10,7 +10,7 @@ UniverseImpl::UniverseImpl(
 	std::vector<std::shared_ptr<Law>> laws, 
 	std::shared_ptr<SimulationInput> input, 
 	std::shared_ptr<SimulationOutput> output, 
-	float deltaTime, 
+	Real deltaTime, 
 	unsigned long endTime,
 	Usage useGpu
 ) : Universe(input->input(), laws, output, deltaTime, endTime, useGpu),

@@ -8,7 +8,7 @@
 #if defined(USE_GPU)
    __device__ __host__
 #endif
-Vector3D<float> getAcceleration(float mass, Vector3D<float> radiusComponent) {	
+Vector3D<Real> getAcceleration(Real mass, Vector3D<Real> radiusComponent) {	
 	return mass * radiusComponent;
 }
 
@@ -16,8 +16,8 @@ Vector3D<float> getAcceleration(float mass, Vector3D<float> radiusComponent) {
    __device__ __host__
 #endif
 void runOnParticle(
-	Particle* p1, Vector3D<float> acceleration, 
-	float deltaTime,
+	Particle* p1, Vector3D<Real> acceleration, 
+	Real deltaTime,
 	MomentumService* momentumService
 ) {
 	p1->velocity = momentumService->getVelocityPlusAcceleration(
@@ -31,13 +31,13 @@ void runOnParticle(
 #if defined(USE_GPU)
    __device__ __host__
 #endif 
-Vector3D<float> getRadiusComponent(Particle* p1, Particle* p2, float G) {
-	Vector3D<float> displacement = p1->position - p2->position;
-	float displacementSquared = displacement.magnitudeSquared();
+Vector3D<Real> getRadiusComponent(Particle* p1, Particle* p2, Real G) {
+	Vector3D<Real> displacement = p1->position - p2->position;
+	Real displacementSquared = displacement.magnitudeSquared();
 	if (displacementSquared <= pow(p1->radius + p2->radius, 2)) {
 		return {0, 0, 0};
 	} else {
-		Vector3D<float> unit = displacement / sqrt(displacementSquared);
+		Vector3D<Real> unit = displacement / sqrt(displacementSquared);
 		return (G / displacementSquared) * unit;
 	}
 }

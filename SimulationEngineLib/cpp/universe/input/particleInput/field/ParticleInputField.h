@@ -1,4 +1,5 @@
 #pragma once
+#include "shared/precision/Real.cuh"
 #include "shared/particle/Particle.cuh"
 
 #include <vector>
@@ -11,5 +12,5 @@ public:
     virtual void set(Particle* particle, std::string value) = 0;
     virtual std::string getHeader() = 0;
 protected:
-    float parseValue(std::string value);
+    Real parseValue(std::string value);
 };

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "shared/particle/Particle.cuh"
 #if defined(USE_GPU)
 	#include "cuda/gpuHelper/CudaWithError.cuh"
@@ -17,7 +18,7 @@ public:
 	virtual void run(
 		Particle** td_par, 
 		int particleCount,
-		float deltaTime = 1.0f
+		Real deltaTime = 1.0
 	) {};
 	protected:
 		std::shared_ptr<CudaWithError> cudaWithError;

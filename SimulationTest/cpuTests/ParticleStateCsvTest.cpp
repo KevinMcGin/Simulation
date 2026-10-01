@@ -44,8 +44,8 @@ TEST(ParticleStateCsvTest, RoundTripsThroughTheCsvInput) {
 
 	ASSERT_EQ(original.size(), reloaded.size());
 	for (std::size_t i = 0; i < original.size(); i++) {
-		EXPECT_FLOAT_EQ(original[i]->mass, reloaded[i]->mass) << "particle " << i << " mass";
-		EXPECT_FLOAT_EQ(original[i]->radius, reloaded[i]->radius) << "particle " << i << " radius";
+		EXPECT_DOUBLE_EQ(original[i]->mass, reloaded[i]->mass) << "particle " << i << " mass";
+		EXPECT_DOUBLE_EQ(original[i]->radius, reloaded[i]->radius) << "particle " << i << " radius";
 		EXPECT_EQ(original[i]->position, reloaded[i]->position) << "particle " << i << " position";
 		EXPECT_EQ(original[i]->velocity, reloaded[i]->velocity) << "particle " << i << " velocity";
 	}

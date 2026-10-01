@@ -4,10 +4,10 @@
 __device__ __host__
 #endif
 Particle::Particle(
-	float mass,
-	float radius,
-	Vector3D<float>  position,
-	Vector3D<float>  velocity,
+	Real mass,
+	Real radius,
+	Vector3D<Real>  position,
+	Vector3D<Real>  velocity,
 	bool deleted
 ) : mass(mass), radius(radius), position(position), velocity(velocity), deleted(deleted) {}
 
@@ -25,7 +25,7 @@ Particle::Particle(Particle* p) : Particle(p->mass, p->radius, p->position, p->v
    __device__ __host__
 #endif
 void Particle::advance(
-	float deltaTime
+	Real deltaTime
 ) {
 	position = position + velocity * deltaTime;
 }

@@ -1,12 +1,13 @@
 #pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/distribution/Distribution.h"
 class DistributionValue : public Distribution
 {
 public:
-	DistributionValue(float value);
-	float getValue() override;
+	DistributionValue(Real value);
+	Real getValue() override;
 
 private:
-	const float value;
+	const Real value;
 };
 

@@ -12,16 +12,21 @@ TEST(UniverseImplSimpleTest, UniverseRuns) {
 	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universe(input, output, 100, 10, FALSE);
 	universe.run();
-	Vector3D<float> position1 = universe.particles.front()->position;
-	Vector3D<float> position2 = universe.particles.back()->position;
-	EXPECT_EQ(Vector3D<float>(1001, 3.3596782600398001e-07, 0), position1);
-	EXPECT_EQ(Vector3D<float>(2.1543971051585231e-09, 1010, 0), position2);
-	Vector3D<float> velocity1 = universe.particles.front()->velocity;
-	Vector3D<float> velocity2 = universe.particles.back()->velocity;
-	EXPECT_EQ(Vector3D<float>(1, 3.3718564051987698e-10, 0), velocity1);
-	EXPECT_EQ(Vector3D<float>(2.2411248204456946e-12, 1, 0), velocity2);
+	Vector3D<Real> position1 = universe.particles.front()->position;
+	Vector3D<Real> position2 = universe.particles.back()->position;
+	EXPECT_EQ(Vector3D<Real>(1000.9999997370859, 3.3596766197369523e-07, 0), position1);
+	EXPECT_EQ(Vector3D<Real>(2.1543967972467369e-09, 1009.999999575092, 0), position2);
+	Vector3D<Real> velocity1 = universe.particles.front()->velocity;
+	Vector3D<Real> velocity2 = universe.particles.back()->velocity;
+	EXPECT_EQ(Vector3D<Real>(0.99999999973601683, 3.3718547082873006e-10, 0), velocity1);
+	EXPECT_EQ(Vector3D<Real>(2.2411244267660272e-12, 0.99999999916711924, 0), velocity2);
 }
 
+// Worth reading the x figures: the first particle starts at x = 1 moving
+// at 1e8 m/s, and the run is 1000 simulated seconds, so inertia alone puts
+// it at exactly 1e11 + 1. That is what comes out now. At float these same
+// expectations read 99999956992 — 43 kilometres short — because a float
+// simply cannot hold 1e11 to the metre.
 TEST(UniverseImplSimpleTest, UniverseRunsLargeVelocitiesNewtonMomentum) {
 	LawConfig lawConfig;
 	ASSERT_EQ("", lawConfig.setMomentum("newton"));
@@ -29,14 +34,14 @@ TEST(UniverseImplSimpleTest, UniverseRunsLargeVelocitiesNewtonMomentum) {
 	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universe(input, output, 100, 10, FALSE, lawConfig);
 	universe.run();
-	Vector3D<float> position1 = universe.particles.front()->position;
-	Vector3D<float> position2 = universe.particles.back()->position;
-	EXPECT_EQ(Vector3D<float>(99999956992, 3.0830167929707386e-07, 0), position1);
-	EXPECT_EQ(Vector3D<float>(2.0267103550963839e-08, 99999956992, 0), position2);
-	Vector3D<float> velocity1 = universe.particles.front()->velocity;
-	Vector3D<float> velocity2 = universe.particles.back()->velocity;
-	EXPECT_EQ(Vector3D<float>(100000000, 3.0830177299989714e-10, 0), velocity1);
-	EXPECT_EQ(Vector3D<float>(2.0267091824233141e-11, 100000000, 0), velocity2);
+	Vector3D<Real> position1 = universe.particles.front()->position;
+	Vector3D<Real> position2 = universe.particles.back()->position;
+	EXPECT_EQ(Vector3D<Real>(100000000001, 3.0830178691416724e-07, 0), position1);
+	EXPECT_EQ(Vector3D<Real>(6.5754583968155485e-10, 100000000010, 0), position2);
+	Vector3D<Real> velocity1 = universe.particles.front()->velocity;
+	Vector3D<Real> velocity2 = universe.particles.back()->velocity;
+	EXPECT_EQ(Vector3D<Real>(100000000, 3.0830178691416754e-10, 0), velocity1);
+	EXPECT_EQ(Vector3D<Real>(6.5755291366497002e-13, 100000000, 0), velocity2);
 }
 
 TEST(UniverseImplSimpleTest, UniverseRunsLargeVelocitiesEinsteinMomentum) {
@@ -46,14 +51,14 @@ TEST(UniverseImplSimpleTest, UniverseRunsLargeVelocitiesEinsteinMomentum) {
 	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universe(input, output, 100, 10, FALSE, lawConfig);
 	universe.run();
-	Vector3D<float> position1 = universe.particles.front()->position;
-	Vector3D<float> position2 = universe.particles.back()->position;
-	EXPECT_EQ(Vector3D<float>(99999956992, 2.9064437967463164e-07, 0), position1);
-	EXPECT_EQ(Vector3D<float>(6.1988242316957098e-10, 99999965184, 0), position2);
-	Vector3D<float> velocity1 = universe.particles.front()->velocity;
-	Vector3D<float> velocity2 = universe.particles.back()->velocity;
-	EXPECT_EQ(Vector3D<float>(100000000, 2.9064453621607811e-10, 0), velocity1);
-	EXPECT_EQ(Vector3D<float>(6.1988315955968654e-13, 100000016, 0), velocity2);
+	Vector3D<Real> position1 = universe.particles.front()->position;
+	Vector3D<Real> position2 = universe.particles.back()->position;
+	EXPECT_EQ(Vector3D<Real>(100000000001.00002, 2.9064454913595461e-07, 0), position1);
+	EXPECT_EQ(Vector3D<Real>(6.1988630120868725e-10, 100000000010.00002, 0), position2);
+	Vector3D<Real> velocity1 = universe.particles.front()->velocity;
+	Vector3D<Real> velocity2 = universe.particles.back()->velocity;
+	EXPECT_EQ(Vector3D<Real>(100000000.00000003, 2.9064454913595453e-10, 0), velocity1);
+	EXPECT_EQ(Vector3D<Real>(6.1989258810534321e-13, 100000000.00000003, 0), velocity2);
 }
 
 // The law config decides which laws run, so the observable check is what
@@ -72,8 +77,8 @@ TEST(UniverseImplSimpleTest, WithoutGravityParticlesOnlyCoast) {
 	universe.run();
 	// Exactly zero off-axis, where the same run with gravity on drifts to
 	// 3.36e-07: nothing pulled it sideways.
-	EXPECT_EQ(Vector3D<float>(1001, 0, 0), universe.particles.front()->position);
-	EXPECT_EQ(Vector3D<float>(1, 0, 0), universe.particles.front()->velocity);
+	EXPECT_EQ(Vector3D<Real>(1001, 0, 0), universe.particles.front()->position);
+	EXPECT_EQ(Vector3D<Real>(1, 0, 0), universe.particles.front()->velocity);
 }
 
 TEST(UniverseImplSimpleTest, WithNoLawsAtAllNothingMoves) {
@@ -83,12 +88,12 @@ TEST(UniverseImplSimpleTest, WithNoLawsAtAllNothingMoves) {
 	auto output = std::make_shared<SimulationOutputNothing>();
 	UniverseImplSimple universe(input, output, 100, 10, FALSE, lawConfig);
 	universe.run();
-	EXPECT_EQ(Vector3D<float>(1, 0, 0), universe.particles.front()->position);
-	EXPECT_EQ(Vector3D<float>(1, 0, 0), universe.particles.front()->velocity);
+	EXPECT_EQ(Vector3D<Real>(1, 0, 0), universe.particles.front()->position);
+	EXPECT_EQ(Vector3D<Real>(1, 0, 0), universe.particles.front()->velocity);
 }
 
 TEST(UniverseImplSimpleTest, GravitationalConstantScalesTheAttraction) {
-	auto run = [](float gravitationalConstant) {
+	auto run = [](Real gravitationalConstant) {
 		LawConfig lawConfig;
 		lawConfig.setLaws("newtonGravity,newtonFirstLaw");
 		lawConfig.gravitationalConstant = gravitationalConstant;
@@ -99,8 +104,8 @@ TEST(UniverseImplSimpleTest, GravitationalConstantScalesTheAttraction) {
 		return universe.particles.front()->position.y;
 	};
 
-	const float realG = (float)PhysicalConstants::GRAVITATIONAL_CONSTANT;
-	const float drift = run(realG);
+	const Real realG = (Real)PhysicalConstants::GRAVITATIONAL_CONSTANT;
+	const Real drift = run(realG);
 	// The other particles all sit up the y axis, so the first one is pulled
 	// off its own axis — further the stronger gravity is made.
 	EXPECT_GT(drift, 0);

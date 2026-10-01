@@ -7,7 +7,7 @@ TEST(LawConfigTest, DefaultsToEveryLawAndNewtonianMomentum) {
 	EXPECT_TRUE(lawConfig.isNewtonGravityEnabled);
 	EXPECT_TRUE(lawConfig.isNewtonFirstLawEnabled);
 	EXPECT_EQ(MOMENTUM_NEWTON, lawConfig.momentum);
-	EXPECT_FLOAT_EQ((float)PhysicalConstants::GRAVITATIONAL_CONSTANT, lawConfig.gravitationalConstant);
+	EXPECT_DOUBLE_EQ((Real)PhysicalConstants::GRAVITATIONAL_CONSTANT, lawConfig.gravitationalConstant);
 }
 
 TEST(LawConfigTest, SetLawsEnablesOnlyTheLawsNamed) {
@@ -89,14 +89,14 @@ TEST(LawConfigTest, SetMomentumRejectsAnythingElse) {
 TEST(LawConfigTest, SetGravitationalConstantTakesAPositiveNumber) {
 	LawConfig lawConfig;
 	EXPECT_EQ("", lawConfig.setGravitationalConstant("1.5e-10"));
-	EXPECT_FLOAT_EQ(1.5e-10f, lawConfig.gravitationalConstant);
+	EXPECT_DOUBLE_EQ(1.5e-10, lawConfig.gravitationalConstant);
 }
 
 TEST(LawConfigTest, SetGravitationalConstantRejectsZeroAndNegatives) {
 	LawConfig lawConfig;
 	EXPECT_NE("", lawConfig.setGravitationalConstant("0"));
 	EXPECT_NE("", lawConfig.setGravitationalConstant("-1"));
-	EXPECT_FLOAT_EQ((float)PhysicalConstants::GRAVITATIONAL_CONSTANT, lawConfig.gravitationalConstant);
+	EXPECT_DOUBLE_EQ((Real)PhysicalConstants::GRAVITATIONAL_CONSTANT, lawConfig.gravitationalConstant);
 }
 
 // Text that is not a number at all must be reported as such, not silently

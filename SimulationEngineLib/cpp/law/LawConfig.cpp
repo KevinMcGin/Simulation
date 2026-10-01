@@ -88,13 +88,13 @@ std::string LawConfig::setMomentum(const std::string& momentumName) {
 }
 
 std::string LawConfig::setGravitationalConstant(const std::string& value) {
-	// Parsed with std::stof rather than atof: atof answers 0 for text it
+	// Parsed with std::stod rather than atof: atof answers 0 for text it
 	// cannot read at all, which is indistinguishable from a caller genuinely
 	// sending 0 and would be reported as the wrong problem.
-	float parsed = 0;
+	Real parsed = 0;
 	try {
 		size_t consumed = 0;
-		parsed = std::stof(trim(value), &consumed);
+		parsed = std::stod(trim(value), &consumed);
 		if (consumed != trim(value).size()) {
 			throw std::invalid_argument("trailing characters");
 		}

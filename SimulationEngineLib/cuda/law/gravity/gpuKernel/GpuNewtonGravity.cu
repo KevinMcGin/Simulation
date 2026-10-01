@@ -28,7 +28,7 @@ void setMomentumService(MomentumService** momentumServiceGpu, int momentumServic
 }
 
 GpuNewtonGravity::GpuNewtonGravity(
-	float G,
+	Real G,
 	std::shared_ptr<MomentumService> momentumService
 ) : GpuLaw("GpuNewtonGravity"), G(G), momentumService(momentumService) { 
 	cudaWithError->malloc((void**)&momentumServiceGpu, sizeof(*momentumService));
@@ -53,7 +53,7 @@ GpuNewtonGravity::~GpuNewtonGravity() {
 }
 
 __global__
-void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations, unsigned long long betweenParticlesTriangularCount, float G, unsigned long long vectorsProcessedTriangular) {
+void radiusComponentKernel(Particle** particles, Vector3D<Real>* accelerations, unsigned long long betweenParticlesTriangularCount, Real G, unsigned long long vectorsProcessedTriangular) {
 	unsigned long long betweenParticlesTriangularIndex = threadIdx.x + blockIdx.x*blockDim.x;
 	if (betweenParticlesTriangularIndex < betweenParticlesTriangularCount) { 
 		radiusComponentKernelHelper(betweenParticlesTriangularIndex, particles, accelerations, betweenParticlesTriangularCount, G, vectorsProcessedTriangular);
@@ -61,13 +61,13 @@ void radiusComponentKernel(Particle** particles, Vector3D<float>* accelerations,
 }
 
 __global__
-void addAccelerationsKernelLower(Particle** particles, Vector3D<float>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, float deltaTime, MomentumService** momentumServiceGpu) {
+void addAccelerationsKernelLower(Particle** particles, Vector3D<Real>* accelerations, unsigned long long particleIndex2, unsigned long long vectorsProcessedTriangular, Real deltaTime, MomentumService** momentumServiceGpu) {
 	unsigned long long particleIndex1 = threadIdx.x + blockIdx.x*blockDim.x;
 	addAccelerationsKernelLowerHelper(particleIndex1, particles, accelerations, particleIndex2, vectorsProcessedTriangular, deltaTime, momentumServiceGpu);
 } 
 
 __global__
-void addAccelerationsKernelUpper(Particle** particles, Vector3D<float>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, float deltaTime, MomentumService** momentumServiceGpu) {
+void addAccelerationsKernelUpper(Particle** particles, Vector3D<Real>* accelerations, unsigned long long xOffset, unsigned long long particleIndex2, unsigned long long particleCount, unsigned long long vectorsProcessedTriangular, unsigned long long betweenParticlesTriangularCount, Real deltaTime, MomentumService** momentumServiceGpu) {
 	unsigned long long particleIndex1 = threadIdx.x + blockIdx.x*blockDim.x;
 	addAccelerationsKernelUpperHelper(particleIndex1, particles, accelerations, xOffset, particleIndex2, particleCount, vectorsProcessedTriangular, betweenParticlesTriangularCount, deltaTime, momentumServiceGpu);
 }
@@ -83,22 +83,22 @@ unsigned long long getRowsAndColsCountMinusIdentityFromRows(unsigned long long r
 void GpuNewtonGravity::run(
 	Particle** particles, 
 	int particleCount,
-	float deltaTime
+	Real deltaTime
 ) {
 	unsigned long long betweenParticlesCount = ((unsigned long long)particleCount-1)*particleCount;
-	Vector3D<float>* accelerations = NULL;
+	Vector3D<Real>* accelerations = NULL;
 	
 	const double maxFractionMemoryAllocatable = 0.95;
 	const long long freeGpuMemoryStage1 = cudaWithError->getFreeGpuMemory();
 	const long long freeGpuMemory = (long long)(freeGpuMemoryStage1 * maxFractionMemoryAllocatable);
-	const unsigned long long vector3DSize = sizeof(Vector3D<float>);
+	const unsigned long long vector3DSize = sizeof(Vector3D<Real>);
 	const long long maxVectorsAllocatableStage1 = freeGpuMemory / vector3DSize;
 	const long long maxVectorsAllocatable = std::min(maxVectorsAllocatableStage1, (long long)betweenParticlesCount);
 	if (maxVectorsAllocatable <= 0) {
 		throw std::runtime_error("Ran out of GPU memory");
 	}
 
-	cudaWithError->malloc((void**)&accelerations, maxVectorsAllocatable * sizeof(Vector3D<float>));
+	cudaWithError->malloc((void**)&accelerations, maxVectorsAllocatable * sizeof(Vector3D<Real>));
 
 	unsigned long long particlesProcessed = 0;
 	unsigned long long vectorsProcessed = 0;

@@ -8,11 +8,11 @@
 #include <memory>
 
 TEST(ParticleDistributionDiskTest, Disk) {
-    Vector3D<float> meanPosition(0, 0, 0);
-    float starMass = 1;
-    float meanDensity = 1;
-    float outerRadius = 1;
-    float meanMass = 1;
+    Vector3D<Real> meanPosition(0, 0, 0);
+    Real starMass = 1;
+    Real meanDensity = 1;
+    Real outerRadius = 1;
+    Real meanMass = 1;
     auto starMassDistribution = std::make_shared<DistributionValue>(starMass);
 	auto massDistribution = std::make_shared<DistributionValue>(meanMass);
 	auto density = std::make_shared<DistributionValue>(meanDensity);
@@ -20,7 +20,7 @@ TEST(ParticleDistributionDiskTest, Disk) {
 	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(starMassDistribution, density);
 	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
-	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D<float>(0, 0, 0), 0);
+	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D<Real>(0, 0, 0), 0);
 	auto innerRadiusDistribution = std::make_shared<DistributionValue>(0);
 	auto outerRadiusDistribution = std::make_shared<DistributionValue>(outerRadius);
 	auto eccentricityDistribution = std::make_shared<DistributionValue>(1);
@@ -37,7 +37,7 @@ TEST(ParticleDistributionDiskTest, Disk) {
         // angularVelocityDistribution
     );
     auto particle = particleDistributionDisk.getParticle();
-	EXPECT_FLOAT_EQ(1, particle->mass);
+	EXPECT_DOUBLE_EQ(1, particle->mass);
 	EXPECT_TRUE(particle->radius >= 0 && particle->radius <= 1);
 	EXPECT_TRUE(particle->position.x >= -1 && particle->position.x <= 1);
 	EXPECT_TRUE(particle->position.y >= -1 && particle->position.y <= 1);
@@ -49,11 +49,11 @@ TEST(ParticleDistributionDiskTest, Disk) {
 }
 
 TEST(ParticleDistributionDiskTest, DiskZeroRadius) {
-    Vector3D<float> meanPosition(0, 0, 0);
-    float starMass = 1;
-    float meanDensity = 1;
-    float outerRadius = 0;
-    float meanMass = 1;
+    Vector3D<Real> meanPosition(0, 0, 0);
+    Real starMass = 1;
+    Real meanDensity = 1;
+    Real outerRadius = 0;
+    Real meanMass = 1;
     auto starMassDistribution = std::make_shared<DistributionValue>(starMass);
 	auto massDistribution = std::make_shared<DistributionValue>(meanMass);
 	auto density = std::make_shared<DistributionValue>(meanDensity);
@@ -61,7 +61,7 @@ TEST(ParticleDistributionDiskTest, DiskZeroRadius) {
 	auto distributionDensityStar = std::make_shared<DistributionMassDensity>(starMassDistribution, density);
 	auto positionDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
 	auto velocityDistribution = std::make_shared<DistributionCircle>(meanPosition, 0);
-	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D<float>(0, 0, 0), 0);
+	// auto angularVelocityDistribution = std::make_shared<DistributionCircle>(Vector3D<Real>(0, 0, 0), 0);
 	auto innerRadiusDistribution = std::make_shared<DistributionValue>(0);
 	auto outerRadiusDistribution = std::make_shared<DistributionValue>(outerRadius);
 	auto eccentricityDistribution = std::make_shared<DistributionValue>(1);
@@ -78,7 +78,7 @@ TEST(ParticleDistributionDiskTest, DiskZeroRadius) {
         // angularVelocityDistribution
     );
     auto particle = particleDistributionDisk.getParticle();
-	EXPECT_FLOAT_EQ(1, particle->mass);
+	EXPECT_DOUBLE_EQ(1, particle->mass);
 	EXPECT_TRUE(particle->radius >= 0 && particle->radius <= 1);
 	EXPECT_TRUE(particle->position.x >= -1 && particle->position.x <= 1);
 	EXPECT_TRUE(particle->position.y >= -1 && particle->position.y <= 1);

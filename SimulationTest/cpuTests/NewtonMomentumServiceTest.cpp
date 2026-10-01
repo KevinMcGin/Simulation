@@ -11,7 +11,7 @@ TEST(NewtonMomentumServiceTest, getVelocityPlusAcceleration) {
 		{100000000, 1, 1}
 	);
 	ASSERT_EQ(
-		Vector3D<float>(200000000, 2, 2), 
+		Vector3D<Real>(200000000, 2, 2), 
 		velocity
 	);
 }
@@ -19,14 +19,14 @@ TEST(NewtonMomentumServiceTest, getVelocityPlusAcceleration) {
 TEST(NewtonMomentumServiceTest, getMomentum) {
 	class TestNewtonMomentumService : public NewtonMomentumService {
 	public:
-		Vector3D<float> getMomentum(float mass, Vector3D<float> velocity) {
+		Vector3D<Real> getMomentum(Real mass, Vector3D<Real> velocity) {
 			return NewtonMomentumService::getMomentum(mass, velocity);
 		}
 	};
 	auto momentumService = TestNewtonMomentumService();
 	auto momentum = momentumService.getMomentum(1, {100000000, 1, 1});
 	ASSERT_EQ(
-		Vector3D<float>(100000000, 1, 1), 
+		Vector3D<Real>(100000000, 1, 1), 
 		momentum
 	);
 }
@@ -40,7 +40,7 @@ TEST(NewtonMomentumServiceTest, mergeVelocitySame) {
 		{100000000, 1, 1}
 	);
 	ASSERT_EQ(
-		Vector3D<float>(100000000, 1, 1), 
+		Vector3D<Real>(100000000, 1, 1), 
 		v3
 	);
 }
@@ -54,7 +54,7 @@ TEST(NewtonMomentumServiceTest, mergeVelocityDifferent) {
 		{200000000, 1, 1}
 	);
 	ASSERT_EQ(
-		Vector3D<float>(150000000, 1, 1), 
+		Vector3D<Real>(150000000, 1, 1), 
 		v3
 	);
 }

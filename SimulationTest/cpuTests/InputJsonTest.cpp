@@ -6,17 +6,17 @@
 
 void testJsonReadPosition0(Value* input) {
     auto particles = input->GetArray();
-	EXPECT_FLOAT_EQ(0.030432f, particles[0]["r"].GetFloat());
+	EXPECT_FLOAT_EQ(0.030432, particles[0]["r"].GetFloat());
 	EXPECT_FLOAT_EQ(-15.061090, particles[0]["pos"][0].GetFloat());
-	EXPECT_FLOAT_EQ(0.032683f, particles[1]["r"].GetFloat());
+	EXPECT_FLOAT_EQ(0.032683, particles[1]["r"].GetFloat());
 	EXPECT_FLOAT_EQ(-7.088444, particles[1]["pos"][1].GetFloat());
 }
 
 void testJsonReadPosition1(Value* input) {
     auto particles = input->GetArray();
-	EXPECT_FLOAT_EQ(1.030432f, particles[0]["r"].GetFloat());
+	EXPECT_FLOAT_EQ(1.030432, particles[0]["r"].GetFloat());
 	EXPECT_FLOAT_EQ(-1.061090, particles[0]["pos"][0].GetFloat());
-	EXPECT_FLOAT_EQ(1.032683f, particles[1]["r"].GetFloat());
+	EXPECT_FLOAT_EQ(1.032683, particles[1]["r"].GetFloat());
 	EXPECT_FLOAT_EQ(17.088444, particles[1]["pos"][1].GetFloat());
 }
 

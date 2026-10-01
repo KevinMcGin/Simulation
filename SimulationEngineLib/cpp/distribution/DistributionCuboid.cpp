@@ -2,7 +2,7 @@
 #include "cpp/distribution/Distribution.h"
 
 
-Vector3D<float> DistributionCuboid::getValue()
+Vector3D<Real> DistributionCuboid::getValue()
 {
 	return { 
 		Distribution::random(mean.x, delta.x), 

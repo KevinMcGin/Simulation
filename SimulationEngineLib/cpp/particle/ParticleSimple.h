@@ -1,16 +1,17 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "shared/particle/Particle.cuh"
 
 class ParticleSimple: public Particle {
 	public:
 		ParticleSimple(
-			float			  mass,
-			float            radius,
-			Vector3D<float>  position,
-			Vector3D<float>  velocity
+			Real			  mass,
+			Real            radius,
+			Vector3D<Real>  position,
+			Vector3D<Real>  velocity
 		) : Particle(mass, radius, position, velocity) {}
-		// float getTemperature() override;
+		// Real getTemperature() override;
 
 	// private:
-		// float temperature = 273;
+		// Real temperature = 273;
 };

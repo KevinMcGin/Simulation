@@ -7,7 +7,7 @@ Universe::Universe(
     std::vector<Particle*> particles, 
     std::vector<std::shared_ptr<Law>> laws, 
     const std::shared_ptr<SimulationOutput> output, 
-    float deltaTime,
+    Real deltaTime,
     unsigned long endTime,
     Usage useGpu
 ) : particles(particles),

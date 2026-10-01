@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/universe/Universe.h"
 #include "cpp/universe/input/SimulationInput.h"
 #include "cpp/universe/UniverseTiming.h"
@@ -19,7 +20,7 @@ public:
 		std::vector<std::shared_ptr<Law>> laws, 
 		std::shared_ptr<SimulationInput> input, 
 		std::shared_ptr<SimulationOutput> output, 
-		float deltaTime, 
+		Real deltaTime, 
 		unsigned long endTime,
 		Usage useGpu = UNDEFINED
 	);

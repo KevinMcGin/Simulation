@@ -1,4 +1,5 @@
 #pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/distribution/Distribution3D.h"
 
 // A point in the ring between an inner and an outer radius, at a uniformly
@@ -11,23 +12,23 @@
 class DistributionAnnulus : public Distribution3D {
 public:
 	DistributionAnnulus(
-		Vector3D<float> mean,
-		float innerRadius,
-		float outerRadius,
-		float bias = 0.5f
+		Vector3D<Real> mean,
+		Real innerRadius,
+		Real outerRadius,
+		Real bias = 0.5
 	);
 
-	Vector3D<float> getValue() override;
+	Vector3D<Real> getValue() override;
 
 	// The power the uniform 0..1 sample is raised to before it is stretched
 	// across the ring, which is infinite at a bias of 0. Exposed for the
 	// tests, which would otherwise only be able to check the bias through
 	// the spread of a sample.
-	static float biasExponent(float bias);
+	static Real biasExponent(Real bias);
 
 private:
-	const Vector3D<float> mean;
-	const float innerRadius;
-	const float outerRadius;
-	const float bias;
+	const Vector3D<Real> mean;
+	const Real innerRadius;
+	const Real outerRadius;
+	const Real bias;
 };

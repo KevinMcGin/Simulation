@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/law/CpuLaw.h"
 #include "shared/service/momentum/MomentumService.cuh"
 
@@ -10,14 +11,14 @@
 class CpuNewtonGravity: public CpuLaw {
 public:
 	CpuNewtonGravity(
-		float G,
+		Real G,
 		std::shared_ptr<MomentumService> momentumService
 	);
 	void run(
 		std::vector<Particle*>& particles,
-		float deltaTime
+		Real deltaTime
 	) override;
 protected:
-	const float G;
+	const Real G;
 	std::shared_ptr<MomentumService> momentumService;
 };

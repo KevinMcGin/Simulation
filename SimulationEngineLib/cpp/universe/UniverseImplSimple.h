@@ -1,4 +1,5 @@
 #pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/law/LawConfig.h"
 #include "cpp/universe/UniverseImpl.h"
 #include "cpp/universe/input/SimulationInput.h"
@@ -11,7 +12,7 @@ public:
 		std::shared_ptr<SimulationInput> input, 
 		std::shared_ptr<SimulationOutput> output, 
 		unsigned long endTime,
-		float deltaTime = 1.0f,
+		Real deltaTime = 1.0,
 		Usage useGpu = UNDEFINED,
 		const LawConfig& lawConfig = LawConfig()
 	);

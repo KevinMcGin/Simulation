@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "shared/precision/Real.cuh"
 #include "cpp/law/Law.h"
 #include "cpp/constant/PhysicalConstants.h"
 #include "shared/service/momentum/MomentumService.cuh"
@@ -11,8 +12,8 @@ class NewtonGravity: public Law {
 public:
 	NewtonGravity(
 		std::shared_ptr<MomentumService> momentumService,
-		float G = PhysicalConstants::GRAVITATIONAL_CONSTANT
+		Real G = PhysicalConstants::GRAVITATIONAL_CONSTANT
 	);
 protected:
-	const float G;
+	const Real G;
 };
