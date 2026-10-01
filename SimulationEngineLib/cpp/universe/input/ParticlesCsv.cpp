@@ -31,6 +31,23 @@ namespace {
 		return true;
 	}
 
+	// Whether a line names columns rather than carrying a particle. Every
+	// value in this format is a number, so a first cell that is not one is
+	// a header — which is how several CSV documents concatenated together
+	// are read as one. That matters because the inputs are additive and
+	// each source brings its own header: a generated solar system and a
+	// file someone pasted need not even name their columns in the same
+	// order, so they cannot simply be merged under one.
+	bool isHeader(const std::string& firstCell) {
+		try {
+			std::size_t consumed = 0;
+			std::stod(firstCell, &consumed);
+			return consumed != firstCell.size();
+		} catch (const std::exception&) {
+			return true;
+		}
+	}
+
 	void deleteParticles(std::vector<Particle*>& particles) {
 		for (auto particle : particles) {
 			delete particle;
@@ -45,7 +62,7 @@ std::vector<Particle*> ParticlesCsv::parse(std::istream& csv) {
 	// Throws if a column is not one the engine knows, which is the right
 	// moment to give up: a misnamed column means the rows beneath it are
 	// not the quantities they appear to be.
-	ParticleInput particleInput(split(line, ','));
+	auto particleInput = std::make_unique<ParticleInput>(split(line, ','));
 
 	std::vector<Particle*> particles;
 	// Looping on getline rather than on eof(): eof() only becomes true
@@ -58,12 +75,25 @@ std::vector<Particle*> ParticlesCsv::parse(std::istream& csv) {
 			continue;
 		}
 
+		std::vector<std::string> values = split(line, ',');
+		if (!values.empty() && isHeader(values.front())) {
+			// A second document begins here; its columns describe the rows
+			// that follow, not the ones above.
+			try {
+				particleInput = std::make_unique<ParticleInput>(values);
+			} catch (...) {
+				deleteParticles(particles);
+				throw;
+			}
+			continue;
+		}
+
 		//Todo: Particle type created depends on headers available
 		auto particle = new ParticleSimple(
 			0, 0, { 0, 0, 0, }, { 0, 0, 0, }
 		);
 		try {
-			particleInput.set(particle, split(line, ','));
+			particleInput->set(particle, values);
 		} catch (...) {
 			// An unreadable row abandons the whole document, so everything
 			// read so far — and the particle this row had already begun —

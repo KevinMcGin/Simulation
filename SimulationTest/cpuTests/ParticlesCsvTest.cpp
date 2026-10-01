@@ -90,3 +90,56 @@ TEST(SimulationInputCombinedTest, FreesEarlierInputsWhenALaterOneFails) {
 	SimulationInputCombined combined({ generated, broken });
 	EXPECT_THROW(combined.input(), std::invalid_argument);
 }
+
+// The inputs are additive and each source brings its own header, so the
+// bodies someone pastes in follow a generated system's columns without
+// having to agree with them.
+TEST(ParticlesCsvTest, ReadsSeveralDocumentsConcatenated) {
+	auto particles = parse(
+		std::string(header) + "\n1,2,3,4,5,6,7,8\n" +
+		std::string(header) + "\n9,10,11,12,13,14,15,16\n"
+	);
+
+	ASSERT_EQ(2, particles.size());
+	EXPECT_EQ(1, particles[0]->mass);
+	EXPECT_EQ(9, particles[1]->mass);
+
+	ParticleTestHelper::deleteParticles(particles);
+}
+
+// Each header describes only the rows beneath it. Merging the two
+// documents under one would read this second particle's mass as its
+// position.
+TEST(ParticlesCsvTest, EachDocumentKeepsItsOwnColumnOrder) {
+	auto particles = parse(
+		std::string(header) + "\n1,2,3,4,5,6,7,8\n"
+		"positionX,mass,radius\n"
+		"100,7,0.5\n"
+	);
+
+	ASSERT_EQ(2, particles.size());
+	EXPECT_EQ(3, particles[0]->position.x);
+	EXPECT_EQ(7, particles[1]->mass);
+	EXPECT_EQ(0.5, particles[1]->radius);
+	EXPECT_EQ(100, particles[1]->position.x);
+
+	ParticleTestHelper::deleteParticles(particles);
+}
+
+TEST(ParticlesCsvTest, RejectsASecondDocumentWithAnUnknownColumn) {
+	EXPECT_THROW(
+		parse(std::string(header) + "\n1,2,3,4,5,6,7,8\nmass,wobble\n1,2\n"),
+		std::invalid_argument
+	);
+}
+
+// Scientific notation is how the solar system data arrives — 1.988e+30 is a
+// value, not a column name.
+TEST(ParticlesCsvTest, TreatsScientificNotationAsAValue) {
+	auto particles = parse(std::string(header) + "\n1.988409871326422e+30,6.957e+08,0,0,0,0,0,0\n");
+
+	ASSERT_EQ(1, particles.size());
+	EXPECT_DOUBLE_EQ(1.988409871326422e+30, particles[0]->mass);
+
+	ParticleTestHelper::deleteParticles(particles);
+}
