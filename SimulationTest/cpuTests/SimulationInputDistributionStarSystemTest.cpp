@@ -81,3 +81,47 @@ TEST(SimulationInputDistributionStarSystemTest, starDensityIsSeparateFromTheDisk
 
 	EXPECT_LT(starRadius(8000.0f), starRadius(1000.0f));
 }
+
+// particleCount is unsigned, so a system of none used to underflow into a
+// request for eighteen quintillion disk particles. An empty star system is
+// an ordinary thing to ask for now that the particles can be arriving as
+// CSV instead.
+TEST(SimulationInputDistributionStarSystemTest, zeroParticlesProducesNothing) {
+	StarSystemConfig config;
+	config.particleCount = 0L;
+	auto particles = SimulationInputDistributionStarSystem(config)
+		.getStarSystemDistribution()
+		->input();
+	EXPECT_EQ(0, particles.size());
+	ParticleTestHelper::deleteParticles(particles);
+}
+
+// A massless star is a request for no star, which is how a disk is seeded
+// around something supplied separately.
+TEST(SimulationInputDistributionStarSystemTest, zeroStarMassLeavesOutTheStar) {
+	StarSystemConfig config;
+	config.particleCount = 5L;
+	config.starMass = 0.0f;
+	auto particles = SimulationInputDistributionStarSystem(config)
+		.getStarSystemDistribution()
+		->input();
+
+	// All five are disk particles now, where a star would have taken one of
+	// the places, and none of them sits at the centre.
+	EXPECT_EQ(5, particles.size());
+	for (const auto& particle : particles) {
+		EXPECT_GT(particle->position.magnitude(), 0) << "nothing should be at the centre";
+	}
+	ParticleTestHelper::deleteParticles(particles);
+}
+
+TEST(SimulationInputDistributionStarSystemTest, oneParticleIsJustTheStar) {
+	StarSystemConfig config;
+	config.particleCount = 1L;
+	auto particles = SimulationInputDistributionStarSystem(config)
+		.getStarSystemDistribution()
+		->input();
+	ASSERT_EQ(1, particles.size());
+	EXPECT_EQ(0, particles.front()->position.magnitude()) << "the star sits at the centre";
+	ParticleTestHelper::deleteParticles(particles);
+}

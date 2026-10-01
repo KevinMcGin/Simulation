@@ -1,5 +1,9 @@
 #include "cpp/universe/input/SimulationInputCsv.h"
+#include "cpp/universe/input/SimulationInputCsvText.h"
+#include "cpp/universe/input/SimulationInputCombined.h"
 #include "cpp/universe/output/SimulationOutputCsv.h"
+#include "cpp/universe/output/ParticleStateCsv.h"
+#include "cpp/util/Json.h"
 #include "cpp/universe/UniverseImplSimple.h"
 #include "util/Timing.h"
 #include <cpp/distribution/SimulationInputDistributionStarSystem.h>
@@ -170,9 +174,11 @@ int main(int argc, char *argv[]) {
 		// simulation, not just this request — down with it. The step is a
 		// float now, so a zero there divides to infinity instead, which is
 		// no better: it casts to a meaningless frame count.
-		if (particleCount <= 0) {
+		// Zero is allowed now: a run can be seeded entirely from the
+		// particles in the request body, with nothing generated at all.
+		if (particleCount < 0) {
 			res.status = 400;
-			res.set_content("particleCount must be greater than 0", "text/plain");
+			res.set_content("particleCount cannot be negative", "text/plain");
 			return;
 		}
 		if ((unsigned long)particleCount > maxParticleCount) {
@@ -195,10 +201,17 @@ int main(int argc, char *argv[]) {
 			res.set_content("deltaTime must be greater than 0", "text/plain");
 			return;
 		}
-		if (starSystem.meanMass <= 0 || starSystem.meanDensity <= 0 || starSystem.starMass <= 0 ||
+		if (starSystem.meanMass <= 0 || starSystem.meanDensity <= 0 ||
 			starSystem.starDensity <= 0 || starSystem.diskCentralMass <= 0 || starSystem.outerRadius <= 0) {
 			res.status = 400;
-			res.set_content("meanMass, meanDensity, starMass, starDensity, diskCentralMass and outerRadius must all be greater than 0", "text/plain");
+			res.set_content("meanMass, meanDensity, starDensity, diskCentralMass and outerRadius must all be greater than 0", "text/plain");
+			return;
+		}
+		// starMass is the exception: zero is a request for no star, which
+		// is how a disk is seeded around something supplied in the body.
+		if (starSystem.starMass < 0) {
+			res.status = 400;
+			res.set_content("starMass cannot be negative", "text/plain");
 			return;
 		}
 		// A spread of 1 or more takes the low end of the range to zero or
@@ -270,11 +283,40 @@ int main(int argc, char *argv[]) {
 		try {
 			auto simulationInputDistributionStarSystem = std::make_unique<SimulationInputDistributionStarSystem>(starSystem);
 
-			auto input = simulationInputDistributionStarSystem->getStarSystemDistribution();
+			// The two sources are additive, not a choice: the generated
+			// star system and whatever particles the body carries seed the
+			// same universe. Either can be empty — a particleCount of 0
+			// generates nothing, and no body supplies nothing.
+			std::vector<std::shared_ptr<SimulationInput>> sources {
+				std::shared_ptr<SimulationInput>(simulationInputDistributionStarSystem->getStarSystemDistribution().release())
+			};
+			if (!req.body.empty()) {
+				// Counted here as well as in the Go backend, because this
+				// engine is directly reachable on its own port: the
+				// particleCount ceiling above would otherwise be bypassed
+				// entirely by sending the particles instead of generating
+				// them.
+				unsigned long suppliedCount = 0;
+				for (const char c : req.body) {
+					if (c == '\n') {
+						suppliedCount++;
+					}
+				}
+				if (suppliedCount > 0) {
+					suppliedCount--; // the header
+				}
+				if ((unsigned long)particleCount + suppliedCount > maxParticleCount) {
+					res.status = 400;
+					res.set_content(
+						"particleCount plus supplied particles must be less than " + std::to_string(maxParticleCount),
+						"text/plain"
+					);
+					return;
+				}
+				sources.push_back(std::make_shared<SimulationInputCsvText>(req.body));
+			}
+			auto input = std::make_shared<SimulationInputCombined>(std::move(sources));
 
-			// auto input = std::make_shared<SimulationInputCsv>(
-			// 	"config/input/particlesInput.csv"
-			// );
 			auto output = std::make_shared<SimulationOutputCsv>(outputFile);
 
 			auto universe = std::make_unique<UniverseImplSimple>(
@@ -287,15 +329,34 @@ int main(int argc, char *argv[]) {
 			);
 			universe->run();
 			output->close();
-			auto outputJson = FileUtil::fileToString(outputFile);
-			if (outputJson.empty()) {
+			auto animation = FileUtil::fileToString(outputFile);
+			if (animation.empty()) {
 				std::cerr << "Simulation produced no output for " << outputFile << "\n";
 				res.status = 500;
 				res.set_content("Simulation did not produce any output", "text/plain");
 				return;
 			}
+
+			// The animation carries only what is needed to draw a frame.
+			// The final state carries mass and velocity too, which is what
+			// makes the run continuable: position alone cannot be fed back
+			// in, since velocity would have to be guessed from two frames
+			// and mass cannot be recovered at all once a collision has
+			// merged two particles.
+			//
+			// Read straight off the universe rather than from a second
+			// output file: run() leaves particles current on both the CPU
+			// and the GPU path, the GPU one syncing every frame.
+			const auto finalState = ParticleStateCsv::render(universe->particles);
+
 			res.status = 200;
-			res.set_content(outputJson, "text/csv");
+			res.set_content(
+				Json::object(
+					"\"animation\":" + Json::quote(animation) + "," +
+					"\"finalState\":" + Json::quote(finalState)
+				),
+				"application/json"
+			);
 		} catch (const std::exception &e) {
 			std::cerr << "Simulation failed: " << e.what() << "\n";
 			res.status = 500;

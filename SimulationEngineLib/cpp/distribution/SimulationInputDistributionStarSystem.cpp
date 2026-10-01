@@ -41,8 +41,19 @@ std::unique_ptr<SimulationInputRandomSimple> SimulationInputDistributionStarSyst
 	);
 	auto particleDistributionStar = std::make_shared<ParticleDistributionSimple>(distributionDensityStar, positionDistribution, velocityDistribution/*, angularVelocityDistribution*/);
 	
+	// particleCount is the whole system, star included, so the disk gets
+	// one fewer. Counted rather than assumed: particleCount is unsigned, so
+	// a system of none used to underflow to eighteen quintillion disk
+	// particles — and a request for an empty star system is now an ordinary
+	// thing to make, since the particles can be arriving as CSV instead.
+	//
+	// A massless star is a request for no star at all, which is how a disk
+	// is seeded around something supplied separately.
+	const bool hasStar = config.starMass > 0 && config.particleCount > 0;
+	const unsigned long diskCount = config.particleCount - (hasStar ? 1 : 0);
+
 	return std::make_unique<SimulationInputRandomSimple>(
-		std::vector<unsigned long> { config.particleCount - 1, 1 }, 
+		std::vector<unsigned long> { diskCount, hasStar ? 1UL : 0UL },
 		std::vector<std::shared_ptr<ParticleDistribution>> { particleDistributionDisk, particleDistributionStar }		
 	);
 }

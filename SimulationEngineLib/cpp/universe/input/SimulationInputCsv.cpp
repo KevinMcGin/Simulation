@@ -1,31 +1,8 @@
 #include "cpp/universe/input/SimulationInputCsv.h"
-#include "cpp/particle/ParticleSimple.h"
-
-#include <sstream>
-
-std::vector<std::string> split(const std::string& s, char delimiter)                                                                                                                          
-{                                                                                                                                                                                             
-   std::vector<std::string> splits;                                                                                                                                                           
-   std::string split;                                                                                                                                                                         
-   std::istringstream ss(s);                                                                                                                                                                  
-   while (std::getline(ss, split, delimiter))                                                                                                                                                 
-   {                                                                                                                                                                                          
-      splits.push_back(split);                                                                                                                                                                
-   }                                                                                                                                                                                          
-   return splits;                                                                                                                                                                             
-}
-
+#include "cpp/universe/input/ParticlesCsv.h"
 
 SimulationInputCsv::SimulationInputCsv(const char* fileName) :
-	SimulationInputFile(fileName) {
-		//Get headers as list of string of split by comma from first line in file
-		std::string line;
-    	if (file.is_open()) {
-			std::getline(file, line, '\n');
-		}
-		std::vector<std::string> headers = split(line, ',');
-		particleInput = std::make_unique<ParticleInput>(headers);
-	}
+	SimulationInputFile(fileName) {}
 
 SimulationInputCsv::~SimulationInputCsv() {
 	if (file.is_open()) {
@@ -33,19 +10,6 @@ SimulationInputCsv::~SimulationInputCsv() {
 	}
 }
 
-
 std::vector<Particle*> SimulationInputCsv::input() {
-	std::vector<Particle*> particles;
-	std::string line;
-	while (!file.eof()) {
-		std::getline(file, line, '\n');
-		//Todo: Particle type created depends on headers available
-		auto particle = new ParticleSimple(
-			0, 0, { 0, 0, 0, }, { 0, 0, 0, }
-		);
-		std::vector<std::string> values = split(line, ',');
-		particleInput->set(particle, values);
-		particles.push_back(particle);
-	}
-	return particles;
+	return ParticlesCsv::parse(file);
 }

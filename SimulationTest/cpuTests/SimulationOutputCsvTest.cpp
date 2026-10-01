@@ -33,7 +33,7 @@ TEST(SimulationOutputCsvTest, TrailingZerosAreTrimmed) {
 	simulationOutputCsv.close();
 
 	std::string expected =
-		"frame,radius,postitionX,positionY,positionZ\n"
+		"frame,radius,positionX,positionY,positionZ\n"
 		"0,1,0,0.5,-0.25\n"
 		"0,2.5,-2,0,10.125\n"
 		"\n";
